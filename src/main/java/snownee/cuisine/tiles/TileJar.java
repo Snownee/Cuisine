@@ -183,10 +183,10 @@ public class TileJar extends TileInventoryBase implements ITickable
         {
             processTime = 0;
         }
-        if (hasWorld() && (isWorking || !lastWorking))
+        if (hasWorld() && !world.isRemote && (isWorking || !lastWorking))
         {
-            NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(5, this.pos, isWorking ? 1
-                    : 0), this.getWorld().provider.getDimension());
+            NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(5, this.pos, isWorking ? 1 : 0),
+                    this.getWorld().provider.getDimension());
         }
     }
 
