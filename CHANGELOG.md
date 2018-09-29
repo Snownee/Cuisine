@@ -2,6 +2,7 @@
 
 ## 0.2.3
 
+ - Fix [GH-1](https://github.com/Snownee/Cuisine/issues/1): Start-up crash due to Chopping Board
  - Fix server-side crash caused by jar (thanks to 见习都督)
 
 ## 0.2.2
