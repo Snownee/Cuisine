@@ -1,6 +1,7 @@
 package snownee.cuisine.blocks;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -249,9 +250,14 @@ public class BlockChoppingBoard extends BlockMod
 
     public static NonNullList<ItemStack> getSuitableCovers()
     {
-        NonNullList<ItemStack> items = OreUtil.getItemsFromOre("logWood", 1);
-        items.removeIf(i -> !(i.getItem() instanceof ItemBlock));
-        return items;
+        // TODO We probably want to expose the NonNullList constructor that allows custom delegates
+        List<ItemStack> items = OreUtil.getItemsFromOre("logWood", 1)
+                .stream()
+                .filter(i -> i.getItem() instanceof ItemBlock)
+                .collect(Collectors.toList());
+        NonNullList<ItemStack> results = NonNullList.create();
+        results.addAll(items);
+        return results;
     }
 
     @Override
