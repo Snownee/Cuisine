@@ -1,5 +1,9 @@
 # 更新日志
 
+## 0.2.3
+
+ - Fix server-side crash caused by jar (thanks to 见习都督)
+
 ## 0.2.2
 
  - 新增两个技能

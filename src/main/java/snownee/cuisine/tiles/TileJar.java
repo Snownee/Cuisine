@@ -75,7 +75,7 @@ public class TileJar extends TileInventoryBase implements ITickable
     @Override
     public void onContentsChanged(int slot)
     {
-        if (hasWorld() && !invLock && !getWorld().isRemote)
+        if (!invLock)
         {
             resetProcessing();
         }
@@ -176,17 +176,20 @@ public class TileJar extends TileInventoryBase implements ITickable
 
     public void resetProcessing()
     {
-        Vessel recipe = findCurrentRecipe();
-        boolean lastWorking = this.isWorking;
-        this.isWorking = recipe != null;
-        if (!this.isWorking)
+        if (hasWorld() && !world.isRemote)
         {
-            processTime = 0;
-        }
-        if (hasWorld() && !world.isRemote && (isWorking || !lastWorking))
-        {
-            NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(5, this.pos, isWorking ? 1 : 0),
-                    this.getWorld().provider.getDimension());
+            Vessel recipe = findCurrentRecipe();
+            boolean lastWorking = this.isWorking;
+            this.isWorking = recipe != null;
+            if (!this.isWorking)
+            {
+                processTime = 0;
+            }
+            if (isWorking || !lastWorking)
+            {
+                NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(5, this.pos, isWorking ? 1 : 0),
+                        this.getWorld().provider.getDimension());
+            }
         }
     }
 
