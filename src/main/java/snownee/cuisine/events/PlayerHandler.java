@@ -3,6 +3,7 @@ package snownee.cuisine.events;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -31,7 +32,7 @@ public class PlayerHandler
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onPlayerJoinWorld(EntityJoinWorldEvent event)
     {
-        if (CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.lowerFoodLevel)
+        if (CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.lowerFoodLevel && !Loader.isModLoaded("applecore"))
         {
             if (event.getEntity() instanceof EntityPlayer)
             {
