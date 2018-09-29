@@ -1,0 +1,15 @@
+newmtl 01___Default
+map_Kd minecraft:blocks/quartz_block_bottom
+
+newmtl Material__8
+map_Kd cuisine:misc/beef
+
+newmtl Material__9
+map_Kd cuisine:misc/vege
+
+newmtl 07___Default
+map_Kd cuisine:misc/vege
+
+newmtl 09___Default
+d 0.5
+map_Kd cuisine:misc/meat_soup

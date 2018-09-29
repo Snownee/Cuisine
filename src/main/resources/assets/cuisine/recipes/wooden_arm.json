@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+      "item" : "cuisine:material",
+      "data": 0
+  },
+  "pattern": [
+    " b",
+    "s "
+  ],
+  "key": {
+    "b": {
+      "ore" : "slimeball",
+      "type": "forge:ore_dict"
+    },
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "handleWood"
+    }
+  }
+}

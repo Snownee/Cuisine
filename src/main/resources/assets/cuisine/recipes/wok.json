@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:wok"
+  },
+  "pattern": [
+    "  s",
+    "i i",
+    " i "
+  ],
+  "key": {
+    "i": {
+      "ore" : "ingotIron",
+      "type": "forge:ore_dict"
+    },
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "handleWood"
+    }
+  }
+}

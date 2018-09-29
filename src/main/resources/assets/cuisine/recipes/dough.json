@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "cuisine:food",
+    "data": 2
+  },
+  "ingredients": [
+    {
+      "ore": "foodFlour",
+      "type": "forge:ore_dict"
+    },
+    {
+      "ore": "listAllwater",
+      "type": "forge:ore_dict"
+    }
+  ]
+}

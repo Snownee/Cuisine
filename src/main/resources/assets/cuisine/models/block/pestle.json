@@ -1,0 +1,20 @@
+{
+  "textures": {
+    "pestle": "minecraft:blocks/stone"
+  },
+  "elements": [
+    {
+      "from": [ 10.5, 7.0, 7.0 ],
+      "to": [ 12.5, 14.0, 9.0 ],
+      "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "z", "angle": -45 },
+      "faces": {
+        "down":  { "uv": [ 10, 7, 12, 9 ], "texture": "#pestle" },
+        "up":  { "uv": [ 10, 7, 12, 9 ], "texture": "#pestle" },
+        "north": { "uv": [ 3, 7, 5, 14 ], "texture": "#pestle" },
+        "south": { "uv": [ 10, 7, 12, 14 ], "texture": "#pestle" },
+        "west":  { "uv": [ 7, 7, 9, 14 ], "texture": "#pestle" },
+        "east":  { "uv": [ 7, 7, 9, 14 ], "texture": "#pestle" }
+      }
+    }
+  ]
+}

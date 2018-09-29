@@ -1,0 +1,20 @@
+{
+	"__comment": "Designed by YurisCat with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"particle": "cuisine:block/bamboo"
+	},
+	"elements": [
+		{
+			"from": [ 5.998, 10.001, 6.001 ],
+			"to": [ 9.997, 13.999, 16 ],
+			"faces": {
+				"down": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 180 },
+				"up": { "uv": [ 11, 16, 5, 1 ], "texture": "#particle", "rotation": 180 },
+				"north": { "uv": [ 11, 7, 5, 1 ], "texture": "#particle", "rotation": 270 },
+				"south": { "uv": [ 11, 7, 5, 1 ], "texture": "#particle", "rotation": 270 },
+				"west": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 270 },
+				"east": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 90 }
+			}
+		}
+	]
+}

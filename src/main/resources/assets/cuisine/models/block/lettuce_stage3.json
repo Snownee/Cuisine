@@ -1,0 +1,6 @@
+{
+    "parent": "block/crop",
+    "textures": {
+        "crop": "cuisine:block/lettuce_stage_3"
+    }
+}

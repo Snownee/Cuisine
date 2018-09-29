@@ -1,0 +1,16 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:food",
+    "data": 0,
+    "count": 4
+  },
+  "pattern": [
+    "t"
+  ],
+  "key": {
+    "t": {
+      "item": "cuisine:tofu_block"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:mortar",
+    "data": 0
+  },
+  "pattern": [
+    "  f",
+    "s s",
+    " s "
+  ],
+  "key": {
+    "s": {
+      "ore" : "stone",
+      "type": "forge:ore_dict"
+    },
+    "f": {
+      "item" : "minecraft:flint"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "age=0": { "model": "cuisine:lettuce_stage0" },
+    "age=1": { "model": "cuisine:lettuce_stage0" },
+    "age=2": { "model": "cuisine:lettuce_stage1" },
+    "age=3": { "model": "cuisine:lettuce_stage1" },
+    "age=4": { "model": "cuisine:lettuce_stage2" },
+    "age=5": { "model": "cuisine:lettuce_stage2" },
+    "age=6": { "model": "cuisine:lettuce_stage2" },
+    "age=7": { "model": "cuisine:lettuce_stage3" }
+  }
+}

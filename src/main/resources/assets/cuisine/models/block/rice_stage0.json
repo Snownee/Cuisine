@@ -1,0 +1,7 @@
+{
+    "parent": "cuisine:block/water_crop",
+    "textures": {
+        "crop": "cuisine:block/rice_stage_0",
+        "root": "cuisine:block/rice_root_0"
+    }
+}

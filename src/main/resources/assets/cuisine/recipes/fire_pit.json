@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:fire_pit"
+  },
+  "pattern": [
+    "sss",
+    "sts",
+    "sss"
+  ],
+  "key": {
+    "s": {
+      "ore" : "cobblestone",
+      "type": "forge:ore_dict"
+    },
+    "t": {
+      "ore" : "torch",
+      "type": "forge:ore_dict"
+    }
+  }
+}

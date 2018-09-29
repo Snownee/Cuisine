@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "age=0": { "model": "cuisine:tomato_stage0" },
+    "age=1": { "model": "cuisine:tomato_stage0" },
+    "age=2": { "model": "cuisine:tomato_stage1" },
+    "age=3": { "model": "cuisine:tomato_stage1" },
+    "age=4": { "model": "cuisine:tomato_stage2" },
+    "age=5": { "model": "cuisine:tomato_stage2" },
+    "age=6": { "model": "cuisine:tomato_stage2" },
+    "age=7": { "model": "cuisine:tomato_stage3" }
+  }
+}

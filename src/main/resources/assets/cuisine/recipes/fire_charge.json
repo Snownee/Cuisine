@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "minecraft:fire_charge",
+    "count": 3
+  },
+  "ingredients": [
+    {
+      "ore" : "gunpowder",
+      "type": "forge:ore_dict"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item" : "cuisine:material",
+      "data": 6
+    }
+  ]
+}

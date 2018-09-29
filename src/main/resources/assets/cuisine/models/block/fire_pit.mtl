@@ -1,0 +1,11 @@
+newmtl cobblestone
+map_Kd minecraft:blocks/cobblestone
+
+newmtl planks
+map_Kd minecraft:blocks/planks_oak
+
+newmtl bark
+map_Kd minecraft:blocks/log_oak
+
+newmtl iron
+map_Kd cuisine:block/iron

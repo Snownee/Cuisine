@@ -1,0 +1,19 @@
+{
+  "parameters": {
+    "cycle": [ "compose", "#progress", [ "/", 12 ] ],
+    "halt": 0
+  },
+  "clips": {
+    "working": [ "apply", "cuisine:block/mill_top@working", "#cycle" ],
+    "halt": [ "apply", "cuisine:block/mill_top@working", "#halt" ]
+  },
+  "states": [
+    "working",
+    "halt"
+  ],
+  "transitions": {
+    "working": [ "halt" ],
+    "halt": [ "working", "halt" ]
+  },
+  "start_state": "halt"
+}

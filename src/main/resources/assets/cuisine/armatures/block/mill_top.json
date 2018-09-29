@@ -1,0 +1,34 @@
+{
+  "joints": {
+    "ring": { "0": [ 1.0 ], "1": [ 1.0 ], "2": [ 1.0 ], "3": [ 1.0 ], "4": [ 1.0 ], "5": [ 1.0 ] }
+  },
+  "clips": {
+    "halt": {
+      "loop": false,
+      "joint_clips": {},
+      "events": {}
+    },
+    "working": {
+      "loop": true,
+      "joint_clips": {
+        "ring": [
+          {
+            "variable": "axis_y",
+            "type": "uniform",
+            "interpolation": "nearest",
+            "samples": [ 1 ]
+          },
+          {
+            "variable": "angle",
+            "type": "uniform",
+            "interpolation": "linear",
+            "samples": [
+              0, 36, 72, 108, 144, 180, 216, 252, 288, 324, 360
+            ]
+          }
+        ]
+      },
+      "events": {}
+    }
+  }
+}

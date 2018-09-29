@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "type": {
+      "a_0": { "model": "cuisine:bamboo_shoot" },
+      "a_1": { "model": "cuisine:bamboo_shoot" },
+      "a_2": { "model": "cuisine:bamboo" },
+      "a_3": { "model": "cuisine:bamboo" },
+      "a_4": { "model": "cuisine:bamboo" },
+      "a_5": { "model": "cuisine:bamboo" },
+      "a_6": { "model": "cuisine:bamboo" },
+      "b_n": { "model": "cuisine:bamboo" },
+      "b_s": { "model": "cuisine:bamboo" },
+      "b_w": { "model": "cuisine:bamboo" },
+      "b_e": { "model": "cuisine:bamboo" }
+    }
+  }
+}

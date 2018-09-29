@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shapeless",
+  "result": {
+    "item": "minecraft:cookie",
+    "count": 8
+  },
+  "ingredients": [
+    {
+      "ore": "foodDough",
+      "type": "forge:ore_dict"
+    },
+    {
+      "item": "minecraft:dye",
+      "data": 3
+    }
+  ]
+}

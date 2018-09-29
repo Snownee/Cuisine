@@ -1,0 +1,6 @@
+{
+    "parent": "cuisine:block/cross_crop",
+    "textures": {
+        "crop": "cuisine:block/green_pepper_stage_1"
+    }
+}

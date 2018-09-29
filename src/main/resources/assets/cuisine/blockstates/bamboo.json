@@ -1,0 +1,103 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "false",
+        "north": "false",
+        "south": "false",
+        "west": "false",
+        "east": "false"
+      },
+      "apply": {
+        "model": "cuisine:bamboo",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_side0",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_side0",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_side1",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_side1",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "nw": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_plate",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "se": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_plate",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "ne": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_plate",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "sw": "true"
+      },
+      "apply": {
+        "model": "cuisine:bamboo_plate",
+        "y": 90,
+        "uvlock": true
+      }
+    }
+  ]
+}

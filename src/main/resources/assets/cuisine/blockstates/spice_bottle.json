@@ -1,0 +1,29 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "forge:item-layer",
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "fluid": {
+      "model": "forge:forgebucket",
+      "textures": {
+        "base": "cuisine:item/spice_bottle_base",
+        "fluid": "cuisine:item/spice_bottle_content",
+        "cover": "cuisine:item/spice_bottle_base"
+      },
+      "custom": {
+        "fluid": "water",
+        "flipGas": true
+      }
+    },
+    "item": [
+      {
+        "textures": {
+          "layer0": "cuisine:item/spice_bottle_content",
+          "layer1": "cuisine:item/spice_bottle_base"
+        }
+      }
+    ]
+  }
+}

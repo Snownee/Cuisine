@@ -1,0 +1,6 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "normal": { "model": "cuisine:void", "textures": { "particle": "blocks/log_oak_top" } }
+  }
+}

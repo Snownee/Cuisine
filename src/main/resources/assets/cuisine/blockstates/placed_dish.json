@@ -1,0 +1,22 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cuisine:dish/plate.obj",
+    "custom": {
+      "flip-v": true
+    }
+  },
+  "variants": {
+    "model_type": {
+      "empty": {},
+      "fish0": { "model": "cuisine:dish/fish0.obj" },
+      "rice0": { "model": "cuisine:dish/rice0.obj" },
+      "meat0": { "model": "cuisine:dish/meat0.obj" },
+      "meat1": { "model": "cuisine:dish/meat1.obj" },
+      "veges0": { "model": "cuisine:dish/veges0.obj" },
+      "veges1": { "model": "cuisine:dish/veges1.obj" },
+      "mixed0": { "model": "cuisine:dish/mixed0.obj" },
+      "mixed1": { "model": "cuisine:dish/mixed1.obj" }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "variant=0": { "model": "cuisine:jar" },
+        "variant=1": { "model": "cuisine:jar" },
+        "variant=2": { "model": "cuisine:jar" },
+        "variant=3": { "model": "cuisine:jar" }
+    }
+}

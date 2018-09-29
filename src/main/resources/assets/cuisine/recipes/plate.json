@@ -1,0 +1,21 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:placed_dish"
+  },
+  "pattern": [
+    "qqq"
+  ],
+  "key": {
+    "q": [
+      {
+        "ore" : "gemQuartz",
+        "type": "forge:ore_dict"
+      },
+      {
+        "item": "minecraft:stained_hardened_clay",
+        "data": 0
+      }
+    ]
+  }
+}

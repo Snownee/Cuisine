@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:spice_bottle",
+    "data": 0
+  },
+  "pattern": [
+    "W",
+    "G",
+    "G"
+  ],
+  "key": {
+    "W": {
+      "ore" : "slabWood",
+      "type": "forge:ore_dict"
+    },
+    "G": {
+      "ore" : "paneGlass",
+      "type": "forge:ore_dict"
+    }
+  }
+}

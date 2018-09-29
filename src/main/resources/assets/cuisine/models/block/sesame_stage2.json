@@ -1,0 +1,6 @@
+{
+    "parent": "cuisine:block/cross_crop",
+    "textures": {
+        "crop": "cuisine:block/sesame_stage_2"
+    }
+}

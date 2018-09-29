@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "mirrored": true,
+  "result": {
+    "item": "cuisine:mill"
+  },
+  "pattern": [
+    "  w",
+    "sss",
+    "sss"
+  ],
+  "key": {
+    "s": {
+      "ore" : "stone",
+      "type": "forge:ore_dict"
+    },
+    "w": {
+      "type": "forge:ore_dict",
+      "ore": "handleWood"
+    }
+  }
+}

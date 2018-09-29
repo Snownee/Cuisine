@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:jar",
+    "count": 2
+  },
+  "pattern": [
+    "ccc",
+    "c c",
+    "ccc"
+  ],
+  "key": {
+    "c": {
+      "item" : "minecraft:hardened_clay"
+    }
+  }
+}

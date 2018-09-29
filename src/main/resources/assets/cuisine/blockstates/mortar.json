@@ -1,0 +1,35 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cuisine:mortar"
+  },
+  "variants": {
+    "pestle": {
+      "true": {
+        "submodel": {
+          "pestle": {
+            "model": "cuisine:pestle",
+            "transform": {
+              "translation": [ 0.1 , -0.1, -0.1 ],
+              "rotation": { "y": 225 }
+            }
+          }
+        }
+      },
+      "false": {
+        "submodel": {
+          "pestle": {
+            "model": "cuisine:pestle",
+            "transform": { "rotation": { "y": 225 } }
+          }
+        }
+      }
+    },
+    "facing": {
+      "north": { "y": 0   },
+      "south": { "y": 180 },
+      "west":  { "y": 270 },
+      "east":  { "y": 90  }
+    }
+  }
+}
