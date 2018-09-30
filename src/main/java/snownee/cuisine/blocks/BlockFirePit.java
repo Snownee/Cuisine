@@ -78,9 +78,9 @@ public class BlockFirePit extends BlockModHorizontal
     public void mapModel()
     {
         Item item = Item.getItemFromBlock(this);
-        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(getRegistryName(), "facing=north,component=none"));
-        ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(getRegistryName(), "facing=north,component=wok"));
-        ModelLoader.setCustomModelResourceLocation(item, 2, new ModelResourceLocation(getRegistryName(), "facing=north,component=sticks"));
+        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(getRegistryName(), "fire_pit"));
+        ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(getRegistryName(), "wok"));
+        ModelLoader.setCustomModelResourceLocation(item, 2, new ModelResourceLocation(getRegistryName(), "bbq_rack"));
     }
 
     @Override
@@ -362,7 +362,7 @@ public class BlockFirePit extends BlockModHorizontal
         @Override
         public String getName()
         {
-            return toString().toLowerCase(Locale.ROOT);
+            return toString().toLowerCase(Locale.ENGLISH);
         }
     }
 

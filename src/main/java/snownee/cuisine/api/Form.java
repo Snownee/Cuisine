@@ -1,8 +1,12 @@
 package snownee.cuisine.api;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import net.minecraft.util.IStringSerializable;
+
+import javax.annotation.Nullable;
 
 public enum Form implements IStringSerializable
 {
@@ -14,6 +18,31 @@ public enum Form implements IStringSerializable
     MINCED, //碎
     PASTE, //酱
     JUICE; //汁
+
+    // Remember to adjust the initial size when there are new forms
+    private static final Map<String, Form> LOOKUP_TABLE = new HashMap<>(8);
+
+    static
+    {
+        for (Form form : Form.values())
+        {
+            LOOKUP_TABLE.put(form.name(), form);
+        }
+    }
+
+    /**
+     * Exception-free version of {@link Enum#valueOf(Class, String)}.
+     * <p>
+     * Return value can be null, and care must be taken for processing its return value.
+     * </p>
+     * @param name Name of enum constant
+     * @return Corresponding enum constant, or null if not found.
+     */
+    @Nullable
+    public static Form of(String name)
+    {
+        return LOOKUP_TABLE.get(name);
+    }
 
     private final double heatAbsorptionModifier;
 

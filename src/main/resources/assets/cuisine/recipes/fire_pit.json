@@ -1,7 +1,8 @@
 {
   "type": "forge:ore_shaped",
   "result": {
-    "item": "cuisine:fire_pit"
+    "item": "cuisine:fire_pit",
+    "data": 0
   },
   "pattern": [
     "sss",

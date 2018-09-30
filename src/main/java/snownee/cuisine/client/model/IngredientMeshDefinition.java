@@ -47,9 +47,12 @@ public class IngredientMeshDefinition implements ItemMeshDefinition, ISelectiveR
             if (data != null)
             {
                 String formName = data.getString(CuisineSharedSecrets.KEY_FORM);
-                Form form = Form.valueOf(formName);
-                String material = data.getString(CuisineSharedSecrets.KEY_MATERIAL);
-                return new ModelResourceLocation(new ResourceLocation(Cuisine.MODID, overrides.get(form).getOrDefault(material, "cmaterial/" + formName.toLowerCase(Locale.ENGLISH))), "inventory");
+                Form form = Form.of(formName);
+                if (form != null)
+                {
+                    String material = data.getString(CuisineSharedSecrets.KEY_MATERIAL);
+                    return new ModelResourceLocation(new ResourceLocation(Cuisine.MODID, overrides.get(form).getOrDefault(material, "cmaterial/" + formName.toLowerCase(Locale.ENGLISH))), "inventory");
+                }
             }
         }
         return new ModelResourceLocation(ClientProxy.EMPTY, "inventory"); // Catch all
