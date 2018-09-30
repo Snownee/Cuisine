@@ -16,7 +16,6 @@
       "none": { "model": "cuisine:fire_pit.obj" },
       "wok":  { "model": "cuisine:fire_pit_with_wok.obj" },
       "sticks": { "model": "cuisine:fire_pit_with_sticks.obj" }
-    },
-    "inventory": [{}]
+    }
 	}
 }

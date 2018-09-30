@@ -15,12 +15,15 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -36,6 +39,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -67,6 +71,30 @@ public class BlockFirePit extends BlockModHorizontal
         setResistance(10.0F);
         setLightLevel(0.9375F);
         setSoundType(SoundType.STONE);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void mapModel()
+    {
+        Item item = Item.getItemFromBlock(this);
+        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(getRegistryName(), "facing=north,component=none"));
+        ModelLoader.setCustomModelResourceLocation(item, 1, new ModelResourceLocation(getRegistryName(), "facing=north,component=wok"));
+        ModelLoader.setCustomModelResourceLocation(item, 2, new ModelResourceLocation(getRegistryName(), "facing=north,component=sticks"));
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
+    {
+        items.add(new ItemStack(this));
+        items.add(new ItemStack(this, 1, 1));
+        items.add(new ItemStack(this, 1, 2));
+    }
+
+    @Override
+    public boolean hasSubtypes()
+    {
+        return true;
     }
 
     @Override
@@ -173,8 +201,7 @@ public class BlockFirePit extends BlockModHorizontal
                     AxisAlignedBB aabbEmpty = AABBUtil.rotate(new AxisAlignedBB(0.45D, 0.65D, 0.2D, 0.55D, 0.75D, 0.4D), facing2);
                     for (int i = 0; i < 3; i++)
                     {
-                        aabbs.add((teBR.stacks.getStackInSlot(2 - i).isEmpty() ? aabbEmpty
-                                : aabbItem).offset(facing2.getDirectionVec().getX() * 0.2 * i, 0, facing2.getOpposite().getDirectionVec().getZ() * 0.2 * i).offset(pos));
+                        aabbs.add((teBR.stacks.getStackInSlot(2 - i).isEmpty() ? aabbEmpty : aabbItem).offset(facing2.getDirectionVec().getX() * 0.2 * i, 0, facing2.getOpposite().getDirectionVec().getZ() * 0.2 * i).offset(pos));
                     }
                     int result = AABBUtil.rayTraceByDistance(playerIn, aabbs);
                     if (result != -1)
@@ -236,6 +263,20 @@ public class BlockFirePit extends BlockModHorizontal
     }
 
     @Override
+    public int damageDropped(IBlockState state)
+    {
+        switch (state.getValue(COMPONENT))
+        {
+        default:
+            return 0;
+        case WOK:
+            return 1;
+        case STICKS:
+            return 2;
+        }
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
@@ -261,7 +302,12 @@ public class BlockFirePit extends BlockModHorizontal
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
-        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
+        IBlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
+        if (meta >= 0 && meta < Component.values().length)
+        {
+            state = state.withProperty(COMPONENT, Component.values()[meta]);
+        }
+        return state;
     }
 
     @Override
