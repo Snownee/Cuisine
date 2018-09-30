@@ -1,16 +1,19 @@
 itemGroup.cuisine=Cuisine
 
 item.cuisine.kitchen_knife.name=Kitchen Knife
+item.cuisine.kitchen_knife.tip=Left ot right click on chopping board to chop things into various forms
 item.cuisine.iron_spatula.name=Iron Spatula
+item.cuisine.iron_spatula.tip=A cooking tool, used for frying
 item.cuisine.wok.name=Wok
+item.cuisine.wok.tip=Wok is just a cooking vessel. Place it on a fire pit, and then dump ingredients in...
 item.cuisine.spice_bottle.name=Spice Bottle
+item.cuisine.spice_bottle.tip=Right click to pick fluid up, or dump seasonings into cooking vessel.
 item.cuisine.spice_bottle.filled.name=%s
-item.cuisine.plate.name=Empty plate
 item.cuisine.dish.name=Dish
-item.cuisine.life_essence.name=Life Essence
 item.cuisine.manual.name=Culinary Manual
 
 item.cuisine.material.wooden_arm.name=Wooden Arm
+item.cuisine.material.wooden_arm.tip=Can simulate right-clicking when used in Dispenser
 item.cuisine.material.wooden_handle.name=Wooden Handle
 item.cuisine.material.crude_salt.name=Crude Salt
 item.cuisine.material.salt.name=Salt
@@ -53,11 +56,14 @@ item.cuisine.food.pickled_turnip.name=Pickled Turnip
 item.cuisine.food.pickled_cucumber.name=Pickled Cucumber
 
 tile.cuisine.mortar.name=Mortar
-tile.cuisine.fire_pit.name=Fire Pit
+tile.cuisine.fire_pit.0.name=Fire Pit
+tile.cuisine.fire_pit.1.name=Fire Pit And Wok
+tile.cuisine.fire_pit.2.name=Barbecue Rack
 tile.cuisine.mill.name=Mill
 tile.cuisine.jar.name=Jar
 #tile.cuisine.drinkro.name=Drinkro™
 tile.cuisine.tofu_block.name=Tofu Block
+tile.cuisine.tofu_block.tip=Soymilk will solidify into tofu block when touching water; break tofu block to get tofu.
 tile.cuisine.chopping_board.name=Chopping Board
 tile.cuisine.chopping_board.oak.name=Oak Chopping Board
 tile.cuisine.chopping_board.spruce.name=Spruce Chopping Board
@@ -65,8 +71,8 @@ tile.cuisine.chopping_board.birch.name=Birch Chopping Board
 tile.cuisine.chopping_board.jungle.name=Jungle Chopping Board
 tile.cuisine.chopping_board.acacia.name=Acacia Chopping Board
 tile.cuisine.chopping_board.big_oak.name=Dark Oak Chopping Board
-tile.cuisine.garden.name=Thriving Garden
 tile.cuisine.placed_dish.name=Plate
+tile.cuisine.placed_dish.tip=Right click wok to get your dish out
 tile.cuisine.bamboo_plant.name=Bamboo
 tile.cuisine.bamboo.name=Bamboo
 
@@ -173,26 +179,10 @@ fluid.rice_vinegar=Rice Vinegar
 fluid.fruit_vinegar=Fruit Vinegar
 
 entity.cuisine.falling_flower.name=Falling Block
-entity.cuisine.life_essence.name=Life Essence
 
 cuisine.tip.properties=Properties:
 cuisine.tip.ingredients=Major ingredients:
 cuisine.tip.seasonings=Seasonings:
-cuisine.tip.wooden_arm=Can simulate right-clicking when used in Dispenser
-cuisine.tip.plate=Right click wok to get your dish out
-cuisine.tip.kitchen_knife=Left ot right click on chopping board to chop things into various forms
-cuisine.tip.iron_spatula=A cooking tool, used for frying
-cuisine.tip.wok=Wok is just a cooking vessel. Place it on a fire pit, and then dump ingredients in...
-cuisine.tip.fire_pit=Wok goes on it.
-cuisine.tip.life_essence=Right click vanilla grass to get thriving garden. Something may happen if it is applies on other organics...
-cuisine.tip.garden=Randomly drop crops when broken
-cuisine.tip.mortar=Used for making paste and other things (salt, sugar, etc.); can also hold water
-cuisine.tip.mill=Milling wheat to flour, rice to rice powder, ...
-cuisine.tip.jar=Can be used for making vinegar, soybean sause, etc.; also functions as a plain item inventory.
-cuisine.tip.spice_bottle=Right click to pick fluid up, or dump seasonings into cooking vessel.
-cuisine.tip.water_mortar=Smelt in furnace to get crude salt
-cuisine.tip.salt_mortar=Refine crude salt
-cuisine.tip.tofu=Soymilk will solidify into tofu block when touching water; break tofu block to get tofu.
 cuisine.tip.spice.item=Remain: %d does
 cuisine.tip.spice.fluid=Remain: %d mB
 cuisine.tip.food_durability=%d serves left

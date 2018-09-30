@@ -298,7 +298,6 @@ public class ItemSpiceBottle extends ItemMod
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
         if (hasItem(stack))
         {
             tooltip.add(I18nUtil.translate("tip.spice.item", getDurability(stack)));
@@ -307,6 +306,10 @@ public class ItemSpiceBottle extends ItemMod
         {
             FluidStack fluidStack = getFluidHandler(stack).drain(Integer.MAX_VALUE, false);
             tooltip.add(I18nUtil.translate("tip.spice.fluid", fluidStack.amount));
+        }
+        else
+        {
+            super.addInformation(stack, worldIn, tooltip, flagIn);
         }
     }
 
@@ -336,8 +339,7 @@ public class ItemSpiceBottle extends ItemMod
         if (!isContainerEmpty(held))
         {
             playerIn.setActiveHand(handIn);
-            return new ActionResult<>(getItemUseAction(held) == EnumAction.NONE ? EnumActionResult.PASS
-                    : EnumActionResult.SUCCESS, held);
+            return new ActionResult<>(getItemUseAction(held) == EnumAction.NONE ? EnumActionResult.PASS : EnumActionResult.SUCCESS, held);
         }
 
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);

@@ -42,15 +42,6 @@ public class JEICompat implements IModPlugin
     {
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.INGREDIENT, 1, OreDictionary.WILDCARD_VALUE));
 
-        registry.addIngredientInfo(CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.WOODEN_ARM), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.wooden_arm"));
-        registry.addIngredientInfo(new ItemStack(CuisineRegistry.PLACED_DISH), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.plate"));
-        registry.addIngredientInfo(new ItemStack(CuisineRegistry.KITCHEN_KNIFE), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.kitchen_knife"));
-        registry.addIngredientInfo(new ItemStack(CuisineRegistry.WOK), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.wok"));
-        registry.addIngredientInfo(new ItemStack(CuisineRegistry.SPICE_BOTTLE), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.spice_bottle"));
-        registry.addIngredientInfo(new ItemStack(CuisineRegistry.JAR), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.jar"));
-        registry.addIngredientInfo(new ItemStack(CuisineRegistry.MILL), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.mill"));
-        registry.addIngredientInfo(new ItemStack(CuisineRegistry.TOFU_BLOCK), VanillaTypes.ITEM, I18nUtil.getFullKey("tip.tofu"));
-
         registry.addRecipes(BlockChoppingBoard.getSuitableCovers().stream().map(RecipeChoppingBoardWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(Collections.singletonList(new RecipeSpiceBottleEmptyWrapper()), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(CuisineInternalGateway.INSTANCE.itemToSpiceMapping.keySet().stream().map(RecipeSpiceBottleFillingWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
