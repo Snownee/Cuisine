@@ -16,7 +16,6 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -84,17 +83,9 @@ public class BlockFirePit extends BlockModHorizontal
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
+    public int getItemSubtypeAmount()
     {
-        items.add(new ItemStack(this));
-        items.add(new ItemStack(this, 1, 1));
-        items.add(new ItemStack(this, 1, 2));
-    }
-
-    @Override
-    public boolean hasSubtypes()
-    {
-        return true;
+        return 3;
     }
 
     @Override
