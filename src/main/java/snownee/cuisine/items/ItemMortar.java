@@ -82,7 +82,8 @@ public class ItemMortar extends ItemModVariants
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource == null || resource.amount < Fluid.BUCKET_VOLUME || getFluid() != null || !canFillFluidType(resource))
+            if (resource == null || resource.amount < Fluid.BUCKET_VOLUME || getFluid() != null
+                    || !canFillFluidType(resource))
             {
                 return 0;
             }
@@ -98,7 +99,7 @@ public class ItemMortar extends ItemModVariants
         @Override
         public FluidStack drain(FluidStack resource, boolean doDrain)
         {
-            if (resource == null || !getFluid().isFluidEqual(resource))
+            if (resource == null || getFluid() == null || !getFluid().isFluidEqual(resource))
             {
                 return null;
             }
@@ -123,13 +124,15 @@ public class ItemMortar extends ItemModVariants
         @Override
         public boolean hasCapability(Capability<?> capability, EnumFacing facing)
         {
-            return container.getMetadata() != Variants.SALT.getMeta() && capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
+            return container.getMetadata() != Variants.SALT.getMeta()
+                    && capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
         }
 
         @Override
         public <T> T getCapability(Capability<T> capability, EnumFacing facing)
         {
-            if (container.getMetadata() != Variants.SALT.getMeta() && capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+            if (container.getMetadata() != Variants.SALT.getMeta()
+                    && capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
             {
                 return CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.cast(this);
             }
@@ -178,12 +181,13 @@ public class ItemMortar extends ItemModVariants
                 return new ActionResult<>(EnumActionResult.PASS, stack);
             }
 
-            worldIn.playSound(playerIn, playerIn.posX, playerIn.posY + playerIn.height / 2, playerIn.posZ, stack.getMetadata() == Variants.EMPTY.getMeta()
-                    ? SoundEvents.ITEM_BOTTLE_FILL
-                    : SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            worldIn.playSound(playerIn, playerIn.posX, playerIn.posY + playerIn.height / 2, playerIn.posZ,
+                    stack.getMetadata() == Variants.EMPTY.getMeta() ? SoundEvents.ITEM_BOTTLE_FILL
+                            : SoundEvents.ITEM_BOTTLE_EMPTY,
+                    SoundCategory.NEUTRAL, 1.0F, 1.0F);
             stack.shrink(1);
-            ItemStack newStack = getItemStack(stack.getMetadata() == Variants.EMPTY.getMeta() ? Variants.WATER
-                    : Variants.EMPTY);
+            ItemStack newStack = getItemStack(
+                    stack.getMetadata() == Variants.EMPTY.getMeta() ? Variants.WATER : Variants.EMPTY);
 
             if (stack.isEmpty())
             {
@@ -212,7 +216,9 @@ public class ItemMortar extends ItemModVariants
         int meta = stack.getMetadata();
         if (meta != Variants.WATER.getMeta())
         {
-            BlockPos result = PlayerUtil.tryPlaceBlock(worldIn, pos, side, player, hand, CuisineRegistry.MORTAR.getStateForPlacement(worldIn, pos, side, hitX, hitY, hitZ, 0, player, hand), stack, false);
+            BlockPos result = PlayerUtil.tryPlaceBlock(worldIn, pos, side, player, hand,
+                    CuisineRegistry.MORTAR.getStateForPlacement(worldIn, pos, side, hitX, hitY, hitZ, 0, player, hand),
+                    stack, false);
             if (result != null && meta == Variants.SALT.getMeta())
             {
                 TileEntity te = worldIn.getTileEntity(result);
