@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -42,7 +41,6 @@ import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.world.gen.WorldGenBamboo;
 import snownee.cuisine.world.gen.WorldGenGarden;
 import snownee.kiwi.network.NetworkChannel;
-import tschipp.carryon.common.handler.ListHandler;
 
 public class CommonProxy implements IGuiHandler
 {
@@ -68,7 +66,8 @@ public class CommonProxy implements IGuiHandler
         // }
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.MATERIAL, new BehaviourArmDispense());
         BehaviorWokInteraction behaviorWokInteraction = new BehaviorWokInteraction();
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(CuisineRegistry.PLACED_DISH), behaviorWokInteraction);
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(CuisineRegistry.PLACED_DISH),
+                behaviorWokInteraction);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.SPICE_BOTTLE, behaviorWokInteraction);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.IRON_SPATULA, behaviorWokInteraction);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.INGREDIENT, behaviorWokInteraction);
@@ -91,11 +90,6 @@ public class CommonProxy implements IGuiHandler
     @OverridingMethodsMustInvokeSuper
     public void postInit(FMLPostInitializationEvent event)
     {
-        if (Loader.isModLoaded("carryon"))
-        {
-            ListHandler.FORBIDDEN_TILES.add(Cuisine.MODID + ":mortar");
-            ListHandler.FORBIDDEN_TILES.add(Cuisine.MODID + ":mill");
-        }
     }
 
     public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation identifier, ImmutableMap<String, ITimeValue> parameters)
