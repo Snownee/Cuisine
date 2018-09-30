@@ -21,13 +21,10 @@ public class FarmingForBlockheadsCompat implements IModule
     @Override
     public void init()
     {
-        if (CuisineConfig.MODULES.farmingForBlockheadsCompat)
+        for (Variant<? extends SubItem> variant : CuisineRegistry.CROPS.getVariants())
         {
-            for (Variant<? extends SubItem> variant : CuisineRegistry.CROPS.getVariants())
-            {
-                addTrade(variant == ItemCrops.Variants.BAMBOO_SHOOT ? MarketCategory.SAPLINGS
-                        : MarketCategory.SEEDS, new ItemStack(CuisineRegistry.CROPS, 1, variant.getMeta()));
-            }
+            addTrade(variant == ItemCrops.Variants.BAMBOO_SHOOT ? MarketCategory.SAPLINGS : MarketCategory.SEEDS,
+                    new ItemStack(CuisineRegistry.CROPS, 1, variant.getMeta()));
         }
     }
 

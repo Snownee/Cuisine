@@ -15,15 +15,12 @@ public final class BetterWithModsCompat implements IModule
     @Override
     public void init()
     {
-        if (CuisineConfig.MODULES.bwmCompat)
+        ItemStack bwmWoodRack = GameRegistry.makeItemStack("betterwithmods:material", 36, 1, null);
+        if (bwmWoodRack.isEmpty())
         {
-            ItemStack bwmWoodRack = GameRegistry.makeItemStack("betterwithmods:material", 36, 1, null);
-            if (bwmWoodRack.isEmpty())
-            {
-                return;
-            }
-            OreDictionary.registerOre("handleWood", bwmWoodRack);
+            return;
         }
+        OreDictionary.registerOre("handleWood", bwmWoodRack);
     }
 
 }

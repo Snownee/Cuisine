@@ -44,10 +44,7 @@ public class NutritionCompat implements IModule
     @Override
     public void init()
     {
-        if (CuisineConfig.MODULES.nutritionCompat && NUTRITION_CAPABILITY != null)
-        {
-            MinecraftForge.EVENT_BUS.register(this);
-        }
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void refreshData()
@@ -98,7 +95,8 @@ public class NutritionCompat implements IModule
             List<Ingredient> ingredients;
             if (stack.getItem() == CuisineRegistry.INGREDIENT)
             {
-                ingredients = Collections.singletonList(CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound()));
+                ingredients = Collections
+                        .singletonList(CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound()));
             }
             else
             {
@@ -126,7 +124,8 @@ public class NutritionCompat implements IModule
                 }
                 else if (materialCategoryToNutrient.containsKey(entry.getKey()))
                 {
-                    manager.add(materialCategoryToNutrient.get(entry.getKey()), (float) (entry.getDoubleValue() * 0.5F));
+                    manager.add(materialCategoryToNutrient.get(entry.getKey()),
+                            (float) (entry.getDoubleValue() * 0.5F));
                 }
             }
         }

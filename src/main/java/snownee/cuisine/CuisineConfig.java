@@ -40,7 +40,7 @@ public final class CuisineConfig
 
         @Config.Comment("Larger = More possible to gen, 0 = Do not gen")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
-        @Config.Name("Crops Gen Rate")
+        @Config.Name("CropsGenRate")
         @Config.RangeInt(min = 0)
         @Config.RequiresMcRestart
         public int cropsGenRate = 4;
@@ -66,12 +66,12 @@ public final class CuisineConfig
 
         @Config.Comment("Allow chopping board to chop woods (for pack devs)")
         @Config.LangKey("cuisine.config.progression.axe_chopping")
-        @Config.Name("Axe Chopping")
+        @Config.Name("AxeChopping")
         public boolean axeChopping = true;
 
         @Config.Comment("Axes show in JEI recipes. This doesn't affect actual behavior")
         @Config.LangKey("cuisine.config.progression.axe_list")
-        @Config.Name("Axe List")
+        @Config.Name("AxeList")
         @Config.RequiresMcRestart
         public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe",
                 "minecraft:golden_axe", "minecraft:diamond_axe" };
@@ -123,12 +123,12 @@ public final class CuisineConfig
             "If HardcoreFoodLevel is enabled, this will determine how much heal amount and saturation you can still get."
         )
         @Config.LangKey("cuisine.config.hardcore.food_level_retain_ratio")
-        @Config.Name("Food Level Retain Ratio")
+        @Config.Name("FoodLevelRetainRatio")
         public double foodLevelRetainRatio = 0.5;
 
         @Config.Comment("If HardcoreFoodLevel is enabled, food item that is listed here will NOT be affected.")
         @Config.LangKey("cuisine.config.hardcore.food_level_lose_blacklist")
-        @Config.Name("Food Level Downgrade Blacklist")
+        @Config.Name("FoodLevelDowngradeBlacklist")
         public String[] lowerFoodLevelBlacklist = new String[0];
 
         @Config.Comment("If true, player will lose culinary skill points when they died.")
@@ -141,38 +141,10 @@ public final class CuisineConfig
                     "For example, 0.5 means 50% are kept." }
         )
         @Config.LangKey("cuisine.config.general.skill_retain_ratio")
-        @Config.Name("Culinary Skill Retain Ratio")
+        @Config.Name("CulinarySkillRetainRatio")
         @Config.RangeDouble(min = 0, max = 1)
         public double skillPointsRetainRatio = 1.0;
 
-    }
-
-    @Config.Comment("Optional modules of Cuisine.")
-    @Config.LangKey("cuisine.config.modules")
-    @Config.Name("Modules")
-    public static final Modules MODULES = new Modules();
-
-    public static final class Modules
-    {
-        Modules()
-        {
-            // No-op. Package-level access.
-        }
-
-        @Config.Comment("Enable Nutrition compat module")
-        @Config.LangKey("cuisine.config.modules.nutrition")
-        @Config.Name("Nutrition Compat")
-        public boolean nutritionCompat = true;
-
-        @Config.Comment(
-            "Enable BetterWithMods compatibilities. It currently adds a handleWood ore dict entry to BWM's wood haft."
-        )
-        @Config.Name("BetterWithMods Compat")
-        public boolean bwmCompat = true;
-
-        @Config.Comment("Enable FarmingForBlockheads compatibilities.")
-        @Config.Name("FarmingForBlockheads Compat")
-        public boolean farmingForBlockheadsCompat = true;
     }
 
 }
