@@ -3,6 +3,8 @@ package snownee.cuisine.internal;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.Validate;
 
 import net.minecraft.nbt.NBTBase;
@@ -84,7 +86,7 @@ public interface CuisinePersistenceCenter
         return data;
     }
 
-    static CompositeFood deserialize(NBTTagCompound data)
+    static CompositeFood deserialize(@Nonnull NBTTagCompound data)
     {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ArrayList<Seasoning> seasonings = new ArrayList<>();
@@ -142,7 +144,7 @@ public interface CuisinePersistenceCenter
         return dish;
     }
 
-    static Ingredient deserializeIngredient(NBTTagCompound data)
+    static Ingredient deserializeIngredient(@Nonnull NBTTagCompound data)
     {
         final String materialKey = data.getString(CuisineSharedSecrets.KEY_MATERIAL);
         Material material = CulinaryHub.API_INSTANCE.findMaterial(materialKey);
@@ -172,7 +174,7 @@ public interface CuisinePersistenceCenter
         return result;
     }
 
-    static Seasoning deserializeSeasoning(NBTTagCompound data)
+    static Seasoning deserializeSeasoning(@Nonnull NBTTagCompound data)
     {
         Spice spice = CulinaryHub.API_INSTANCE.findSpice(data.getString(CuisineSharedSecrets.KEY_SPICE));
         if (spice == null)
