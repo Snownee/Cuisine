@@ -18,7 +18,6 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
@@ -95,8 +94,11 @@ public class NutritionCompat implements IModule
             List<Ingredient> ingredients;
             if (stack.getItem() == CuisineRegistry.INGREDIENT)
             {
-                ingredients = Collections
-                        .singletonList(CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound()));
+                if (stack.getTagCompound() == null)
+                {
+                    return;
+                }
+                ingredients = Collections.singletonList(CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound()));
             }
             else
             {
@@ -124,8 +126,7 @@ public class NutritionCompat implements IModule
                 }
                 else if (materialCategoryToNutrient.containsKey(entry.getKey()))
                 {
-                    manager.add(materialCategoryToNutrient.get(entry.getKey()),
-                            (float) (entry.getDoubleValue() * 0.5F));
+                    manager.add(materialCategoryToNutrient.get(entry.getKey()), (float) (entry.getDoubleValue() * 0.5F));
                 }
             }
         }
