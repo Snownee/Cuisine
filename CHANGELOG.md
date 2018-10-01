@@ -6,7 +6,7 @@
  - Change JEI information to tooltip description
  - Auto-disable Hardcore lower food value if AppleCore installed
  - Fix [GH-4](https://github.com/Snownee/Cuisine/issues/4): Crash when placing mortar in crafting grid (thanks to xAlicatt)
- 
+
 ## 0.2.3
 
  - Fix [GH-1](https://github.com/Snownee/Cuisine/issues/1): Start-up crash due to Chopping Board

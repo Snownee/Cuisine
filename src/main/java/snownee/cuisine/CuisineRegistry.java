@@ -77,6 +77,10 @@ public class CuisineRegistry implements IModule
 
     public static final BlockChoppingBoard CHOPPING_BOARD = new BlockChoppingBoard("chopping_board");
 
+    // public static final BlockBasin WOODEN_BASIN = new BlockBasin("wooden_basin", Material.WOOD);
+
+    // public static final BlockBasin POTTERY_BASIN = new BlockBasin("pottery_basin", Material.ROCK);
+
     public static final ItemBasicFood BASIC_FOOD = new ItemBasicFood("food");
 
     public static final ItemIronSpatula IRON_SPATULA = new ItemIronSpatula("iron_spatula");
