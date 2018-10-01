@@ -10,7 +10,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Material;
-import snownee.cuisine.items.ItemIngredient;
 import snownee.kiwi.crafting.input.ProcessingInput;
 
 public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
@@ -35,7 +34,7 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
             return;
         }
         ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(examples, Collections.singletonList(KNIFE)));
-        ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllPossibleFormsExceptFullAndJuice(output)));
+        ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(JEICompat.getAllPossibleFormsExceptFullAndJuice(output)));
     }
 
 }
