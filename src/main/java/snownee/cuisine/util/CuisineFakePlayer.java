@@ -13,9 +13,33 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 
 public final class CuisineFakePlayer
 {
-
-    // TODO (3TUSK): A fixed UUID for better control and compatibility (e.g. Sponge's GameProfile lookup blacklist thing)
-    private static final GameProfile CUISINE_FAKE_PLAYER_PROFILE = new GameProfile(UUID.randomUUID(), "[Cuisine]");
+    /*
+     * You may ask why the UUID looks strange. It's randomly generated in 44642 seconds,
+     * using a Lua script (powered by https://github.com/Tieske/uuid). The script used
+     * is provided below:
+     *
+     * local uuid = require "uuid"
+     * print("Searching start at: " .. os.date())
+     *
+     * local start = os.time()
+     *
+     * while true do
+     *   local u = uuid.new()
+     *   if string.find(u, "94366666-", 1, true) then
+     *     print(u)
+     *     break
+     *   end
+     * end
+     *
+     * local endTime = os.time()
+     *
+     * print("Searching end at: " .. os.date())
+     *
+     * print("Total time cost: " .. (endTime - start))
+     *
+     * Yes it does not utilize coroutine, but at least it works.
+     */
+    private static final GameProfile CUISINE_FAKE_PLAYER_PROFILE = new GameProfile(UUID.fromString("94366666-e5fa-46b2-c69e-f6c9e659454e"), "[Cuisine]");
 
     private static WeakReference<FakePlayer> fakePlayerHolder = null;
 
