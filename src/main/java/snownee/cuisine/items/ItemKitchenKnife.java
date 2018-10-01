@@ -17,9 +17,15 @@ public class ItemKitchenKnife extends ItemMod
     }
 
     @Override
+    public boolean hasContainerItem(ItemStack stack)
+    {
+        return true;
+    }
+
+    @Override
     public ItemStack getContainerItem(ItemStack itemStack)
     {
-        return itemStack;
+        return itemStack.copy();
     }
 
     @Override
