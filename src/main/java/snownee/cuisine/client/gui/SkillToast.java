@@ -29,7 +29,6 @@ public class SkillToast implements IToast
     private final int level;
     private final String skills;
     private final boolean noSkill;
-    private long firstDrawTime;
 
     public SkillToast(CulinarySkillPoint skillPoint, short level, Set<CulinarySkill> skills)
     {
@@ -49,7 +48,7 @@ public class SkillToast implements IToast
         if (delta < 3000)
         {
             toastGui.getMinecraft().fontRenderer.drawString(I18nUtil.translate("toast.skill.upgrade"), 10, 7, -11534256);
-            toastGui.getMinecraft().fontRenderer.drawString(I18nUtil.translate("toast.skill.description", I18nUtil.translate("skillpoint.expertise"), level), 10, 18, -16777216);
+            toastGui.getMinecraft().fontRenderer.drawString(I18nUtil.translate("toast.skill.description", I18nUtil.translate("skillpoint." + skillPoint.toString()), level), 10, 18, -16777216);
         }
         if (delta > 2000 && noSkill)
         {

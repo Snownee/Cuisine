@@ -15,6 +15,7 @@ import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.client.FontUtil;
 import snownee.kiwi.client.Modal9Grid;
 
+@SuppressWarnings("unused")
 public class GuiManual extends GuiScreen
 {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(Cuisine.MODID, "textures/gui/book.png");

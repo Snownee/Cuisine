@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.items.ItemBasicFood.Variants.SubItem;
 import snownee.cuisine.items.ItemCrops;

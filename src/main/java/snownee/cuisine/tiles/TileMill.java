@@ -293,7 +293,7 @@ public class TileMill extends TileBase implements ITickable
         return true;
     }
 
-    private static boolean isItemValid(@SuppressWarnings("unused") int slot, ItemStack input)
+    private static boolean isItemValid(int slot, ItemStack input)
     {
         return !input.isEmpty() && Milling.isKnownMillingInput(input);
     }

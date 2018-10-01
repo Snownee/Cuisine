@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.CuisineConfig;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 

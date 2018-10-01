@@ -58,14 +58,11 @@ public class ContainerNameFood extends Container
 
     }
 
-    private final TileWok tile;
     private final InventoryFood inventory = new InventoryFood();
-    private final SlotFood slot;
 
     public ContainerNameFood(TileWok tile)
     {
-        this.tile = tile;
-        addSlotToContainer(this.slot = new SlotFood(inventory, 0));
+        addSlotToContainer(new SlotFood(inventory, 0));
         if (!tile.getWorld().isRemote)
         {
             FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
