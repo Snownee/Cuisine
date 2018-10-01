@@ -9,31 +9,17 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
-public final class EntityRegistry
+public final class EntityRegistry // Named so due to legacy reason
 {
-
-    @SubscribeEvent
-    public static void onEntityRegister(RegistryEvent.Register<EntityEntry> event)
-    {
-        //        if (!CuisineConfig.GENERAL.disableEssence)
-        //        {
-        event.getRegistry().register(EntityEntryBuilder.<EntityFallingFlower>create().entity(EntityFallingFlower.class).id(new ResourceLocation(Cuisine.MODID, "falling_flower"), 0).name(Cuisine.MODID + ".falling_flower").tracker(160, 20, true).build());
-        //        , EntityEntryBuilder.<EntityLifeEssence>create().entity(EntityLifeEssence.class).id(new ResourceLocation(Cuisine.MODID, "life_essence"), 1).name(Cuisine.MODID + ".life_essence").tracker(160, 20, false).build()
-        //        }
-    }
 
     private static boolean dispersalEffectImpl(EntityLivingBase entity)
     {
