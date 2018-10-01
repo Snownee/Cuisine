@@ -8,13 +8,8 @@ public class FluidOil extends Fluid
 {
     public FluidOil(String name)
     {
-        super(name, new ResourceLocation(Cuisine.MODID, "block/" + name + "_still"), new ResourceLocation(Cuisine.MODID, "block/" + name + "_flow"));
+        super(name, new ResourceLocation(Cuisine.MODID, "block/" + name + "_still"), new ResourceLocation(Cuisine.MODID, "block/" + name + "_flow"), 0x88FFFFFF);
         setDensity(800);
     }
 
-    @Override
-    public int getColor()
-    {
-        return 0x88FFFFFF;
-    }
 }

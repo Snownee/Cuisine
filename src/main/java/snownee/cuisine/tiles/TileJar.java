@@ -97,11 +97,7 @@ public class TileJar extends TileInventoryBase implements ITickable
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            return true;
-        }
-        return super.hasCapability(capability, facing);
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
@@ -187,8 +183,7 @@ public class TileJar extends TileInventoryBase implements ITickable
             }
             if (isWorking || !lastWorking)
             {
-                NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(5, this.pos, isWorking ? 1 : 0),
-                        this.getWorld().provider.getDimension());
+                NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(5, this.pos, isWorking ? 1 : 0), this.getWorld().provider.getDimension());
             }
         }
     }

@@ -19,4 +19,10 @@ public final class Processing
 
     // Chopping board chopping
     public static final CuisineProcessingRecipeManager<Chopping> CHOPPING = CuisineProcessingRecipeManager.of(Chopping::descendingCompare);
+
+    // Basin squeezing
+    public static final CuisineProcessingRecipeManager<BasinInteracting> SQUEEZING = CuisineProcessingRecipeManager.of(BasinInteracting::descendingCompare);
+
+    // Basin item throwing
+    public static final CuisineProcessingRecipeManager<BasinInteracting> BASIN_THROWING = CuisineProcessingRecipeManager.of(BasinInteracting::descendingCompare);
 }

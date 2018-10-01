@@ -27,4 +27,7 @@ public class CuisineBlocks
     @GameRegistry.ObjectHolder("edible_oil")
     public static final Block EDIBLE_OIL = Blocks.AIR;
 
+    @GameRegistry.ObjectHolder("cuisine_juice")
+    public static final Block JUICE = Blocks.AIR;
+
 }

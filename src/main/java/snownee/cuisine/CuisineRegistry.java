@@ -1,9 +1,11 @@
 package snownee.cuisine;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.EnumPlantType;
 import snownee.cuisine.blocks.BlockBamboo;
 import snownee.cuisine.blocks.BlockBambooPlant;
+import snownee.cuisine.blocks.BlockBasin;
 import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.blocks.BlockCorn;
 import snownee.cuisine.blocks.BlockCuisineCrops;
@@ -77,9 +79,9 @@ public class CuisineRegistry implements IModule
 
     public static final BlockChoppingBoard CHOPPING_BOARD = new BlockChoppingBoard("chopping_board");
 
-    // public static final BlockBasin WOODEN_BASIN = new BlockBasin("wooden_basin", Material.WOOD);
+    public static final BlockBasin WOODEN_BASIN = new BlockBasin("wooden_basin", Material.WOOD);
 
-    // public static final BlockBasin POTTERY_BASIN = new BlockBasin("pottery_basin", Material.ROCK);
+    public static final BlockBasin POTTERY_BASIN = new BlockBasin("pottery_basin", Material.ROCK);
 
     public static final ItemBasicFood BASIC_FOOD = new ItemBasicFood("food");
 

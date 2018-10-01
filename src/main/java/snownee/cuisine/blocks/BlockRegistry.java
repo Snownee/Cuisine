@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.tiles.TileBarbecueRack;
+import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileChoppingBoard;
 import snownee.cuisine.tiles.TileDish;
 import snownee.cuisine.tiles.TileJar;
@@ -36,6 +37,8 @@ public final class BlockRegistry
         GameRegistry.registerTileEntity(TileWok.class, new ResourceLocation(Cuisine.MODID, "wok"));
         GameRegistry.registerTileEntity(TileBarbecueRack.class, new ResourceLocation(Cuisine.MODID, "barbecue_rack"));
         GameRegistry.registerTileEntity(TileDish.class, new ResourceLocation(Cuisine.MODID, "placed_dish"));
+        GameRegistry.registerTileEntity(TileBasin.class, new ResourceLocation(Cuisine.MODID, "basin"));
+        GameRegistry.registerTileEntity(TileBasinHeatable.class, new ResourceLocation(Cuisine.MODID, "basin_heatable"));
 
         CuisineFluids.registerFluids(event);
     }
