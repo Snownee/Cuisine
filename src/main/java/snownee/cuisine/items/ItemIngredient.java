@@ -208,9 +208,9 @@ public final class ItemIngredient extends ItemFood implements IModItem
         return tag.getIntArray(KEY_ACTIONS);
     }
 
-    public static List<ItemStack> getAllPossibleFormsExceptFullAndJuice(Material material)
+    public static List<ItemStack> getAllValidFormsWithException(Material material, EnumSet<Form> exceptions)
     {
-        EnumSet<Form> forms = EnumSet.complementOf(EnumSet.of(Form.FULL, Form.JUICE));
+        EnumSet<Form> forms = EnumSet.complementOf(exceptions);
         forms.retainAll(material.getValidForms());
         return forms.stream().map(form -> make(material, form)).collect(Collectors.toList());
     }

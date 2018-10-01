@@ -2,6 +2,7 @@ package snownee.cuisine.plugins.jei;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import mezz.jei.api.ingredients.IIngredients;
@@ -9,6 +10,7 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -35,7 +37,7 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
             return;
         }
         ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(examples, Collections.singletonList(KNIFE)));
-        ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllPossibleFormsExceptFullAndJuice(output)));
+        ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllValidFormsWithException(output, EnumSet.of(Form.FULL, Form.JUICE))));
     }
 
 }
