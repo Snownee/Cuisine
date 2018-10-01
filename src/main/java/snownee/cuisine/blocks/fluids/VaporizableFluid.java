@@ -20,6 +20,6 @@ public class VaporizableFluid extends Fluid
     @Override
     public boolean doesVaporize(FluidStack fluidStack)
     {
-        return this.block != null;
+        return true;
     }
 }
