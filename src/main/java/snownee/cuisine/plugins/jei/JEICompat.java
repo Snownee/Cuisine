@@ -99,11 +99,4 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new MillRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new VesselRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
     }
-
-    static List<ItemStack> getAllPossibleFormsExceptFullAndJuice(Material material)
-    {
-        EnumSet<Form> forms = EnumSet.complementOf(EnumSet.of(Form.FULL, Form.JUICE));
-        forms.retainAll(material.getValidForms());
-        return forms.stream().map(form -> ItemIngredient.make(material, form)).collect(Collectors.toList());
-    }
 }

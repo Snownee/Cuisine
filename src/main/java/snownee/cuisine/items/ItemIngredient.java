@@ -1,6 +1,8 @@
 package snownee.cuisine.items;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -204,6 +206,13 @@ public final class ItemIngredient extends ItemFood implements IModItem
             return new int[2];
         }
         return tag.getIntArray(KEY_ACTIONS);
+    }
+
+    public static List<ItemStack> getAllPossibleFormsExceptFullAndJuice(Material material)
+    {
+        EnumSet<Form> forms = EnumSet.complementOf(EnumSet.of(Form.FULL, Form.JUICE));
+        forms.retainAll(material.getValidForms());
+        return forms.stream().map(form -> make(material, form)).collect(Collectors.toList());
     }
 
     public static final String KEY_ACTIONS = "actions";
