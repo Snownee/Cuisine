@@ -21,9 +21,10 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.blocks.BlockGarden;
+import snownee.cuisine.blocks.BlockCuisineCrops;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
+import snownee.cuisine.world.gen.WorldGenGarden;
 import snownee.kiwi.util.definition.ItemDefinition;
 
 @EventBusSubscriber(modid = Cuisine.MODID)
@@ -39,7 +40,7 @@ public class VillagerHandler
         career.addTrade(3, new TradeCrops(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.TOFU.getMeta()), 8));
         career.addTrade(4, new TradeCrops(ImmutableList.of(ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variants.CHILI.getMeta()), ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variants.GARLIC.getMeta())), 3));
 
-        List<ItemDefinition> crops = Arrays.stream(BlockGarden.DropPool.INSTANCE).map(v -> ItemDefinition.of(CuisineRegistry.CROPS, v.getMeta())).collect(Collectors.toList());
+        List<ItemDefinition> crops = Arrays.stream(WorldGenGarden.DropPool.INSTANCE).filter(b -> b instanceof BlockCuisineCrops).map(b -> (((BlockCuisineCrops) b).getCrop())).collect(Collectors.toList());
         career.addTrade(2, new TradeCrops(crops, -17));
         career.addTrade(3, new TradeCrops(crops, -17));
         career.addTrade(4, new TradeCrops(crops, -17));
