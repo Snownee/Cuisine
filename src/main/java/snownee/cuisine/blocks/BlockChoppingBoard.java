@@ -24,9 +24,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -43,6 +43,7 @@ import snownee.kiwi.network.NetworkChannel;
 import snownee.kiwi.util.OreUtil;
 
 @SuppressWarnings("deprecation")
+@Mod.EventBusSubscriber(modid = Cuisine.MODID)
 public class BlockChoppingBoard extends BlockMod
 {
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D);
@@ -53,7 +54,6 @@ public class BlockChoppingBoard extends BlockMod
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHardness(1.5F);
         setSoundType(SoundType.WOOD);
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -294,12 +294,7 @@ public class BlockChoppingBoard extends BlockMod
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
-        if (!event.getEntityPlayer().isCreative() || state.getBlock() != CuisineRegistry.CHOPPING_BOARD)
-        {
-            return;
-        }
-        ItemStack stack = event.getItemStack();
-        if (stack.getItem() == CuisineRegistry.KITCHEN_KNIFE || stack.getItem().getToolClasses(stack).contains("axe"))
+        if (event.getEntityPlayer().isCreative() || state.getBlock() == CuisineRegistry.CHOPPING_BOARD)
         {
             event.setCanceled(true);
             state.getBlock().onBlockClicked(world, pos, event.getEntityPlayer());
