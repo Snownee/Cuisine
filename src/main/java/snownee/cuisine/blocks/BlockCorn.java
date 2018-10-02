@@ -5,25 +5,21 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.items.ItemCrops;
 import snownee.kiwi.util.definition.ItemDefinition;
 
 public class BlockCorn extends BlockDoubleCrops
 {
-    private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] {
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D),
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D) };
+    private static final AxisAlignedBB[] CROPS_AABB = new AxisAlignedBB[] { new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.625D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.75D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D) };
 
     public BlockCorn(String name)
     {
         super(name, ItemDefinition.of(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.CORN)));
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -80,4 +76,13 @@ public class BlockCorn extends BlockDoubleCrops
         }
     }
 
+    @SubscribeEvent
+    public static void onCropsGrowPost(BlockEvent.CropGrowEvent event)
+    {
+        IBlockState state = event.getState();
+        if (state.getBlock() instanceof BlockCorn && ((BlockCorn) state.getBlock()).getAge(state, event.getWorld(), event.getPos()) > 1)
+        {
+            event.getWorld().setBlockState(event.getPos().up(), ((BlockCorn) state.getBlock()).withAge(8));
+        }
+    }
 }

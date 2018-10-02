@@ -24,7 +24,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
@@ -50,6 +53,7 @@ public class BlockChoppingBoard extends BlockMod
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHardness(1.5F);
         setSoundType(SoundType.WOOD);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -251,10 +255,7 @@ public class BlockChoppingBoard extends BlockMod
     public static NonNullList<ItemStack> getSuitableCovers()
     {
         // TODO We probably want to expose the NonNullList constructor that allows custom delegates
-        List<ItemStack> items = OreUtil.getItemsFromOre("logWood", 1)
-                .stream()
-                .filter(i -> i.getItem() instanceof ItemBlock)
-                .collect(Collectors.toList());
+        List<ItemStack> items = OreUtil.getItemsFromOre("logWood", 1).stream().filter(i -> i.getItem() instanceof ItemBlock).collect(Collectors.toList());
         NonNullList<ItemStack> results = NonNullList.create();
         results.addAll(items);
         return results;
@@ -284,6 +285,24 @@ public class BlockChoppingBoard extends BlockMod
         else
         {
             tooltip.add(TileChoppingBoard.DEFAULT_COVER.getDisplayName());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onChoppingBoardClick(PlayerInteractEvent.LeftClickBlock event)
+    {
+        World world = event.getWorld();
+        BlockPos pos = event.getPos();
+        IBlockState state = world.getBlockState(pos);
+        if (!event.getEntityPlayer().isCreative() || state.getBlock() != CuisineRegistry.CHOPPING_BOARD)
+        {
+            return;
+        }
+        ItemStack stack = event.getItemStack();
+        if (stack.getItem() == CuisineRegistry.KITCHEN_KNIFE || stack.getItem().getToolClasses(stack).contains("axe"))
+        {
+            event.setCanceled(true);
+            state.getBlock().onBlockClicked(world, pos, event.getEntityPlayer());
         }
     }
 }
