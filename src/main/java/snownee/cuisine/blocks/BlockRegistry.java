@@ -51,13 +51,13 @@ public final class BlockRegistry
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(receiveCanceled = false)
     public static void onChoppingBoardClick(PlayerInteractEvent.LeftClickBlock event)
     {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
-        if (event.isCanceled() || !event.getEntityPlayer().isCreative() || state.getBlock() != CuisineRegistry.CHOPPING_BOARD)
+        if (!event.getEntityPlayer().isCreative() || state.getBlock() != CuisineRegistry.CHOPPING_BOARD)
         {
             return;
         }
