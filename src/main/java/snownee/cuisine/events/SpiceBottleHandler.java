@@ -17,7 +17,7 @@ import snownee.cuisine.fluids.CuisineFluids;
 @EventBusSubscriber(modid = Cuisine.MODID)
 public class SpiceBottleHandler
 {
-    @SubscribeEvent(priority = EventPriority.LOW, receiveCanceled = false)
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void onSpiceBottleUsed(SpiceBottleContentConsumedEvent event)
     {
         EntityLivingBase entity = event.getEntityLiving();

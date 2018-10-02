@@ -23,7 +23,7 @@ public class DropHandler
 {
     private static final Random RAND = new Random();
 
-    @SubscribeEvent(receiveCanceled = false)
+    @SubscribeEvent
     public void addEntityDrop(LivingDropsEvent event)
     {
         if (event.getEntity().getEntityWorld().getGameRules().getBoolean("doMobLoot"))

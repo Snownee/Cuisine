@@ -25,7 +25,7 @@ public final class BlockRegistry // Named so due to legacy reason
         }
     }
 
-    @SubscribeEvent(receiveCanceled = false)
+    @SubscribeEvent
     public static void onChoppingBoardClick(PlayerInteractEvent.LeftClickBlock event)
     {
         World world = event.getWorld();

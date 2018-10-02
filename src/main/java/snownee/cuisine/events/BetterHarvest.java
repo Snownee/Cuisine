@@ -26,7 +26,7 @@ import snownee.cuisine.items.ItemCrops.Variants.SubCrop;
 public class BetterHarvest
 {
 
-    @SubscribeEvent(receiveCanceled = false)
+    @SubscribeEvent
     public void onRightClick(RightClickBlock event)
     {
         World world = event.getWorld();

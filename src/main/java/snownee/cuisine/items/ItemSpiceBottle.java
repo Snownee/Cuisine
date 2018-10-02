@@ -453,7 +453,7 @@ public class ItemSpiceBottle extends ItemMod
         }
     }
 
-    @SubscribeEvent(receiveCanceled = false)
+    @SubscribeEvent
     public void onEntityInteract(EntityInteract event)
     {
         Entity target = event.getTarget();
