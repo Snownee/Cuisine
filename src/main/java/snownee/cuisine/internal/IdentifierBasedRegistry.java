@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
  * @param <E>
  *            The type of actual object to be registered
  */
-final class IdentifierBasedRegistry<E>
+public final class IdentifierBasedRegistry<E>
 {
     private final Map<String, E> registry;
 

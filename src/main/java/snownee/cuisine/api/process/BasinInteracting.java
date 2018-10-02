@@ -11,7 +11,7 @@ public interface BasinInteracting extends CuisineProcessingRecipe
     @Override
     default boolean matches(Object... inputs)
     {
-        if (inputs == null || inputs.length != 2 || inputs[0].getClass() != ItemStack.class || inputs[1].getClass() != FluidStack.class)
+        if (inputs == null || inputs.length != 2 || inputs[0].getClass() != ItemStack.class || (inputs[1] != null && inputs[1].getClass() != FluidStack.class))
         {
             return false;
         }
@@ -20,11 +20,25 @@ public interface BasinInteracting extends CuisineProcessingRecipe
 
     boolean matches(ItemStack item, @Nullable FluidStack fluid);
 
-    FluidStack getOutput(ItemStack item, @Nullable FluidStack fluid);
+    boolean matchesItem(ItemStack item);
+
+    Output getOutput(ItemStack item, @Nullable FluidStack fluid);
 
     static int descendingCompare(BasinInteracting a, BasinInteracting b)
     {
         return 0; // TODO (Snownee): Fix me
+    }
+
+    public static boolean isKnownInput(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack stack)
+    {
+        for (BasinInteracting recipe : recipeManager.preview())
+        {
+            if (recipe.matchesItem(stack))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     //    List<ItemStack> getInputItems();
@@ -32,5 +46,17 @@ public interface BasinInteracting extends CuisineProcessingRecipe
     //    List<FluidStack> getInputFluids();
     //
     //    List<FluidStack> getOutputs();
+
+    public static class Output
+    {
+        public final FluidStack fluid;
+        public final ItemStack item;
+
+        public Output(FluidStack fluid, ItemStack item)
+        {
+            this.fluid = fluid;
+            this.item = item;
+        }
+    }
 
 }

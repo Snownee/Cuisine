@@ -12,6 +12,7 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.fluids.CuisineFluids;
+import snownee.cuisine.fluids.FluidJuice;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 
 public class MaterialSqueezing implements BasinInteracting
@@ -22,13 +23,19 @@ public class MaterialSqueezing implements BasinInteracting
     {
         if (!(material.isValidForm(Form.JUICE) && (material.isUnderCategoryOf(MaterialCategory.FRUIT) || material.isUnderCategoryOf(MaterialCategory.VEGETABLES))))
         {
-            throw new IllegalArgumentException(String.format("material {} cannot make juice", material));
+            throw new IllegalArgumentException(String.format("material '%s' cannot make juice", material));
         }
         this.material = material;
     }
 
     @Override
     public boolean matches(ItemStack item, @Nullable FluidStack fluid)
+    {
+        return matchesItem(item) && (fluid == null || fluid.getFluid() == CuisineFluids.JUICE);
+    }
+
+    @Override
+    public boolean matchesItem(ItemStack item)
     {
         Ingredient ingredient = null;
         if (item.getItem() == CuisineRegistry.INGREDIENT)
@@ -44,11 +51,11 @@ public class MaterialSqueezing implements BasinInteracting
         {
             ingredient = Ingredient.make(item, 0.5F);
         }
-        return ingredient != null && ingredient.getMaterial() == material && (fluid == null || fluid.getFluid() == CuisineFluids.JUICE);
+        return ingredient != null && ingredient.getMaterial() == material;
     }
 
     @Override
-    public FluidStack getOutput(ItemStack item, @Nullable FluidStack fluid)
+    public Output getOutput(ItemStack item, @Nullable FluidStack fluid)
     {
         Ingredient ingredient = null;
         if (item.getItem() == CuisineRegistry.INGREDIENT)
@@ -68,9 +75,9 @@ public class MaterialSqueezing implements BasinInteracting
         {
             return null;
         }
-        int amount = fluid == null ? 0 : fluid.amount;
-        amount += ingredient.getSize() * 500; // TODO: fine tuning
-        return fluid == null ? new FluidStack(CuisineFluids.JUICE, amount) : new FluidStack(fluid, amount);
+        FluidStack outputFluid = fluid == null ? new FluidStack(CuisineFluids.JUICE, 0) : fluid.copy();
+        FluidJuice.addIngredient(outputFluid, new FluidJuice.WeightedMaterial(ingredient.getMaterial(), ingredient.getSize() * 500));
+        return new Output(outputFluid, ItemStack.EMPTY);
     }
 
 }

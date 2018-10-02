@@ -8,15 +8,21 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileBasinHeatable;
+import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.util.InventoryUtil;
 
@@ -67,5 +73,43 @@ public class BlockBasin extends BlockMod
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return state.getMaterial() != Material.WOOD ? new TileBasin() : new TileBasinHeatable();
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileBasin)
+        {
+            TileBasin tileBasin = (TileBasin) tile;
+            ItemStack held = playerIn.getHeldItem(hand);
+            ItemStack inv = tileBasin.stacks.getStackInSlot(0);
+            if (held.isEmpty())
+            {
+                if (inv.isEmpty())
+                {
+                    return false;
+                }
+                else
+                {
+                    StacksUtil.dropInventoryItems(worldIn, pos, tileBasin.stacks, false);
+                    return true;
+                }
+            }
+            else
+            {
+                ItemStack heldCopy = ItemHandlerHelper.copyStackWithSize(held, 1); // do not modify the input
+                if (FluidUtil.getFluidHandler(heldCopy) != null)
+                {
+                    FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
+                }
+                else if (inv.isEmpty())
+                {
+                    playerIn.setHeldItem(hand, tileBasin.stacks.insertItem(0, held, false));
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }
