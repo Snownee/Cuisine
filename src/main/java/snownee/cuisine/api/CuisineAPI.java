@@ -3,6 +3,8 @@ package snownee.cuisine.api;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Collection;
+
 /**
  * Main interface that one can use to interact with Cuisine's internal.
  *
@@ -26,6 +28,12 @@ public interface CuisineAPI
     void register(Effect effect);
 
     void register(Recipe recipe);
+
+    Collection<Material> getKnownMaterials();
+
+    Collection<Spice> getKnownSpices();
+
+    Collection<Effect> getKnownEffects();
 
     Material findMaterial(String uniqueId);
 

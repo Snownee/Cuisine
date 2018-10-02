@@ -1,5 +1,7 @@
 package snownee.cuisine.internal;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +67,7 @@ public final class CuisineInternalGateway implements CuisineAPI
      *
      * 全部已知食材的总注册表，主要用于反序列化时根据注册名恢复数据。
      */
-    public final IdentifierBasedRegistry<Material> materialRegistry = new IdentifierBasedRegistry<>();
+    private final IdentifierBasedRegistry<Material> materialRegistry = new IdentifierBasedRegistry<>();
 
     /**
      * Master registry of all known spices, used majorly for deserialization.
@@ -142,6 +144,24 @@ public final class CuisineInternalGateway implements CuisineAPI
     public void register(Recipe recipe)
     {
         recipeRegistry.register(recipe.name(), recipe);
+    }
+
+    @Override
+    public Collection<Material> getKnownMaterials()
+    {
+        return Collections.unmodifiableCollection(this.materialRegistry.getView().values());
+    }
+
+    @Override
+    public Collection<Spice> getKnownSpices()
+    {
+        return Collections.unmodifiableCollection(this.spiceRegistry.getView().values());
+    }
+
+    @Override
+    public Collection<Effect> getKnownEffects()
+    {
+        return Collections.unmodifiableCollection(this.effectRegistry.getView().values());
     }
 
     @Override
