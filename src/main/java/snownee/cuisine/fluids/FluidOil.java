@@ -1,4 +1,4 @@
-package snownee.cuisine.blocks.fluids;
+package snownee.cuisine.fluids;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;

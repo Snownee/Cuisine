@@ -1,4 +1,4 @@
-package snownee.cuisine.blocks.fluids;
+package snownee.cuisine.fluids;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;

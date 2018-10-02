@@ -15,7 +15,7 @@ import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
-import snownee.cuisine.blocks.CuisineFluids;
+import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
 import snownee.kiwi.crafting.input.RegularItemStackInput;

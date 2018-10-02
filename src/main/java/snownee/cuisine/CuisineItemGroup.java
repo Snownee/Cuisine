@@ -12,7 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import snownee.cuisine.blocks.CuisineFluids;
+import snownee.cuisine.fluids.CuisineFluids;
 
 public class CuisineItemGroup extends CreativeTabs
 {

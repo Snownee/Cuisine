@@ -1,4 +1,4 @@
-package snownee.cuisine.blocks;
+package snownee.cuisine.fluids;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -7,15 +7,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.blocks.fluids.BlockFluid;
-import snownee.cuisine.blocks.fluids.BlockFluidOil;
-import snownee.cuisine.blocks.fluids.BlockFluidSoyMilk;
-import snownee.cuisine.blocks.fluids.BlockFluidVinegar;
-import snownee.cuisine.blocks.fluids.FluidJuice;
-import snownee.cuisine.blocks.fluids.FluidOil;
-import snownee.cuisine.blocks.fluids.VaporizableFluid;
 
+@Mod.EventBusSubscriber(modid = Cuisine.MODID)
 public class CuisineFluids
 {
     public static final Fluid SOY_MILK;
@@ -37,7 +33,8 @@ public class CuisineFluids
         JUICE = new FluidJuice("cuisine_juice");
     }
 
-    static void registerFluids(RegistryEvent.Register<Block> event)
+    @SubscribeEvent
+    public static void registerFluids(RegistryEvent.Register<Block> event)
     {
         FluidRegistry.registerFluid(SOY_MILK);
         FluidRegistry.registerFluid(SOY_SAUCE);
