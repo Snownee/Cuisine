@@ -2,10 +2,12 @@ package snownee.cuisine.tiles;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import snownee.cuisine.api.process.BasinInteracting;
@@ -13,7 +15,7 @@ import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 
 public class TileBasin extends TileInventoryBase
 {
-    private FluidTank tank = new FluidTank(4000);
+    private FluidTank tank = new FluidTank(8000);
 
     public TileBasin()
     {
@@ -39,25 +41,27 @@ public class TileBasin extends TileInventoryBase
 
     public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input)
     {
-        if (input.isEmpty())
-        {
-            return;
-        }
-        FluidStack fluid = tank.getFluid();
-        BasinInteracting recipe = recipeManager.findRecipe(input, fluid);
-        if (recipe != null)
-        {
-            FluidStack output = recipe.getOutput(input, fluid);
-            if (output == null)
-            {
-                return;
-            }
-            if (output.amount > tank.getCapacity())
-            {
-                output.amount = tank.getCapacity();
-            }
-            tank.setFluid(output);
-        }
+        IBlockState state = Blocks.BEDROCK.getDefaultState();
+        Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
+        //        if (input.isEmpty())
+        //        {
+        //            return;
+        //        }
+        //        FluidStack fluid = tank.getFluid();
+        //        BasinInteracting recipe = recipeManager.findRecipe(input, fluid);
+        //        if (recipe != null)
+        //        {
+        //            FluidStack output = recipe.getOutput(input, fluid);
+        //            if (output == null)
+        //            {
+        //                return;
+        //            }
+        //            if (output.amount > tank.getCapacity())
+        //            {
+        //                output.amount = tank.getCapacity();
+        //            }
+        //            tank.setFluid(output);
+        //        }
     }
 
 }

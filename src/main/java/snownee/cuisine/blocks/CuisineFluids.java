@@ -46,6 +46,7 @@ public class CuisineFluids
         FluidRegistry.registerFluid(SESAME_OIL);
         FluidRegistry.registerFluid(EDIBLE_OIL);
         FluidRegistry.registerFluid(JUICE);
+        FluidRegistry.addBucketForFluid(JUICE);
 
         BlockFluidSoyMilk soyMilkBlock = new BlockFluidSoyMilk(SOY_MILK);
         SOY_MILK.setBlock(soyMilkBlock);
@@ -59,8 +60,6 @@ public class CuisineFluids
         SESAME_OIL.setBlock(sesameOilBlock);
         BlockFluidOil edibleOilBlock = new BlockFluidOil(EDIBLE_OIL, "edible_oil");
         EDIBLE_OIL.setBlock(edibleOilBlock);
-        BlockFluid juiceBlock = new BlockFluidOil(JUICE, "cuisine_juice");
-        JUICE.setBlock(edibleOilBlock);
-        event.getRegistry().registerAll(soyMilkBlock, soySauceBlock, riceVinegarBlock, fruitVinegarBlock, sesameOilBlock, edibleOilBlock, juiceBlock);
+        event.getRegistry().registerAll(soyMilkBlock, soySauceBlock, riceVinegarBlock, fruitVinegarBlock, sesameOilBlock, edibleOilBlock);
     }
 }
