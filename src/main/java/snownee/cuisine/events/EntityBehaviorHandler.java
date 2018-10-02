@@ -1,4 +1,4 @@
-package snownee.cuisine.entities;
+package snownee.cuisine.events;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +18,7 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
-public final class EntityRegistry // Named so due to legacy reason
+public final class EntityBehaviorHandler
 {
 
     private static boolean dispersalEffectImpl(EntityLivingBase entity)
@@ -46,7 +46,7 @@ public final class EntityRegistry // Named so due to legacy reason
                     }
                 }
             }
-            mob.tasks.addTask(1, new EntityAIAvoidEntity<>(mob, EntityLivingBase.class, EntityRegistry::dispersalEffectImpl, 10.0F, 1.0D, 1.2D));
+            mob.tasks.addTask(1, new EntityAIAvoidEntity<>(mob, EntityLivingBase.class, EntityBehaviorHandler::dispersalEffectImpl, 10.0F, 1.0D, 1.2D));
         }
         else if (event.getEntity() instanceof EntityArrow)
         {
