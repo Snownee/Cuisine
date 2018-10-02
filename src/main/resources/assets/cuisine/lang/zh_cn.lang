@@ -177,6 +177,9 @@ fluid.sesame_oil=香油
 fluid.edible_oil=食用油
 fluid.rice_vinegar=米醋
 fluid.fruit_vinegar=果醋
+cuisine.fluid.juice.vegetables=混合果汁
+cuisine.fluid.juice.fruit=混合果汁
+cuisine.fluid.juice.mixed=混合果蔬汁
 
 entity.cuisine.falling_flower.name=下落的方块
 

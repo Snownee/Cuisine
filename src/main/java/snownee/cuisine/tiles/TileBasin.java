@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
+import snownee.cuisine.api.process.Processing;
 
 public class TileBasin extends TileInventoryBase
 {
@@ -63,6 +64,12 @@ public class TileBasin extends TileInventoryBase
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output.item);
             }
         }
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack)
+    {
+        return BasinInteracting.isKnownInput(Processing.SQUEEZING, stack);
     }
 
 }

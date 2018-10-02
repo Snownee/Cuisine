@@ -30,12 +30,15 @@ public class SimpleSqueezing implements BasinInteracting
     {
         if (fluid == null || outputFluid.equals(fluid))
         {
-            if (input.matches(item))
-            {
-                return true;
-            }
+            return matchesItem(item);
         }
         return false;
+    }
+
+    @Override
+    public boolean matchesItem(ItemStack item)
+    {
+        return input.matches(item);
     }
 
     @Override
