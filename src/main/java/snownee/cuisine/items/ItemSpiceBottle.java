@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityCow;
@@ -30,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -38,6 +40,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
@@ -133,6 +136,7 @@ public class ItemSpiceBottle extends ItemMod
         super(name);
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHasSubtypes(true);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -373,14 +377,6 @@ public class ItemSpiceBottle extends ItemMod
                     }
                 }
             }
-            else if (raytraceresult.typeOfHit == RayTraceResult.Type.ENTITY && raytraceresult.entityHit.getClass() == EntityCow.class && FluidRegistry.isFluidRegistered("milk"))
-            {
-                ItemStack heldCopy = held.copy();
-                heldCopy.setCount(1);
-                held.shrink(1);
-                getFluidHandler(heldCopy).fill(new FluidStack(FluidRegistry.getFluid("milk"), Fluid.BUCKET_VOLUME), true);
-                return PlayerUtil.mergeItemStack(heldCopy, playerIn, handIn);
-            }
         }
         return new ActionResult<>(EnumActionResult.FAIL, held);
     }
@@ -455,5 +451,33 @@ public class ItemSpiceBottle extends ItemMod
                 items.add(copy);
             });
         }
+    }
+
+    @SubscribeEvent(receiveCanceled = false)
+    public void onEntityInteract(EntityInteract event)
+    {
+        Entity target = event.getTarget();
+        if (target.getClass() != EntityCow.class || ((EntityCow) target).isChild())
+        {
+            return;
+        }
+        EntityPlayer player = event.getEntityPlayer();
+        if (player.capabilities.isCreativeMode)
+        {
+            return;
+        }
+        ItemStack stack = event.getItemStack();
+        if (!FluidRegistry.isFluidRegistered("milk") || stack.getItem() != this || !isContainerEmpty(stack))
+        {
+            return;
+        }
+        ItemStack copy = stack.copy();
+        copy.setCount(1);
+        stack.shrink(1);
+        getFluidHandler(copy).fill(new FluidStack(FluidRegistry.getFluid("milk"), Fluid.BUCKET_VOLUME), true);
+        player.playSound(SoundEvents.ENTITY_COW_MILK, 1.0F, 1.0F);
+        PlayerUtil.mergeItemStack(copy, player, event.getHand());
+        event.setCanceled(true);
+        event.setCancellationResult(EnumActionResult.SUCCESS);
     }
 }
