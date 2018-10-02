@@ -10,18 +10,25 @@ import snownee.kiwi.crafting.input.ProcessingInput;
 public class SimpleSqueezing implements BasinInteracting
 {
     private final ProcessingInput input;
-    private final FluidStack output;
+    private final FluidStack outputFluid;
+    private final ItemStack outputItem;
 
-    public SimpleSqueezing(ProcessingInput input, FluidStack output)
+    public SimpleSqueezing(ProcessingInput input, FluidStack outputFluid)
+    {
+        this(input, outputFluid, ItemStack.EMPTY);
+    }
+
+    public SimpleSqueezing(ProcessingInput input, FluidStack outputFluid, ItemStack outputItem)
     {
         this.input = input;
-        this.output = output;
+        this.outputFluid = outputFluid;
+        this.outputItem = outputItem;
     }
 
     @Override
     public boolean matches(ItemStack item, @Nullable FluidStack fluid)
     {
-        if (fluid == null || output.equals(fluid))
+        if (fluid == null || outputFluid.equals(fluid))
         {
             if (input.matches(item))
             {
@@ -32,12 +39,12 @@ public class SimpleSqueezing implements BasinInteracting
     }
 
     @Override
-    public FluidStack getOutput(ItemStack item, @Nullable FluidStack fluid)
+    public Output getOutput(ItemStack item, @Nullable FluidStack fluid)
     {
         int amount = fluid == null ? 0 : fluid.amount;
-        FluidStack copy = output.copy();
+        FluidStack copy = outputFluid.copy();
         copy.amount += amount;
-        return copy;
+        return new Output(fluid, outputItem);
     }
 
     // TODO: JEI support @3TUSK

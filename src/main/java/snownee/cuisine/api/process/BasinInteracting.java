@@ -20,7 +20,7 @@ public interface BasinInteracting extends CuisineProcessingRecipe
 
     boolean matches(ItemStack item, @Nullable FluidStack fluid);
 
-    FluidStack getOutput(ItemStack item, @Nullable FluidStack fluid);
+    Output getOutput(ItemStack item, @Nullable FluidStack fluid);
 
     static int descendingCompare(BasinInteracting a, BasinInteracting b)
     {
@@ -32,5 +32,17 @@ public interface BasinInteracting extends CuisineProcessingRecipe
     //    List<FluidStack> getInputFluids();
     //
     //    List<FluidStack> getOutputs();
+
+    public static class Output
+    {
+        public final FluidStack fluid;
+        public final ItemStack item;
+
+        public Output(FluidStack fluid, ItemStack item)
+        {
+            this.fluid = fluid;
+            this.item = item;
+        }
+    }
 
 }
