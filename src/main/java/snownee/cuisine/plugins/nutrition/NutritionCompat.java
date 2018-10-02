@@ -86,7 +86,8 @@ public class NutritionCompat implements IModule
         INutrientManager manager = entity.getCapability(NUTRITION_CAPABILITY, null);
         if (manager == null)
         {
-            return; // TODO (3TUSK): warn about the missing capability?
+            Cuisine.logger.debug("Entity {} has no INutrientManager. Skip nutrition calculation.", entity);
+            return;
         }
         ItemStack stack = event.getItem();
         if (stack.getItem() == CuisineRegistry.INGREDIENT || stack.getItem() instanceof ItemAbstractComposite) // TODO (Snownee): code reuse
