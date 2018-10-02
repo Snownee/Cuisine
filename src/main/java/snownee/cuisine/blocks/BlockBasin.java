@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.tiles.TileBasin;
+import snownee.cuisine.tiles.TileBasinHeatable;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.util.InventoryUtil;
 

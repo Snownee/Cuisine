@@ -1,7 +1,6 @@
-package snownee.cuisine.blocks;
+package snownee.cuisine.tiles;
 
 import net.minecraft.util.ITickable;
-import snownee.cuisine.tiles.TileBasin;
 
 public class TileBasinHeatable extends TileBasin implements ITickable
 {

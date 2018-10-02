@@ -1,45 +1,19 @@
 package snownee.cuisine.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.tiles.TileBarbecueRack;
-import snownee.cuisine.tiles.TileBasin;
-import snownee.cuisine.tiles.TileChoppingBoard;
-import snownee.cuisine.tiles.TileDish;
-import snownee.cuisine.tiles.TileJar;
-import snownee.cuisine.tiles.TileMill;
-import snownee.cuisine.tiles.TileMortar;
-import snownee.cuisine.tiles.TileWok;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
-public final class BlockRegistry
+public final class BlockRegistry // Named so due to legacy reason
 {
-
-    @SubscribeEvent
-    public static void onBlockRegister(RegistryEvent.Register<Block> event)
-    {
-        GameRegistry.registerTileEntity(TileMortar.class, new ResourceLocation(Cuisine.MODID, "mortar"));
-        GameRegistry.registerTileEntity(TileMill.class, new ResourceLocation(Cuisine.MODID, "mill"));
-        GameRegistry.registerTileEntity(TileChoppingBoard.class, new ResourceLocation(Cuisine.MODID, "chopping_board"));
-        GameRegistry.registerTileEntity(TileJar.class, new ResourceLocation(Cuisine.MODID, "jar"));
-        GameRegistry.registerTileEntity(TileWok.class, new ResourceLocation(Cuisine.MODID, "wok"));
-        GameRegistry.registerTileEntity(TileBarbecueRack.class, new ResourceLocation(Cuisine.MODID, "barbecue_rack"));
-        GameRegistry.registerTileEntity(TileDish.class, new ResourceLocation(Cuisine.MODID, "placed_dish"));
-        GameRegistry.registerTileEntity(TileBasin.class, new ResourceLocation(Cuisine.MODID, "basin"));
-        GameRegistry.registerTileEntity(TileBasinHeatable.class, new ResourceLocation(Cuisine.MODID, "basin_heatable"));
-    }
 
     @SubscribeEvent
     public static void onCropsGrowPost(BlockEvent.CropGrowEvent event)
