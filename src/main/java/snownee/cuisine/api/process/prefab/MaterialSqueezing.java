@@ -11,7 +11,7 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.process.BasinInteracting;
-import snownee.cuisine.blocks.CuisineFluids;
+import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 
 public class MaterialSqueezing implements BasinInteracting

@@ -27,7 +27,7 @@ import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.prefab.SimpleEffectImpl;
 import snownee.cuisine.api.prefab.SimpleMaterialImpl;
 import snownee.cuisine.api.prefab.SimpleSpiceImpl;
-import snownee.cuisine.blocks.CuisineFluids;
+import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.internal.effect.EffectExperienced;
 import snownee.cuisine.internal.effect.EffectHarmony;
 import snownee.cuisine.internal.effect.EffectPotions;

@@ -39,8 +39,6 @@ public final class BlockRegistry
         GameRegistry.registerTileEntity(TileDish.class, new ResourceLocation(Cuisine.MODID, "placed_dish"));
         GameRegistry.registerTileEntity(TileBasin.class, new ResourceLocation(Cuisine.MODID, "basin"));
         GameRegistry.registerTileEntity(TileBasinHeatable.class, new ResourceLocation(Cuisine.MODID, "basin_heatable"));
-
-        CuisineFluids.registerFluids(event);
     }
 
     @SubscribeEvent

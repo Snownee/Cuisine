@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.events.SpiceBottleContentConsumedEvent;
-import snownee.cuisine.blocks.CuisineFluids;
+import snownee.cuisine.fluids.CuisineFluids;
 
 @EventBusSubscriber(modid = Cuisine.MODID)
 public class SpiceBottleHandler

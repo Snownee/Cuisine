@@ -1,6 +1,5 @@
 package snownee.cuisine.client;
 
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.animation.AnimationTESR;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -41,24 +40,5 @@ public final class CuisineBlockRendering
         ClientRegistry.bindTileEntitySpecialRenderer(TileWok.class, new TESRWok());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBarbecueRack.class, new TESRBarbecueRack());
     }
-
-    @SubscribeEvent
-    public static void onBlockColorsInit(ColorHandlerEvent.Block event)
-    {
-        //        if (!CuisineConfig.GENERAL.disableEssence)
-        //        {
-        //        BlockColors blockColors = event.getBlockColors();
-        //        blockColors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-        //            if (worldIn != null && pos != null)
-        //            {
-        //                return BiomeColorHelper.getGrassColorAtPos(worldIn, pos);
-        //            }
-        //            else
-        //            {
-        //                return ColorizerGrass.getGrassColor(0.5D, 1.0D);
-        //            }
-        //        }, CuisineRegistry.GARDEN);
-    }
-    //    }
 
 }
