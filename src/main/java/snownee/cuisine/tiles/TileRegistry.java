@@ -12,6 +12,9 @@ import snownee.cuisine.Cuisine;
 public final class TileRegistry
 {
 
+    // This class is here to pave way for 1.13 update, where we may have TileEntityType
+    // as a valid Forge Registry.
+
     private TileRegistry()
     {
         throw new UnsupportedOperationException("No instance for you");
