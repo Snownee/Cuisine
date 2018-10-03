@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.process.Chopping;
@@ -19,7 +20,6 @@ import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
 import snownee.cuisine.api.process.prefab.MaterialSqueezing;
 import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
@@ -80,7 +80,10 @@ public class RecipeRegistry
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Items.MELON), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 5)));
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Blocks.MELON_BLOCK), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 50)));
 
-        CuisineInternalGateway.INSTANCE.materialRegistry.getView().values().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
+        CulinaryHub.API_INSTANCE.getKnownMaterials().stream()
+                .filter(m -> m.isValidForm(Form.JUICE))
+                .filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES))
+                .forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
 
     }
 }

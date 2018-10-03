@@ -42,9 +42,9 @@ public interface Recipe
     /**
      * Determine to what extent the dish matches this recipe, using an integer ranged from
      * 0 to 100. 0 is defined as "given dish is not following this recipe", and this implies
-     * that {@link #matches(CompositeFood)} return <code>false</code>; on the contrary, any
-     * return value that is larger than zero implies that {@link #matches(CompositeFood)}
-     * returns <code>true</code>. Return value that is larger than 100 is undefined here.
+     * that {@link #matches(CompositeFood)} return {@code false}; on the contrary, any return
+     * value that is larger than zero implies that {@link #matches(CompositeFood)}
+     * returns {@code true}. Return value that is negative or larger than 100 is undefined here.
      *
      * @param dish The {@code CompositeFood} object to be examined.
      *

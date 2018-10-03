@@ -1,7 +1,9 @@
 package snownee.cuisine.client.gui;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
@@ -10,12 +12,13 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.api.CulinarySkill;
+import snownee.cuisine.api.CulinarySkillManager;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.client.FontUtil;
 import snownee.kiwi.client.Modal9Grid;
 
-@SuppressWarnings("unused")
 public class GuiManual extends GuiScreen
 {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(Cuisine.MODID, "textures/gui/book.png");
@@ -23,9 +26,16 @@ public class GuiManual extends GuiScreen
     public static int PAGE_HEIGHT = 200;
     public static int PAGE_WIDTH = (int) (PAGE_HEIGHT * 0.75F);
     public static int PAGE_MARGIN = 25;
+    public static int SKILL_PANEL_WIDTH = PAGE_WIDTH / 2;
 
     public final Modal9Grid pageGrid;
+    private final ResourceLocation skillPanel = new ResourceLocation(Cuisine.MODID, "textures/gui/skill_panel.png");
     private boolean twoPages = false;
+
+    private int currentSkillPage = 1;
+    private int maxSkillPages = CulinarySkillManager.getSkills().size() / 4;
+    private GuiButton buttonSkillNextPage;
+    private GuiButton buttonSkillPreviousPage;
 
     private GuiButton buttonNextPage;
     private GuiButton buttonPreviousPage;
@@ -46,14 +56,32 @@ public class GuiManual extends GuiScreen
     {
         this.fontRenderer = AdvancedFontRenderer.INSTANCE;
         this.buttonList.clear();
-        this.buttonNextPage = this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 - 20, 80, 20, I18nUtil.translate("gui.openlink")));
-        this.buttonDone = this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 + 20, 80, 20, I18n.format("gui.close"))); // Use vanilla language key
+        this.buttonNextPage = this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH - 80 + SKILL_PANEL_WIDTH) / 2, (this.height - 20) / 2 - 20, 80, 20, I18nUtil.translate("gui.openlink")));
+        this.buttonDone = this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80 + SKILL_PANEL_WIDTH) / 2, (this.height - 20) / 2 + 20, 80, 20, I18n.format("gui.close"))); // Use vanilla language key
+        this.buttonSkillNextPage = this.addButton(new GuiButton(2, (this.width - getXSize()) / 2 - 10, (this.height - getYSize()) / 2 + PAGE_HEIGHT - 10, 10, 10, ">"));
+        this.buttonSkillPreviousPage = this.addButton(new GuiButton(3, (this.width - getXSize()) / 2 - SKILL_PANEL_WIDTH, (this.height - getYSize()) / 2 + PAGE_HEIGHT - 10, 10, 10, "<"));
     }
 
     @Override
     public void onGuiClosed()
     {
         // NO-OP
+    }
+
+    private void drawSkillInfo()
+    {
+        int u = (this.width - getXSize()) / 2 + 5;
+        int v = (this.height - getYSize()) / 2 + 10;
+
+        List<CulinarySkill> skills = new ArrayList<>(CulinarySkillManager.getSkills());
+        int s = (currentSkillPage - 1) * 4;
+        for (int i = 0; i < 4 && s + i < skills.size(); i++)
+        {
+            String skill = skills.get(s + i).getName();
+            String name = I18n.format(skills.get(s + i).getTranslationKey());
+            int level = 123;// TODO get level
+            FontUtil.drawSplitStringOverflow(fontRenderer, skill + ": " + 123, u, v + 30 * i, SKILL_PANEL_WIDTH - 20, PAGE_HEIGHT, 0, false);
+        }
     }
 
     @Override
@@ -66,13 +94,19 @@ public class GuiManual extends GuiScreen
         mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
         int i = (this.width - getXSize()) / 2;
         int j = (this.height - getYSize()) / 2;
-        pageGrid.draw(i, j, PAGE_WIDTH, PAGE_HEIGHT, false, false);
+        pageGrid.draw(i + SKILL_PANEL_WIDTH, j, PAGE_WIDTH, PAGE_HEIGHT, false, false);
         if (twoPages)
         {
-            pageGrid.draw(i + PAGE_WIDTH, j, PAGE_WIDTH, PAGE_HEIGHT, true, false);
+            pageGrid.draw(i + PAGE_WIDTH + SKILL_PANEL_WIDTH, j, PAGE_WIDTH, PAGE_HEIGHT, true, false);
         }
 
-        int originX = i + PAGE_MARGIN;
+        mc.getTextureManager().bindTexture(skillPanel);
+        pageGrid.draw(i, j, SKILL_PANEL_WIDTH, PAGE_HEIGHT, false, false);
+        this.drawTexturedModalRect(i, j, 0, 0, SKILL_PANEL_WIDTH, PAGE_HEIGHT);
+
+        drawSkillInfo();
+
+        int originX = i + PAGE_MARGIN + SKILL_PANEL_WIDTH;
         int originY = j + PAGE_MARGIN;
 
         String str = I18nUtil.translateWithEscape("gui.welcome");
@@ -88,7 +122,7 @@ public class GuiManual extends GuiScreen
 
     private int getXSize()
     {
-        return twoPages ? PAGE_WIDTH + PAGE_WIDTH : PAGE_WIDTH;
+        return (twoPages ? PAGE_WIDTH + PAGE_WIDTH : PAGE_WIDTH) + SKILL_PANEL_WIDTH;
     }
 
     private int getYSize()
@@ -126,6 +160,20 @@ public class GuiManual extends GuiScreen
             else if (button.id == 1)
             {
                 mc.displayGuiScreen(null);
+            }
+            else if (button.id == 2)
+            {
+                if (currentSkillPage < maxSkillPages)
+                {
+                    currentSkillPage++;
+                }
+            }
+            else if (button.id == 3)
+            {
+                if (currentSkillPage > 1)
+                {
+                    currentSkillPage--;
+                }
             }
         }
     }

@@ -41,6 +41,7 @@ public final class CuisineFakePlayer
      */
     private static final GameProfile CUISINE_FAKE_PLAYER_PROFILE = new GameProfile(UUID.fromString("94366666-e5fa-46b2-c69e-f6c9e659454e"), "[Cuisine]");
 
+    // We use a WeakReference to make sure that the EntityPlayer reference is not leaked out
     private static WeakReference<FakePlayer> fakePlayerHolder = null;
 
     @Nonnull

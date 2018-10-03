@@ -40,7 +40,7 @@ public class VillagerHandler
         career.addTrade(3, new TradeCrops(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.TOFU.getMeta()), 8));
         career.addTrade(4, new TradeCrops(ImmutableList.of(ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variants.CHILI.getMeta()), ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variants.GARLIC.getMeta())), 3));
 
-        List<ItemDefinition> crops = Arrays.stream(WorldGenGarden.DropPool.INSTANCE).filter(b -> b instanceof BlockCuisineCrops).map(b -> (((BlockCuisineCrops) b).getCrop())).collect(Collectors.toList());
+        List<ItemDefinition> crops = Arrays.stream(WorldGenGarden.PLANT_POOL).filter(b -> b instanceof BlockCuisineCrops).map(b -> (((BlockCuisineCrops) b).getCrop())).collect(Collectors.toList());
         career.addTrade(2, new TradeCrops(crops, -17));
         career.addTrade(3, new TradeCrops(crops, -17));
         career.addTrade(4, new TradeCrops(crops, -17));

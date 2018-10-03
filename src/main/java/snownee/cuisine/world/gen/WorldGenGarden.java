@@ -22,20 +22,14 @@ import snownee.cuisine.blocks.BlockCuisineCrops;
 @SuppressWarnings("deprecation")
 public class WorldGenGarden
 {
-    public static class DropPool // loot table?
-    {
-        public static final Block[] INSTANCE = new Block[] { CuisineRegistry.CHINESE_CABBAGE, CuisineRegistry.CORN,
-                CuisineRegistry.CUCUMBER, CuisineRegistry.EGGPLANT, CuisineRegistry.GINGER,
-                CuisineRegistry.GREEN_PEPPER, CuisineRegistry.LEEK, CuisineRegistry.LETTUCE, CuisineRegistry.ONION,
-                CuisineRegistry.PEANUT, CuisineRegistry.RED_PEPPER, CuisineRegistry.SCALLION, CuisineRegistry.SESAME,
-                CuisineRegistry.SICHUAN_PEPPER, CuisineRegistry.SOYBEAN, CuisineRegistry.SPINACH,
-                CuisineRegistry.TOMATO, CuisineRegistry.TURNIP, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT };
-
-        public static Block draw(Random rand)
-        {
-            return INSTANCE[rand.nextInt(INSTANCE.length)];
-        }
-    }
+    public static final Block[] PLANT_POOL = new Block[] {
+            CuisineRegistry.CHINESE_CABBAGE, CuisineRegistry.CORN,
+            CuisineRegistry.CUCUMBER, CuisineRegistry.EGGPLANT, CuisineRegistry.GINGER,
+            CuisineRegistry.GREEN_PEPPER, CuisineRegistry.LEEK, CuisineRegistry.LETTUCE, CuisineRegistry.ONION,
+            CuisineRegistry.PEANUT, CuisineRegistry.RED_PEPPER, CuisineRegistry.SCALLION, CuisineRegistry.SESAME,
+            CuisineRegistry.SICHUAN_PEPPER, CuisineRegistry.SOYBEAN, CuisineRegistry.SPINACH,
+            CuisineRegistry.TOMATO, CuisineRegistry.TURNIP, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT
+    };
 
     @SubscribeEvent
     public void decorateEvent(DecorateBiomeEvent.Decorate event)
@@ -59,7 +53,7 @@ public class WorldGenGarden
             }
             // position = position.up();
 
-            Block plant = DropPool.draw(rand);
+            Block plant = PLANT_POOL[rand.nextInt(PLANT_POOL.length)];
             plant(worldIn, position, plant, biome.topBlock.getBlock(), rand);
             plant(worldIn, position.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
             plant(worldIn, position.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);

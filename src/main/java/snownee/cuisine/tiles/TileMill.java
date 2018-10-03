@@ -185,6 +185,8 @@ public class TileMill extends TileBase implements ITickable
         }
     }
 
+    // It's only here for BlockMill to quickly access TileMill's inventory
+    // NOT FOR PUBLIC USE! This method is subject to change at ANY time.
     public ItemStack tryInsertItem(ItemStack input)
     {
         if (Milling.isKnownMillingInput(input))
@@ -268,6 +270,7 @@ public class TileMill extends TileBase implements ITickable
         }
         else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
+            // Use a filter decorator to make sure we filter the input in advance
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new FilterItemHandler(this.inputBuffer, TileMill::isItemValid));
         }
         else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
