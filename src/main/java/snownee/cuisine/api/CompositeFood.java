@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -166,38 +168,6 @@ public abstract class CompositeFood
     {
         return this.durability < 1 || this.maxServeSize < 1;
     }
-
-    /*
-     * Implementation Summary
-     *
-     * Yes, this an attempt on utilizing visitor pattern, where CookingStrategy is
-     * visitor, which will visits each component of a CompositeFood.
-     *
-     * The invocations of these "accept" methods ("cook" for CookingStrategy,
-     * "addFlavorTo" for Seasoning) represent the process of modifying (i.e.
-     * cooking) the food in this composite. As such, one can simply define general
-     * logic for cooking strategies in order to modify the CompositeFood object in
-     * different ways. Example:
-     *
-     * 1. Define new Seasoning class "SoySauce". Let variable "sauce" be instance of
-     * SoySauce, and `compositeFood' is instance of CompositeFood. Invoking
-     * compositeFood.flavorWith(sauce) will be equivalent to sauce.addFlavorTo(compositeFood),
-     * where all elements in compositeFood.ingredients will be modified (becoming
-     * both tasty but salty, depending on second parameter of Spice::addFlavorTo;
-     * also the render will also be affected, i.e. darker).
-     *
-     * 2. Define new Seasoning object "MineralWater". Let variable `water' be
-     * instance of MineralWater, and `compositeFood' is instance of CompositeFood.
-     * Similarly, invoking compositeFood.flavorWith(sauce) will be equivalent to
-     * sauce.addFlavorTo(compositeFood), however this time there is basically nothing
-     * happened, due to implementation.
-     *
-     * 3. Define new CookingStrategy class `RapidFrying'. Let variable `frying' be
-     * instance of RapidFrying, and `compositeFood' is instance of CompositeFood.
-     * Invoking compositeFood.apply(frying) will cause frying object iterating through
-     * all elements in `ingredients', and "enchanting tastiness respectively" (i.e.
-     * increment on several fields).
-     */
 
     /*
      * Snownee:
@@ -558,7 +528,14 @@ public abstract class CompositeFood
     // TODO Migrate to incoming Recipe system
     public abstract String getOrComputeModelType();
 
+    /**
+     * @deprecated Recipe type will be immutable in the future; custom name support
+     *             will be provided for custom dish name display; custom model
+     *             support will be part of recipe system
+     * @param type Model type name
+     */
     // TODO Migrate to incoming Recipe system
+    @Deprecated
     public abstract void setModelType(String type);
 
     public void removeEffect(Effect effect) // TODO?
@@ -566,7 +543,131 @@ public abstract class CompositeFood
         this.effects.removeIf(e -> e == effect);
     }
 
-    // TODO A big question: CompositeFood.Builder? For those "unfinished food".
-    // TODO If CompositeFood.Builder is a thing, you should be able to get one from CompositeFood, i.e. re-cook food
+    /**
+     * A {@code Builder} represents an unfinished {@link CompositeFood} object.
+     *
+     * @param <F> The concrete resultant type of {@link CompositeFood} that this
+     *            {@code Builder} may produce.
+     */
+    @SuppressWarnings({"unused", "WeakerAccess"}) // TODO (3TUSK): Remove these when we are ready
+    public static abstract class Builder<F extends CompositeFood>
+    {
+
+        private List<Ingredient> ingredients;
+        private List<Seasoning> seasonings;
+
+        /**
+         * Construct a {@code Builder} instance using default implementations.
+         *
+         * @implSpec
+         * By default, this constructor uses {@link ArrayList} for all places where
+         * it needs {@link List}.
+         */
+        public Builder()
+        {
+            this(new ArrayList<>(), new ArrayList<>());
+        }
+
+        /**
+         * Construct a {@code Builder} instance using an existed {@link CompositeFood}
+         * instance (with type of {@link F}). This constructor mimics the real-life
+         * situation of re-cook food.
+         *
+         * @param finishedDish An instance of finished food object.
+         */
+        public Builder(F finishedDish)
+        {
+            // TODO wtf, due to type erasure, we might just let CompositeFood pass in, not just F
+        }
+
+        /**
+         * Construct a {@code Builder} instance using explicit {@link List}. May be used
+         * for special situations, e.g. insertion order needs to be preserved, and thus
+         * a {@link LinkedList} is required.
+         *
+         * @param ingredients list of ingredients
+         * @param seasonings list of seasonings
+         */
+        protected Builder(List<Ingredient> ingredients, List<Seasoning> seasonings)
+        {
+            this.ingredients = ingredients;
+            this.seasonings = seasonings;
+        }
+
+        /**
+         * Retrieve the list of current {@link Ingredient ingredients} present.
+         * @return A list of ingredients
+         */
+        public List<Ingredient> getIngredients()
+        {
+            return ingredients;
+        }
+
+        /**
+         * Retrieve the list of current {@link Seasoning seasonings} present.
+         * @return A list of seasonings
+         */
+        public List<Seasoning> getSeasonings()
+        {
+            return seasonings;
+        }
+
+        // mutating operations
+
+        // TODO (3TUSK): Javadoc; return false means failed, return true means success, same below
+
+        // TODO (3TUSK): Do we have any justified reason to de-final these methods?
+
+        public final boolean addIngredient(Ingredient ingredient)
+        {
+            // FIXME
+            this.ingredients.add(ingredient);
+            // ingredient.onAdded(this);
+            return false;
+        }
+
+        public final boolean addSeasoning(Seasoning seasoning)
+        {
+            // FIXME
+            this.seasonings.add(seasoning);
+            // seasoning.addFlavorTo(this);
+            return false;
+        }
+
+        public final boolean removeIngredient(Ingredient ingredient)
+        {
+            // FIXME
+            // ingredient.onRemovedFrom(this);
+            // this.ingredients.remove(ingredient);
+            return false;
+        }
+
+        public final boolean removeSeasoning(Seasoning seasoning)
+        {
+            // FIXME
+            // seasoning.onRemovedFrom(this);
+            // this.seasonings.remove(seasoning);
+            return false;
+        }
+
+        /**
+         * Construct the {@link CompositeFood} instance which represents a finished
+         * dish object.
+         * <p>
+         * Note that the result is wrapped in {@link Optional}; this implies that the
+         * build process may fail and thus return an {@link Optional#empty() empty
+         * Optional instance}. Presence check, such as {@link Optional#isPresent()} or
+         * {@link Optional#ifPresent} shall be performed in order to get correct
+         * behaviors. This method may be called multiple times for situations where
+         * a non-empty return value is desired, or multiple copies of {@link F} are
+         * needed.
+         * </p>
+         * Note that this may be an expensive call under certain situations.
+         *
+         * @return An Optional instance that may hold the resultant CompositeFood
+         *         instance; or an empty Optional instance if the build process failed.
+         */
+        public abstract Optional<F> build();
+    }
 
 }
