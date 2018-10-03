@@ -5,6 +5,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.Validate;
 
 import net.minecraft.nbt.NBTBase;
@@ -27,6 +29,7 @@ import snownee.cuisine.util.I18nUtil;
 
 public class FluidJuice extends VaporizableFluid
 {
+    private static final int DEFAULT_COLOR = 3694022;
 
     public FluidJuice(String name)
     {
@@ -36,14 +39,15 @@ public class FluidJuice extends VaporizableFluid
     @Override
     public int getColor(FluidStack stack)
     {
-        return stack.tag == null ? 0 : mixColor(deserialize(stack.tag));
+        return (stack.tag == null || !stack.tag.hasKey("color", Constants.NBT.TAG_INT)) ? DEFAULT_COLOR : stack.tag.getInteger("color") | 0x33000000;
     }
 
     public static void addIngredient(FluidStack fluid, WeightedMaterial newMaterial)
     {
-        List<WeightedMaterial> materials = deserialize(fluid.tag == null ? new NBTTagCompound() : fluid.tag);
+        JuiceInfo info = new JuiceInfo();
+        info.deserializeNBT(fluid.tag == null ? new NBTTagCompound() : fluid.tag);
         boolean flag = true;
-        for (WeightedMaterial material : materials)
+        for (WeightedMaterial material : info.materials)
         {
             if (material.material == newMaterial.material)
             {
@@ -54,39 +58,16 @@ public class FluidJuice extends VaporizableFluid
         }
         if (flag)
         {
-            materials.add(newMaterial);
+            info.materials.add(newMaterial);
         }
+        info.refreshState();
         fluid.amount += newMaterial.weight;
-        fluid.tag = serialize(materials);
+        fluid.tag = info.serializeNBT();
     }
 
     public static void scaleIngredients(List<WeightedMaterial> materials)
     {
         // TODO
-    }
-
-    public static int mixColor(List<WeightedMaterial> materials)
-    {
-        float size = 0;
-        float r = 0;
-        float g = 0;
-        float b = 0;
-        for (WeightedMaterial material : materials)
-        {
-            int color = material.material.getRawColorCode();
-            r += material.weight * (color >> 16 & 255) / 255.0F;
-            g += material.weight * (color >> 8 & 255) / 255.0F;
-            b += material.weight * (color >> 0 & 255) / 255.0F;
-            size += material.weight;
-        }
-        if (size > 0)
-        {
-            r = r / size * 255.0F;
-            g = g / size * 255.0F;
-            b = b / size * 255.0F;
-            return (int) r << 16 | (int) g << 8 | (int) b;
-        }
-        return 0;
     }
 
     @Override
@@ -97,69 +78,123 @@ public class FluidJuice extends VaporizableFluid
         {
             return super.getLocalizedName(stack);
         }
-        List<WeightedMaterial> materials = deserialize(stack.tag);
-        if (materials == null || materials.isEmpty())
+        if (stack.tag.hasKey("type", Constants.NBT.TAG_STRING))
         {
-            return super.getLocalizedName(stack);
+            return I18nUtil.translate("fluid.juice." + stack.tag.getString("type"));
         }
-        if (materials.size() == 1)
+        JuiceInfo info = new JuiceInfo();
+        info.deserializeNBT(stack.tag);
+        if (info.materials != null && info.materials.size() == 1)
         {
-            WeightedMaterial weightedMaterial = materials.get(0);
+            WeightedMaterial weightedMaterial = info.materials.get(0);
             Ingredient ingredient = new Ingredient(weightedMaterial.material, Form.JUICE, weightedMaterial.weight);
             return ingredient.getTranslation();
         }
-        else
+        return super.getLocalizedName(stack);
+    }
+
+    public static class JuiceInfo implements INBTSerializable<NBTTagCompound>
+    {
+        List<WeightedMaterial> materials;
+        @Nullable
+        String name;
+        int color;
+
+        public void refreshState()
         {
-            MaterialCategory category = null;
-            EnumSet<MaterialCategory> sampleCats = EnumSet.of(MaterialCategory.FRUIT, MaterialCategory.VEGETABLES);
+            float size = 0;
+            float r = 0;
+            float g = 0;
+            float b = 0;
             for (WeightedMaterial material : materials)
             {
-                for (MaterialCategory cat : sampleCats)
+                int color = material.material.getRawColorCode();
+                r += material.weight * (color >> 16 & 255) / 255.0F;
+                g += material.weight * (color >> 8 & 255) / 255.0F;
+                b += material.weight * (color >> 0 & 255) / 255.0F;
+                size += material.weight;
+            }
+            if (size > 0)
+            {
+                r = r / size * 255.0F;
+                g = g / size * 255.0F;
+                b = b / size * 255.0F;
+                color = (int) r << 16 | (int) g << 8 | (int) b;
+            }
+            else
+            {
+                color = DEFAULT_COLOR;
+            }
+
+            if (materials.size() > 1)
+            {
+                MaterialCategory category = null;
+                EnumSet<MaterialCategory> sampleCats = EnumSet.of(MaterialCategory.FRUIT, MaterialCategory.VEGETABLES);
+                for (WeightedMaterial material : materials)
                 {
-                    if (cat != category && material.material.isUnderCategoryOf(cat))
+                    for (MaterialCategory cat : sampleCats)
                     {
-                        if (category == null)
+                        if (cat != category && material.material.isUnderCategoryOf(cat))
                         {
-                            category = cat;
-                        }
-                        else
-                        {
-                            return I18nUtil.translate("fluid.juice.mixed");
+                            if (category == null)
+                            {
+                                category = cat;
+                            }
+                            else
+                            {
+                                name = "mixed";
+                                return;
+                            }
                         }
                     }
                 }
+                name = category == null ? "mixed" : category.toString().toLowerCase(Locale.ENGLISH);
             }
-            return I18nUtil.translate("fluid.juice." + (category == null ? "mixed" : category.toString().toLowerCase(Locale.ENGLISH)));
-        }
-    }
-
-    static NBTTagCompound serialize(List<WeightedMaterial> materials)
-    {
-        NBTTagList list = new NBTTagList();
-        for (WeightedMaterial material : materials)
-        {
-            list.appendTag(material.serializeNBT());
-        }
-        NBTTagCompound data = new NBTTagCompound();
-        data.setTag(CuisineSharedSecrets.KEY_INGREDIENT_LIST, list);
-        return data;
-    }
-
-    static List<WeightedMaterial> deserialize(NBTTagCompound data)
-    {
-        List<WeightedMaterial> materials = new ArrayList<>(8);
-        NBTTagList list = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
-        for (NBTBase baseTag : list)
-        {
-            if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+            else
             {
-                Validate.isTrue(baseTag instanceof NBTTagCompound);
-                WeightedMaterial material = new WeightedMaterial(null, 0);
-                material.deserializeNBT((NBTTagCompound) baseTag);
-                materials.add(material);
+                name = null;
             }
         }
-        return materials;
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagList list = new NBTTagList();
+            for (WeightedMaterial material : materials)
+            {
+                list.appendTag(material.serializeNBT());
+            }
+            NBTTagCompound data = new NBTTagCompound();
+            data.setTag(CuisineSharedSecrets.KEY_INGREDIENT_LIST, list);
+            if (name != null)
+            {
+                data.setString("type", name);
+            }
+            data.setInteger("color", color);
+            return data;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound data)
+        {
+            materials = new ArrayList<>(8);
+            NBTTagList list = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
+            for (NBTBase baseTag : list)
+            {
+                if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+                {
+                    Validate.isTrue(baseTag instanceof NBTTagCompound);
+                    WeightedMaterial material = new WeightedMaterial(null, 0);
+                    material.deserializeNBT((NBTTagCompound) baseTag);
+                    materials.add(material);
+                }
+            }
+            if (data.hasKey("type", Constants.NBT.TAG_STRING))
+            {
+                name = data.getString("type");
+            }
+            color = data.getInteger("color");
+        }
     }
 
     public static class WeightedMaterial implements INBTSerializable<NBTTagCompound>

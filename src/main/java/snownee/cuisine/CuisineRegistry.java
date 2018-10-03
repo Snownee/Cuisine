@@ -18,9 +18,11 @@ import snownee.cuisine.blocks.BlockMortar;
 import snownee.cuisine.blocks.BlockPlacedDish;
 import snownee.cuisine.blocks.BlockTofu;
 import snownee.cuisine.items.ItemBasicFood;
+import snownee.cuisine.items.ItemBottle;
 import snownee.cuisine.items.ItemChoppingBoard;
 import snownee.cuisine.items.ItemCrops;
 import snownee.cuisine.items.ItemDish;
+import snownee.cuisine.items.ItemDrink;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.items.ItemIronSpatula;
 import snownee.cuisine.items.ItemKitchenKnife;
@@ -91,6 +93,10 @@ public class CuisineRegistry implements IModule
     public static final ItemIronSpatula IRON_SPATULA = new ItemIronSpatula("iron_spatula");
 
     public static final ItemDish DISH = new ItemDish("dish");
+
+    public static final ItemDrink DRINK = new ItemDrink("drink");
+
+    public static final ItemBottle BOTTLE = new ItemBottle("glass_bottle");
 
     public static final ItemMortar ITEM_MORTAR = new ItemMortar(MORTAR.getName(), MORTAR);
 

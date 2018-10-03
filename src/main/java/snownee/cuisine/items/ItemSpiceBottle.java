@@ -171,7 +171,6 @@ public class ItemSpiceBottle extends ItemMod
     @Nullable
     public Spice getSpice(ItemStack stack)
     {
-
         if (hasItem(stack))
         {
             IItemHandler handler = getItemHandler(stack);
