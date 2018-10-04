@@ -103,7 +103,7 @@ public class ItemBasicFood extends ItemFood implements IModItem
     {
         if (this.isInCreativeTab(tab))
         {
-            getVariants().forEach(v -> items.add(getItemStack(v)));
+            getVariants().stream().filter(v -> v.getMeta() != Variants.EMPOWERED_CITRON.getMeta()).forEach(v -> items.add(getItemStack(v)));
         }
     }
 
@@ -120,6 +120,14 @@ public class ItemBasicFood extends ItemFood implements IModItem
         public static final Variant<SubItem> PICKLED_CUCUMBER = INSTANCE.addVariant(new SubItem("pickled_cucumber"));
         public static final Variant<SubItem> PICKLED_PEPPER = INSTANCE.addVariant(new SubItem("pickled_pepper"));
         public static final Variant<SubItem> PICKLED_TURNIP = INSTANCE.addVariant(new SubItem("pickled_turnip"));
+        public static final Variant<SubItem> TANGERINE = INSTANCE.addVariant(new SubItem("tangerine"));
+        public static final Variant<SubItem> CITRON = INSTANCE.addVariant(new SubItem("citron"));
+        public static final Variant<SubItem> POMELO = INSTANCE.addVariant(new SubItem("pomelo"));
+        public static final Variant<SubItem> ORANGE = INSTANCE.addVariant(new SubItem("orange"));
+        public static final Variant<SubItem> LEMON = INSTANCE.addVariant(new SubItem("lemon"));
+        public static final Variant<SubItem> GRAPEFRUIT = INSTANCE.addVariant(new SubItem("grapefruit"));
+        public static final Variant<SubItem> LIME = INSTANCE.addVariant(new SubItem("lime"));
+        public static final Variant<SubItem> EMPOWERED_CITRON = INSTANCE.addVariant(new SubItem("empowered_citron"));
 
         public static class SubItem implements IStringSerializable
         {

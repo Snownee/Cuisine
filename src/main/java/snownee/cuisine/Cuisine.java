@@ -76,6 +76,7 @@ public class Cuisine
         public static final Variant CHILI_POWDER = INSTANCE.addVariant(new Type("chili_powder"));
         public static final Variant SICHUAN_PEPPER_POWDER = INSTANCE.addVariant(new Type("sichuan_pepper_powder"));
         public static final Variant BAMBOO_CHARCOAL = INSTANCE.addVariant(new Type("bamboo_charcoal"));
+        public static final Variant UNREFINED_SUGAR = INSTANCE.addVariant(new Type("unrefined_sugar"));
     }
 
     @Mod.EventHandler
