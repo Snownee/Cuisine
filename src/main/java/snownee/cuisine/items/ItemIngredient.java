@@ -34,12 +34,13 @@ import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.IModItem;
 import snownee.kiwi.util.Util;
 
+import javax.annotation.Nullable;
+
 public final class ItemIngredient extends ItemFood implements IModItem
 {
     public ItemIngredient()
     {
         super(1, false);
-        // setMaxStackSize(1);
     }
 
     @Override
@@ -85,24 +86,9 @@ public final class ItemIngredient extends ItemFood implements IModItem
         return ingredient.getMaterial().hasGlowingOverlay(ingredient);
     }
 
-    //    @Override
-    //    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-    //    {
-    //        if (worldIn.isRemote)
-    //        {
-    //            Cuisine.logger.info(new Color(244, 67, 54).getRGB());
-    //            Map<ItemDefinition, Material> map = CulinaryHub.INSTANCE.defaultItemToMaterialMapping;
-    //            for (ItemDefinition id : map.keySet())
-    //            {
-    //                Cuisine.logger.info("{}: {}", map.get(id).getID(), ColorGetter.getColor(id.getItemStack()).getRGB());
-    //            }
-    //        }
-    //        return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
-    //    }
-
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
     {
         NBTTagCompound data = stack.getTagCompound();
         if (data != null)
@@ -142,21 +128,9 @@ public final class ItemIngredient extends ItemFood implements IModItem
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    public final void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         // No-op to avoid bad things from happening
-    }
-
-    /**
-     * @deprecated Snownee says "full material cannot exist as an item"
-     * @param material
-     *            The instance of Material
-     * @return Instance of ItemIngredient that is in form of Form.FULL
-     */
-    @Deprecated
-    public static ItemStack make(Material material)
-    {
-        return ItemIngredient.make(material, Form.FULL, 1);
     }
 
     public static ItemStack make(Material material, Form form)
