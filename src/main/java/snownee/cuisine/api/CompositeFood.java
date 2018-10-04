@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -205,6 +207,13 @@ public abstract class CompositeFood
         return strategy.result();
     }
 
+    /**
+     * @deprecated See {@link CompositeFood.Builder#addSeasoning}
+     * @param seasoning newly added seasoning
+     * @param vessel cooking vessel
+     * @return this object
+     */
+    @Deprecated
     public CompositeFood flavorWith(final Seasoning seasoning, final CookingVessel vessel)
     {
         seasoning.addFlavorTo(this);
@@ -221,6 +230,12 @@ public abstract class CompositeFood
         return this.getSize() + ingredient.getSize() <= this.getMaxSize() && ingredient.getMaterial().canAddInto(this, ingredient);
     }
 
+    /**
+     * @deprecated See {@link CompositeFood.Builder#addIngredient(Ingredient)}
+     * @param ingredient newly added ingredient
+     * @return this object
+     */
+    @Deprecated
     public CompositeFood addIngredient(final Ingredient ingredient)
     {
         requireFoodStateRefresh = true;
@@ -316,7 +331,7 @@ public abstract class CompositeFood
             saturationModifier = 0.4F;
             for (Ingredient ingredient : ingredients)
             {
-                saturationModifier += ingredient.getSaturationModifier(); // TODO: ralate to size
+                saturationModifier += ingredient.getSaturationModifier(); // TODO: relate to size
                 if (ingredient.hasTrait(IngredientTrait.PLAIN) || ingredient.hasTrait(IngredientTrait.OVERCOOKED))
                 {
                     saturationModifier -= 0.1;
@@ -563,21 +578,24 @@ public abstract class CompositeFood
          * By default, this constructor uses {@link ArrayList} for all places where
          * it needs {@link List}.
          */
-        public Builder()
+        protected Builder()
         {
             this(new ArrayList<>(), new ArrayList<>());
         }
 
         /**
          * Construct a {@code Builder} instance using an existed {@link CompositeFood}
-         * instance (with type of {@link F}). This constructor mimics the real-life
-         * situation of re-cook food.
+         * instance. This constructor mimics the real-life situation of re-cook food.
+         *
+         * @implSpec
+         * By default, this constructor directly re-use the reference of {@link
+         * CompositeFood#ingredients} and {@link CompositeFood#seasonings}.
          *
          * @param finishedDish An instance of finished food object.
          */
-        public Builder(F finishedDish)
+        protected Builder(CompositeFood finishedDish)
         {
-            // TODO wtf, due to type erasure, we might just let CompositeFood pass in, not just F
+            this(finishedDish.ingredients, finishedDish.seasonings);
         }
 
         /**
@@ -620,34 +638,84 @@ public abstract class CompositeFood
 
         public final boolean addIngredient(Ingredient ingredient)
         {
-            // FIXME
-            this.ingredients.add(ingredient);
-            // ingredient.onAdded(this);
-            return false;
+            boolean merged = false;
+            for (Ingredient i : ingredients)
+            {
+                if (i.equalsIgnoreSize(ingredient))
+                {
+                    i.increaseSizeBy(ingredient.getSize());
+                    merged = true;
+                    break;
+                }
+            }
+            if (!merged)
+            {
+                ingredients.add(ingredient);
+            }
+            // ingredient.getMaterial().onAddedInto(this, ingredient, cookingVessel???); // TODO (3TUSK): wtf? did I wrote that method?
+            return true;
         }
 
         public final boolean addSeasoning(Seasoning seasoning)
         {
-            // FIXME
-            this.seasonings.add(seasoning);
-            // seasoning.addFlavorTo(this);
+            boolean merged = false;
+            for (Seasoning s : seasonings)
+            {
+                if (seasoning.matchType(seasoning))
+                {
+                    seasoning.merge(seasoning);
+                    merged = true;
+                    break;
+                }
+            }
+            if (!merged)
+            {
+                seasonings.add(seasoning);
+            }
+            // seasoning.getSpice().onAddedInto(this, cookingVessel???); // TODO (3TUSK): wtf? did I wrote that method?
             return false;
         }
 
         public final boolean removeIngredient(Ingredient ingredient)
         {
-            // FIXME
-            // ingredient.onRemovedFrom(this);
-            // this.ingredients.remove(ingredient);
-            return false;
+            boolean changed = false;
+            for (Iterator<Ingredient> itr = this.ingredients.iterator(); itr.hasNext();)
+            {
+                Ingredient i = itr.next();
+                if (ingredient.equalsIgnoreSize(i))
+                {
+                    i.decreaseSizeBy(ingredient.getSize());
+                    if (i.getSize() <= 0)
+                    {
+                        // i.getMaterial().onRemovedFrom(this, i, cookingVessel???); // TODO (3TUSK): callback
+                        itr.remove();
+                    }
+                    changed = true;
+                    break;
+                }
+            }
+            return changed;
         }
 
         public final boolean removeSeasoning(Seasoning seasoning)
         {
-            // FIXME
-            // seasoning.onRemovedFrom(this);
-            // this.seasonings.remove(seasoning);
-            return false;
+            boolean changed = false;
+            for (Iterator<Seasoning> itr = this.seasonings.iterator(); itr.hasNext();)
+            {
+                Seasoning s = itr.next();
+                if (s.matchType(seasoning))
+                {
+                    s.decreaseSizeBy(seasoning.getSize());
+                    if (s.getSize() <= 0)
+                    {
+                        // s.getSpice().onRemovedFrom(this, i, cookingVessel???); // TODO (3TUSK): callback
+                        itr.remove();
+                    }
+                    changed = true;
+                    break;
+                }
+            }
+            return changed;
         }
 
         /**

@@ -51,6 +51,7 @@ public final class Ingredient
         this.heat = material.getHeatValue();
     }
 
+    // TODO (3TUSK): abstraction
     public static Ingredient make(ItemStack stack, float baseSize)
     {
         Material m = CulinaryHub.API_INSTANCE.findMaterial(stack);
