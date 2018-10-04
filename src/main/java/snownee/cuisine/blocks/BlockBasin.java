@@ -3,6 +3,7 @@ package snownee.cuisine.blocks;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -18,12 +19,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileBasinHeatable;
@@ -106,8 +109,12 @@ public class BlockBasin extends BlockMod
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileBasin)
         {
-            TileBasin tileBasin = (TileBasin) tile;
             ItemStack held = playerIn.getHeldItem(hand);
+            if (facing == EnumFacing.UP && held.getItem() == Item.getItemFromBlock(Blocks.PISTON))
+            {
+                return false;
+            }
+            TileBasin tileBasin = (TileBasin) tile;
             ItemStack inv = tileBasin.stacks.getStackInSlot(0);
             if (held.isEmpty())
             {
@@ -161,5 +168,42 @@ public class BlockBasin extends BlockMod
             }
         }
         return 0;
+    }
+
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        neighborChanged(state, worldIn, pos, this, pos.up());
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (pos.up().toLong() == fromPos.toLong())
+        {
+            IBlockState fromState = worldIn.getBlockState(fromPos);
+            if (fromState.getBlock() == Blocks.PISTON)
+            {
+                worldIn.setBlockState(fromPos, CuisineRegistry.SQUEEZER.getDefaultState());
+            }
+        }
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return side == EnumFacing.DOWN;
     }
 }
