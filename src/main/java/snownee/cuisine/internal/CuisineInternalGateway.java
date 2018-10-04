@@ -6,17 +6,22 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CuisineAPI;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
@@ -88,6 +93,10 @@ public final class CuisineInternalGateway implements CuisineAPI
      */
     private final IdentifierBasedRegistry<Recipe> recipeRegistry = new IdentifierBasedRegistry<>();
 
+    private Map<String, Class<?>> foodTypes = new HashMap<>();
+    private Map<String, Function<? extends CompositeFood, NBTTagCompound>> serializers = new HashMap<>();
+    private Map<String, Function<NBTTagCompound, ? extends CompositeFood>> deserializers = new HashMap<>();
+
     /**
      * Default mapping for Item (metadata-sensitive) to Material conversion, used
      * for inter-mod compatibilities.
@@ -146,6 +155,55 @@ public final class CuisineInternalGateway implements CuisineAPI
     public void register(Recipe recipe)
     {
         recipeRegistry.register(recipe.name(), recipe);
+    }
+
+    @Override
+    public <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator,
+                                                           Class<F> typeToken,
+                                                           Function<F, NBTTagCompound> serializer,
+                                                           Function<NBTTagCompound, F> deserializer)
+    {
+        if (uniqueLocator.getNamespace().equals(Loader.instance().activeModContainer().getModId()))
+        {
+            final String id = uniqueLocator.toString();
+            this.foodTypes.putIfAbsent(id, typeToken);
+            this.serializers.putIfAbsent(id, serializer);
+            this.deserializers.putIfAbsent(id, deserializer);
+        }
+        else
+        {
+            throw new IllegalStateException("Registering at the time when current mod container mismatches");
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <F extends CompositeFood> NBTTagCompound serialize(ResourceLocation identifier, F dishObject)
+    {
+        Function<F, NBTTagCompound> serializer = (Function<F, NBTTagCompound>) this.serializers.get(identifier.toString());
+        if (serializer == null)
+        {
+            return new NBTTagCompound();
+        }
+        else
+        {
+            return serializer.apply(dishObject);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <F extends CompositeFood> F deserialize(ResourceLocation identifier, NBTTagCompound data)
+    {
+        Function<NBTTagCompound, F> deserializer = (Function<NBTTagCompound, F>) this.deserializers.get(identifier.toString());
+        if (deserializer == null)
+        {
+            return null;
+        }
+        else
+        {
+            return deserializer.apply(data);
+        }
     }
 
     @Override

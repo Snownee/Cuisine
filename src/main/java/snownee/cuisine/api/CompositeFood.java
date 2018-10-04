@@ -679,8 +679,6 @@ public abstract class CompositeFood
          *
          * @param strategy The {@code CookingStrategy} instance that will "visit" this
          * @param vessel The container where this is contained within
-         *
-         * @return The resultant {@code CompositeFood} after processing finished.
          */
         public final void apply(final CookingStrategy strategy, final CookingVessel vessel)
         {
@@ -706,8 +704,8 @@ public abstract class CompositeFood
          * Optional instance}. Presence check, such as {@link Optional#isPresent()} or
          * {@link Optional#ifPresent} shall be performed in order to get correct
          * behaviors. This method may be called multiple times for situations where
-         * a non-empty return value is desired, or multiple copies of {@link F} are
-         * needed.
+         * a non-empty return value is desired, or multiple copies of {@link F food
+         * objects} are needed.
          * </p>
          * Note that this may be an expensive call under certain situations.
          *
