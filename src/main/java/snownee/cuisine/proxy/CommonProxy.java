@@ -15,7 +15,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -60,10 +59,7 @@ public class CommonProxy implements IGuiHandler
 
         // MinecraftForge.EVENT_BUS.register(new DropHandler());
         MinecraftForge.EVENT_BUS.register(new SpawnHandler());
-        // if (!Loader.isModLoaded("harvestcraft") && !Loader.isModLoaded("reap") && !Loader.isModLoaded("Harvest"))
-        // {
         MinecraftForge.EVENT_BUS.register(new BetterHarvest());
-        // }
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.MATERIAL, new BehaviourArmDispense());
         BehaviorWokInteraction behaviorWokInteraction = new BehaviorWokInteraction();
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(CuisineRegistry.PLACED_DISH),
@@ -85,11 +81,6 @@ public class CommonProxy implements IGuiHandler
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenGarden());
         }
         MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenBamboo());
-    }
-
-    @OverridingMethodsMustInvokeSuper
-    public void postInit(FMLPostInitializationEvent event)
-    {
     }
 
     public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation identifier, ImmutableMap<String, ITimeValue> parameters)
