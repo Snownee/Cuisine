@@ -179,7 +179,7 @@ public class BlockBasin extends BlockMod
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (pos.up().toLong() == fromPos.toLong())
+        if (pos.up().equals(fromPos))
         {
             IBlockState fromState = worldIn.getBlockState(fromPos);
             if (fromState.getBlock() == Blocks.PISTON)

@@ -41,7 +41,7 @@ public class BlockSqueezer extends BlockMod
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (pos.down().toLong() == fromPos.toLong())
+        if (pos.down().equals(fromPos))
         {
             IBlockState fromState = worldIn.getBlockState(fromPos);
             if (!(fromState.getBlock() instanceof BlockBasin))
