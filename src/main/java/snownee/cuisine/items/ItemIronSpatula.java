@@ -32,15 +32,10 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
         int oilAmount = 0;
         double currentSize = 0;
 
-        private ArrayList<Ingredient> ingredients = new ArrayList<>();
-        private ArrayList<Seasoning> seasonings = new ArrayList<>();
-        private ArrayList<Effect> effects = new ArrayList<>();
-
         @Override
-        public void beginCook(CompositeFood dish)
+        public void beginCook(CompositeFood.Builder<?> dish)
         {
-            this.currentSize = dish.getSize();
-            this.effects.addAll(dish.getEffects());
+            this.currentSize = dish.getCurrentSize();
         }
 
         @Override
@@ -50,7 +45,6 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
             {
                 this.oilAmount += seasoning.getSize();
             }
-            this.seasonings.add(seasoning);
             // TODO (3TUSK): Add other characteristics according to seasoning list
         }
 
@@ -79,13 +73,12 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
                 ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
             }
 
-            this.ingredients.add(ingredient);
         }
 
         @Override
-        public void postCook(CookingVessel vessel)
+        public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
         {
-            Collections.shuffle(this.ingredients, Item.itemRand);
+            Collections.shuffle(dish.getIngredients(), Item.itemRand);
         }
 
         @Override
@@ -94,11 +87,6 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
 
         }
 
-        @Override
-        public CompositeFood result()
-        {
-            return new Dish(this.ingredients, this.seasonings, this.effects);
-        }
     }
 
     public ItemIronSpatula(String name)

@@ -2,21 +2,17 @@ package snownee.cuisine.api;
 
 final class NoOperationCookingStrategy implements CookingStrategy
 {
+    static final NoOperationCookingStrategy INSTANCE = new NoOperationCookingStrategy();
 
-    /**
-     * Holder of original CompositeFood object.
-     */
-    private CompositeFood dish;
-
-    NoOperationCookingStrategy()
+    private NoOperationCookingStrategy()
     {
         // No-op, used for restricting access level
     }
 
     @Override
-    public void beginCook(CompositeFood dish)
+    public void beginCook(CompositeFood.Builder<?> dish)
     {
-        this.dish = dish;
+        // No-op
     }
 
     @Override
@@ -32,7 +28,7 @@ final class NoOperationCookingStrategy implements CookingStrategy
     }
 
     @Override
-    public void postCook(CookingVessel vessel)
+    public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
     {
         // No-op
     }
@@ -43,9 +39,4 @@ final class NoOperationCookingStrategy implements CookingStrategy
         // No-op
     }
 
-    @Override
-    public CompositeFood result()
-    {
-        return this.dish;
-    }
 }

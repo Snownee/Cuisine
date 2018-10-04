@@ -51,8 +51,7 @@ public abstract class CompositeFood
 
     /**
      * Set of instanised spices. Spices are modifiers to materials, they will affect
-     * properties of ingredient objects. The implementation of {@link #addSeasoning}
-     * will handle duplicated seasoning by merging them together.
+     * properties of ingredient objects.
      */
     protected final List<Seasoning> seasonings;
 
@@ -180,74 +179,10 @@ public abstract class CompositeFood
      * 影响。（3TUSK: 这个现在叫 Serves，大约是“例”的意思，想想下馆子的时候怎么点菜的就知道了）
      */
 
-    /**
-     * Process this {@code CompositeFood} object using given {@link CookingStrategy}.
-     *
-     * @param strategy The {@code CookingStrategy} instance that will "visit" this
-     * @param vessel The container where this is contained within
-     *
-     * @return The resultant {@code CompositeFood} after processing finished.
-     */
-    public final CompositeFood apply(final CookingStrategy strategy, final CookingVessel vessel)
-    {
-        strategy.beginCook(this);
-        for (Seasoning seasoning : this.seasonings)
-        {
-            strategy.preCook(seasoning, vessel);
-        }
-        for (Ingredient ingredient : this.ingredients)
-        {
-            strategy.cook(ingredient, vessel);
-        }
-        strategy.postCook(vessel);
-        strategy.endCook();
-
-        requireFoodStateRefresh = true;
-        return strategy.result();
-    }
-
-    /**
-     * @deprecated See {@link CompositeFood.Builder#addSeasoning}
-     * @param seasoning newly added seasoning
-     * @param vessel cooking vessel
-     * @return this object
-     */
-    @Deprecated
-    public CompositeFood flavorWith(final Seasoning seasoning, final CookingVessel vessel)
-    {
-        seasoning.addFlavorTo(this);
-        if (addSeasoning(seasoning))
-        {
-            seasoning.getSpice().onAddedInto(this, vessel);
-        }
-        requireFoodStateRefresh = true;
-        return this;
-    }
-
+    @Deprecated // TODO Merge into CompositeFood.Builder#addIngredient, as a pre-check
     public boolean canAdd(final Ingredient ingredient)
     {
-        return this.getSize() + ingredient.getSize() <= this.getMaxSize() && ingredient.getMaterial().canAddInto(this, ingredient);
-    }
-
-    /**
-     * @deprecated See {@link CompositeFood.Builder#addIngredient(Ingredient)}
-     * @param ingredient newly added ingredient
-     * @return this object
-     */
-    @Deprecated
-    public CompositeFood addIngredient(final Ingredient ingredient)
-    {
-        requireFoodStateRefresh = true;
-        for (Ingredient i : ingredients)
-        {
-            if (i.equalsIgnoreSize(ingredient))
-            {
-                i.increaseSizeBy(ingredient.getSize());
-                return this;
-            }
-        }
-        ingredients.add(ingredient);
-        return this;
+        return this.getSize() + ingredient.getSize() <= this.getMaxSize() /*&& ingredient.getMaterial().canAddInto(this, ingredient)*/;
     }
 
     public CompositeFood addEffect(final Effect effect)
@@ -257,21 +192,6 @@ public abstract class CompositeFood
             this.effects.add(effect);
         }
         return this;
-    }
-
-    private boolean addSeasoning(final Seasoning newSeasoning)
-    {
-        for (Seasoning seasoning : seasonings)
-        {
-            if (seasoning.matchType(newSeasoning))
-            {
-                seasoning.merge(newSeasoning);
-                return false;
-            }
-        }
-        seasonings.add(newSeasoning);
-        requireFoodStateRefresh = true;
-        return true;
     }
 
     /**
@@ -612,6 +532,25 @@ public abstract class CompositeFood
         }
 
         /**
+         * Returns a {@link Class} object that represents the concrete type of wrapped
+         * {@link CompositeFood} object in return value of {@link #build()}.
+         *
+         * @implSpec
+         * Return value of this method must satisfy that:
+         *
+         * <pre>
+         *     Optional&lt;CompositeFood&gt; result = this.build();
+         *     if (result.isPresent())
+         *     {
+         *         assert getType().isInstance(result.get());
+         *     }
+         * </pre>
+         *
+         * @return A class object that represents the food type this can produce
+         */
+        public abstract Class<F> getType();
+
+        /**
          * Retrieve the list of current {@link Ingredient ingredients} present.
          * @return A list of ingredients
          */
@@ -629,33 +568,51 @@ public abstract class CompositeFood
             return seasonings;
         }
 
+        public double getCurrentSize()
+        {
+            return this.ingredients.stream().mapToDouble(Ingredient::getSize).sum();
+        }
+
+        public double getMaxSize()
+        {
+            return CompositeFood.DEFAULT_MAX_SIZE;
+        }
+
         // mutating operations
 
         // TODO (3TUSK): Javadoc; return false means failed, return true means success, same below
 
         // TODO (3TUSK): Do we have any justified reason to de-final these methods?
 
-        public final boolean addIngredient(Ingredient ingredient)
+        public final boolean addIngredient(Ingredient ingredient, CookingVessel vessel)
         {
-            boolean merged = false;
-            for (Ingredient i : ingredients)
+            if (ingredient.getMaterial().canAddInto(this, ingredient))
             {
-                if (i.equalsIgnoreSize(ingredient))
+                boolean merged = false;
+                for (Ingredient i : ingredients)
                 {
-                    i.increaseSizeBy(ingredient.getSize());
-                    merged = true;
-                    break;
+                    if (i.equalsIgnoreSize(ingredient))
+                    {
+                        i.increaseSizeBy(ingredient.getSize());
+                        merged = true;
+                        break;
+                    }
                 }
+                if (!merged)
+                {
+                    ingredients.add(ingredient);
+                }
+                // TODO (3TUSK): we need the cooking vessel parameter...
+                ingredient.getMaterial().onAddedInto(this, ingredient, vessel);
+                return true;
             }
-            if (!merged)
+            else
             {
-                ingredients.add(ingredient);
+                return false;
             }
-            // ingredient.getMaterial().onAddedInto(this, ingredient, cookingVessel???); // TODO (3TUSK): wtf? did I wrote that method?
-            return true;
         }
 
-        public final boolean addSeasoning(Seasoning seasoning)
+        public final boolean addSeasoning(Seasoning seasoning, CookingVessel vessel)
         {
             boolean merged = false;
             for (Seasoning s : seasonings)
@@ -671,7 +628,7 @@ public abstract class CompositeFood
             {
                 seasonings.add(seasoning);
             }
-            // seasoning.getSpice().onAddedInto(this, cookingVessel???); // TODO (3TUSK): wtf? did I wrote that method?
+            seasoning.getSpice().onAddedInto(this, vessel);
             return false;
         }
 
@@ -715,6 +672,29 @@ public abstract class CompositeFood
                 }
             }
             return changed;
+        }
+
+        /**
+         * Process this {@code CompositeFood.Builder} object using given {@link CookingStrategy}.
+         *
+         * @param strategy The {@code CookingStrategy} instance that will "visit" this
+         * @param vessel The container where this is contained within
+         *
+         * @return The resultant {@code CompositeFood} after processing finished.
+         */
+        public final void apply(final CookingStrategy strategy, final CookingVessel vessel)
+        {
+            strategy.beginCook(this);
+            for (Seasoning seasoning : this.seasonings)
+            {
+                strategy.preCook(seasoning, vessel);
+            }
+            for (Ingredient ingredient : this.ingredients)
+            {
+                strategy.cook(ingredient, vessel);
+            }
+            strategy.postCook(this, vessel);
+            strategy.endCook();
         }
 
         /**

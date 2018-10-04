@@ -42,12 +42,12 @@ public interface Material
         return this.getSaturationModifier();
     }
 
-    default void onAddedInto(final CompositeFood dish, final Ingredient ingredient, final CookingVessel vessel)
+    default void onAddedInto(final CompositeFood.Builder<?> dish, final Ingredient ingredient, final CookingVessel vessel)
     {
         // NO-OP
     }
 
-    default boolean canAddInto(final CompositeFood dish, final Ingredient ingredient)
+    default boolean canAddInto(final CompositeFood.Builder<?> dish, final Ingredient ingredient)
     {
         return true;
     }

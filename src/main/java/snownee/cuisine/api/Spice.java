@@ -15,7 +15,7 @@ public interface Spice
 
     int getColorCode();
 
-    default void onAddedInto(final CompositeFood dish, final CookingVessel vessel)
+    default void onAddedInto(final CompositeFood.Builder<?> dish, final CookingVessel vessel)
     {
         // NO-OP
     }

@@ -14,15 +14,9 @@ import snownee.cuisine.api.Seasoning;
 public class DebuggingCookingStrategy implements CookingStrategy
 {
 
-    /**
-     * Holder of original {@code CompositeFood} object.
-     */
-    private CompositeFood dish;
-
     @Override
-    public void beginCook(CompositeFood dish)
+    public void beginCook(CompositeFood.Builder<?> dish)
     {
-        this.dish = dish;
         Cuisine.logger.debug("Inspecting CompositeFood@{}", System.identityHashCode(dish));
     }
 
@@ -39,7 +33,7 @@ public class DebuggingCookingStrategy implements CookingStrategy
     }
 
     @Override
-    public void postCook(CookingVessel vessel)
+    public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
     {
 
     }
@@ -50,9 +44,4 @@ public class DebuggingCookingStrategy implements CookingStrategy
 
     }
 
-    @Override
-    public CompositeFood result()
-    {
-        return this.dish;
-    }
 }

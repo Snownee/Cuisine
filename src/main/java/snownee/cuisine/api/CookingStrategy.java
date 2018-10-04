@@ -12,7 +12,7 @@ public interface CookingStrategy
      * @param dish The incoming {@code CompositeFood} object at its initial
      *             state
      */
-    void beginCook(final CompositeFood dish);
+    void beginCook(final CompositeFood.Builder<?> dish);
 
     /**
      * Manipulate each {@code Seasoning} objects.
@@ -44,7 +44,7 @@ public interface CookingStrategy
      *                               {@link #cook} is called, or after
      *                               this has been already called
      */
-    void postCook(final CookingVessel vessel);
+    void postCook(final CompositeFood.Builder<?> dish, final CookingVessel vessel);
 
     /**
      * Finish the cooking by executing all necessary procedures left.
@@ -56,21 +56,10 @@ public interface CookingStrategy
     void endCook();
 
     /**
-     * Return the resultant {@code CompositeFood} after processed by this.
-     *
-     * @return Resultant {@code Dish} after processed by this.
-     *
-     * @throws IllegalStateException when the resultant {@code CompositeFood}
-     *                               is not available at the moment this method
-     *                               is called
-     */
-    CompositeFood result();
-
-    /**
      * Create an instance of {@code CookingStrategy} that does nothing.
      */
     static CookingStrategy identity()
     {
-        return new NoOperationCookingStrategy();
+        return NoOperationCookingStrategy.INSTANCE;
     }
 }
