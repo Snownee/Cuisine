@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableList;
-
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
@@ -26,14 +24,13 @@ public class CTMortar
     public static void add(IOreDictEntry inputs[], IItemStack output, int step)
     {
         List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList());
-        CTSupport.DELAYED_ACTIONS.add(new Addition(ImmutableList.copyOf(list), CraftTweakerMC.getItemStack(output), step));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(list, CraftTweakerMC.getItemStack(output), step));
     }
 
     @ZenMethod
     public static void remove(IOreDictEntry inputs[])
     {
-        List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList());
-        CTSupport.DELAYED_ACTIONS.add(new Removal(list));
+        CTSupport.DELAYED_ACTIONS.add(new Removal(Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList())));
     }
 
     @ZenMethod
