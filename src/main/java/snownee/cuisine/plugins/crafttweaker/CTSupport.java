@@ -14,7 +14,7 @@ import snownee.kiwi.KiwiModule;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
-@KiwiModule(modid = Cuisine.MODID, name = "crafttweaker", dependency = "crafttweaker", optional = false)
+@KiwiModule(modid = Cuisine.MODID, name = "crafttweaker", dependency = "crafttweaker")
 public final class CTSupport implements IModule
 {
     static ArrayList<IAction> DELAYED_ACTIONS = new ArrayList<>(16);

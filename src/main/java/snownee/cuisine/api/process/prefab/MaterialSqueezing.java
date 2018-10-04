@@ -37,7 +37,7 @@ public class MaterialSqueezing implements BasinInteracting
     @Override
     public boolean matchesItem(ItemStack item)
     {
-        Ingredient ingredient = null;
+        Ingredient ingredient;
         if (item.getItem() == CuisineRegistry.INGREDIENT)
         {
             NBTTagCompound data = item.getTagCompound();
@@ -57,7 +57,7 @@ public class MaterialSqueezing implements BasinInteracting
     @Override
     public Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid)
     {
-        Ingredient ingredient = null;
+        Ingredient ingredient;
         if (item.getItem() == CuisineRegistry.INGREDIENT)
         {
             NBTTagCompound data = item.getTagCompound();

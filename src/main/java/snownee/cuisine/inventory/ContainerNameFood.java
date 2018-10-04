@@ -65,9 +65,7 @@ public class ContainerNameFood extends Container
         addSlotToContainer(new SlotFood(inventory, 0));
         if (!tile.getWorld().isRemote)
         {
-            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
-                inventory.setInventorySlotContents(0, tile.serveDishAndReset());
-            });
+            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> inventory.setInventorySlotContents(0, tile.serveDishAndReset()));
         }
     }
 

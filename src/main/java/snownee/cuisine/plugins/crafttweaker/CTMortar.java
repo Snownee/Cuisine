@@ -1,6 +1,8 @@
 package snownee.cuisine.plugins.crafttweaker;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 
@@ -23,14 +25,14 @@ public class CTMortar
     @ZenMethod
     public static void add(IOreDictEntry inputs[], IItemStack output, int step)
     {
-        ImmutableList<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(ImmutableList.toImmutableList());
+        List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList());
         CTSupport.DELAYED_ACTIONS.add(new Addition(ImmutableList.copyOf(list), CraftTweakerMC.getItemStack(output), step));
     }
 
     @ZenMethod
     public static void remove(IOreDictEntry inputs[])
     {
-        ImmutableList<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(ImmutableList.toImmutableList());
+        List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList());
         CTSupport.DELAYED_ACTIONS.add(new Removal(list));
     }
 
@@ -43,11 +45,11 @@ public class CTMortar
     private static final class Addition implements IAction
     {
 
-        final ImmutableList<ProcessingInput> inputs;
+        final List<ProcessingInput> inputs;
         final ItemStack output;
         final int step;
 
-        Addition(ImmutableList<ProcessingInput> inputs, ItemStack output, int step)
+        Addition(List<ProcessingInput> inputs, ItemStack output, int step)
         {
             this.inputs = inputs;
             this.output = output;
@@ -69,9 +71,9 @@ public class CTMortar
 
     private static final class Removal implements IAction
     {
-        final ImmutableList<ProcessingInput> inputs;
+        final List<ProcessingInput> inputs;
 
-        Removal(ImmutableList<ProcessingInput> inputs)
+        Removal(List<ProcessingInput> inputs)
         {
             this.inputs = inputs;
         }

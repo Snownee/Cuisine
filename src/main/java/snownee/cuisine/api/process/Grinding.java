@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -13,11 +11,11 @@ import snownee.kiwi.crafting.input.ProcessingInput;
 public final class Grinding implements CuisineProcessingRecipe
 {
 
-    private final ImmutableList<ProcessingInput> ingredients;
+    private final List<ProcessingInput> ingredients;
     private final ItemStack output;
     private final int step, totalCount;
 
-    public Grinding(ImmutableList<ProcessingInput> inputs, ItemStack output, int step)
+    public Grinding(List<ProcessingInput> inputs, ItemStack output, int step)
     {
         this.ingredients = inputs;
         this.output = output;
@@ -53,7 +51,7 @@ public final class Grinding implements CuisineProcessingRecipe
         return recipeInputs.isEmpty();
     }
 
-    public ImmutableList<ProcessingInput> getInputs()
+    public List<ProcessingInput> getInputs()
     {
         return ingredients;
     }
