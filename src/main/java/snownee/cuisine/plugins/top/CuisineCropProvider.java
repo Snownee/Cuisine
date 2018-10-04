@@ -9,11 +9,12 @@ import mcjty.theoneprobe.api.TextStyleClass;
 import mcjty.theoneprobe.config.Config;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.BlockCuisineCrops;
-import snownee.cuisine.util.I18nUtil;
 
+@SuppressWarnings("deprecation")
 public class CuisineCropProvider implements IProbeInfoProvider
 {
 
@@ -35,11 +36,11 @@ public class CuisineCropProvider implements IProbeInfoProvider
                 int maxAge = crops.getMaxAge();
                 if (age == maxAge)
                 {
-                    probeInfo.text(TextStyleClass.OK + I18nUtil.translate("gui.fully_grown"));
+                    probeInfo.text(TextStyleClass.OK + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.fully_grown"));
                 }
                 else
                 {
-                    probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.grown", TextStyleClass.WARNING + "" + (age * 100) / maxAge));
+                    probeInfo.text(TextStyleClass.LABEL + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.grown", TextStyleClass.WARNING + "" + (age * 100) / maxAge));
                 }
             }
         }
