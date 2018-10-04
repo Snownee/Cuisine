@@ -6,13 +6,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.fluids.FluidJuice;
+import snownee.cuisine.fluids.FluidDrink;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 
 public class MaterialSqueezing implements BasinInteracting
@@ -31,7 +32,7 @@ public class MaterialSqueezing implements BasinInteracting
     @Override
     public boolean matches(ItemStack item, @Nullable FluidStack fluid)
     {
-        return matchesItem(item) && (fluid == null || fluid.getFluid() == CuisineFluids.JUICE);
+        return matchesItem(item) && (fluid == null || fluid.getFluid() == CuisineFluids.DRINK || CulinaryHub.API_INSTANCE.isKnownMaterial(fluid));
     }
 
     @Override
@@ -75,8 +76,17 @@ public class MaterialSqueezing implements BasinInteracting
         {
             return new Output(null, ItemStack.EMPTY);
         }
-        FluidStack outputFluid = fluid == null ? new FluidStack(CuisineFluids.JUICE, 0) : fluid.copy();
-        FluidJuice.addIngredient(outputFluid, new FluidJuice.WeightedMaterial(ingredient.getMaterial(), ingredient.getSize() * 500));
+        if (fluid != null && fluid.getFluid() != CuisineFluids.DRINK)
+        {
+            Material material = CulinaryHub.API_INSTANCE.findMaterial(fluid);
+            if (material == null)
+            {
+                return new Output(null, ItemStack.EMPTY);
+            }
+            FluidDrink.addIngredient(fluid, new FluidDrink.WeightedMaterial(material, fluid.amount));
+        }
+        FluidStack outputFluid = fluid == null ? new FluidStack(CuisineFluids.DRINK, 0) : fluid.copy();
+        FluidDrink.addIngredient(outputFluid, new FluidDrink.WeightedMaterial(ingredient.getMaterial(), ingredient.getSize() * 500));
         item.shrink(1);
         return new Output(outputFluid, ItemStack.EMPTY);
     }

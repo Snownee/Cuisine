@@ -27,11 +27,11 @@ import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.util.I18nUtil;
 
-public class FluidJuice extends VaporizableFluid
+public class FluidDrink extends VaporizableFluid
 {
     private static final int DEFAULT_COLOR = 3694022;
 
-    public FluidJuice(String name)
+    public FluidDrink(String name)
     {
         super(name, new ResourceLocation(Cuisine.MODID, "block/" + name + "_still"), new ResourceLocation(Cuisine.MODID, "block/" + name + "_flow"));
     }
@@ -80,7 +80,7 @@ public class FluidJuice extends VaporizableFluid
         }
         if (stack.tag.hasKey("type", Constants.NBT.TAG_STRING))
         {
-            return I18nUtil.translate("fluid.juice." + stack.tag.getString("type"));
+            return I18nUtil.translate("fluid.drink." + stack.tag.getString("type"));
         }
         JuiceInfo info = new JuiceInfo();
         info.deserializeNBT(stack.tag);

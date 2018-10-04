@@ -116,6 +116,8 @@ public interface CuisineAPI
      */
     Spice findSpice(ItemStack item);
 
+    Material findMaterial(FluidStack fluid);
+
     /**
      * Query the whole registry and find the desired {@link Material} object
      * based on the ItemStack supplied. The method will look up for Fluid
@@ -140,6 +142,8 @@ public interface CuisineAPI
      * @return true if there is an associated Spice; false otherwise.
      */
     boolean isKnownSpice(ItemStack item);
+
+    boolean isKnownMaterial(FluidStack fluid);
 
     /**
      * Query the whole registry and find whether the given fluid is mapped to

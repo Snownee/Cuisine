@@ -30,7 +30,7 @@ public class GlassBottleWrapper extends FluidHandlerItemStackSimple
     @Override
     public boolean canFillFluidType(FluidStack fluid)
     {
-        return fluid.getFluid() == FluidRegistry.WATER || fluid.getFluid() == CuisineFluids.JUICE || fluid.getFluid().getName().equals("milk");
+        return fluid.getFluid() == FluidRegistry.WATER || fluid.getFluid() == CuisineFluids.DRINK || fluid.getFluid().getName().equals("milk");
     }
 
     @Override

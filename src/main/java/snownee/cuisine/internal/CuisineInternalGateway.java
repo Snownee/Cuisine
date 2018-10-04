@@ -105,6 +105,8 @@ public final class CuisineInternalGateway implements CuisineAPI
      */
     public final Map<String, Material> oreDictToMaterialMapping = new HashMap<>();
 
+    public final Map<Fluid, Material> fluidToMaterialMapping = new HashMap<>();
+
     /**
      * 调料瓶默认使用的 Item 到调料的映射表。
      */
@@ -225,6 +227,12 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
+    public Material findMaterial(FluidStack fluid)
+    {
+        return fluidToMaterialMapping.get(fluid.getFluid());
+    }
+
+    @Override
     public Spice findSpice(FluidStack fluid)
     {
         return fluidToSpiceMapping.get(fluid.getFluid());
@@ -270,6 +278,12 @@ public final class CuisineInternalGateway implements CuisineAPI
             }
             return false;
         }
+    }
+
+    @Override
+    public boolean isKnownMaterial(FluidStack fluid)
+    {
+        return fluidToMaterialMapping.containsKey(fluid.getFluid());
     }
 
     @Override

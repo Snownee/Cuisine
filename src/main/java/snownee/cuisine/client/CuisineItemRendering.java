@@ -66,7 +66,7 @@ public final class CuisineItemRendering
                 if (data.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, Constants.NBT.TAG_COMPOUND))
                 {
                     data = data.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY);
-                    if (data.hasKey("FluidName", Constants.NBT.TAG_STRING) && data.getString("FluidName").equals(CuisineFluids.JUICE.getName()) && data.hasKey("Tag", Constants.NBT.TAG_COMPOUND))
+                    if (data.hasKey("FluidName", Constants.NBT.TAG_STRING) && data.getString("FluidName").equals(CuisineFluids.DRINK.getName()) && data.hasKey("Tag", Constants.NBT.TAG_COMPOUND))
                     {
                         data = data.getCompoundTag("Tag");
                         if (data.hasKey("color", Constants.NBT.TAG_INT))

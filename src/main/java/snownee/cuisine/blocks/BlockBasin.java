@@ -36,6 +36,7 @@ import snownee.kiwi.block.BlockMod;
 
 public class BlockBasin extends BlockMod
 {
+    public static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.5, 1);
 
     public BlockBasin(String name, Material materialIn)
     {
@@ -214,6 +215,12 @@ public class BlockBasin extends BlockMod
     public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return AABB;
     }
 
     @Override
