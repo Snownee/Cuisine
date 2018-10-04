@@ -15,6 +15,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -33,6 +34,7 @@ import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.items.ItemKitchenKnife;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.tiles.TileChoppingBoard;
 import snownee.cuisine.tiles.TileChoppingBoard.ProcessionType;
@@ -296,8 +298,13 @@ public class BlockChoppingBoard extends BlockMod
         IBlockState state = world.getBlockState(pos);
         if (event.getEntityPlayer().isCreative() && state.getBlock() == CuisineRegistry.CHOPPING_BOARD)
         {
-            event.setCanceled(true);
-            state.getBlock().onBlockClicked(world, pos, event.getEntityPlayer());
+            ItemStack held = event.getEntityPlayer().getHeldItem(event.getHand());
+            if (held.getItem() instanceof ItemKitchenKnife || held.getItem().getToolClasses(held).contains("axe"))
+            {
+                event.setCanceled(true);
+                state.getBlock().onBlockClicked(world, pos, event.getEntityPlayer());
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+            }
         }
     }
 }
