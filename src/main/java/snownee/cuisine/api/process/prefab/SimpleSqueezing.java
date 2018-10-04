@@ -42,11 +42,12 @@ public class SimpleSqueezing implements BasinInteracting
     }
 
     @Override
-    public Output getOutput(ItemStack item, @Nullable FluidStack fluid)
+    public Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid)
     {
         int amount = fluid == null ? 0 : fluid.amount;
         FluidStack copy = outputFluid.copy();
         copy.amount += amount;
+        item.shrink(input.count());
         return new Output(fluid, outputItem);
     }
 

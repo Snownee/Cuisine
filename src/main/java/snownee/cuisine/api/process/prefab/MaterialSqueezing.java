@@ -55,7 +55,7 @@ public class MaterialSqueezing implements BasinInteracting
     }
 
     @Override
-    public Output getOutput(ItemStack item, @Nullable FluidStack fluid)
+    public Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid)
     {
         Ingredient ingredient = null;
         if (item.getItem() == CuisineRegistry.INGREDIENT)
@@ -73,10 +73,11 @@ public class MaterialSqueezing implements BasinInteracting
         }
         if (ingredient == null)
         {
-            return null;
+            return new Output(null, ItemStack.EMPTY);
         }
         FluidStack outputFluid = fluid == null ? new FluidStack(CuisineFluids.JUICE, 0) : fluid.copy();
         FluidJuice.addIngredient(outputFluid, new FluidJuice.WeightedMaterial(ingredient.getMaterial(), ingredient.getSize() * 500));
+        item.shrink(1);
         return new Output(outputFluid, ItemStack.EMPTY);
     }
 

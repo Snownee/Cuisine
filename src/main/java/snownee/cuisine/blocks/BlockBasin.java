@@ -17,6 +17,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.process.Processing;
@@ -43,21 +45,23 @@ public class BlockBasin extends BlockMod
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileBasin)
         {
+            TileBasin tileBasin = ((TileBasin) tile);
             if (entityIn.getClass() == EntityItem.class)
             {
-                List<ItemStack> items = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up())).stream().map(EntityItem::getItem).collect(Collectors.toList());
+                List<ItemStack> items = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up())).stream().map(EntityItem::getItem).map(ItemStack::copy).collect(Collectors.toList());
                 for (ItemStack stack : InventoryUtil.mergeItemStacks(items, false))
                 {
-                    ((TileBasin) tile).process(Processing.BASIN_THROWING, stack);
+                    tileBasin.process(Processing.BASIN_THROWING, stack);
+                    // TODO: consume
                 }
             }
             else if (fallDistance >= 1)
             {
-                ItemStack input = ((TileBasin) tile).stacks.getStackInSlot(0);
-                ((TileBasin) tile).process(Processing.SQUEEZING, input);
+                ItemStack input = tileBasin.stacks.getStackInSlot(0);
+                tileBasin.process(Processing.SQUEEZING, input);
                 if (entityIn instanceof EntityIronGolem)
                 {
-                    ((TileBasin) tile).process(Processing.SQUEEZING, input);
+                    tileBasin.process(Processing.SQUEEZING, input);
                 }
             }
         }
@@ -73,6 +77,19 @@ public class BlockBasin extends BlockMod
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         return state.getMaterial() != Material.WOOD ? new TileBasin() : new TileBasinHeatable();
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TileEntity te = worldIn.getTileEntity(pos);
+
+        if (te instanceof TileBasin)
+        {
+            StacksUtil.dropInventoryItems(worldIn, pos, ((TileBasin) te).stacks, true);
+        }
+
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
@@ -111,5 +128,26 @@ public class BlockBasin extends BlockMod
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, null);
+        if (handler != null && handler.getTankProperties().length > 0)
+        {
+            IFluidTankProperties tank = handler.getTankProperties()[0];
+            if (tank.getContents() != null)
+            {
+                return 1 + tank.getContents().amount * 14 / tank.getCapacity();
+            }
+        }
+        return 0;
     }
 }
