@@ -223,7 +223,7 @@ public abstract class ItemAbstractComposite extends ItemMod
         }
         else
         {
-            tooltip.add(I18nUtil.translate("tip.food_durability", dish.getServes()));
+            tooltip.add(I18nUtil.translateWithFormat("tip.food_serve_amount", dish.getServes()));
 
             Set<Effect> effects = dish.getIngredients().stream().map(Ingredient::getEffects).flatMap(Set::stream).collect(Collectors.toSet());
             effects.addAll(dish.getEffects());

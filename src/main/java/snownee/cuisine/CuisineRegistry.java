@@ -85,7 +85,7 @@ public class CuisineRegistry implements IModule
 
     public static final BlockBasin WOODEN_BASIN = new BlockBasin("wooden_basin", Material.WOOD);
 
-    public static final BlockBasin POTTERY_BASIN = new BlockBasin("pottery_basin", Material.ROCK);
+    public static final BlockBasin EARTHEN_BASIN = new BlockBasin("earthen_basin", Material.ROCK);
 
     public static final BlockSqueezer SQUEEZER = new BlockSqueezer("squeezer");
 
