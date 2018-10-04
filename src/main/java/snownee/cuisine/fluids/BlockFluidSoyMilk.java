@@ -8,14 +8,16 @@ import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.blocks.CuisineBlocks;
 
 public class BlockFluidSoyMilk extends BlockFluid
 {
@@ -46,7 +48,7 @@ public class BlockFluidSoyMilk extends BlockFluid
     public void checkMixing(@Nonnull IBlockState state, World world, BlockPos pos, @Nonnull BlockPos neighbourPos)
     {
         Block block = world.getBlockState(neighbourPos).getBlock();
-        if (isSourceBlock(world, pos) && (block == Blocks.WATER || block == Blocks.FLOWING_WATER))
+        if (isSourceBlock(world, pos) && (block == CuisineBlocks.FRUIT_VINEGAR || block == CuisineBlocks.RICE_VINEGAR))
         {
             world.setBlockState(pos, CuisineRegistry.TOFU_BLOCK.getDefaultState());
         }
@@ -55,19 +57,26 @@ public class BlockFluidSoyMilk extends BlockFluid
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
-        super.onEntityCollision(worldIn, pos, state, entityIn);
-        if (entityIn instanceof EntityLivingBase)
+        if (!worldIn.isRemote)
         {
-            ((EntityLivingBase) entityIn).curePotionEffects(new ItemStack(Items.MILK_BUCKET));
-        }
-    }
-
-    @Override
-    public void fillWithRain(World worldIn, BlockPos pos)
-    {
-        if (!worldIn.isRemote && isSourceBlock(worldIn, pos))
-        {
-            worldIn.setBlockState(pos, CuisineRegistry.TOFU_BLOCK.getDefaultState());
+            if (entityIn instanceof EntityLivingBase)
+            {
+                ((EntityLivingBase) entityIn).curePotionEffects(new ItemStack(Items.MILK_BUCKET));
+            }
+            else if (state.getValue(LEVEL) == 0 && entityIn instanceof EntityItem)
+            {
+                EntityItem entityItem = (EntityItem) entityIn;
+                if (entityItem.isDead || entityItem.cannotPickup())
+                {
+                    return;
+                }
+                ItemStack stack = entityItem.getItem();
+                if (stack.getItem() == CuisineRegistry.MATERIAL && stack.getMetadata() == Cuisine.Materials.CRUDE_SALT.getMeta())
+                {
+                    stack.shrink(1);
+                    worldIn.setBlockState(pos, CuisineRegistry.TOFU_BLOCK.getDefaultState());
+                }
+            }
         }
     }
 }
