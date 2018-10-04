@@ -1,6 +1,7 @@
 package snownee.cuisine.util;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.client.MinecraftForgeClient;
 import snownee.cuisine.Cuisine;
 
 import java.text.MessageFormat;
@@ -77,6 +78,6 @@ public class I18nUtil
      */
     public static String translateWithFormat(String key, Object... args)
     {
-        return new MessageFormat(translate(key)).format(args);
+        return new MessageFormat(translate(key), MinecraftForgeClient.getLocale()).format(args);
     }
 }
