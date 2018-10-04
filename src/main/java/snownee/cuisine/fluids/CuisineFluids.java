@@ -26,8 +26,8 @@ public class CuisineFluids
     {
         SOY_MILK = new VaporizableFluid("soy_milk").setDensity(1001);
         SOY_SAUCE = new Fluid("soy_sauce", new ResourceLocation(Cuisine.MODID, "block/soy_sauce_still"), new ResourceLocation(Cuisine.MODID, "block/soy_sauce_flow"));
-        RICE_VINEGAR = new VaporizableFluid("rice_vinegar").setDensity(1001).setColor(0x88FFFFFF);
-        FRUIT_VINEGAR = new VaporizableFluid("fruit_vinegar").setDensity(1001).setColor(0x88FFFFFF);
+        RICE_VINEGAR = new VaporizableFluid("rice_vinegar").setDensity(1001).setColor(0x77FFFFAA);
+        FRUIT_VINEGAR = new VaporizableFluid("fruit_vinegar").setDensity(1001).setColor(0xEEFFFFFF);
         SESAME_OIL = new FluidOil("sesame_oil");
         EDIBLE_OIL = new FluidOil("edible_oil");
         JUICE = new FluidJuice("cuisine_juice");
