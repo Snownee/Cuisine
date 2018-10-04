@@ -110,8 +110,8 @@ public class FluidJuice extends VaporizableFluid
             {
                 int color = material.material.getRawColorCode();
                 r += material.weight * (color >> 16 & 255) / 255.0F;
-                g += material.weight * (color >> 8 & 255) / 255.0F;
-                b += material.weight * (color >> 0 & 255) / 255.0F;
+                g += material.weight * (color >>  8 & 255) / 255.0F;
+                b += material.weight * (color       & 255) / 255.0F;
                 size += material.weight;
             }
             if (size > 0)
