@@ -107,6 +107,12 @@ public class ItemBasicFood extends ItemFood implements IModItem
         }
     }
 
+    @Override
+    public boolean hasEffect(ItemStack stack)
+    {
+        return stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta();
+    }
+
     public static class Variants extends VariantsHolder<Variants.SubItem>
     {
         static final Variants INSTANCE = new Variants();
