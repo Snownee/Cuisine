@@ -17,7 +17,7 @@ public interface CuisineSharedSecrets
 
     String KEY_FORM = "form";
     String KEY_QUANTITY = "size";
-    String KEY_CHARACTERISTICS = "characteristics"; // It's not "traits" due to backward compatibility
+    String KEY_TRAITS = "characteristics"; // It's not "traits" due to backward compatibility
     String KEY_SERVES = "durability";
     String KEY_USE_DURATION = "useDuration";
 
