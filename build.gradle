@@ -56,7 +56,9 @@ minecraft {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    // Why not deobfCompile? Since JEI 4.13.1, JEI uses stable_39 mapping, so we are on the same MCP version now.
+    compile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${ct_version}"
     deobfCompile "CraftTweaker2:CraftTweaker2-API:${ct_version}"
     deobfCompile "CraftTweaker2:ZenScript:${ct_version}"
