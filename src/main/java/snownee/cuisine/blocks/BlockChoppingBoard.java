@@ -294,7 +294,7 @@ public class BlockChoppingBoard extends BlockMod
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         IBlockState state = world.getBlockState(pos);
-        if (event.getEntityPlayer().isCreative() || state.getBlock() == CuisineRegistry.CHOPPING_BOARD)
+        if (event.getEntityPlayer().isCreative() && state.getBlock() == CuisineRegistry.CHOPPING_BOARD)
         {
             event.setCanceled(true);
             state.getBlock().onBlockClicked(world, pos, event.getEntityPlayer());
