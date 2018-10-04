@@ -9,8 +9,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,6 +37,7 @@ public class BlockBasin extends BlockMod
     public BlockBasin(String name, Material materialIn)
     {
         super(name, materialIn);
+        setHardness(2.0F);
         setCreativeTab(Cuisine.CREATIVE_TAB);
     }
 
@@ -58,6 +62,10 @@ public class BlockBasin extends BlockMod
             else if (fallDistance >= 1)
             {
                 ItemStack input = tileBasin.stacks.getStackInSlot(0);
+                if (input.getItem() == Item.getItemFromBlock(Blocks.CACTUS))
+                {
+                    entityIn.attackEntityFrom(DamageSource.CACTUS, 1);
+                }
                 tileBasin.process(Processing.SQUEEZING, input);
                 if (entityIn instanceof EntityIronGolem)
                 {
@@ -123,6 +131,10 @@ public class BlockBasin extends BlockMod
                 else if (inv.isEmpty())
                 {
                     playerIn.setHeldItem(hand, tileBasin.stacks.insertItem(0, held, false));
+                }
+                else
+                {
+                    StacksUtil.dropInventoryItems(worldIn, pos, tileBasin.stacks, false);
                 }
                 return true;
             }

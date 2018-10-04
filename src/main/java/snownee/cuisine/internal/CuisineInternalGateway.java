@@ -363,6 +363,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new MaterialPufferfish("pufferfish", 0xFFFFE1C4, 0, 1, 1, 1, 0.2F, MaterialCategory.FISH).setValidForms(EnumSet.copyOf(ALL_FORMS)));
         api.register(new MaterialWithEffect("pickled", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -13784, 0, 1, 1, 1, 0.3F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.copyOf(ALL_FORMS)));
         api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -15893221, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.copyOf(ALL_FORMS)));
+        api.register(new SimpleMaterialImpl("cactus", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.VEGETABLES).addValidForms(Form.CUBED, Form.DICED, Form.JUICE));
 
         CulinaryHub.CommonMaterials.init();
 
@@ -432,6 +433,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToMaterialMapping.put("listAllchickenraw", CulinaryHub.CommonMaterials.CHICKEN);
         api.oreDictToMaterialMapping.put("listAllrabbitraw", CulinaryHub.CommonMaterials.RABBIT);
         api.oreDictToMaterialMapping.put("foodMushroom", CulinaryHub.CommonMaterials.MUSHROOM);
+        api.oreDictToMaterialMapping.put("blockCactus", CulinaryHub.CommonMaterials.CACTUS);
 
         api.fluidToSpiceMapping.put(CuisineFluids.EDIBLE_OIL, CulinaryHub.CommonSpices.EDIBLE_OIL);
         api.fluidToSpiceMapping.put(CuisineFluids.SESAME_OIL, CulinaryHub.CommonSpices.SESAME_OIL);

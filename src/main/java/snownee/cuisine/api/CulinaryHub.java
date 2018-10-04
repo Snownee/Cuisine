@@ -60,6 +60,7 @@ public final class CulinaryHub
         public static final Material PICKLED = find("pickled");
         public static final Material BAMBOO_SHOOT = find("bamboo_shoot");
         public static final Material PUFFERFISH = find("pufferfish");
+        public static final Material CACTUS = find("cactus");
 
         private static Material find(final String uniqueName)
         {
