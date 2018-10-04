@@ -22,7 +22,7 @@ public interface BasinInteracting extends CuisineProcessingRecipe
 
     boolean matchesItem(ItemStack item);
 
-    Output getOutput(ItemStack item, @Nullable FluidStack fluid);
+    Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid);
 
     static int descendingCompare(BasinInteracting a, BasinInteracting b)
     {

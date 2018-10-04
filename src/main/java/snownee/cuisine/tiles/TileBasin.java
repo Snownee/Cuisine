@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,6 +41,21 @@ public class TileBasin extends TileInventoryBase
         return super.getCapability(capability, facing);
     }
 
+    @Override
+    public void readFromNBT(NBTTagCompound compound)
+    {
+        super.readFromNBT(compound);
+        tank.readFromNBT(compound.getCompoundTag("tank"));
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
+        super.writeToNBT(compound);
+        compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+        return compound;
+    }
+
     public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input)
     {
         if (input.isEmpty())
@@ -50,7 +66,7 @@ public class TileBasin extends TileInventoryBase
         BasinInteracting recipe = recipeManager.findRecipe(input, fluid);
         if (recipe != null)
         {
-            Output output = recipe.getOutput(input, fluid);
+            Output output = recipe.getOutputAndConsumeInput(input, fluid);
             if (output.fluid != null)
             {
                 if (output.fluid.amount > tank.getCapacity())
