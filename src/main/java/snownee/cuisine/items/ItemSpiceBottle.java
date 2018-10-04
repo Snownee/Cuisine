@@ -303,7 +303,7 @@ public class ItemSpiceBottle extends ItemMod
     {
         if (hasItem(stack))
         {
-            tooltip.add(I18nUtil.translate("tip.spice.item", getDurability(stack)));
+            tooltip.add(I18nUtil.translateWithFormat("tip.spice.item", getDurability(stack)));
         }
         else if (hasFluid(stack))
         {
