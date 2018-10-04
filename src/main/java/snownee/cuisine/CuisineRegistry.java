@@ -16,6 +16,7 @@ import snownee.cuisine.blocks.BlockJar;
 import snownee.cuisine.blocks.BlockMill;
 import snownee.cuisine.blocks.BlockMortar;
 import snownee.cuisine.blocks.BlockPlacedDish;
+import snownee.cuisine.blocks.BlockSqueezer;
 import snownee.cuisine.blocks.BlockTofu;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemBottle;
@@ -85,6 +86,8 @@ public class CuisineRegistry implements IModule
     public static final BlockBasin WOODEN_BASIN = new BlockBasin("wooden_basin", Material.WOOD);
 
     public static final BlockBasin POTTERY_BASIN = new BlockBasin("pottery_basin", Material.ROCK);
+
+    public static final BlockSqueezer SQUEEZER = new BlockSqueezer("squeezer");
 
     public static final BlockDrinkro DRINKRO = new BlockDrinkro("drinkro");
 
