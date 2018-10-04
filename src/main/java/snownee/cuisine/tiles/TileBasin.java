@@ -18,6 +18,7 @@ import snownee.cuisine.api.process.Processing;
 public class TileBasin extends TileInventoryBase
 {
     private FluidTank tank = new FluidTank(8000);
+    public int tickCheckThrowing = 0;
 
     public TileBasin()
     {

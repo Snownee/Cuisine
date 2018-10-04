@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +33,6 @@ import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileBasinHeatable;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockMod;
-import snownee.kiwi.util.InventoryUtil;
 
 public class BlockBasin extends BlockMod
 {
@@ -53,16 +53,7 @@ public class BlockBasin extends BlockMod
         if (tile instanceof TileBasin)
         {
             TileBasin tileBasin = ((TileBasin) tile);
-            if (entityIn.getClass() == EntityItem.class)
-            {
-                List<ItemStack> items = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up())).stream().map(EntityItem::getItem).map(ItemStack::copy).collect(Collectors.toList());
-                for (ItemStack stack : InventoryUtil.mergeItemStacks(items, false))
-                {
-                    tileBasin.process(Processing.BASIN_THROWING, stack);
-                    // TODO: consume
-                }
-            }
-            else if (fallDistance >= 1)
+            if (fallDistance >= 1 && entityIn instanceof EntityLivingBase)
             {
                 ItemStack input = tileBasin.stacks.getStackInSlot(0);
                 if (input.getItem() == Item.getItemFromBlock(Blocks.CACTUS))
@@ -74,6 +65,30 @@ public class BlockBasin extends BlockMod
                 {
                     tileBasin.process(Processing.SQUEEZING, input);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileBasin)
+        {
+            TileBasin tileBasin = ((TileBasin) tile);
+            if (entityIn.getClass() == EntityItem.class)
+            {
+                if (tileBasin.tickCheckThrowing > 0)
+                {
+                    tileBasin.tickCheckThrowing--;
+                    return;
+                }
+                List<ItemStack> items = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up())).stream().filter(e -> !e.isDead && e.onGround).map(EntityItem::getItem).collect(Collectors.toList());
+                for (ItemStack stack : items)
+                {
+                    tileBasin.process(Processing.BASIN_THROWING, stack);
+                }
+                tileBasin.tickCheckThrowing = 25;
             }
         }
     }
