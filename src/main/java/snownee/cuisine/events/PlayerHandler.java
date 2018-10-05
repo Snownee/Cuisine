@@ -21,7 +21,7 @@ public class PlayerHandler
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onPlayerSkillPointUpdate(SkillPointUpdateEvent event)
     {
-        int oldLevel = SkillUtil.getLevel((EntityPlayerMP) event.getEntityPlayer(), event.getSkillPoint());
+        int oldLevel = SkillUtil.getLevel(event.getEntityPlayer(), event.getSkillPoint());
         int newLevel = SkillUtil.getLevel(event.getNewValue());
         if (newLevel > oldLevel)
         {

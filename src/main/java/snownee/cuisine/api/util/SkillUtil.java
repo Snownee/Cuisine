@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import snownee.cuisine.api.CulinaryCapabilities;
@@ -20,7 +20,7 @@ import snownee.cuisine.api.events.SkillPointUpdateEvent;
 @ParametersAreNonnullByDefault
 public class SkillUtil
 {
-    public static int getPoint(EntityPlayerMP player, CulinarySkillPoint skillPoint)
+    public static int getPoint(EntityPlayer player, CulinarySkillPoint skillPoint)
     {
         CulinarySkillPointContainer cap = player.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
         if (cap != null)
@@ -30,8 +30,7 @@ public class SkillUtil
         return 0;
     }
 
-    public static void setPoint(EntityPlayerMP player, CulinarySkillPoint skillPoint, int value)
-            throws IllegalArgumentException
+    public static void setPoint(EntityPlayer player, CulinarySkillPoint skillPoint, int value)
     {
         if (value < 0)
         {
@@ -49,7 +48,7 @@ public class SkillUtil
         }
     }
 
-    public static int getLevel(EntityPlayerMP player, CulinarySkillPoint skillPoint)
+    public static int getLevel(EntityPlayer player, CulinarySkillPoint skillPoint)
     {
         return getLevel(getPoint(player, skillPoint));
     }
@@ -59,12 +58,12 @@ public class SkillUtil
         return MathHelper.clamp(point / 50, 0, Short.MAX_VALUE);
     }
 
-    public static void setLevel(EntityPlayerMP player, CulinarySkillPoint skillPoint, int level)
+    public static void setLevel(EntityPlayer player, CulinarySkillPoint skillPoint, int level)
     {
         setPoint(player, skillPoint, level * 50);
     }
 
-    public static void increasePoint(EntityPlayerMP player, CulinarySkillPoint skillPoint, int delta)
+    public static void increasePoint(EntityPlayer player, CulinarySkillPoint skillPoint, int delta)
     {
         setPoint(player, skillPoint, getPoint(player, skillPoint) + delta);
     }
@@ -76,12 +75,12 @@ public class SkillUtil
      * @param skillPoint  技能
      * @param delta  提升等级
      */
-    public static void increaseLevel(EntityPlayerMP player, CulinarySkillPoint skillPoint, int delta)
+    public static void increaseLevel(EntityPlayer player, CulinarySkillPoint skillPoint, int delta)
     {
         setLevel(player, skillPoint, getLevel(player, skillPoint) + delta);
     }
 
-    public static boolean hasPlayerLearnedSkill(EntityPlayerMP player, CulinarySkill skill)
+    public static boolean hasPlayerLearnedSkill(EntityPlayer player, CulinarySkill skill)
     {
         int pointPlayer = getLevel(player, skill.skillPointRequirement());
         int pointReq = CulinarySkillManager.getLevelRequirement(skill);

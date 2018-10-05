@@ -580,13 +580,32 @@ public abstract class CompositeFood
 
         // mutating operations
 
-        // TODO (3TUSK): Javadoc; return false means failed, return true means success, same below
-
-        // TODO (3TUSK): Do we have any justified reason to de-final these methods?
-
-        public final boolean addIngredient(Ingredient ingredient, CookingVessel vessel)
+        public boolean canAddIntoThis(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
         {
-            if (ingredient.getMaterial().canAddInto(this, ingredient))
+            return ingredient.getMaterial().canAddInto(this, ingredient);
+        }
+
+        public boolean canAddIntoThis(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
+        {
+            return true;
+        }
+
+        /**
+         * Attempt to add an instance of {@link Ingredient} into this; it will be
+         * merged if there is already the same type of {@link Ingredient} present.
+         * The attempt may fail due to a certain reason which is left for {@link
+         * #canAddIntoThis(EntityPlayer, Ingredient, CookingVessel) actual
+         * implementation} to specify.
+         *
+         * @param cook the entity that conduct this attempt (i.e. "cook")
+         * @param ingredient new ingredient to be added
+         * @param vessel present cooking vessel
+         *
+         * @return true if the ingredient given is added or merged; false otherwise.
+         */
+        public final boolean addIngredient(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
+        {
+            if (this.canAddIntoThis(cook, ingredient, vessel))
             {
                 boolean merged = false;
                 for (Ingredient i : ingredients)
@@ -602,7 +621,6 @@ public abstract class CompositeFood
                 {
                     ingredients.add(ingredient);
                 }
-                // TODO (3TUSK): we need the cooking vessel parameter...
                 ingredient.getMaterial().onAddedInto(this, ingredient, vessel);
                 return true;
             }
@@ -612,24 +630,44 @@ public abstract class CompositeFood
             }
         }
 
-        public final boolean addSeasoning(Seasoning seasoning, CookingVessel vessel)
+        /**
+         * Attempt to add an instance of {@link Seasoning} into this; it will be
+         * merged if there is already the same type of {@link Seasoning} present.
+         * The attempt may fail due to a certain reason which is left for {@link
+         * #canAddIntoThis(EntityPlayer, Seasoning, CookingVessel) actual
+         * implementation} to specify.
+         *
+         * @param cook the entity that conduct this attempt (i.e. "cook")
+         * @param seasoning new seasoning to be added
+         * @param vessel present cooking vessel
+         *
+         * @return true if the seasoning given is added or merged; false otherwise.
+         */
+        public final boolean addSeasoning(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
         {
-            boolean merged = false;
-            for (Seasoning s : seasonings)
+            if (this.canAddIntoThis(cook, seasoning, vessel))
             {
-                if (seasoning.matchType(seasoning))
+                boolean merged = false;
+                for (Seasoning s : seasonings)
                 {
-                    seasoning.merge(seasoning);
-                    merged = true;
-                    break;
+                    if (seasoning.matchType(seasoning))
+                    {
+                        seasoning.merge(seasoning);
+                        merged = true;
+                        break;
+                    }
                 }
+                if (!merged)
+                {
+                    seasonings.add(seasoning);
+                }
+                seasoning.getSpice().onAddedInto(this, vessel);
+                return true;
             }
-            if (!merged)
+            else
             {
-                seasonings.add(seasoning);
+                return false;
             }
-            seasoning.getSpice().onAddedInto(this, vessel);
-            return false;
         }
 
         public final boolean removeIngredient(Ingredient ingredient)

@@ -166,6 +166,16 @@ public interface CuisineAPI
     Material findMaterial(ItemStack item);
 
     /**
+     * Query the whole registry and find the desired {@link Material} object
+     * based on the FluidStack supplied.
+     *
+     * @param fluid the FluidStack instance
+     *
+     * @return The Material reference that given item is mapped to; null if not found.
+     */
+    Material findMaterial(FluidStack fluid);
+
+    /**
      * Query the whole registry and find the desired {@link Spice} object
      * based on the ItemStack supplied. The method will look up for item and
      * metadata combination first, and fall back to Ore Dictionary if not found
@@ -176,8 +186,6 @@ public interface CuisineAPI
      * @return The Spice reference that given item is mapped to; null if not found.
      */
     Spice findSpice(ItemStack item);
-
-    Material findMaterial(FluidStack fluid);
 
     /**
      * Query the whole registry and find the desired {@link Material} object
@@ -201,6 +209,16 @@ public interface CuisineAPI
     boolean isKnownMaterial(ItemStack item);
 
     /**
+     * Query the whole registry and find whether the given fluid is mapped to
+     * a certain {@link Material}.
+     *
+     * @param fluid the FluidStack instance
+     *
+     * @return true if there is an associated Material; false otherwise.
+     */
+    boolean isKnownMaterial(FluidStack fluid);
+
+    /**
      * Query the whole registry and find whether the given item is mapped to
      * a certain {@link Spice}.
      *
@@ -209,8 +227,6 @@ public interface CuisineAPI
      * @return true if there is an associated Spice; false otherwise.
      */
     boolean isKnownSpice(ItemStack item);
-
-    boolean isKnownMaterial(FluidStack fluid);
 
     /**
      * Query the whole registry and find whether the given fluid is mapped to

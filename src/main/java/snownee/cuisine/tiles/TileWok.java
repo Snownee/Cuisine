@@ -234,7 +234,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         return stack;
     }
 
-    private boolean cook(EntityPlayerMP playerIn, EnumHand hand, ItemStack heldThing, EnumFacing facing)
+    private boolean cook(EntityPlayerMP player, EnumHand hand, ItemStack heldThing, EnumFacing facing)
     {
         if (heldThing.getItem() instanceof ItemSpiceBottle)
         {
@@ -260,7 +260,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 }
                 CuisineRegistry.SPICE_BOTTLE.consume(heldThing, 1);
                 Seasoning seasoning = new Seasoning(spice);
-                this.dish.addSeasoning(seasoning, this);
+                this.dish.addSeasoning(player, seasoning, this);
                 return true;
             }
             else
@@ -289,17 +289,18 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 return false;
             }
 
-            //if ((!SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.BIGGER_SIZE) && dish.getCurrentSize() + ingredient.getSize() >= dish.getMaxSize() * 0.75) || !dish.canAdd(ingredient))
-            //{
-            //    playerIn.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.cannot_add_more")), true);
-            //    return false;
-            //} // TODO FIX THIS THING
-
-            this.dish.addIngredient(ingredient, this);
-            ItemStack newStack = heldThing.splitStack(1);
-            this.ingredientsForRendering.add(newStack);
-            NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), newStack));
-            return true;
+            if (this.dish.addIngredient(player, ingredient, this))
+            {
+                ItemStack newStack = heldThing.splitStack(1);
+                this.ingredientsForRendering.add(newStack);
+                NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), newStack));
+                return true;
+            }
+            else
+            {
+                player.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.cannot_add_more")), true);
+                return false;
+            }
         }
 
         return false;

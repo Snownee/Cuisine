@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,15 +13,21 @@ import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.Validate;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
+import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 
-// TODO Yes we need a better javadoc
+/**
+ * Dish represents a specific food preparation which are made from combination of
+ * various ingredients and seasonings. Typically, a cookware like wok is capable
+ * to produce an instance of this.
+ */
 public class Dish extends CompositeFood
 {
     private String modelType;
@@ -100,6 +107,19 @@ public class Dish extends CompositeFood
         public Class<Dish> getType()
         {
             return Dish.class;
+        }
+
+        @Override
+        public boolean canAddIntoThis(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
+        {
+            if (SkillUtil.hasPlayerLearnedSkill(cook, CulinaryHub.CommonSkills.BIGGER_SIZE))
+            {
+                return this.getCurrentSize() + ingredient.getSize() <= this.getMaxSize() && ingredient.getMaterial().canAddInto(this, ingredient);
+            }
+            else
+            {
+                return this.getCurrentSize() + ingredient.getSize() < this.getMaxSize() * 0.75;
+            }
         }
 
         @Override
