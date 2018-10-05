@@ -464,6 +464,7 @@ public abstract class CompositeFood
         {
             this.ingredients = ingredients;
             this.seasonings = seasonings;
+            this.effects = new ArrayList<>();
         }
 
         /**
@@ -617,9 +618,9 @@ public abstract class CompositeFood
                 boolean merged = false;
                 for (Seasoning s : seasonings)
                 {
-                    if (seasoning.matchType(seasoning))
+                    if (seasoning.matchType(s))
                     {
-                        seasoning.merge(seasoning);
+                        seasoning.merge(s);
                         merged = true;
                         break;
                     }

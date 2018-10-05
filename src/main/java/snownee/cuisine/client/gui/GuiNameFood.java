@@ -66,7 +66,7 @@ public class GuiNameFood extends GuiContainer
         {
             if (button.id == 0)
             {
-                if (!textField.getText().isEmpty())
+                if (!textField.getText().isEmpty() && !textField.getText().equals(inventorySlots.getSlot(0).getStack().getDisplayName()))
                 {
                     NetworkChannel.INSTANCE.sendToServer(new PacketNameFood(textField.getText()));
                 }
