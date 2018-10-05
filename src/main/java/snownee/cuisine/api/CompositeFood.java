@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,7 +19,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import snownee.cuisine.api.CulinaryHub.CommonEffects;
 import snownee.cuisine.api.prefab.DefaultConsumedCollector;
-import snownee.cuisine.api.prefab.DefaultCookedCollector;
 
 /**
  * A CompositeFood object represents data of an edible {@link ItemStack ItemStack}.
@@ -92,32 +90,6 @@ public abstract class CompositeFood
     private final int maxServeSize;
 
     /**
-     * Construct an empty CompositeFood instance.
-     */
-    public CompositeFood()
-    {
-        this(new ArrayList<>(8));
-    }
-
-    /**
-     * Construct a CompositeFood instance from an array of {@link Ingredient ingredients}.
-     * @param ingredients The initial ingredients
-     */
-    public CompositeFood(Ingredient... ingredients)
-    {
-        this(new ArrayList<>(Arrays.asList(ingredients)));
-    }
-
-    /**
-     * Construct a CompositeFood instance from a list of {@link Ingredient ingredients}.
-     * @param ingredients The initial ingredients
-     */
-    public CompositeFood(List<Ingredient> ingredients)
-    {
-        this(ingredients, new ArrayList<>(8), new ArrayList<>(4));
-    }
-
-    /**
      * Construct a CompositeFood instance from given lists of ingredients, of seasonings
      * and of effects.
      *
@@ -125,7 +97,7 @@ public abstract class CompositeFood
      * @param seasonings The initial seasonings
      * @param effects The initial effects
      */
-    public CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
+    protected CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
     {
         this.ingredients = ingredients;
         this.seasonings = seasonings;
@@ -342,50 +314,6 @@ public abstract class CompositeFood
         return !effects.isEmpty();
     }
 
-    /**
-     * Called right before this is about to be put into a {@link FoodContainer}.
-     *
-     * 在装入 {@link FoodContainer} 之前会调用此方法。
-     *
-     * @param vessel The {@link CookingVessel} that makes this.
-     * @param playerIn The {@link EntityPlayer} that conducts this action
-     */
-    // 这是之前的 endCook，改现在这个名字是因为 serve 还有盛菜的意思
-    public void onBeingServed(final CookingVessel vessel, EntityPlayer playerIn)
-    {
-        EffectCollector collector = new DefaultCookedCollector();
-
-        int seasoningSize = 0;
-        int waterSize = 0;
-        for (Seasoning seasoning : this.getSeasonings())
-        {
-            Spice spice = seasoning.getSpice();
-            spice.onCooked(this, seasoning, vessel, collector);
-            if (spice == CulinaryHub.CommonSpices.WATER)
-            {
-                waterSize += seasoning.getSize();
-            }
-            else if (spice != CulinaryHub.CommonSpices.EDIBLE_OIL && spice != CulinaryHub.CommonSpices.SESAME_OIL)
-            {
-                seasoningSize += seasoning.getSize();
-            }
-        }
-        boolean isPlain = seasoningSize == 0 || (this.getSize() / seasoningSize) / (1 + waterSize / 3) > 3;
-
-        for (Ingredient ingredient : this.ingredients)
-        {
-            Material material = ingredient.getMaterial();
-            Set<MaterialCategory> categories = material.getCategories();
-            if (isPlain && !categories.contains(MaterialCategory.SEAFOOD) && !categories.contains(MaterialCategory.FRUIT))
-            {
-                ingredient.addTrait(IngredientTrait.PLAIN);
-            }
-            material.onCooked(this, ingredient, vessel, collector);
-        }
-
-        collector.apply(this, playerIn);
-    }
-
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
         Collection<IngredientBinding> bindings = getEffectBindings();
@@ -497,6 +425,7 @@ public abstract class CompositeFood
 
         private List<Ingredient> ingredients;
         private List<Seasoning> seasonings;
+        private List<Effect> effects;
 
         /**
          * Construct a {@code Builder} instance using default implementations.
@@ -541,7 +470,7 @@ public abstract class CompositeFood
 
         /**
          * Returns a {@link Class} object that represents the concrete type of wrapped
-         * {@link CompositeFood} object in return value of {@link #build()}.
+         * {@link CompositeFood} object in return value of {@link #build}.
          *
          * @implSpec
          * Return value of this method must satisfy that:
@@ -574,6 +503,38 @@ public abstract class CompositeFood
         public List<Seasoning> getSeasonings()
         {
             return seasonings;
+        }
+
+        // TODO Javadoc
+        public List<Effect> getEffects()
+        {
+            return effects;
+        }
+
+        // TODO Javadoc
+        public boolean contains(Material mat)
+        {
+            for (Ingredient ingredient : this.ingredients)
+            {
+                if (ingredient.getMaterial() == mat)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // TODO Javadoc
+        public boolean contains(Spice spice)
+        {
+            for (Seasoning seasoning : this.seasonings)
+            {
+                if (seasoning.getSpice() == spice)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public double getCurrentSize()
@@ -678,6 +639,12 @@ public abstract class CompositeFood
             }
         }
 
+        // TODO Javadoc
+        public void addEffect(Effect e)
+        {
+            this.effects.add(e);
+        }
+
         public final boolean removeIngredient(Ingredient ingredient)
         {
             boolean changed = false;
@@ -755,10 +722,14 @@ public abstract class CompositeFood
          * </p>
          * Note that this may be an expensive call under certain situations.
          *
+         * @param cook the entity that conducts this cooking
+         * @param vessel the cooking vessel used
+         *
          * @return An Optional instance that may hold the resultant CompositeFood
          *         instance; or an empty Optional instance if the build process failed.
          */
-        public abstract Optional<F> build();
+        public abstract Optional<F> build(final CookingVessel vessel, EntityPlayer cook);
+
     }
 
 }

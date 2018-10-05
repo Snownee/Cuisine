@@ -3,6 +3,7 @@ package snownee.cuisine.internal.food;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,9 +19,14 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
+import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.IngredientTrait;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.api.Spice;
+import snownee.cuisine.api.prefab.DefaultCookedCollector;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
@@ -103,6 +109,8 @@ public class Dish extends CompositeFood
 
     public static final class Builder extends CompositeFood.Builder<Dish>
     {
+        private Dish completed;
+
         private Builder()
         {
             this(new ArrayList<>(), new ArrayList<>());
@@ -133,9 +141,63 @@ public class Dish extends CompositeFood
         }
 
         @Override
-        public Optional<Dish> build()
+        public Optional<Dish> build(final CookingVessel vessel, EntityPlayer cook)
         {
-            return Optional.empty(); // FIXME
+            if (this.getIngredients().isEmpty())
+            {
+                return Optional.empty();
+            }
+            else if (this.completed != null)
+            {
+                return Optional.of(this.completed);
+            }
+            else
+            {
+                // CulinarySkillPointContainer skill = playerIn.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
+                double modifier = 1.0;
+                // if (skill != null)
+                // {
+                // modifier *= SkillUtil.getPlayerSkillLevel((EntityPlayerMP) playerIn, CuisineSharedSecrets.KEY_SKILL_WOK);
+                // SkillUtil.increaseSkillPoint((EntityPlayerMP) playerIn, 1);
+                // }
+
+                EffectCollector collector = new DefaultCookedCollector();
+
+                int seasoningSize = 0;
+                int waterSize = 0;
+                for (Seasoning seasoning : this.getSeasonings())
+                {
+                    Spice spice = seasoning.getSpice();
+                    spice.onCooked(this, seasoning, vessel, collector);
+                    if (spice == CulinaryHub.CommonSpices.WATER)
+                    {
+                        waterSize += seasoning.getSize();
+                    }
+                    else if (spice != CulinaryHub.CommonSpices.EDIBLE_OIL && spice != CulinaryHub.CommonSpices.SESAME_OIL)
+                    {
+                        seasoningSize += seasoning.getSize();
+                    }
+                }
+                boolean isPlain = seasoningSize == 0 || (this.getCurrentSize() / seasoningSize) / (1 + waterSize / 3) > 3;
+
+                for (Ingredient ingredient : this.getIngredients())
+                {
+                    Material material = ingredient.getMaterial();
+                    Set<MaterialCategory> categories = material.getCategories();
+                    if (isPlain && !categories.contains(MaterialCategory.SEAFOOD) && !categories.contains(MaterialCategory.FRUIT))
+                    {
+                        ingredient.addTrait(IngredientTrait.PLAIN);
+                    }
+                    material.onCooked(this, ingredient, vessel, collector);
+                }
+
+                // collector.apply(this, cook); // TODO See, this is why I say this couples too many responsibilities
+
+                this.completed = new Dish(this.getIngredients(), this.getSeasonings(), new ArrayList<>());
+                this.completed.setQualityBonus(modifier);
+                this.completed.getOrComputeModelType();
+                return Optional.of(completed);
+            }
         }
 
         public static Dish.Builder create()

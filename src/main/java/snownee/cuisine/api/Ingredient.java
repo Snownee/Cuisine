@@ -46,9 +46,9 @@ public final class Ingredient
         this.traits = traits;
         this.effects = new HashSet<>(4);
 
-        this.water = material.getWaterValue();
-        this.oil = material.getOilValue();
-        this.heat = material.getHeatValue();
+        this.water = material.getInitialWaterValue();
+        this.oil = material.getInitialOilValue();
+        this.heat = material.getInitialHeatValue();
     }
 
     // TODO (3TUSK): abstraction
