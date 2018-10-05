@@ -49,6 +49,7 @@ public final class Ingredient
         this.water = material.getInitialWaterValue();
         this.oil = material.getInitialOilValue();
         this.heat = material.getInitialHeatValue();
+        material.onCrafted(this);
     }
 
     // TODO (3TUSK): abstraction
@@ -61,10 +62,7 @@ public final class Ingredient
             {
                 baseSize *= 1.5F;
             }
-            Ingredient ingredient = new Ingredient(m, baseSize);
-
-            ingredient.getMaterial().onCrafted(ingredient);
-            return ingredient;
+            return new Ingredient(m, baseSize);
         }
         return null;
     }

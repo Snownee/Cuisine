@@ -32,11 +32,6 @@ public interface Material
 
     int getInitialHeatValue();
 
-    default String getResourcePath(Form form)
-    {
-        return "models/item/cmaterial/" + form.toString().toLowerCase();
-    }
-
     default float getSaturationModifier(final Ingredient ingredient)
     {
         return this.getSaturationModifier();

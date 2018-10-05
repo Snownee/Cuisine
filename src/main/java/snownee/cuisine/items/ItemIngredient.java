@@ -149,7 +149,6 @@ public final class ItemIngredient extends ItemFood implements IModItem
         {
             ItemStack stack = new ItemStack(CuisineRegistry.INGREDIENT, amount);
             Ingredient ingredient = new Ingredient(material, form, size);
-            material.onCrafted(ingredient);
             NBTTagCompound data = CuisinePersistenceCenter.serialize(ingredient);
             data.setIntArray(KEY_ACTIONS, actions);
             stack.setTagCompound(data);

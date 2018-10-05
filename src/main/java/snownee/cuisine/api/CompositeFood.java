@@ -434,7 +434,7 @@ public abstract class CompositeFood
          */
         protected Builder()
         {
-            this(new ArrayList<>(), new ArrayList<>());
+            this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }
 
         /**
@@ -449,7 +449,7 @@ public abstract class CompositeFood
          */
         protected Builder(CompositeFood finishedDish)
         {
-            this(finishedDish.ingredients, finishedDish.seasonings);
+            this(finishedDish.ingredients, finishedDish.seasonings, finishedDish.effects);
         }
 
         /**
@@ -460,11 +460,11 @@ public abstract class CompositeFood
          * @param ingredients list of ingredients
          * @param seasonings list of seasonings
          */
-        protected Builder(List<Ingredient> ingredients, List<Seasoning> seasonings)
+        protected Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
         {
             this.ingredients = ingredients;
             this.seasonings = seasonings;
-            this.effects = new ArrayList<>();
+            this.effects = effects;
         }
 
         /**

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.Validate;
@@ -103,12 +104,12 @@ public class Dish extends CompositeFood
 
         private Builder()
         {
-            this(new ArrayList<>(), new ArrayList<>());
+            this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }
 
-        Builder(List<Ingredient> ingredients, List<Seasoning> seasonings)
+        Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
         {
-            super(ingredients, seasonings);
+            super(ingredients, seasonings, effects);
         }
 
         @Override
@@ -212,7 +213,12 @@ public class Dish extends CompositeFood
             }
             data.setTag(CuisineSharedSecrets.KEY_SEASONING_LIST, seasoningList);
 
-            // TODO Anything else?
+            NBTTagList effectList = new NBTTagList();
+            for (Effect effect : builder.getEffects())
+            {
+                effectList.appendTag(new NBTTagString(effect.getID()));
+            }
+            data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
 
             return data;
         }
@@ -221,6 +227,7 @@ public class Dish extends CompositeFood
         {
             ArrayList<Ingredient> ingredients = new ArrayList<>();
             ArrayList<Seasoning> seasonings = new ArrayList<>();
+            ArrayList<Effect> effects = new ArrayList<>();
             NBTTagList ingredientList = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
             for (NBTBase baseTag : ingredientList)
             {
@@ -241,9 +248,16 @@ public class Dish extends CompositeFood
                 }
             }
 
-            // TODO Anything else?
+            NBTTagList effectList = data.getTagList(CuisineSharedSecrets.KEY_EFFECT_LIST, Constants.NBT.TAG_STRING);
+            for (NBTBase baseTag : effectList)
+            {
+                if (baseTag.getId() == Constants.NBT.TAG_STRING)
+                {
+                    effects.add(CulinaryHub.API_INSTANCE.findEffect(((NBTTagString) baseTag).getString()));
+                }
+            }
 
-            return new Dish.Builder(ingredients, seasonings);
+            return new Dish.Builder(ingredients, seasonings, effects);
         }
     }
 }
