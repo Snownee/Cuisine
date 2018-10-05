@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -35,12 +36,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.util.I18nUtil;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
@@ -148,7 +151,9 @@ public abstract class ItemAbstractComposite extends ItemMod
             FoodContainer foodContainer = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
             if (foodContainer != null)
             {
-                foodContainer.set(CuisinePersistenceCenter.deserialize(dishData));
+                NBTTagCompound data = nbt.getCompoundTag("dish");
+                ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
+                foodContainer.set(CulinaryHub.API_INSTANCE.deserialize(id, data));
             }
         }
         if (nbt.hasKey("default"))

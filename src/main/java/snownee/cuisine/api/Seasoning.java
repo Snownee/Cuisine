@@ -4,7 +4,7 @@ import org.apache.commons.lang3.Validate;
 
 public final class Seasoning
 {
-    private Spice spice;
+    private final Spice spice;
     private int quantity;
 
     public Seasoning(Spice spice)

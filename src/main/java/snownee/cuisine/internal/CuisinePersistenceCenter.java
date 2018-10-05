@@ -86,7 +86,7 @@ public interface CuisinePersistenceCenter
         return data;
     }
 
-    static CompositeFood deserialize(@Nonnull NBTTagCompound data)
+    static Dish deserialize(@Nonnull NBTTagCompound data)
     {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ArrayList<Seasoning> seasonings = new ArrayList<>();

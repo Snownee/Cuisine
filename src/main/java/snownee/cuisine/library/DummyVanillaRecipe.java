@@ -17,7 +17,7 @@ public final class DummyVanillaRecipe implements IRecipe
 {
 
     private ResourceLocation identifier;
-    private String group;
+    private final String group;
 
     public DummyVanillaRecipe(final String group)
     {
