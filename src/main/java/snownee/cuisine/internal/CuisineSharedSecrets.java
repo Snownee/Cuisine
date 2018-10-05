@@ -21,4 +21,9 @@ public interface CuisineSharedSecrets
     String KEY_SERVES = "durability";
     String KEY_USE_DURATION = "useDuration";
 
+    /**
+     * Used to indicate the actual type of CompositeFood, for (de)serialization purpose
+     */
+    String KEY_TYPE = "FoodType";
+
 }

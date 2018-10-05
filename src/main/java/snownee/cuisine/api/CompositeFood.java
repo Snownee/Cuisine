@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import snownee.cuisine.api.CulinaryHub.CommonEffects;
@@ -114,7 +115,6 @@ public abstract class CompositeFood
     public CompositeFood(List<Ingredient> ingredients)
     {
         this(ingredients, new ArrayList<>(8), new ArrayList<>(4));
-
     }
 
     /**
@@ -132,6 +132,14 @@ public abstract class CompositeFood
         this.effects = effects;
         this.maxServeSize = (this.durability = DEFAULT_SERVE_AMOUNT);
     }
+
+    /**
+     * Returns a unique identifier that can distinguish this type of {@code CompositeFood}
+     * from other types of {@code CompositeFood}. Used for situations like serialization.
+     *
+     * @return a unique identifier
+     */
+    public abstract ResourceLocation getIdentifier();
 
     /**
      * Retrieve a read-only view of a list of all ingredients at the moment this is called.

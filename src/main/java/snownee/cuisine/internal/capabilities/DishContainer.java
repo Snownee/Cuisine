@@ -6,29 +6,28 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.prefab.SimpleFoodContainerImpl;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 
-public class ReusableFoodContainer extends SimpleFoodContainerImpl
-        implements ICapabilityProvider, INBTSerializable<NBTTagCompound>
+/**
+ * The {@link snownee.cuisine.api.FoodContainer} implementation used by
+ * {@link snownee.cuisine.items.ItemDish}.
+ */
+public class DishContainer extends SimpleFoodContainerImpl implements ICapabilityProvider, INBTSerializable<NBTTagCompound>
 {
-
-    private ItemStack emptyContainer;
-
-    public ReusableFoodContainer(final ItemStack empty)
-    {
-        this.emptyContainer = empty;
-    }
 
     @Nonnull
     @Override
     public ItemStack getEmptyContainer(ItemStack currentContainer)
     {
-        return emptyContainer;
+        return new ItemStack(CuisineRegistry.PLACED_DISH);
     }
 
     @Override
@@ -60,13 +59,14 @@ public class ReusableFoodContainer extends SimpleFoodContainerImpl
         }
         else
         {
-            return CuisinePersistenceCenter.serialize(this.food);
+            return CulinaryHub.API_INSTANCE.serialize(this.food.getIdentifier(), this.food);
         }
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound data)
     {
-        this.food = CuisinePersistenceCenter.deserialize(data);
+        ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
+        this.food = CulinaryHub.API_INSTANCE.deserialize(id, data);
     }
 }

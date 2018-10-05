@@ -9,8 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.Validate;
+import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
@@ -30,6 +32,8 @@ import snownee.cuisine.internal.CuisineSharedSecrets;
  */
 public class Dish extends CompositeFood
 {
+    public static final ResourceLocation DISH_ID = new ResourceLocation(Cuisine.MODID, "dish");
+
     private String modelType;
 
     public Dish()
@@ -45,6 +49,12 @@ public class Dish extends CompositeFood
     public Dish(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
     {
         super(ingredients, seasonings, effects);
+    }
+
+    @Override
+    public ResourceLocation getIdentifier()
+    {
+        return DISH_ID;
     }
 
     @Override

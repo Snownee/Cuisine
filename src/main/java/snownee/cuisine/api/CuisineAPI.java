@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.function.Function;
 
@@ -93,6 +94,7 @@ public interface CuisineAPI
      *
      * @return the corresponding CompositeFood object
      */
+    @Nullable
     <F extends CompositeFood> F deserialize(ResourceLocation identifier, NBTTagCompound data);
 
     // Bulk registry candidates accessor

@@ -51,6 +51,8 @@ import snownee.cuisine.items.ItemCrops;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 
+import javax.annotation.Nullable;
+
 /**
  * The main implementation of CuisineAPI.
  *
@@ -187,14 +189,23 @@ public final class CuisineInternalGateway implements CuisineAPI
         }
         else
         {
-            return serializer.apply(dishObject);
+            NBTTagCompound data = serializer.apply(dishObject);
+            data.setString(CuisineSharedSecrets.KEY_TYPE, identifier.toString());
+            return data;
         }
     }
 
+    @Nullable
     @Override
     @SuppressWarnings("unchecked")
     public <F extends CompositeFood> F deserialize(ResourceLocation identifier, NBTTagCompound data)
     {
+        ResourceLocation rl = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
+        if (!identifier.equals(rl))
+        {
+            Cuisine.logger.warn("Cannot use {} to deserialize CompositeFood with type of {}", identifier, rl);
+            return null;
+        }
         Function<NBTTagCompound, F> deserializer = (Function<NBTTagCompound, F>) this.deserializers.get(identifier.toString());
         if (deserializer == null)
         {

@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.client.model.DishMeshDefinition;
-import snownee.cuisine.internal.capabilities.ReusableFoodContainer;
+import snownee.cuisine.internal.capabilities.DishContainer;
 import snownee.cuisine.proxy.ClientProxy;
 import snownee.cuisine.tiles.TileDish;
 import snownee.kiwi.util.PlayerUtil;
@@ -48,7 +48,7 @@ public class ItemDish extends ItemAbstractComposite
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new ReusableFoodContainer(new ItemStack(CuisineRegistry.PLACED_DISH));
+        return new DishContainer();
     }
 
     @Override
