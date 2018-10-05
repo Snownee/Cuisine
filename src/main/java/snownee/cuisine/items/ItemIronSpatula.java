@@ -1,6 +1,5 @@
 package snownee.cuisine.items;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
@@ -13,11 +12,9 @@ import snownee.cuisine.api.CookingStrategy;
 import snownee.cuisine.api.CookingStrategyProvider;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
-import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
-import snownee.cuisine.internal.food.Dish;
 import snownee.kiwi.item.ItemMod;
 
 public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider

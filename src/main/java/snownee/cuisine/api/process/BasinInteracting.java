@@ -29,7 +29,7 @@ public interface BasinInteracting extends CuisineProcessingRecipe
         return 0; // TODO (Snownee): Fix me
     }
 
-    public static boolean isKnownInput(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack stack)
+    static boolean isKnownInput(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack stack)
     {
         for (BasinInteracting recipe : recipeManager.preview())
         {
@@ -47,7 +47,7 @@ public interface BasinInteracting extends CuisineProcessingRecipe
     //
     //    List<FluidStack> getOutputs();
 
-    public static class Output
+    class Output
     {
         public final FluidStack fluid;
         public final ItemStack item;

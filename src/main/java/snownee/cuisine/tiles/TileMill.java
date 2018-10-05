@@ -56,7 +56,7 @@ public class TileMill extends TileBase implements ITickable
     private static final ResourceLocation STATE_MACHINE_JSON = new ResourceLocation(Cuisine.MODID, "asms/mill.json");
 
     private final IAnimationStateMachine stateMachine;
-    private TimeValues.VariableValue progressValue = new TimeValues.VariableValue(0F);
+    private final TimeValues.VariableValue progressValue = new TimeValues.VariableValue(0F);
 
     /**
      * The signal used for indicating its working status.
@@ -67,9 +67,9 @@ public class TileMill extends TileBase implements ITickable
      */
     private int tick = 0;
 
-    private SingleSlotItemHandler inputBuffer = new SingleSlotItemHandler();
-    private FluidTank fluidInput = new FluidTank(Fluid.BUCKET_VOLUME);
-    private FluidTank fluidOutput = new FluidTank(Fluid.BUCKET_VOLUME);
+    private final SingleSlotItemHandler inputBuffer = new SingleSlotItemHandler();
+    private final FluidTank fluidInput = new FluidTank(Fluid.BUCKET_VOLUME);
+    private final FluidTank fluidOutput = new FluidTank(Fluid.BUCKET_VOLUME);
 
     public TileMill()
     {

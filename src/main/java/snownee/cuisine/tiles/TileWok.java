@@ -67,8 +67,8 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     private transient Dish completedDish;
     private int temperature, water, oil;
     public byte actionCycle = 0;
-    transient List<ItemStack> ingredientsForRendering = new ArrayList<>(8);
-    transient List<FluidStack> spicesForRendering = new ArrayList<>(8);
+    final transient List<ItemStack> ingredientsForRendering = new ArrayList<>(8);
+    final transient List<FluidStack> spicesForRendering = new ArrayList<>(8);
 
     @Override
     public void update()
