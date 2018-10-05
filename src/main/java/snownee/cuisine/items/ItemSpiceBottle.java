@@ -299,6 +299,7 @@ public class ItemSpiceBottle extends ItemMod
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (hasItem(stack))
