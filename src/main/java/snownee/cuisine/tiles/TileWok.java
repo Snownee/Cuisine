@@ -153,22 +153,13 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             }
             else if (heldThing.getItem() == Item.getItemFromBlock(CuisineRegistry.PLACED_DISH) && !dish.getIngredients().isEmpty())
             {
-                // CulinarySkillPointContainer skill = playerIn.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
-                double modifier = 1.0;
-                // if (skill != null)
-                // {
-                // modifier *= SkillUtil.getPlayerSkillLevel((EntityPlayerMP) playerIn, CuisineSharedSecrets.KEY_SKILL_WOK);
-                // SkillUtil.increaseSkillPoint((EntityPlayerMP) playerIn, 1);
-                // }
-                Optional<Dish> result = dish.build(); // TODO THIS IS HACK, NO OBJECTION
+                Optional<Dish> result = dish.build(this, playerIn); // TODO THIS IS HACK, NO OBJECTION
                 if (!result.isPresent())
                 {
                     return;
                 }
+
                 this.completedDish = result.get();
-                this.completedDish.setQualityBonus(modifier);
-                this.completedDish.onBeingServed(this, playerIn);
-                this.completedDish.getOrComputeModelType();
 
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.EXPERTISE, (int) (completedDish.getFoodLevel() * completedDish.getSaturationModifier()));
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);

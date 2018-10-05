@@ -30,7 +30,7 @@ public interface Spice
         // NO-OP
     }
 
-    default void onCooked(final CompositeFood dish, final Seasoning seasoning, final CookingVessel vessel, final EffectCollector collector)
+    default void onCooked(final CompositeFood.Builder<?> dish, final Seasoning seasoning, final CookingVessel vessel, final EffectCollector collector)
     {
         // NO-OP
     }

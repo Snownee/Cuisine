@@ -342,50 +342,6 @@ public abstract class CompositeFood
         return !effects.isEmpty();
     }
 
-    /**
-     * Called right before this is about to be put into a {@link FoodContainer}.
-     *
-     * 在装入 {@link FoodContainer} 之前会调用此方法。
-     *
-     * @param vessel The {@link CookingVessel} that makes this.
-     * @param playerIn The {@link EntityPlayer} that conducts this action
-     */
-    // 这是之前的 endCook，改现在这个名字是因为 serve 还有盛菜的意思
-    public void onBeingServed(final CookingVessel vessel, EntityPlayer playerIn)
-    {
-        EffectCollector collector = new DefaultCookedCollector();
-
-        int seasoningSize = 0;
-        int waterSize = 0;
-        for (Seasoning seasoning : this.getSeasonings())
-        {
-            Spice spice = seasoning.getSpice();
-            spice.onCooked(this, seasoning, vessel, collector);
-            if (spice == CulinaryHub.CommonSpices.WATER)
-            {
-                waterSize += seasoning.getSize();
-            }
-            else if (spice != CulinaryHub.CommonSpices.EDIBLE_OIL && spice != CulinaryHub.CommonSpices.SESAME_OIL)
-            {
-                seasoningSize += seasoning.getSize();
-            }
-        }
-        boolean isPlain = seasoningSize == 0 || (this.getSize() / seasoningSize) / (1 + waterSize / 3) > 3;
-
-        for (Ingredient ingredient : this.ingredients)
-        {
-            Material material = ingredient.getMaterial();
-            Set<MaterialCategory> categories = material.getCategories();
-            if (isPlain && !categories.contains(MaterialCategory.SEAFOOD) && !categories.contains(MaterialCategory.FRUIT))
-            {
-                ingredient.addTrait(IngredientTrait.PLAIN);
-            }
-            material.onCooked(this, ingredient, vessel, collector);
-        }
-
-        collector.apply(this, playerIn);
-    }
-
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
         Collection<IngredientBinding> bindings = getEffectBindings();
@@ -541,7 +497,7 @@ public abstract class CompositeFood
 
         /**
          * Returns a {@link Class} object that represents the concrete type of wrapped
-         * {@link CompositeFood} object in return value of {@link #build()}.
+         * {@link CompositeFood} object in return value of {@link #build}.
          *
          * @implSpec
          * Return value of this method must satisfy that:
@@ -755,10 +711,13 @@ public abstract class CompositeFood
          * </p>
          * Note that this may be an expensive call under certain situations.
          *
+         * @param cook the entity that conducts this cooking
+         * @param vessel the cooking vessel used
+         *
          * @return An Optional instance that may hold the resultant CompositeFood
          *         instance; or an empty Optional instance if the build process failed.
          */
-        public abstract Optional<F> build();
+        public abstract Optional<F> build(final CookingVessel vessel, EntityPlayer cook);
     }
 
 }
