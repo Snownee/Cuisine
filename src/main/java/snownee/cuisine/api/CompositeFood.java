@@ -418,7 +418,6 @@ public abstract class CompositeFood
      * @param <F> The concrete resultant type of {@link CompositeFood} that this
      *            {@code Builder} may produce.
      */
-    @SuppressWarnings({"unused", "WeakerAccess"}) // TODO (3TUSK): Remove these when we are ready
     public static abstract class Builder<F extends CompositeFood>
     {
 
@@ -676,7 +675,7 @@ public abstract class CompositeFood
                     s.decreaseSizeBy(seasoning.getSize());
                     if (s.getSize() <= 0)
                     {
-                        // s.getSpice().onRemovedFrom(this, i, cookingVessel???); // TODO (3TUSK): callback
+                        s.getSpice().onRemovedFrom(this);
                         itr.remove();
                     }
                     changed = true;

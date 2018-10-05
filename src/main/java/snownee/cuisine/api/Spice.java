@@ -20,7 +20,7 @@ public interface Spice
         // NO-OP
     }
 
-    default void onRemovedFrom(final CompositeFood dish)
+    default void onRemovedFrom(final CompositeFood.Builder<?> dish)
     {
         // NO-OP
     }

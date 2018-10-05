@@ -42,16 +42,6 @@ public class Dish extends CompositeFood
 
     private String modelType;
 
-    public Dish()
-    {
-        super();
-    }
-
-    public Dish(List<Ingredient> ingredients)
-    {
-        super(ingredients);
-    }
-
     public Dish(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
     {
         super(ingredients, seasonings, effects);
@@ -193,7 +183,7 @@ public class Dish extends CompositeFood
 
                 // collector.apply(this, cook); // TODO See, this is why I say this couples too many responsibilities
 
-                this.completed = new Dish(this.getIngredients(), this.getSeasonings(), new ArrayList<>());
+                this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects());
                 this.completed.setQualityBonus(modifier);
                 this.completed.getOrComputeModelType();
                 return Optional.of(completed);
