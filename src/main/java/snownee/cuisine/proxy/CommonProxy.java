@@ -5,23 +5,17 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.client.gui.CuisineGUI;
 import snownee.cuisine.crafting.RecipeRegistry;
 import snownee.cuisine.events.BetterHarvest;
 import snownee.cuisine.events.OreDictHandler;
@@ -29,19 +23,18 @@ import snownee.cuisine.events.SpawnHandler;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.internal.capabilities.CulinarySkillCapability;
 import snownee.cuisine.internal.capabilities.FoodContainerCapability;
-import snownee.cuisine.inventory.ContainerNameFood;
 import snownee.cuisine.items.BehaviorWokInteraction;
 import snownee.cuisine.items.BehaviourArmDispense;
 import snownee.cuisine.items.ItemCrops;
+import snownee.cuisine.network.CuisineGuiHandler;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.network.PacketNameFood;
 import snownee.cuisine.network.PacketSkillLevelIncreased;
-import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.world.gen.WorldGenBamboo;
 import snownee.cuisine.world.gen.WorldGenGarden;
 import snownee.kiwi.network.NetworkChannel;
 
-public class CommonProxy implements IGuiHandler
+public class CommonProxy
 {
     @OverridingMethodsMustInvokeSuper
     public void preInit(FMLPreInitializationEvent event)
@@ -55,7 +48,7 @@ public class CommonProxy implements IGuiHandler
     @OverridingMethodsMustInvokeSuper
     public void init(FMLInitializationEvent event)
     {
-        NetworkRegistry.INSTANCE.registerGuiHandler(Cuisine.getInstance(), this);
+        NetworkRegistry.INSTANCE.registerGuiHandler(Cuisine.getInstance(), new CuisineGuiHandler());
 
         // MinecraftForge.EVENT_BUS.register(new DropHandler());
         MinecraftForge.EVENT_BUS.register(new SpawnHandler());
@@ -89,26 +82,4 @@ public class CommonProxy implements IGuiHandler
         return null;
     }
 
-    @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-    {
-        switch (ID)
-        {
-        case CuisineGUI.NAME_FOOD:
-            TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
-            if (tile instanceof TileWok)
-            {
-                return new ContainerNameFood((TileWok) tile);
-            }
-            return null;
-        default:
-            return null;
-        }
-    }
-
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-    {
-        return null;
-    }
 }

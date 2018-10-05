@@ -2,12 +2,7 @@ package snownee.cuisine.proxy;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.animation.ITimeValue;
@@ -16,11 +11,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.client.gui.CuisineGUI;
-import snownee.cuisine.client.gui.GuiManual;
-import snownee.cuisine.client.gui.GuiNameFood;
 import snownee.cuisine.client.renderer.CuisineTEISR;
-import snownee.cuisine.tiles.TileWok;
 
 public class ClientProxy extends CommonProxy
 {
@@ -47,23 +38,4 @@ public class ClientProxy extends CommonProxy
         return ModelLoaderRegistry.loadASM(identifier, parameters);
     }
 
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-    {
-        switch (ID)
-        {
-        case CuisineGUI.MANUAL:
-            ItemStack stack = player.inventory.getStackInSlot(x);
-            return new GuiManual(x, stack);
-        case CuisineGUI.NAME_FOOD:
-            TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
-            if (tile instanceof TileWok)
-            {
-                return new GuiNameFood((TileWok) tile);
-            }
-            return null;
-        default:
-            return null;
-        }
-    }
 }
