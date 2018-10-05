@@ -5,13 +5,16 @@ import javax.annotation.Nullable;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.prefab.SimpleFoodContainerImpl;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public final class FoodContainerCapability
 {
@@ -51,7 +54,9 @@ public final class FoodContainerCapability
         {
             if (nbt instanceof NBTTagCompound)
             {
-                instance.set(CuisinePersistenceCenter.deserialize((NBTTagCompound) nbt));
+                NBTTagCompound data = ((NBTTagCompound)nbt).getCompoundTag("dish");
+                ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
+                instance.set(CulinaryHub.API_INSTANCE.deserialize(id, data));
             }
             else
             {

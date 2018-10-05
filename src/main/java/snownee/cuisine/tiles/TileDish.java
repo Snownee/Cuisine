@@ -7,13 +7,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public class TileDish extends TileBase
 {
@@ -49,8 +52,13 @@ public class TileDish extends TileBase
         }
         else if (compound.hasKey("dish", Constants.NBT.TAG_COMPOUND))
         {
-            CompositeFood dish = CuisinePersistenceCenter.deserialize(compound.getCompoundTag("dish"));
-            this.dishContainer = dish.makeItemStack();
+            NBTTagCompound data = compound.getCompoundTag("dish");
+            ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
+            CompositeFood dish = CulinaryHub.API_INSTANCE.deserialize(id, data);
+            if (dish != null)
+            {
+                this.dishContainer = dish.makeItemStack();
+            }
         }
     }
 
