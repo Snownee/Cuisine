@@ -11,7 +11,6 @@ import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -86,10 +85,7 @@ public class TileMill extends TileBase implements ITickable
         if (!this.working)
         {
             playerIn.addExhaustion(5);
-            if (playerIn instanceof EntityPlayerMP)
-            {
-                SkillUtil.increasePoint((EntityPlayerMP) playerIn, CulinarySkillPoint.PROFICIENCY, 1);
-            }
+            SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
             this.working = true;
             IBlockState state = this.world.getBlockState(this.pos);
             this.world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
@@ -110,6 +106,7 @@ public class TileMill extends TileBase implements ITickable
                     this.world.updateComparatorOutputLevel(this.pos, this.blockType);
                     this.working = false;
                     this.tick = 0;
+                    this.markDirty(); // Think the "flush()" call when dealing with output stream
                     this.world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
                 }
             }
