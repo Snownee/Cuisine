@@ -39,6 +39,13 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         {
             int heat = getHeatValueFromState(world.getBlockState(pos.down()));
             tickCheckHeating = heat > 0 ? 100 / heat : 200;
+            if (heat == 0 && !world.provider.isNether())
+            {
+                if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
+                {
+                    return;
+                }
+            }
             Boiling recipe = Processing.BOILING.findRecipe(stacks.getStackInSlot(0), tank.getFluid(), heat);
             if (recipe != null)
             {
