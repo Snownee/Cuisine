@@ -49,8 +49,8 @@ public interface BasinInteracting extends CuisineProcessingRecipe
 
     public static class Output
     {
-        public final FluidStack fluid;
-        public final ItemStack item;
+        public FluidStack fluid;
+        public ItemStack item;
 
         public Output(FluidStack fluid, ItemStack item)
         {

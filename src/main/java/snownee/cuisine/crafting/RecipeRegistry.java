@@ -18,6 +18,7 @@ import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
+import snownee.cuisine.api.process.prefab.DistillationBoiling;
 import snownee.cuisine.api.process.prefab.MaterialSqueezing;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.items.ItemBasicFood;
@@ -80,10 +81,9 @@ public class RecipeRegistry
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Items.MELON), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 5)));
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Blocks.MELON_BLOCK), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 50)));
 
-        CulinaryHub.API_INSTANCE.getKnownMaterials().stream()
-                .filter(m -> m.isValidForm(Form.JUICE))
-                .filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES))
-                .forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
+        Processing.BOILING.add(new DistillationBoiling(new FluidStack(FluidRegistry.WATER, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), 0));
+
+        CulinaryHub.API_INSTANCE.getKnownMaterials().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
 
     }
 }

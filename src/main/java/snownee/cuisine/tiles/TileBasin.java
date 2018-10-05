@@ -17,7 +17,13 @@ import snownee.cuisine.api.process.Processing;
 
 public class TileBasin extends TileInventoryBase
 {
-    private FluidTank tank = new FluidTank(8000);
+    protected FluidTank tank = new FluidTank(8000)
+    {
+        protected void onContentsChanged()
+        {
+            TileBasin.this.onContentsChanged(0);
+        };
+    };
     public int tickCheckThrowing = 0;
 
     public TileBasin()
@@ -73,6 +79,10 @@ public class TileBasin extends TileInventoryBase
                 if (output.fluid.amount > tank.getCapacity())
                 {
                     return;
+                }
+                if (output.fluid.amount <= 0)
+                {
+                    output.fluid = null;
                 }
                 tank.setFluid(output.fluid);
             }

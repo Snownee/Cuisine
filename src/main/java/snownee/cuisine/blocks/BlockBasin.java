@@ -103,7 +103,7 @@ public class BlockBasin extends BlockMod
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return state.getMaterial() != Material.WOOD ? new TileBasin() : new TileBasinHeatable();
+        return state.getMaterial() == Material.WOOD ? new TileBasin() : new TileBasinHeatable();
     }
 
     @Override
@@ -201,6 +201,14 @@ public class BlockBasin extends BlockMod
             if (fromState.getBlock() == Blocks.PISTON)
             {
                 worldIn.setBlockState(fromPos, CuisineRegistry.SQUEEZER.getDefaultState());
+            }
+        }
+        else if (pos.down().equals(fromPos))
+        {
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if (tile instanceof TileBasinHeatable)
+            {
+                ((TileBasinHeatable) tile).onContentsChanged(0);
             }
         }
     }

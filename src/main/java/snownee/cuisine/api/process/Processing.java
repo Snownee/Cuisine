@@ -25,4 +25,7 @@ public final class Processing
 
     // Basin item throwing
     public static final CuisineProcessingRecipeManager<BasinInteracting> BASIN_THROWING = CuisineProcessingRecipeManager.of(BasinInteracting::descendingCompare);
+
+    // Basin boiling
+    public static final CuisineProcessingRecipeManager<Boiling> BOILING = CuisineProcessingRecipeManager.of();
 }
