@@ -90,32 +90,6 @@ public abstract class CompositeFood
     private final int maxServeSize;
 
     /**
-     * Construct an empty CompositeFood instance.
-     */
-    public CompositeFood()
-    {
-        this(new ArrayList<>(8));
-    }
-
-    /**
-     * Construct a CompositeFood instance from an array of {@link Ingredient ingredients}.
-     * @param ingredients The initial ingredients
-     */
-    public CompositeFood(Ingredient... ingredients)
-    {
-        this(new ArrayList<>(Arrays.asList(ingredients)));
-    }
-
-    /**
-     * Construct a CompositeFood instance from a list of {@link Ingredient ingredients}.
-     * @param ingredients The initial ingredients
-     */
-    public CompositeFood(List<Ingredient> ingredients)
-    {
-        this(ingredients, new ArrayList<>(8), new ArrayList<>(4));
-    }
-
-    /**
      * Construct a CompositeFood instance from given lists of ingredients, of seasonings
      * and of effects.
      *
@@ -123,7 +97,7 @@ public abstract class CompositeFood
      * @param seasonings The initial seasonings
      * @param effects The initial effects
      */
-    public CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
+    protected CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
     {
         this.ingredients = ingredients;
         this.seasonings = seasonings;
