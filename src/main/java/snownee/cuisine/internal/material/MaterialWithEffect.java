@@ -31,7 +31,7 @@ public class MaterialWithEffect extends SimpleMaterialImpl
     }
 
     @Override
-    public void onCooked(CompositeFood dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
+    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
     {
         if (ingredient.hasTrait(IngredientTrait.UNDERCOOKED) || ingredient.hasTrait(IngredientTrait.OVERCOOKED))
         {

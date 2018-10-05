@@ -72,19 +72,19 @@ public class SimpleMaterialImpl implements Material
     }
 
     @Override
-    public int getWaterValue()
+    public int getInitialWaterValue()
     {
         return waterValue;
     }
 
     @Override
-    public int getOilValue()
+    public int getInitialOilValue()
     {
         return oilValue;
     }
 
     @Override
-    public int getHeatValue()
+    public int getInitialHeatValue()
     {
         return heatValue;
     }

@@ -17,7 +17,7 @@ public class MaterialApple extends SimpleMaterialImpl
     }
 
     @Override
-    public void onCooked(CompositeFood dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
+    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
     {
         ingredient.addEffect(CulinaryHub.CommonEffects.EXPERIENCED);
     }

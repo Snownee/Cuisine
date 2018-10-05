@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,7 +19,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import snownee.cuisine.api.CulinaryHub.CommonEffects;
 import snownee.cuisine.api.prefab.DefaultConsumedCollector;
-import snownee.cuisine.api.prefab.DefaultCookedCollector;
 
 /**
  * A CompositeFood object represents data of an edible {@link ItemStack ItemStack}.
@@ -453,6 +451,7 @@ public abstract class CompositeFood
 
         private List<Ingredient> ingredients;
         private List<Seasoning> seasonings;
+        private List<Effect> effects;
 
         /**
          * Construct a {@code Builder} instance using default implementations.
@@ -530,6 +529,38 @@ public abstract class CompositeFood
         public List<Seasoning> getSeasonings()
         {
             return seasonings;
+        }
+
+        // TODO Javadoc
+        public List<Effect> getEffects()
+        {
+            return effects;
+        }
+
+        // TODO Javadoc
+        public boolean contains(Material mat)
+        {
+            for (Ingredient ingredient : this.ingredients)
+            {
+                if (ingredient.getMaterial() == mat)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // TODO Javadoc
+        public boolean contains(Spice spice)
+        {
+            for (Seasoning seasoning : this.seasonings)
+            {
+                if (seasoning.getSpice() == spice)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public double getCurrentSize()
@@ -634,6 +665,12 @@ public abstract class CompositeFood
             }
         }
 
+        // TODO Javadoc
+        public void addEffect(Effect e)
+        {
+            this.effects.add(e);
+        }
+
         public final boolean removeIngredient(Ingredient ingredient)
         {
             boolean changed = false;
@@ -718,6 +755,7 @@ public abstract class CompositeFood
          *         instance; or an empty Optional instance if the build process failed.
          */
         public abstract Optional<F> build(final CookingVessel vessel, EntityPlayer cook);
+
     }
 
 }

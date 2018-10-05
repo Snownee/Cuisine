@@ -26,11 +26,11 @@ public interface Material
         return false;
     }
 
-    int getWaterValue(); // TODO A better name, because it's "the default value". Perhaps a "initial" prefix?
+    int getInitialWaterValue();
 
-    int getOilValue(); // TODO A better name, because it's "the default value". Perhaps a "initial" prefix?
+    int getInitialOilValue();
 
-    int getHeatValue(); // TODO A better name, because it's "the default value". Perhaps a "initial" prefix?
+    int getInitialHeatValue();
 
     default String getResourcePath(Form form)
     {

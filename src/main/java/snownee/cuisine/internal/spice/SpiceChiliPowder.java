@@ -16,7 +16,7 @@ public class SpiceChiliPowder extends SimpleSpiceImpl
     }
 
     @Override
-    public void onCooked(CompositeFood dish, Seasoning seasoning, CookingVessel vessel, EffectCollector collector)
+    public void onCooked(CompositeFood.Builder<?> dish, Seasoning seasoning, CookingVessel vessel, EffectCollector collector)
     {
         if (dish.contains(CulinaryHub.CommonMaterials.SICHUAN_PEPPER) || dish.contains(CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER))
         {
