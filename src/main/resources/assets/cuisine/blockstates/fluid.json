@@ -25,9 +25,9 @@
       "model": "forge:fluid",
       "custom": { "fluid": "fruit_vinegar" }
     },
-    "cuisine_juice": {
+    "cuisine_drink": {
       "model": "forge:fluid",
-      "custom": { "fluid": "cuisine_juice" }
+      "custom": { "fluid": "cuisine_drink" }
     }
   }
 }
