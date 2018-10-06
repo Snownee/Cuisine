@@ -2,8 +2,6 @@ package snownee.cuisine.client.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -84,6 +82,7 @@ public class ChoppingBoardOverride extends ItemOverrideList
      *
      * @return The correct TRSRTransformation object
      */
+    @SuppressWarnings("All") // Hush, IDEA
     private static TRSRTransformation of(float tx, float ty, float tz, float ax, float ay, float az, float scale)
     {
         return new TRSRTransformation(
@@ -100,21 +99,22 @@ public class ChoppingBoardOverride extends ItemOverrideList
     }
 
     @Override
-    @SuppressWarnings("deprecation") // Suppress deprecation warning due to getStateFromMeta. Think about directly storing IBlockState?
     public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
     {
         NBTTagCompound tag = ItemNBTUtil.getCompound(stack, "BlockEntityTag", true);
-        IBlockState cover;
+        IBakedModel rawModel;
         if (tag != null && tag.hasKey("cover", Constants.NBT.TAG_COMPOUND))
         {
             ItemStack coverData = new ItemStack(tag.getCompoundTag("cover"));
-            cover = Block.getBlockFromItem(coverData.getItem()).getStateFromMeta(coverData.getMetadata());
+            rawModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(coverData, world, entity);
+            //cover = Block.getBlockFromItem(coverData.getItem()).getStateFromMeta(coverData.getMetadata());
         }
         else
         {
-            cover = Blocks.LOG.getDefaultState(); // Oak wood, with growth ring facing up
+            // Oak wood, with growth ring facing up. TODO: Something else that you can tell "something goes wrong" immediately?
+            rawModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.LOG.getDefaultState());
         }
-        return new PerspectiveMapWrapper(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(cover), CHOPPING_BOARD_TRANSFORMS);
+        return new PerspectiveMapWrapper(rawModel, CHOPPING_BOARD_TRANSFORMS);
 
     }
 
