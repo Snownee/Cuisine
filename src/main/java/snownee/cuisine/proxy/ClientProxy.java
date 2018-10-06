@@ -10,8 +10,6 @@ import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.client.renderer.CuisineTEISR;
 
 public class ClientProxy extends CommonProxy
 {
@@ -28,7 +26,6 @@ public class ClientProxy extends CommonProxy
     @Override
     public void init(FMLInitializationEvent event)
     {
-        CuisineRegistry.ITEM_CHOPPING_BOARD.setTileEntityItemStackRenderer(CuisineTEISR.INSTANCE);
         super.init(event);
     }
 

@@ -14,7 +14,7 @@ import snownee.cuisine.util.I18nUtil;
 public class CuisineConfigGUI implements IModGuiFactory
 {
     @Override
-    public void initialize(Minecraft minecraftInstance)
+    public void initialize(Minecraft mc)
     {
         // No-op
     }

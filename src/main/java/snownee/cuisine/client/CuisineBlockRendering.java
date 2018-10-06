@@ -1,6 +1,7 @@
 package snownee.cuisine.client;
 
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.animation.AnimationTESR;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -9,6 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.CuisineBlocks;
+import snownee.cuisine.client.model.ChoppingBoardItemModel;
 import snownee.cuisine.client.renderer.TESRBarbecueRack;
 import snownee.cuisine.client.renderer.TESRChoppingBoard;
 import snownee.cuisine.client.renderer.TESRMortar;
@@ -27,6 +29,8 @@ public final class CuisineBlockRendering
     @SubscribeEvent
     public static void onModelRegister(ModelRegistryEvent event)
     {
+        ModelLoaderRegistry.registerLoader(new ChoppingBoardItemModel.Loader());
+
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_MILK); // Work around. Belows are the same.
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_SAUCE);
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.FRUIT_VINEGAR);
