@@ -205,7 +205,7 @@ public class BlockChoppingBoard extends BlockMod
     @Override
     public TileEntity createTileEntity(World worldIn, IBlockState state)
     {
-        return new TileChoppingBoard(false);
+        return new TileChoppingBoard();
     }
 
     @Override

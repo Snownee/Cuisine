@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.ForgeHooksClient;
+import org.lwjgl.opengl.GL11;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.tiles.TileChoppingBoard;
 
@@ -28,7 +30,7 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
     {
         Minecraft mc = Minecraft.getMinecraft();
         ItemStack itemStack = tile.stacks.getStackInSlot(0);
-        if (!tile.isItem() && !itemStack.isEmpty())
+        if (!itemStack.isEmpty())
         {
             RenderItem renderItem = mc.getRenderItem();
             IBakedModel iBakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), mc.player);
@@ -89,14 +91,7 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
 
         BlockPos pos = tile.getPos();
 
-        if (tile.isItem())
-        {
-            GlStateManager.disableLighting();
-        }
-        else
-        {
-            RenderHelper.disableStandardItemLighting();
-        }
+        RenderHelper.disableStandardItemLighting();
 
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.enableBlend();
@@ -104,14 +99,15 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {
-            GlStateManager.shadeModel(7425);
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
         }
         else
         {
-            GlStateManager.shadeModel(7424);
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+
         }
 
-        buffer.begin(7, DefaultVertexFormats.BLOCK);
+        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         buffer.setTranslation(x / 0.75 - pos.getX() + 0.167F, y / 0.25 - pos.getY(), z / 0.75 - pos.getZ() + 0.167F);
 
         BlockRendererDispatcher blockRendererDispatcher = mc.getBlockRendererDispatcher();
@@ -122,16 +118,15 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
         if (destroyStage >= 0)
         {
             TextureAtlasSprite texture = mc.getTextureMapBlocks().getAtlasSprite("minecraft:blocks/destroy_stage_" + destroyStage);
-            IBakedModel bakedModelDestroy = net.minecraftforge.client.ForgeHooksClient.getDamageModel(bakedModel, texture, state, getWorld(), pos);
+            IBakedModel bakedModelDestroy = ForgeHooksClient.getDamageModel(bakedModel, texture, state, getWorld(), pos);
             blockRendererDispatcher.getBlockModelRenderer().renderModel(getWorld(), bakedModelDestroy, state, pos, buffer, false);
         }
 
         buffer.setTranslation(0.0D, 0.0D, 0.0D);
         Tessellator.getInstance().draw();
-        if (!tile.isItem())
-        {
-            RenderHelper.enableStandardItemLighting();
-        }
+
+        RenderHelper.enableStandardItemLighting();
+
         GlStateManager.popMatrix();
         GlStateManager.disableBlend();
         GlStateManager.enableCull();

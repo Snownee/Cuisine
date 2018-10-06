@@ -35,27 +35,19 @@ import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.util.ItemNBTUtil;
 
-@SuppressWarnings("deprecation")
 public class TileChoppingBoard extends TileInventoryBase
 {
     // Facing of item, only for rendering. set when player insert item in.
     private EnumFacing facing = EnumFacing.NORTH;
     private boolean isAxe = false;
     private int chopped = 0;
-    private final boolean isItem;
 
     public static final ItemStack DEFAULT_COVER = new ItemStack(Blocks.LOG);
     private ItemStack cover = ItemStack.EMPTY;
 
     public TileChoppingBoard()
     {
-        this(false);
-    }
-
-    public TileChoppingBoard(boolean isItem)
-    {
         super(1, 1);
-        this.isItem = isItem;
     }
 
     public void resetProcess()
@@ -173,6 +165,7 @@ public class TileChoppingBoard extends TileInventoryBase
         this.cover = cover;
     }
 
+    @SuppressWarnings("deprecation")
     public IBlockState getCover()
     {
         return Block.getBlockFromItem(cover.getItem()).getStateFromMeta(cover.getMetadata());
@@ -181,11 +174,6 @@ public class TileChoppingBoard extends TileInventoryBase
     public ItemStack getSelfItem()
     {
         return CuisineRegistry.CHOPPING_BOARD.getItemStack(cover);
-    }
-
-    public boolean isItem()
-    {
-        return isItem;
     }
 
     public void process(EntityPlayer playerIn, ItemStack tool, ProcessionType type, @Nullable Integer harvestlevel)
@@ -206,7 +194,7 @@ public class TileChoppingBoard extends TileInventoryBase
             }
             if (playerIn instanceof EntityPlayerMP)
             {
-                if (SkillUtil.hasPlayerLearnedSkill((EntityPlayerMP) playerIn, CulinaryHub.CommonSkills.SKILLED_CHOPPING))
+                if (SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.SKILLED_CHOPPING))
                 {
                     if (processingIngredient.getMaterial() == CulinaryHub.CommonMaterials.PUFFERFISH)
                     {
@@ -256,9 +244,9 @@ public class TileChoppingBoard extends TileInventoryBase
             }
             if (playerIn instanceof EntityPlayerMP && actions[i] < 10 && getWorld().rand.nextInt(5) == 0)
             {
-                SkillUtil.increasePoint((EntityPlayerMP) playerIn, CulinarySkillPoint.PROFICIENCY, 1);
+                SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
             }
-            boolean fewerLosses = playerIn instanceof EntityPlayerMP && SkillUtil.hasPlayerLearnedSkill((EntityPlayerMP) playerIn, CulinaryHub.CommonSkills.FEWER_LOSSES);
+            boolean fewerLosses = playerIn instanceof EntityPlayerMP && SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.FEWER_LOSSES);
             stacks.setStackInSlot(0, craftMaterial(stack, processingIngredient, actions, fewerLosses, world.rand));
         }
         else if (isAxe)
@@ -342,9 +330,6 @@ public class TileChoppingBoard extends TileInventoryBase
     @Override
     public void onContentsChanged(int slot)
     {
-        if (!isItem)
-        {
-            refresh();
-        }
+        refresh();
     }
 }
