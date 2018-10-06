@@ -113,6 +113,21 @@ public abstract class CompositeFood
     public abstract ResourceLocation getIdentifier();
 
     /**
+     * Returns a collection of "keywords" that describes the basic characteristics of
+     * this type of {@code CompositeFood}. For example, if a concrete type of {@code
+     * CompositeFood} represents salad, the returned collection may contain string
+     * {@code salad}. East-Asian cuisine may choose to include string {@code east-asian}.
+     * Food that contains rice, corn, wheat, potato as majority may want to have
+     * {@code staple-food} in its returned collection.
+     * <p>
+     * A keyword entry must be matched with regular expression <code>[\w\-]+</code>.
+     * </p>
+     *
+     * @return a read-only collection of "keywords"
+     */
+    public abstract Collection<String> getKeywords();
+
+    /**
      * Retrieve a read-only view of a list of all ingredients at the moment this is called.
      * @return A read-only view of all current present ingredients
      */

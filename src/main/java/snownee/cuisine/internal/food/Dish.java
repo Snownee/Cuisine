@@ -1,6 +1,8 @@
 package snownee.cuisine.internal.food;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -52,6 +54,12 @@ public class Dish extends CompositeFood
     public ResourceLocation getIdentifier()
     {
         return DISH_ID;
+    }
+
+    @Override
+    public Collection<String> getKeywords()
+    {
+        return Arrays.asList("east-asian", "wok");
     }
 
     @Override
