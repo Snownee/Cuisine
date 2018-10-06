@@ -7,7 +7,6 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import snownee.cuisine.Cuisine;
 
@@ -21,12 +20,6 @@ public class ClientProxy extends CommonProxy
         super.preInit(event);
         // MinecraftForge.EVENT_BUS.register(new CuisineParticles());
         OBJLoader.INSTANCE.addDomain(Cuisine.MODID);
-    }
-
-    @Override
-    public void init(FMLInitializationEvent event)
-    {
-        super.init(event);
     }
 
     @Override
