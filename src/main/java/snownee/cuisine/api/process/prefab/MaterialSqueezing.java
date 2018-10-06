@@ -1,5 +1,7 @@
 package snownee.cuisine.api.process.prefab;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -56,7 +58,7 @@ public class MaterialSqueezing implements BasinInteracting
     }
 
     @Override
-    public Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid)
+    public Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid, Random rand)
     {
         Ingredient ingredient;
         if (item.getItem() == CuisineRegistry.INGREDIENT)
