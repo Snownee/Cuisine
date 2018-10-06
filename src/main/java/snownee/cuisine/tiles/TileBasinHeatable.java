@@ -38,7 +38,7 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         if (!world.isRemote && !failed && tank.getFluid() != null && --tickCheckHeating <= 0)
         {
             int heat = getHeatValueFromState(world.getBlockState(pos.down()));
-            tickCheckHeating = heat > 0 ? 100 / heat : 200;
+            tickCheckHeating = heat > 0 ? 100 / heat : 600;
             if (heat == 0 && !world.provider.isNether())
             {
                 if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
@@ -66,6 +66,34 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         }
     }
 
+    public boolean isWorking()
+    {
+        boolean flag = !failed && tank.getFluid() != null;
+        if (flag)
+        {
+            int heat = getHeatValueFromState(world.getBlockState(pos.down()));
+            if (heat == 0 && !world.provider.isNether())
+            {
+                if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
+                {
+                    return false;
+                }
+            }
+        }
+        return flag;
+    }
+
+    public int getMaxHeatingTick()
+    {
+        int heat = getHeatValueFromState(world.getBlockState(pos.down()));
+        return heat > 0 ? 100 / heat : 600;
+    }
+
+    public int getCurrentHeatingTick()
+    {
+        return tickCheckHeating;
+    }
+
     @Override
     public void onContentsChanged(int slot)
     {
@@ -75,8 +103,7 @@ public class TileBasinHeatable extends TileBasin implements ITickable
             if (!world.isRemote && tank.getFluid() != null)
             {
                 failed = false;
-                int heat = getHeatValueFromState(world.getBlockState(pos.down())); // on this stage, blockstates are not actual states
-                tickCheckHeating = heat > 0 ? 100 / heat : 200;
+                tickCheckHeating = getMaxHeatingTick(); // on this stage, blockstates are not actual states
             }
         }
     }

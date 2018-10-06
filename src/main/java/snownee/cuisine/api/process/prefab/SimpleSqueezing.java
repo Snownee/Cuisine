@@ -1,5 +1,7 @@
 package snownee.cuisine.api.process.prefab;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -42,7 +44,7 @@ public class SimpleSqueezing implements BasinInteracting
     }
 
     @Override
-    public Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid)
+    public Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid, Random rand)
     {
         int amount = fluid == null ? 0 : fluid.amount;
         FluidStack copy = outputFluid.copy();

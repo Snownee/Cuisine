@@ -5,6 +5,10 @@
       "model": "forge:fluid",
       "custom": { "fluid": "soy_milk" }
     },
+    "milk": {
+      "model": "forge:fluid",
+      "custom": { "fluid": "milk" }
+    },
     "soy_sauce": {
       "model": "forge:fluid",
       "custom": { "fluid": "soy_sauce" }
@@ -24,6 +28,14 @@
     "fruit_vinegar": {
       "model": "forge:fluid",
       "custom": { "fluid": "fruit_vinegar" }
+    },
+    "sugarcane_juice": {
+      "model": "forge:fluid",
+      "custom": { "fluid": "sugarcane_juice" }
+    },
+    "beet_juice": {
+      "model": "forge:fluid",
+      "custom": { "fluid": "beet_juice" }
     },
     "cuisine_drink": {
       "model": "forge:fluid",

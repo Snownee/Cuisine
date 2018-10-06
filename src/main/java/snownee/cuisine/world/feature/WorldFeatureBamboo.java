@@ -1,4 +1,4 @@
-package snownee.cuisine.world.gen.feature;
+package snownee.cuisine.world.feature;
 
 import java.util.Random;
 

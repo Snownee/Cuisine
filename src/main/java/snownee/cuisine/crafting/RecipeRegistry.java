@@ -20,6 +20,7 @@ import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
 import snownee.cuisine.api.process.prefab.DistillationBoiling;
 import snownee.cuisine.api.process.prefab.MaterialSqueezing;
+import snownee.cuisine.api.process.prefab.SimpleSqueezing;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
@@ -82,6 +83,11 @@ public class RecipeRegistry
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Blocks.MELON_BLOCK), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 50)));
 
         Processing.BOILING.add(new DistillationBoiling(new FluidStack(FluidRegistry.WATER, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), 0));
+        Processing.BOILING.add(new DistillationBoiling(new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
+        Processing.BOILING.add(new DistillationBoiling(new FluidStack(CuisineFluids.BEET_JUICE, 200), new ItemStack(Items.SUGAR), 2));
+
+        Processing.SQUEEZING.add(new SimpleSqueezing(ItemDefinition.of(Items.BEETROOT), new FluidStack(CuisineFluids.BEET_JUICE, 200))); // TODO: output beet seeds?
+        Processing.SQUEEZING.add(new SimpleSqueezing(ItemDefinition.of(Blocks.REEDS), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200))); // TODO: output beet seeds?
 
         CulinaryHub.API_INSTANCE.getKnownMaterials().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
 

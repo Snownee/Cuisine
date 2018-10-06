@@ -1,5 +1,7 @@
 package snownee.cuisine.api.process;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
@@ -22,7 +24,7 @@ public interface BasinInteracting extends CuisineProcessingRecipe
 
     boolean matchesItem(ItemStack item);
 
-    Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid);
+    Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid, Random rand);
 
     static int descendingCompare(BasinInteracting a, BasinInteracting b)
     {

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -45,7 +44,7 @@ public class RecipeChoppingBoard extends AbstractDynamicShapedRecipe
             if (stack.getItem().getToolClasses(stack).contains("axe"))
             {
                 stack = stack.copy();
-                stack.attemptDamageItem(1, new Random(Minecraft.getSystemTime()), null);
+                stack.attemptDamageItem(1, new Random(), null);
                 ret.set(i, stack);
             }
             else

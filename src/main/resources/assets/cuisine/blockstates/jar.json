@@ -1,8 +1,13 @@
 {
-    "variants": {
-        "variant=0": { "model": "cuisine:jar" },
-        "variant=1": { "model": "cuisine:jar" },
-        "variant=2": { "model": "cuisine:jar" },
-        "variant=3": { "model": "cuisine:jar" }
-    }
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cuisine:jar"
+  },
+  "variants": {
+    "variant=0": [{}],
+    "variant=1": [{}],
+    "variant=2": [{}],
+    "variant=3": [{}],
+    "inventory": [{}]
+  }
 }
