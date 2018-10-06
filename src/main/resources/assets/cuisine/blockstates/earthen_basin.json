@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cuisine:earthen_basin"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

@@ -22,6 +22,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -210,6 +212,16 @@ public class BlockBasin extends BlockMod
             {
                 ((TileBasinHeatable) tile).onContentsChanged(0);
             }
+        }
+    }
+
+    @Override
+    public void fillWithRain(World worldIn, BlockPos pos)
+    {
+        IFluidHandler handler = FluidUtil.getFluidHandler(worldIn, pos, EnumFacing.UP);
+        if (handler != null)
+        {
+            handler.fill(new FluidStack(FluidRegistry.WATER, 100), true);
         }
     }
 
