@@ -34,6 +34,7 @@ import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.IModItem;
 import snownee.kiwi.util.Util;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public final class ItemIngredient extends ItemFood implements IModItem
@@ -94,11 +95,14 @@ public final class ItemIngredient extends ItemFood implements IModItem
         if (data != null)
         {
             Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
-            for (Effect effect : ingredient.getEffects())
+            if (ingredient != null)
             {
-                if (effect.showInTooltips())
+                for (Effect effect : ingredient.getEffects())
                 {
-                    tooltip.add(Util.color(effect.getColorForDisplay()) + I18n.format(effect.getName()));
+                    if (effect.showInTooltips())
+                    {
+                        tooltip.add(Util.color(effect.getColorForDisplay()) + I18n.format(effect.getName()));
+                    }
                 }
             }
         }
@@ -111,6 +115,7 @@ public final class ItemIngredient extends ItemFood implements IModItem
         return AdvancedFontRenderer.INSTANCE;
     }
 
+    @Nonnull
     @Override
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack)
@@ -123,7 +128,7 @@ public final class ItemIngredient extends ItemFood implements IModItem
         else
         {
             Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
-            return ingredient.getTranslation();
+            return ingredient == null ? I18nUtil.translate("material.unknown") : ingredient.getTranslation();
         }
     }
 

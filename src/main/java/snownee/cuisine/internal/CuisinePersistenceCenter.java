@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.Validate;
 
@@ -144,13 +145,14 @@ public interface CuisinePersistenceCenter
         return dish;
     }
 
-    static Ingredient deserializeIngredient(@Nonnull NBTTagCompound data)
+    static @Nullable Ingredient deserializeIngredient(@Nonnull NBTTagCompound data)
     {
         final String materialKey = data.getString(CuisineSharedSecrets.KEY_MATERIAL);
         Material material = CulinaryHub.API_INSTANCE.findMaterial(materialKey);
         if (material == null)
         {
-            throw new NullPointerException(String.format("Unknown material '%s'", materialKey));
+            //throw new NullPointerException(String.format("Unknown material '%s'", materialKey));
+            return null;
         }
         Form form = Form.valueOf(data.getString(CuisineSharedSecrets.KEY_FORM));
         float quantity = data.getFloat(CuisineSharedSecrets.KEY_QUANTITY);
