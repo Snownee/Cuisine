@@ -72,13 +72,28 @@ public class ChoppingBoardOverride extends ItemOverrideList
             ))
             .build();
 
+    /**
+     * Get a {@code TRSRTransformation} object using supplied data. Only uniform scale is supported.
+     * This is NOT a general purpose short-cut for getting a TRSRTransformation! It's here for mere
+     * purpose of being a human-readable shortcut.
+     *
+     * @param tx Translation x in pixel
+     * @param ty Translation y in pixel
+     * @param tz Translation z in pixel
+     * @param ax Angle x in degree
+     * @param ay Angle y in degree
+     * @param az Angle z in degree
+     * @param scale Uniform scale quantity
+     *
+     * @return The correct TRSRTransformation object
+     */
     private static TRSRTransformation of(float tx, float ty, float tz, float ax, float ay, float az, float scale)
     {
         return new TRSRTransformation(
                 new Vector3f(tx / 16, ty / 16, tz / 16), // translation
                 TRSRTransformation.quatFromXYZDegrees(new Vector3f(ax, ay, az)), // left-rotation
-                new Vector3f(scale, scale, scale), // scale
-                null
+                new Vector3f(scale, scale, scale), // uniform scale
+                null // we don't do right rotation here
         );
     }
 
@@ -91,17 +106,18 @@ public class ChoppingBoardOverride extends ItemOverrideList
     public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
     {
         NBTTagCompound tag = ItemNBTUtil.getCompound(stack, "BlockEntityTag", true);
+        IBlockState cover;
         if (tag != null && tag.hasKey("cover", Constants.NBT.TAG_COMPOUND))
         {
             ItemStack coverData = new ItemStack(tag.getCompoundTag("cover"));
-            IBlockState cover = Block.getBlockFromItem(coverData.getItem()).getStateFromMeta(coverData.getMetadata());
-            return new PerspectiveMapWrapper(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(cover), CHOPPING_BOARD_TRANSFORMS);
+            cover = Block.getBlockFromItem(coverData.getItem()).getStateFromMeta(coverData.getMetadata());
         }
         else
         {
-            // Fall back to air. TODO Fall back to oak wood?
-            return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.AIR.getDefaultState());
+            cover = Blocks.LOG.getDefaultState(); // Oak wood, with growth ring facing up
         }
+        return new PerspectiveMapWrapper(Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(cover), CHOPPING_BOARD_TRANSFORMS);
+
     }
 
     @Override
