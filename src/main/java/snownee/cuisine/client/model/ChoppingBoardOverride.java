@@ -25,6 +25,9 @@ import java.util.Collections;
 
 public class ChoppingBoardOverride extends ItemOverrideList
 {
+    private static final TRSRTransformation CHOPPING_BOARD_SCALE_DOWN =
+            new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null);
+
     /*
      * The correct TRSRTransformation data for correctly rendering a chopping board.
      * The core data is cited from Connected Texture Mod (CTM) with permission from
@@ -41,34 +44,28 @@ public class ChoppingBoardOverride extends ItemOverrideList
      *
      * TODO: Awaiting bs2609's Pull Request (GitHub MinecraftForge/MinecraftForge#5180)
      */
-    private static final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> CHOPPING_BOARD_TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
+    private static final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> CHOPPING_BOARD_TRANSFORMS
+            = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
             .put(ItemCameraTransforms.TransformType.GUI, TRSRTransformation.blockCenterToCorner(
-                    of(0, 0, 0, 30, 45, 0, 0.625f)
-                            .compose(new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null))
+                    of(0, 0, 0, 30, 45, 0, 0.625f).compose(CHOPPING_BOARD_SCALE_DOWN)
             ))
             .put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, TRSRTransformation.blockCenterToCorner(
-                    of(0, 2.5f, 0, 75, 45, 0, 0.375f)
-                            .compose(new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null))
+                    of(0, 2.5f, 0, 75, 45, 0, 0.375f).compose(CHOPPING_BOARD_SCALE_DOWN)
             ))
             .put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, TRSRTransformation.blockCenterToCorner(
-                    of(0, 2.5f, 0, 75, 45, 0, 0.375f)
-                            .compose(new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null))
+                    of(0, 2.5f, 0, 75, 45, 0, 0.375f).compose(CHOPPING_BOARD_SCALE_DOWN)
             ))
             .put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TRSRTransformation.blockCenterToCorner(
-                    of(0, 0, 0, 0, 45, 0, 0.4f)
-                            .compose(new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null))
+                    of(0, 0, 0, 0, 45, 0, 0.4f).compose(CHOPPING_BOARD_SCALE_DOWN)
             ))
             .put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TRSRTransformation.blockCenterToCorner(
-                    of(0, 0, 0, 0, 225, 0, 0.4f)
-                            .compose(new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null))
+                    of(0, 0, 0, 0, 225, 0, 0.4f).compose(CHOPPING_BOARD_SCALE_DOWN)
             ))
             .put(ItemCameraTransforms.TransformType.GROUND, TRSRTransformation.blockCenterToCorner(
-                    of(0, 2, 0, 0, 0, 0, 0.25f)
-                            .compose(new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null))
+                    of(0, 2, 0, 0, 0, 0, 0.25f).compose(CHOPPING_BOARD_SCALE_DOWN)
             ))
             .put(ItemCameraTransforms.TransformType.FIXED, TRSRTransformation.blockCenterToCorner(
-                    of(0, 0, 0, 0, 0, 0, 0.5f)
-                            .compose(new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null))
+                    of(0, 0, 0, 0, 0, 0, 0.5f).compose(CHOPPING_BOARD_SCALE_DOWN)
             ))
             .build();
 
@@ -103,6 +100,7 @@ public class ChoppingBoardOverride extends ItemOverrideList
     }
 
     @Override
+    @SuppressWarnings("deprecation") // Suppress deprecation warning due to getStateFromMeta. Think about directly storing IBlockState?
     public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
     {
         NBTTagCompound tag = ItemNBTUtil.getCompound(stack, "BlockEntityTag", true);
