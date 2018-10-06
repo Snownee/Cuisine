@@ -33,7 +33,7 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
         if (!itemStack.isEmpty())
         {
             RenderItem renderItem = mc.getRenderItem();
-            IBakedModel iBakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), mc.player);
+            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), mc.player);
 
             GlStateManager.pushMatrix();
             RenderHelper.disableStandardItemLighting();
@@ -57,7 +57,7 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
                 GlStateManager.translate(0, 0.75, -0.2);
                 GlStateManager.rotate(180, 1, 0F, 0.2F);
             }
-            else if (iBakedModel.isGui3d())
+            else if (bakedModel.isGui3d())
             {
                 // Block
                 GlStateManager.scale(0.8, 0.8, 0.8);

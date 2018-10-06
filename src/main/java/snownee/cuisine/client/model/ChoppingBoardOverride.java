@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 import java.util.Collections;
 
-public class ChoppingBoardOverride extends ItemOverrideList
+public final class ChoppingBoardOverride extends ItemOverrideList
 {
     private static final TRSRTransformation CHOPPING_BOARD_SCALE_DOWN =
             new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null);

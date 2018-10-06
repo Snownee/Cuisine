@@ -10,7 +10,7 @@ import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.proxy.ClientProxy;
 
-public class DishMeshDefinition implements ItemMeshDefinition
+public final class DishMeshDefinition implements ItemMeshDefinition
 {
 
     public static final DishMeshDefinition INSTANCE = new DishMeshDefinition();

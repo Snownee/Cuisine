@@ -23,7 +23,7 @@ import snownee.cuisine.api.Form;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.proxy.ClientProxy;
 
-public class IngredientMeshDefinition implements ItemMeshDefinition, ISelectiveResourceReloadListener
+public final class IngredientMeshDefinition implements ItemMeshDefinition, ISelectiveResourceReloadListener
 {
     public static final IngredientMeshDefinition INSTANCE = new IngredientMeshDefinition();
 

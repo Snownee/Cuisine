@@ -23,6 +23,12 @@ public final class ChoppingBoardItemModel implements IModel
 {
     public static final class Loader implements ICustomModelLoader
     {
+        public static final Loader INSTANCE = new Loader();
+
+        private Loader()
+        {
+            // No-op, only for private access
+        }
 
         @Override
         public void onResourceManagerReload(IResourceManager manager)
@@ -71,7 +77,7 @@ public final class ChoppingBoardItemModel implements IModel
         return this;
     }
 
-    public static final class Baked implements IBakedModel
+    private static final class Baked implements IBakedModel
     {
         private boolean ambientOcclusion;
         private boolean gui3D;
