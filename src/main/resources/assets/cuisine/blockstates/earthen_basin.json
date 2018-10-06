@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cuisine:earthen_basin"
+    "model": "cuisine:basin",
+    "textures": {
+      "particle": "blocks/hardened_clay"
+    }
   },
   "variants": {
     "normal": [{}],

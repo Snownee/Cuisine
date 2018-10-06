@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cuisine:wooden_basin"
+    "model": "cuisine:basin",
+    "textures": {
+      "particle": "blocks/planks_oak"
+    }
   },
   "variants": {
     "normal": [{}],
