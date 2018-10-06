@@ -37,7 +37,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.items.ItemCrops;
-import snownee.cuisine.world.gen.feature.WorldFeatureBamboo;
+import snownee.cuisine.world.feature.WorldFeatureBamboo;
 import snownee.kiwi.block.BlockMod;
 
 public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable

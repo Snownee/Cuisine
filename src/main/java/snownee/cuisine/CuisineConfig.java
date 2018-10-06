@@ -38,7 +38,20 @@ public final class CuisineConfig
             // No-op. Package-level access.
         }
 
-        @Config.Comment("Larger = More possible to gen, 0 = Do not gen")
+        @Config.Comment("Give new player manual")
+        @Config.LangKey("cuisine.config.general.spawn_book")
+        @Config.Name("SpawnBook")
+        @Config.RequiresMcRestart
+        public boolean spawnBook = true;
+
+        @Config.Comment("Larger = Less possible to gen, 0 = Do not gen")
+        @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
+        @Config.Name("BamboosGenRate")
+        @Config.RangeInt(min = 0)
+        @Config.RequiresMcRestart
+        public int bamboosGenRate = 35;
+
+        @Config.Comment("Larger = Less possible to gen, 0 = Do not gen")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
         @Config.Name("CropsGenRate")
         @Config.RangeInt(min = 0)
@@ -73,8 +86,7 @@ public final class CuisineConfig
         @Config.LangKey("cuisine.config.progression.axe_list")
         @Config.Name("AxeList")
         @Config.RequiresMcRestart
-        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe",
-                "minecraft:golden_axe", "minecraft:diamond_axe" };
+        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
     }
 
     @Config.Comment("Config options related to hardcore mode.")
@@ -137,8 +149,7 @@ public final class CuisineConfig
         public boolean loseSkillPointsOnDeath = false;
 
         @Config.Comment(
-            { "If Culinary Skill Downgrade on Death is enabled, this will determines how many point are kept.",
-                    "For example, 0.5 means 50% are kept." }
+            { "If Culinary Skill Downgrade on Death is enabled, this will determines how many point are kept.", "For example, 0.5 means 50% are kept." }
         )
         @Config.LangKey("cuisine.config.general.skill_retain_ratio")
         @Config.Name("CulinarySkillRetainRatio")

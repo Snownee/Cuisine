@@ -51,12 +51,14 @@ public class CommonProxy
         NetworkRegistry.INSTANCE.registerGuiHandler(Cuisine.getInstance(), new CuisineGuiHandler());
 
         // MinecraftForge.EVENT_BUS.register(new DropHandler());
-        MinecraftForge.EVENT_BUS.register(new SpawnHandler());
+        if (CuisineConfig.GENERAL.spawnBook)
+        {
+            MinecraftForge.EVENT_BUS.register(new SpawnHandler());
+        }
         MinecraftForge.EVENT_BUS.register(new BetterHarvest());
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.MATERIAL, new BehaviourArmDispense());
         BehaviorWokInteraction behaviorWokInteraction = new BehaviorWokInteraction();
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(CuisineRegistry.PLACED_DISH),
-                behaviorWokInteraction);
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(CuisineRegistry.PLACED_DISH), behaviorWokInteraction);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.SPICE_BOTTLE, behaviorWokInteraction);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.IRON_SPATULA, behaviorWokInteraction);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.INGREDIENT, behaviorWokInteraction);
@@ -73,7 +75,10 @@ public class CommonProxy
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenGarden());
         }
-        MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenBamboo());
+        if (CuisineConfig.GENERAL.bamboosGenRate > 0)
+        {
+            MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenBamboo());
+        }
     }
 
     public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation identifier, ImmutableMap<String, ITimeValue> parameters)

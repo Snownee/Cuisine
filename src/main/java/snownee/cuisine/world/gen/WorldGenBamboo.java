@@ -12,8 +12,9 @@ import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.world.gen.feature.WorldFeatureBamboo;
+import snownee.cuisine.world.feature.WorldFeatureBamboo;
 
 public class WorldGenBamboo
 {
@@ -30,7 +31,7 @@ public class WorldGenBamboo
 
             Biome biome = worldIn.getBiome(position);
 
-            if (biome.getBaseHeight() > 0.4F || biome.isSnowyBiome() || biome.getRainfall() < 0.5F || biome instanceof BiomeOcean || biome instanceof BiomeSwamp || rand.nextDouble() < 0.97D || rand.nextDouble() > biome.getDefaultTemperature())
+            if (biome.getBaseHeight() > 0.4F || biome.isSnowyBiome() || biome.getRainfall() < 0.5F || biome instanceof BiomeOcean || biome instanceof BiomeSwamp || rand.nextInt(CuisineConfig.GENERAL.bamboosGenRate) > 0 || rand.nextDouble() > biome.getDefaultTemperature())
             {
                 return;
             }
