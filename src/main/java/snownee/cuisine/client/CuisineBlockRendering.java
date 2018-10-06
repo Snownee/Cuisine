@@ -29,7 +29,7 @@ public final class CuisineBlockRendering
     @SubscribeEvent
     public static void onModelRegister(ModelRegistryEvent event)
     {
-        ModelLoaderRegistry.registerLoader(new ChoppingBoardItemModel.Loader());
+        ModelLoaderRegistry.registerLoader(ChoppingBoardItemModel.Loader.INSTANCE);
 
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_MILK); // Work around. Belows are the same.
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_SAUCE);
