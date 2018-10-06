@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:wooden_basin"
+  },
+  "pattern": [
+    "m m",
+    "bmb"
+  ],
+  "key": {
+    "m": {
+      "ore" : "plankWood",
+      "type": "forge:ore_dict"
+    },
+    "b": {
+      "item" : "minecraft:iron_bars"
+    }
+  }
+}

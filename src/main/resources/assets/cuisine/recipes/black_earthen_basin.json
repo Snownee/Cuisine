@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:earthen_basin_colored",
+    "data": 15
+  },
+  "pattern": [
+    "m m",
+    "bmb"
+  ],
+  "key": {
+    "m": {
+      "item" : "minecraft:stained_hardened_clay",
+      "data": 15
+    },
+    "b": {
+      "item" : "minecraft:iron_bars"
+    }
+  }
+}

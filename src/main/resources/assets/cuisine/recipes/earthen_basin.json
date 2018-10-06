@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:earthen_basin"
+  },
+  "pattern": [
+    "m m",
+    "bmb"
+  ],
+  "key": {
+    "m": {
+      "item" : "minecraft:hardened_clay"
+    },
+    "b": {
+      "item" : "minecraft:iron_bars"
+    }
+  }
+}
