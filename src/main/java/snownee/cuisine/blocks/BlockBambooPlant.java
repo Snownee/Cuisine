@@ -220,7 +220,8 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
             }
             else
             {
-                worldIn.destroyBlock(pos, true);
+                this.dropBlockAsItem(worldIn, pos, state, 0);
+                worldIn.setBlockToAir(pos);
                 return false;
             }
         }
@@ -230,7 +231,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
             boolean flag = worldIn.getBlockState(basePos).getBlock() == this;
             if (!flag)
             {
-                worldIn.destroyBlock(pos, false);
+                worldIn.setBlockToAir(pos);
             }
             return flag;
         }
