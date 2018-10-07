@@ -39,6 +39,10 @@ repositories {
         name = "jared"
         url = "http://maven.blamejared.com"
     }
+    maven {
+        name = "tehnut"
+        url = "http://tehnut.info/maven"
+    }
 
     flatDir {
         dirs 'libs'
@@ -62,6 +66,7 @@ dependencies {
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${ct_version}"
     deobfCompile "CraftTweaker2:CraftTweaker2-API:${ct_version}"
     deobfCompile "CraftTweaker2:ZenScript:${ct_version}"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
     deobfCompile("mcjty.theoneprobe:TheOneProbe-1.12:${top_version}") {
         exclude group: 'cofh'
     }

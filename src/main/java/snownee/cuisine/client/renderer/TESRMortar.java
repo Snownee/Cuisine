@@ -18,7 +18,6 @@ public class TESRMortar extends TileEntitySpecialRenderer<TileMortar>
     public void render(TileMortar tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         // Render the contents "inside" mortar.
-        // TODO Can we use FastTESR?
         GlStateManager.pushMatrix();
 
         GlStateManager.translate(x + 0.5F, y, z + 0.5F);
