@@ -1,14 +1,39 @@
 {
   "forge_marker": 1,
+  "defaults": {
+    "model": "cuisine:chopping_board_special",
+    "textures": {
+      "particle": "blocks/log_oak_top"
+    }
+  },
   "variants": {
-    "normal": {
-      "model": "cuisine:void",
-      "textures": {
-        "particle": "blocks/log_oak_top"
+    "facing": {
+      "north": { "y": 90  },
+      "south": { "y": 270 },
+      "west":  { "y": 0   },
+      "east":  { "y": 180 }
+    },
+    "kitchen_knife": {
+      "false": {},
+      "true": {
+        "submodel": {
+          "kitchen_knife": {
+            "model": "builtin/generated",
+            "textures": {
+              "layer0": "cuisine:item/kitchen_knife"
+            },
+            "transform": {
+              "translation": [ 0, 0.0625, -0.15 ],
+              "rotation": [ { "x": 0 }, { "y": -22.5 }, { "z": 180 } ],
+              "scale": 0.75
+            }
+          }
+        }
       }
     },
     "inventory": [{
-      "model": "cuisine:chopping_board_item"
+      "model": "cuisine:chopping_board_special",
+      "transform": "identity"
     }]
   }
 }

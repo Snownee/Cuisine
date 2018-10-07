@@ -3,18 +3,22 @@ package snownee.cuisine.blocks;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -25,6 +29,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,6 +44,7 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.items.ItemKitchenKnife;
+import snownee.cuisine.library.UnlistedPropertyItemStack;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.tiles.TileChoppingBoard;
 import snownee.cuisine.tiles.TileChoppingBoard.ProcessionType;
@@ -46,11 +54,17 @@ import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.network.NetworkChannel;
 import snownee.kiwi.util.OreUtil;
 
+import javax.annotation.Nullable;
+
 @SuppressWarnings("deprecation")
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
 public class BlockChoppingBoard extends BlockMod
 {
+    public static final UnlistedPropertyItemStack COVER_KEY = UnlistedPropertyItemStack.of("cover");
+
     private static final AxisAlignedBB AABB = new AxisAlignedBB(0.125D, 0.0D, 0.125D, 0.875D, 0.25D, 0.875D);
+
+    private static final PropertyBool HAS_KITCHEN_KNIFE = PropertyBool.create("kitchen_knife");
 
     public BlockChoppingBoard(String name)
     {
@@ -58,12 +72,62 @@ public class BlockChoppingBoard extends BlockMod
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHardness(1.5F);
         setSoundType(SoundType.WOOD);
+        this.setDefaultState(this.blockState.getBaseState()
+                .withProperty(HAS_KITCHEN_KNIFE, Boolean.FALSE)
+                .withProperty(BlockHorizontal.FACING, EnumFacing.NORTH)
+        );
     }
 
     @Override
     public boolean hasItem()
     {
         return false;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState()
+    {
+        return new ExtendedBlockState(this,
+                new IProperty<?>[] { HAS_KITCHEN_KNIFE, BlockHorizontal.FACING },
+                new IUnlistedProperty<?>[] { COVER_KEY }
+        );
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState();
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileChoppingBoard)
+        {
+            TileChoppingBoard board = (TileChoppingBoard) tile;
+            return state
+                    .withProperty(BlockHorizontal.FACING, board.getFacing())
+                    .withProperty(HAS_KITCHEN_KNIFE, board.hasKitchenKnife() ? Boolean.TRUE : Boolean.FALSE);
+        }
+        return state.withProperty(BlockHorizontal.FACING, EnumFacing.NORTH).withProperty(HAS_KITCHEN_KNIFE, Boolean.FALSE);
+    }
+
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileChoppingBoard)
+        {
+            return this.getActualState(((IExtendedBlockState)state).withProperty(COVER_KEY, ((TileChoppingBoard) tile).getCover()), world, pos);
+        }
+        return this.getActualState(((IExtendedBlockState)state).withProperty(COVER_KEY, ItemStack.EMPTY), world, pos);
     }
 
     @Override
@@ -83,7 +147,6 @@ public class BlockChoppingBoard extends BlockMod
                     NetworkChannel.INSTANCE.sendToAllAround(new PacketCustomEvent(2, pos.getX(), pos.getY(), pos.getZ()), worldIn.provider.getDimension(), pos);
                 }
                 teCB.process(playerIn, held, ProcessionType.KNIFE_VERTICAL, null);
-                return true;
             }
             else if (empty && teCB.isItemValidForSlot(0, held))
             {
@@ -92,18 +155,20 @@ public class BlockChoppingBoard extends BlockMod
                     return false;
                 }
                 teCB.setFacing(playerIn.getHorizontalFacing());
-                if (!worldIn.isRemote && playerIn instanceof EntityPlayerMP)
+                if (!worldIn.isRemote)
                 {
-                    held = teCB.insertItem((EntityPlayerMP) playerIn, held);
+                    held = teCB.insertItem(playerIn, held);
                     playerIn.setHeldItem(hand, held);
-                    return !teCB.stacks.getStackInSlot(0).isEmpty();
+                    //return !teCB.stacks.getStackInSlot(0).isEmpty();
                 }
+                worldIn.notifyBlockUpdate(pos, state, state, 11);
                 return true;
             }
             else if (!empty)
             {
                 StacksUtil.dropInventoryItems(worldIn, pos, teCB.stacks, false);
                 teCB.resetProcess();
+                worldIn.notifyBlockUpdate(pos, state, state, 11);
                 return true;
             }
         }
@@ -121,7 +186,6 @@ public class BlockChoppingBoard extends BlockMod
             if (held.getItem() == CuisineRegistry.KITCHEN_KNIFE)
             {
                 ((TileChoppingBoard) te).process(playerIn, held, ProcessionType.KNIFE_HORIZONTAL, null);
-                return;
             }
             else if (!worldIn.isRemote && CuisineConfig.PROGRESSION.axeChopping && playerIn.getCooledAttackStrength(0) > 0.5)
             {
@@ -160,7 +224,10 @@ public class BlockChoppingBoard extends BlockMod
             if (tag != null)
             {
                 Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient(tag);
-                return ingredient.getForm().ordinal() + 1;
+                if (ingredient != null)
+                {
+                    return ingredient.getForm().ordinal() + 1;
+                }
             }
         }
         return 0;
@@ -175,7 +242,13 @@ public class BlockChoppingBoard extends BlockMod
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return EnumBlockRenderType.INVISIBLE;
+        return EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -279,13 +352,13 @@ public class BlockChoppingBoard extends BlockMod
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn)
     {
         NBTTagCompound tag = ItemNBTUtil.getCompound(stack, "BlockEntityTag", true);
         if (tag != null && tag.hasKey("cover", Constants.NBT.TAG_COMPOUND))
         {
-            ItemStack stack2 = new ItemStack(tag.getCompoundTag("cover"));
-            tooltip.add(stack2.getDisplayName());
+            ItemStack cover = new ItemStack(tag.getCompoundTag("cover"));
+            tooltip.add(cover.getDisplayName());
         }
         else
         {

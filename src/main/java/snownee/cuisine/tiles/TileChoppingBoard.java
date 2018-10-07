@@ -56,7 +56,7 @@ public class TileChoppingBoard extends TileInventoryBase
         chopped = 0;
     }
 
-    public ItemStack insertItem(EntityPlayerMP player, ItemStack stack)
+    public ItemStack insertItem(EntityPlayer player, ItemStack stack)
     {
         if (stacks.getStackInSlot(0).isEmpty() && stack.getCount() >= 2 && (stack.getItem() == CuisineRegistry.INGREDIENT || (CulinaryHub.API_INSTANCE.isKnownMaterial(stack) && !CulinaryHub.API_INSTANCE.findMaterial(stack).getValidForms().isEmpty())) && SkillUtil.hasPlayerLearnedSkill(player, CulinaryHub.CommonSkills.DOUBLE_CHOPPING))
         {
@@ -80,6 +80,11 @@ public class TileChoppingBoard extends TileInventoryBase
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
         return stack.getItem() == CuisineRegistry.KITCHEN_KNIFE || stack.getItem() == CuisineRegistry.INGREDIENT || (CulinaryHub.API_INSTANCE.isKnownMaterial(stack) && !CulinaryHub.API_INSTANCE.findMaterial(stack).getValidForms().isEmpty()) || (CuisineConfig.PROGRESSION.axeChopping && Processing.CHOPPING.findRecipe(stack) != null);
+    }
+
+    public boolean hasKitchenKnife()
+    {
+        return stacks.getStackInSlot(0).getItem() == CuisineRegistry.KITCHEN_KNIFE;
     }
 
     public EnumFacing getFacing()
@@ -158,6 +163,8 @@ public class TileChoppingBoard extends TileInventoryBase
         {
             setCover(DEFAULT_COVER);
         }
+        // Refresh rendering after data are all set, for getActualState depends on them
+        this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
     }
 
     public void setCover(ItemStack cover)
@@ -165,10 +172,10 @@ public class TileChoppingBoard extends TileInventoryBase
         this.cover = cover;
     }
 
-    @SuppressWarnings("deprecation")
-    public IBlockState getCover()
+    public ItemStack getCover()
     {
-        return Block.getBlockFromItem(cover.getItem()).getStateFromMeta(cover.getMetadata());
+        /*return Block.getBlockFromItem(cover.getItem()).getStateFromMeta(cover.getMetadata());*/
+        return cover;
     }
 
     public ItemStack getSelfItem()

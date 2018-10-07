@@ -1,25 +1,32 @@
 package snownee.cuisine.client.model;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.blocks.BlockChoppingBoard;
 
 import javax.annotation.Nullable;
+import javax.vecmath.Vector3f;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-public final class ChoppingBoardItemModel implements IModel
+public final class ChoppingBoardModel implements IModel
 {
     public static final class Loader implements ICustomModelLoader
     {
@@ -39,19 +46,19 @@ public final class ChoppingBoardItemModel implements IModel
         @Override
         public boolean accepts(ResourceLocation location)
         {
-            return Cuisine.MODID.equals(location.getNamespace()) && "models/block/chopping_board_item".equals(location.getPath());
+            return Cuisine.MODID.equals(location.getNamespace()) && "models/block/chopping_board_special".equals(location.getPath());
         }
 
         @Override
         public IModel loadModel(ResourceLocation location)
         {
-            return new ChoppingBoardItemModel();
+            return new ChoppingBoardModel();
         }
     }
 
     private boolean ambientOcclusion, gui3D;
 
-    private ChoppingBoardItemModel()
+    private ChoppingBoardModel()
     {
         // No-op, only used for restricting access level
     }
@@ -79,6 +86,12 @@ public final class ChoppingBoardItemModel implements IModel
 
     private static final class Baked implements IBakedModel
     {
+        //
+        private static final TRSRTransformation TRANSFORM =
+                TRSRTransformation.blockCenterToCorner(
+                        new TRSRTransformation(new Vector3f(0F, -0.38F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null)
+                );
+
         private boolean ambientOcclusion;
         private boolean gui3D;
         private TextureAtlasSprite particleTexture;
@@ -93,7 +106,40 @@ public final class ChoppingBoardItemModel implements IModel
         @Override
         public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
         {
-            return new ArrayList<>(0); // wtf
+            if (state instanceof IExtendedBlockState)
+            {
+                ItemStack cover = ((IExtendedBlockState) state).getValue(BlockChoppingBoard.COVER_KEY);
+                if (cover.isEmpty())
+                {
+                    // There was a certain amount of latency; we return an empty list for rendering
+                    // nothing if the cover data are not ready yet.
+                    return Collections.emptyList();
+                }
+                IBakedModel coverModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(cover, null, null);
+                List<BakedQuad> quads = coverModel.getQuads(state, side, rand);
+                // Doing magic to transform quads, so that they look small
+                List<BakedQuad> transformedQuads = new ArrayList<>();
+                if (!coverModel.isBuiltInRenderer())
+                {
+                    for (BakedQuad quad : quads)
+                    {
+                        QuadTransformer transformer = new QuadTransformer(TRANSFORM, quad.getFormat());
+                        quad.pipe(transformer);
+                        transformedQuads.add(transformer.build());
+                    }
+                    return transformedQuads;
+                }
+                else
+                {
+                    return quads;
+                }
+            }
+            else
+            {
+                // Wut? this can never happen unless we changed implementation, or this model
+                // is used on something else. Render nothing please.
+                return Collections.emptyList();
+            }
         }
 
         @Override
