@@ -113,9 +113,13 @@ public final class ChoppingBoardModel implements IModel
                 IBakedModel coverModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(cover, null, null);
                 List<BakedQuad> quads = coverModel.getQuads(state, side, rand);
                 // Doing magic to transform quads, so that they look small
-                List<BakedQuad> transformedQuads = new ArrayList<>();
-                if (!coverModel.isBuiltInRenderer())
+                if (coverModel.isBuiltInRenderer())
                 {
+                    return quads;
+                }
+                else
+                {
+                    List<BakedQuad> transformedQuads = new ArrayList<>();
                     for (BakedQuad quad : quads)
                     {
                         QuadTransformer transformer = new QuadTransformer(TRANSFORM, quad.getFormat());
@@ -123,10 +127,6 @@ public final class ChoppingBoardModel implements IModel
                         transformedQuads.add(transformer.build());
                     }
                     return transformedQuads;
-                }
-                else
-                {
-                    return quads;
                 }
             }
             else

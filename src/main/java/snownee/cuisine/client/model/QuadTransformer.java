@@ -53,17 +53,21 @@ public class QuadTransformer extends VertexTransformer
     }
 
     @Override
-    public void put(int element, float... data) {
+    public void put(int element, float... data)
+    {
         VertexFormatElement.EnumUsage usage = parent.getVertexFormat().getElement(element).getUsage();
 
         // transform normals and position
-        if (usage == VertexFormatElement.EnumUsage.POSITION && data.length >= 3) {
+        if (usage == VertexFormatElement.EnumUsage.POSITION && data.length >= 3)
+        {
             Vector4f vec = new Vector4f(data);
             vec.setW(1.0f);
             transform.transform(vec);
             data = new float[4];
             vec.get(data);
-        } else if (usage == VertexFormatElement.EnumUsage.NORMAL && data.length >= 3) {
+        }
+        else if (usage == VertexFormatElement.EnumUsage.NORMAL && data.length >= 3)
+        {
             Vector3f vec = new Vector3f(data);
             normalTransform.transform(vec);
             vec.normalize();
@@ -73,7 +77,8 @@ public class QuadTransformer extends VertexTransformer
         super.put(element, data);
     }
 
-    public UnpackedBakedQuad build() {
+    public UnpackedBakedQuad build()
+    {
         return ((UnpackedBakedQuad.Builder) parent).build();
     }
 }

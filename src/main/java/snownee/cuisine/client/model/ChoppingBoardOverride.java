@@ -23,14 +23,17 @@ import java.util.Collections;
 
 public final class ChoppingBoardOverride extends ItemOverrideList
 {
+    /**
+     * The transformation that transforms a wood block into a "chopping board".
+     */
     static final TRSRTransformation CHOPPING_BOARD_SCALE_DOWN = new TRSRTransformation(new Vector3f(0F, -.38F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null);
 
     /*
-     * The correct TRSRTransformation data for correctly rendering a chopping board.
-     * The core data is cited from Connected Texture Mod (CTM) with permission from
-     * tterrag. In addition to those data, we do an additional transform to scale
-     * in order to make them look like a "board". We also call blockCenterToCorner
-     * to make sure everything is sane for an ItemBlock.
+     * The correct TRSRTransformation data for correctly rendering a chopping board
+     * as an item. The core data is cited from Connected Texture Mod (CTM) with
+     * permission from tterrag. In addition to those data, we do an additional
+     * transform in order to make them look like a "board". We also call
+     * blockCenterToCorner to make sure everything is sane for an ItemBlock.
      *
      * Permission:
      * http://tritusk.info/pics/tterrag-permission-default-block-transform-data.jpg
@@ -104,9 +107,13 @@ public final class ChoppingBoardOverride extends ItemOverrideList
         IBakedModel rawModel;
         if (tag != null && tag.hasKey("cover", Constants.NBT.TAG_COMPOUND))
         {
+            // Assumption: we assume the cover item has the correct model. That said, we only use
+            // items that has ore dictionary entry of "logWood", and it means that we assume the
+            // cover will have a model whose growth ring is facing up (like what vanilla log does).
+            // This solves the issue where item metadata is not associated with block state as
+            // strictly as that of vanilla, for examples the "iron wood" from Extra Utilities 2.
             ItemStack coverData = new ItemStack(tag.getCompoundTag("cover"));
             rawModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(coverData, world, entity);
-            //cover = Block.getBlockFromItem(coverData.getItem()).getStateFromMeta(coverData.getMetadata());
         }
         else
         {

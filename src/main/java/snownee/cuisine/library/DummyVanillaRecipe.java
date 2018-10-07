@@ -13,6 +13,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+/**
+ * An {@code IRecipe} that always fails, used for "removing" recipe without
+ * breaking vanilla advancements.
+ */
 public final class DummyVanillaRecipe implements IRecipe
 {
 
