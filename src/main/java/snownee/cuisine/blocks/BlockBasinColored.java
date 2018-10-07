@@ -38,7 +38,7 @@ public class BlockBasinColored extends BlockBasin
         EnumDyeColor[] values = EnumDyeColor.values();
         for (int i = 0; i < getItemSubtypeAmount(); i++)
         {
-            ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(new ResourceLocation(Cuisine.MODID, getName() + "_" + values[i].getName()), "inventory"));
+            ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(new ResourceLocation(Cuisine.MODID, "earthen_basin_colored"), "color=" + values[i].getDyeColorName()));
         }
     }
 

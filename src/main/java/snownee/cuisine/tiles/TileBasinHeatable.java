@@ -38,7 +38,7 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         if (!world.isRemote && !failed && tank.getFluid() != null && --tickCheckHeating <= 0)
         {
             int heat = getHeatValueFromState(world.getBlockState(pos.down()));
-            tickCheckHeating = heat > 0 ? 100 / heat : 600;
+            tickCheckHeating = heat > 0 ? 200 / heat : 600;
             if (heat == 0 && !world.provider.isNether())
             {
                 if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
@@ -86,7 +86,7 @@ public class TileBasinHeatable extends TileBasin implements ITickable
     public int getMaxHeatingTick()
     {
         int heat = getHeatValueFromState(world.getBlockState(pos.down()));
-        return heat > 0 ? 100 / heat : 600;
+        return heat > 0 ? 200 / heat : 600;
     }
 
     public int getCurrentHeatingTick()

@@ -52,10 +52,7 @@ public class TileMortar extends TileInventoryBase
                 StacksUtil.spawnItemStack(world, getPos(), recipe.getOutput().copy(), true);
                 recipe.consume(this.stacks);
                 this.recipe = null;
-                if (player instanceof EntityPlayerMP)
-                {
-                    SkillUtil.increasePoint((EntityPlayerMP) player, CulinarySkillPoint.EXPERTISE, 1);
-                }
+                SkillUtil.increasePoint(player, CulinarySkillPoint.EXPERTISE, 1);
             }
         }
         else if (makingPaste)
@@ -67,16 +64,11 @@ public class TileMortar extends TileInventoryBase
                 Material material = CulinaryHub.API_INSTANCE.findMaterial(stacks.getStackInSlot(0));
                 if (material != null && material.isValidForm(Form.PASTE))
                 {
-                    ItemStack output = ItemIngredient.make(material, Form.PASTE, RarityManager.getRarity(input) == EnumRarity.COMMON
-                            ? 0.8F
-                            : 1.2F);
+                    ItemStack output = ItemIngredient.make(material, Form.PASTE, RarityManager.getRarity(input) == EnumRarity.COMMON ? 0.8F : 1.2F);
                     StacksUtil.spawnItemStack(world, getPos(), output, true);
                     this.recipe = null; // Stop things from happening
                     input.shrink(1);
-                    if (player instanceof EntityPlayerMP)
-                    {
-                        SkillUtil.increasePoint((EntityPlayerMP) player, CulinarySkillPoint.PROFICIENCY, 3);
-                    }
+                    SkillUtil.increasePoint(player, CulinarySkillPoint.PROFICIENCY, 3);
                 }
                 makingPaste = false;
             }
