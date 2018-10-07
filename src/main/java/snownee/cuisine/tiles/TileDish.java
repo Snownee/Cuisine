@@ -15,7 +15,6 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public class TileDish extends TileBase

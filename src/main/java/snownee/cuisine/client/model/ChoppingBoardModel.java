@@ -20,7 +20,6 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.BlockChoppingBoard;
 
 import javax.annotation.Nullable;
-import javax.vecmath.Vector3f;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

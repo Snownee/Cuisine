@@ -22,7 +22,7 @@ public class TileBasin extends TileInventoryBase
         protected void onContentsChanged()
         {
             TileBasin.this.onContentsChanged(0);
-        };
+        }
     };
     public int tickCheckThrowing = 0;
 
