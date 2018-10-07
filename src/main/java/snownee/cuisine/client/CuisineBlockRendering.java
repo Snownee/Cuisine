@@ -1,10 +1,7 @@
 package snownee.cuisine.client;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -37,11 +34,9 @@ public final class CuisineBlockRendering
     public static void onBlockColorsInit(ColorHandlerEvent.Block event)
     {
         BlockColors blockColors = event.getBlockColors();
-        blockColors.registerBlockColorHandler((
-                IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex
-        ) -> {
-            return worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic();
-        }, CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO);
+        blockColors.registerBlockColorHandler((state, blockAccess, pos, tintIndex) ->
+                blockAccess != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(blockAccess, pos) : ColorizerFoliage.getFoliageColorBasic(),
+                CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO);
     }
 
     @SubscribeEvent
