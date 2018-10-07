@@ -3,6 +3,7 @@ package snownee.cuisine.world.feature;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,6 +41,11 @@ public class WorldFeatureBamboo extends WorldGenAbstractTree
             }
         }
         IBlockState newState = CuisineRegistry.BAMBOO_PLANT.getDefaultState().withProperty(BlockBambooPlant.TYPE, Type.A_2);
+        for (int i = 0; i < 4; i++)
+        {
+            //            worldIn.setBlockState(pos.up(height - 2).offset(EnumFacing.byHorizontalIndex(i)), Blocks.DIAMOND_BLOCK.getDefaultState());
+            setBlockAndNotifyAdequately(worldIn, pos.up(height - 2).offset(EnumFacing.byHorizontalIndex(i)), newState.withProperty(BlockBambooPlant.TYPE, Type.values()[7 + i]));
+        }
         for (int i = height; i-- > 0;)
         {
             setBlockAndNotifyAdequately(worldIn, pos.up(i), newState);

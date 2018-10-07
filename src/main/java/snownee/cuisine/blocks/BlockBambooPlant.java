@@ -46,6 +46,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
 
     public static final AxisAlignedBB AABB = new AxisAlignedBB(0.3125D, 0, 0.3125D, 0.6875D, 1, 0.6875D);
     public static final AxisAlignedBB AABB_SHOOT = new AxisAlignedBB(0.3125D, 0, 0.3125D, 0.6875D, 0.6875D, 0.6875D);
+    public static final AxisAlignedBB AABB_LEAVES = new AxisAlignedBB(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.8125D, 0.8125D);
 
     public static long LAST_RAIN_TIME = -12000;
 
@@ -174,13 +175,18 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
 
     public static ItemStack getItemInternal(IBlockAccess blockAccess, BlockPos pos, IBlockState state)
     {
-        if (state.getValue(TYPE).ordinal() < 2)
+        int ordinal = state.getValue(TYPE).ordinal();
+        if (ordinal < 2)
         {
             return CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.BAMBOO_SHOOT);
         }
-        else
+        else if (ordinal < 7)
         {
             return new ItemStack(CuisineRegistry.BAMBOO);
+        }
+        else
+        {
+            return ItemStack.EMPTY;
         }
     }
 
@@ -205,15 +211,28 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
 
     protected final boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (this.canBlockStay(worldIn, pos))
+        int ordinal = state.getValue(TYPE).ordinal();
+        if (ordinal < 7)
         {
-            return true;
+            if (this.canBlockStay(worldIn, pos))
+            {
+                return true;
+            }
+            else
+            {
+                worldIn.destroyBlock(pos, true);
+                return false;
+            }
         }
         else
         {
-            this.dropBlockAsItem(worldIn, pos, state, 0);
-            worldIn.setBlockToAir(pos);
-            return false;
+            BlockPos basePos = pos.offset(EnumFacing.byHorizontalIndex(ordinal - 7).getOpposite());
+            boolean flag = worldIn.getBlockState(basePos).getBlock() == this;
+            if (!flag)
+            {
+                worldIn.destroyBlock(pos, false);
+            }
+            return flag;
         }
     }
 
@@ -231,18 +250,6 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
     {
         IBlockState state = worldIn.getBlockState(pos.down());
         return state.getBlock().canSustainPlant(state, worldIn, pos.down(), EnumFacing.UP, this) || worldIn.getBlockState(pos.down()).getBlock() == this;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return blockState.getValue(TYPE).ordinal() < 2 ? NULL_AABB : AABB.offset(blockState.getOffset(worldIn, pos));
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
-        return (state.getValue(TYPE).ordinal() < 2 ? AABB_SHOOT : AABB).offset(state.getOffset(source, pos));
     }
 
     @Override
@@ -311,7 +318,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
     @Override
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-        return side != EnumFacing.UP && side != EnumFacing.DOWN;
+        return side != EnumFacing.UP && side != EnumFacing.DOWN && blockState.getValue(TYPE).ordinal() < 7;
     }
 
     @Override
@@ -324,44 +331,50 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
     @Override
     public Vec3d getOffset(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        if (state.getValue(TYPE).ordinal() > 6)
+        int ordinal = state.getValue(TYPE).ordinal();
+        if (ordinal > 6)
         {
-            BlockPos posFacing = pos.offset(getBranchFacing(state));
-            IBlockState newState = worldIn.getBlockState(posFacing);
-            if (newState.getBlock() == this && state.getValue(TYPE).ordinal() <= 6)
+            BlockPos basePos = pos.offset(EnumFacing.byHorizontalIndex(ordinal - 7).getOpposite());
+            IBlockState baseState = worldIn.getBlockState(basePos);
+            if (baseState.getBlock() == this && baseState.getValue(TYPE).ordinal() < 7) // Avoid potential StackOverflow risk
             {
-                return super.getOffset(newState, worldIn, posFacing);
+                return baseState.getOffset(worldIn, basePos);
             }
         }
         return super.getOffset(state, worldIn, pos);
     }
 
-    public static EnumFacing getBranchFacing(IBlockState state)
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        Type type = state.getValue(TYPE);
-        if (type == Type.B_N)
+        return blockState.getValue(TYPE).ordinal() < 2 ? NULL_AABB : super.getCollisionBoundingBox(blockState, worldIn, pos);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        int ordinal = state.getValue(TYPE).ordinal();
+        AxisAlignedBB aabb;
+        if (ordinal < 2)
         {
-            return EnumFacing.NORTH;
+            aabb = AABB_SHOOT;
         }
-        if (type == Type.B_S)
+        else if (ordinal < 7)
         {
-            return EnumFacing.SOUTH;
+            aabb = AABB;
         }
-        if (type == Type.B_E)
+        else
         {
-            return EnumFacing.EAST;
+            aabb = AABB_LEAVES;
         }
-        if (type == Type.B_W)
-        {
-            return EnumFacing.WEST;
-        }
-        return EnumFacing.UP;
+        return aabb.offset(state.getOffset(source, pos));
     }
 
     public enum Type implements IStringSerializable
     {
         // A for Age, B for Branch
-        A_0, A_1, A_2, A_3, A_4, A_5, A_6, B_N, B_S, B_W, B_E;
+        A_0, A_1, A_2, A_3, A_4, A_5, A_6, B_S, B_W, B_N, B_E;
 
         @Override
         public String getName()
