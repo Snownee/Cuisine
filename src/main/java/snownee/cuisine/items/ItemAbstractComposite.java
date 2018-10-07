@@ -147,7 +147,6 @@ public abstract class ItemAbstractComposite extends ItemMod
         }
         if (nbt.hasKey("dish", Constants.NBT.TAG_COMPOUND))
         {
-            NBTTagCompound dishData = nbt.getCompoundTag("dish");
             FoodContainer foodContainer = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
             if (foodContainer != null)
             {
