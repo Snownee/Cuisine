@@ -56,6 +56,8 @@ public class CuisineFluids
 
         BlockFluidSoyMilk soyMilkBlock = new BlockFluidSoyMilk(SOY_MILK);
         SOY_MILK.setBlock(soyMilkBlock);
+        BlockFluid milkBlock = new BlockFluid(MILK, "milk", new MaterialLiquid(MapColor.SNOW));
+        MILK.setBlock(milkBlock);
         BlockFluid soySauceBlock = new BlockFluid(SOY_SAUCE, "soy_sauce", new MaterialLiquid(MapColor.BROWN));
         SOY_SAUCE.setBlock(soySauceBlock);
         BlockFluidVinegar riceVinegarBlock = new BlockFluidVinegar(RICE_VINEGAR, "rice_vinegar");
@@ -67,9 +69,9 @@ public class CuisineFluids
         BlockFluidOil edibleOilBlock = new BlockFluidOil(EDIBLE_OIL, "edible_oil");
         EDIBLE_OIL.setBlock(edibleOilBlock);
         BlockFluidOil beetJuiceBlock = new BlockFluidOil(BEET_JUICE, "beet_juice");
-        SESAME_OIL.setBlock(beetJuiceBlock);
+        BEET_JUICE.setBlock(beetJuiceBlock);
         BlockFluidOil sugarcaneJuiceBlock = new BlockFluidOil(SUGARCANE_JUICE, "sugarcane_juice");
-        EDIBLE_OIL.setBlock(sugarcaneJuiceBlock);
-        event.getRegistry().registerAll(soyMilkBlock, soySauceBlock, riceVinegarBlock, fruitVinegarBlock, sesameOilBlock, edibleOilBlock, beetJuiceBlock, sugarcaneJuiceBlock);
+        SUGARCANE_JUICE.setBlock(sugarcaneJuiceBlock);
+        event.getRegistry().registerAll(soyMilkBlock, milkBlock, soySauceBlock, riceVinegarBlock, fruitVinegarBlock, sesameOilBlock, edibleOilBlock, beetJuiceBlock, sugarcaneJuiceBlock);
     }
 }

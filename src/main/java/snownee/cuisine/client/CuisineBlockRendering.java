@@ -32,6 +32,7 @@ public final class CuisineBlockRendering
         ModelLoaderRegistry.registerLoader(ChoppingBoardModel.Loader.INSTANCE);
 
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_MILK); // Work around. Belows are the same.
+        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.MILK);
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_SAUCE);
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.FRUIT_VINEGAR);
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.RICE_VINEGAR);

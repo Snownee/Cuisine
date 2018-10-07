@@ -12,6 +12,9 @@ public class CuisineBlocks
     @GameRegistry.ObjectHolder("soy_milk")
     public static final Block SOY_MILK = Blocks.AIR;
 
+    @GameRegistry.ObjectHolder("milk")
+    public static final Block MILK = Blocks.AIR;
+
     @GameRegistry.ObjectHolder("soy_sauce")
     public static final Block SOY_SAUCE = Blocks.AIR;
 
@@ -27,8 +30,10 @@ public class CuisineBlocks
     @GameRegistry.ObjectHolder("edible_oil")
     public static final Block EDIBLE_OIL = Blocks.AIR;
 
+    @GameRegistry.ObjectHolder("beet_juice")
     public static final Block BEET_JUICE = Blocks.AIR;
 
+    @GameRegistry.ObjectHolder("sugarcane_juice")
     public static final Block SUGARCANE_JUICE = Blocks.AIR;
 
 }
