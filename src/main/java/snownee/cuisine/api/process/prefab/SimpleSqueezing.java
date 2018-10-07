@@ -50,7 +50,7 @@ public class SimpleSqueezing implements BasinInteracting
         FluidStack copy = outputFluid.copy();
         copy.amount += amount;
         item.shrink(input.count());
-        return new Output(fluid, outputItem);
+        return new Output(copy, outputItem.copy());
     }
 
     // TODO: JEI support @3TUSK

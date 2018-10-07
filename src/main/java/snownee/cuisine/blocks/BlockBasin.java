@@ -75,6 +75,10 @@ public class BlockBasin extends BlockMod
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
+        if (worldIn.isRemote)
+        {
+            return;
+        }
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileBasin)
         {
@@ -86,7 +90,7 @@ public class BlockBasin extends BlockMod
                     tileBasin.tickCheckThrowing--;
                     return;
                 }
-                List<ItemStack> items = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos.up())).stream().filter(e -> !e.isDead && e.onGround).map(EntityItem::getItem).collect(Collectors.toList());
+                List<ItemStack> items = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos)).stream().filter(e -> !e.isDead && e.onGround).map(EntityItem::getItem).collect(Collectors.toList());
                 for (ItemStack stack : items)
                 {
                     tileBasin.process(Processing.BASIN_THROWING, stack);
