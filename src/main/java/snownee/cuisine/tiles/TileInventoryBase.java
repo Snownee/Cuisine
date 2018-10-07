@@ -79,12 +79,12 @@ public class TileInventoryBase extends TileBase
     public StackHandler stacks;
 
     @SuppressWarnings("deprecation")
-    TileInventoryBase(int slot)
+    public TileInventoryBase(int slot)
     {
         this(slot, Items.AIR.getItemStackLimit()); // Default to a standard stack
     }
 
-    TileInventoryBase(int slot, int stackLimit)
+    public TileInventoryBase(int slot, int stackLimit)
     {
         stacks = new StackHandler(this, slot, stackLimit);
     }
