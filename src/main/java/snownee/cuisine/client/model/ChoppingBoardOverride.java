@@ -23,8 +23,7 @@ import java.util.Collections;
 
 public final class ChoppingBoardOverride extends ItemOverrideList
 {
-    private static final TRSRTransformation CHOPPING_BOARD_SCALE_DOWN =
-            new TRSRTransformation(new Vector3f(0F, -.4F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null);
+    static final TRSRTransformation CHOPPING_BOARD_SCALE_DOWN = new TRSRTransformation(new Vector3f(0F, -.38F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null);
 
     /*
      * The correct TRSRTransformation data for correctly rendering a chopping board.

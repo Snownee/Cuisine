@@ -86,11 +86,7 @@ public final class ChoppingBoardModel implements IModel
 
     private static final class Baked implements IBakedModel
     {
-        //
-        private static final TRSRTransformation TRANSFORM =
-                TRSRTransformation.blockCenterToCorner(
-                        new TRSRTransformation(new Vector3f(0F, -0.38F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null)
-                );
+        private static final TRSRTransformation TRANSFORM = TRSRTransformation.blockCenterToCorner(ChoppingBoardOverride.CHOPPING_BOARD_SCALE_DOWN);
 
         private boolean ambientOcclusion;
         private boolean gui3D;
