@@ -37,6 +37,8 @@ public final class CuisineBlockRendering
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.RICE_VINEGAR);
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.EDIBLE_OIL);
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SESAME_OIL);
+        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.BEET_JUICE);
+        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SUGARCANE_JUICE);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileMortar.class, new TESRMortar());
         ClientRegistry.bindTileEntitySpecialRenderer(TileMill.class, new AnimationTESR<>());
