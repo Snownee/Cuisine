@@ -184,6 +184,8 @@ public class TileMill extends TileBase implements ITickable
 
     // It's only here for BlockMill to quickly access TileMill's inventory
     // NOT FOR PUBLIC USE! This method is subject to change at ANY time.
+    // Why not checking inputBuffer.isValidInput? because that would be
+    // essentially the Milling.isKnownMillingInput call.
     public ItemStack tryInsertItem(ItemStack input)
     {
         if (Milling.isKnownMillingInput(input))
@@ -299,6 +301,9 @@ public class TileMill extends TileBase implements ITickable
     }
 
     /**
+     * A decorator designed for Mill. It is used for exposing correct behaviors
+     * via capability.
+     *
      * 为磨设计的 IFluidHandler 的 wrapper，用于将正确的行为通过 Capability 暴露出来。
      */
     private static final class MillFluidHandler implements IFluidHandler

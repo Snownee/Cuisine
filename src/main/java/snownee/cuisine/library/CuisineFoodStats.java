@@ -8,6 +8,10 @@ import net.minecraft.util.FoodStats;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 
+/*
+ * Essentially a hack that we can decrease the amount of hunger and
+ * saturation modifier that a basic food item can provide.
+ */
 public class CuisineFoodStats extends FoodStats
 {
 
