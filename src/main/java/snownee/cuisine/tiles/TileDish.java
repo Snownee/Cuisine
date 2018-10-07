@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
@@ -38,7 +39,7 @@ public class TileDish extends TileBase
 
     public ItemStack getItem()
     {
-        return this.dishContainer;
+        return this.dishContainer.isEmpty() ? new ItemStack(CuisineRegistry.PLACED_DISH) : this.dishContainer.copy();
     }
 
     @Override
