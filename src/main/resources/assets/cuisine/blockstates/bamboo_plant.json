@@ -9,10 +9,10 @@
       "a_4": { "model": "cuisine:bamboo" },
       "a_5": { "model": "cuisine:bamboo" },
       "a_6": { "model": "cuisine:bamboo" },
-      "b_n": { "model": "cuisine:bamboo" },
-      "b_s": { "model": "cuisine:bamboo" },
-      "b_w": { "model": "cuisine:bamboo" },
-      "b_e": { "model": "cuisine:bamboo" }
+      "b_s": { "model": "cuisine:bamboo_branch", "y": 90 },
+      "b_w": { "model": "cuisine:bamboo_branch", "y": 180 },
+      "b_n": { "model": "cuisine:bamboo_branch", "y": 270 },
+      "b_e": { "model": "cuisine:bamboo_branch" }
     }
   }
 }
