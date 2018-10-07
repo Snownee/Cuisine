@@ -141,12 +141,6 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        return false;
-    }
-
-    @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
         return state.getValue(TYPE).ordinal() < 2;

@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
@@ -22,7 +21,6 @@ public final class CuisineItemRendering
 {
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public static void onItemColorsInit(ColorHandlerEvent.Item event)
     {
         ItemColors itemColors = event.getItemColors();
@@ -38,7 +36,6 @@ public final class CuisineItemRendering
                         return material.getRawColorCode();
                     }
                 }
-
                 return -1;
             }
             else

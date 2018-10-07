@@ -1,5 +1,12 @@
 package snownee.cuisine.client;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ColorizerFoliage;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.biome.BiomeColorHelper;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.animation.AnimationTESR;
@@ -9,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.CuisineBlocks;
 import snownee.cuisine.client.model.ChoppingBoardModel;
 import snownee.cuisine.client.renderer.TESRBarbecueRack;
@@ -25,6 +33,16 @@ import snownee.kiwi.client.ModelUtil;
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
 public final class CuisineBlockRendering
 {
+    @SubscribeEvent
+    public static void onBlockColorsInit(ColorHandlerEvent.Block event)
+    {
+        BlockColors blockColors = event.getBlockColors();
+        blockColors.registerBlockColorHandler((
+                IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex
+        ) -> {
+            return worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic();
+        }, CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO);
+    }
 
     @SubscribeEvent
     public static void onModelRegister(ModelRegistryEvent event)

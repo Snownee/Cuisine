@@ -8,12 +8,12 @@
 			"from": [ 6, 10, 6 ],
 			"to": [ 16, 14, 10 ],
 			"faces": {
-				"down": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 90 },
-				"up": { "uv": [ 11, 16, 5, 1 ], "texture": "#particle", "rotation": 270 },
-				"north": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 270 },
-				"south": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 90 },
-				"west": { "uv": [ 11, 7, 5, 1 ], "texture": "#particle", "rotation": 270 },
-				"east": { "uv": [ 11, 7, 5, 1 ], "texture": "#particle", "rotation": 270 }
+				"down": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 90, "tintindex": 0 },
+				"up": { "uv": [ 11, 16, 5, 1 ], "texture": "#particle", "rotation": 270, "tintindex": 0 },
+				"north": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 270, "tintindex": 0 },
+				"south": { "uv": [ 5, 1, 11, 16 ], "texture": "#particle", "rotation": 90, "tintindex": 0 },
+				"west": { "uv": [ 11, 7, 5, 1 ], "texture": "#particle", "rotation": 270, "tintindex": 0 },
+				"east": { "uv": [ 11, 7, 5, 1 ], "texture": "#particle", "rotation": 270, "tintindex": 0 }
 			}
 		}
 	]
