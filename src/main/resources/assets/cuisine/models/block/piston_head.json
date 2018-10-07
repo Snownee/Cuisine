@@ -1,0 +1,23 @@
+{
+  "__comment": "Designed by YurisCat with Cubik Studio - https://cubik.studio",
+  "textures": {
+    "piston_bottom": "blocks/piston_bottom",
+    "piston_inner": "blocks/piston_inner",
+    "piston_side": "blocks/piston_side",
+    "particle": "blocks/piston_bottom"
+  },
+  "elements": [
+    {
+      "from": [ 1, 4.5, 1 ],
+      "to": [ 15, 15, 15 ],
+      "faces": {
+        "down": { "uv": [ 0, 0, 16, 16 ], "texture": "#piston_inner" },
+        "up": { "uv": [ 0, 0, 16, 16 ], "texture": "#piston_bottom" },
+        "north": { "uv": [ 0, 4, 16, 16 ], "texture": "#piston_side", "rotation": 180 },
+        "south": { "uv": [ 0, 4, 16, 16 ], "texture": "#piston_side", "rotation": 180 },
+        "west": { "uv": [ 0, 4, 16, 16 ], "texture": "#piston_side", "rotation": 180 },
+        "east": { "uv": [ 0, 4, 16, 16 ], "texture": "#piston_side", "rotation": 180 }
+      }
+    }
+  ]
+}

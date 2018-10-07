@@ -14,8 +14,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.process.Processing;
@@ -25,17 +27,25 @@ import snownee.kiwi.block.BlockMod;
 public class BlockSqueezer extends BlockMod
 {
 
+    public static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.9375);
+
     public BlockSqueezer(String name)
     {
         super(name, Material.PISTON);
         setHardness(0.5F);
         setCreativeTab(Cuisine.CREATIVE_TAB);
+        setDefaultState(blockState.getBaseState().withProperty(BlockDispenser.TRIGGERED, false));
     }
 
     @Override
     public boolean hasItem()
     {
         return false;
+    }
+
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    {
+        neighborChanged(state, worldIn, pos, Blocks.AIR, pos.down());
     }
 
     @Override
@@ -55,26 +65,23 @@ public class BlockSqueezer extends BlockMod
         boolean post = worldIn.isBlockPowered(pos);
         if (pre && !post)
         {
-            worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.FALSE), 4);
+            worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.FALSE));
         }
         else if (!pre && post)
         {
             worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
-            worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.TRUE), 4);
+            worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.TRUE));
         }
     }
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (!worldIn.isRemote)
+        TileEntity tile = worldIn.getTileEntity(pos.down());
+        if (tile instanceof TileBasin)
         {
-            TileEntity tile = worldIn.getTileEntity(pos.down());
-            if (tile instanceof TileBasin)
-            {
-                TileBasin tileBasin = (TileBasin) tile;
-                tileBasin.process(Processing.SQUEEZING, tileBasin.stacks.getStackInSlot(0));
-            }
+            TileBasin tileBasin = (TileBasin) tile;
+            tileBasin.process(Processing.SQUEEZING, tileBasin.stacks.getStackInSlot(0));
         }
     }
 
@@ -88,6 +95,12 @@ public class BlockSqueezer extends BlockMod
     public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return AABB;
     }
 
     @Override
