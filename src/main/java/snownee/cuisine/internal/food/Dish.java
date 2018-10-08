@@ -135,7 +135,7 @@ public class Dish extends CompositeFood
             }
             else
             {
-                return this.getCurrentSize() + ingredient.getSize() < this.getMaxSize() * 0.75;
+                return this.getCurrentSize() + ingredient.getSize() < this.getMaxSize() * 0.75 && ingredient.getMaterial().canAddInto(this, ingredient);
             }
         }
 

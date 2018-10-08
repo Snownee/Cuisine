@@ -239,6 +239,7 @@ public abstract class CompositeFood
     {
         if (requireFoodStateRefresh)
         {
+            // FIXME: what? no more place modify this value! consider removing this method?
             requireFoodStateRefresh = false;
 
             saturationModifier = 0.4F;
@@ -633,9 +634,9 @@ public abstract class CompositeFood
                 boolean merged = false;
                 for (Seasoning s : seasonings)
                 {
-                    if (seasoning.matchType(s))
+                    if (s.matchType(seasoning))
                     {
-                        seasoning.merge(s);
+                        s.merge(seasoning);
                         merged = true;
                         break;
                     }
