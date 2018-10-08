@@ -13,6 +13,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.client.particle.ParticleGrowth;
 import snownee.cuisine.items.ItemLifeEssence;
@@ -80,6 +82,7 @@ public class PacketCustomEvent implements PacketMod
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void handleClient(EntityPlayerSP player)
     {
         switch (event)
