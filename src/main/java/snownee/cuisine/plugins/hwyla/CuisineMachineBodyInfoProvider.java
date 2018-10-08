@@ -12,6 +12,7 @@ import snownee.cuisine.tiles.TileWok;
 import javax.annotation.Nonnull;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class CuisineMachineBodyInfoProvider implements IWailaDataProvider
 {
 

@@ -13,6 +13,7 @@ import snownee.cuisine.blocks.BlockCuisineCrops;
 import javax.annotation.Nonnull;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class CuisineCropBodyInfoProvider implements IWailaDataProvider
 {
 
