@@ -24,6 +24,7 @@ import snownee.cuisine.tiles.TileBarbecueRack;
 import snownee.cuisine.tiles.TileChoppingBoard;
 import snownee.cuisine.tiles.TileMill;
 import snownee.cuisine.tiles.TileMortar;
+import snownee.cuisine.tiles.TileSqueezer;
 import snownee.cuisine.tiles.TileWok;
 import snownee.kiwi.client.ModelUtil;
 
@@ -59,6 +60,7 @@ public final class CuisineBlockRendering
         ClientRegistry.bindTileEntitySpecialRenderer(TileChoppingBoard.class, new TESRChoppingBoard());
         ClientRegistry.bindTileEntitySpecialRenderer(TileWok.class, new TESRWok());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBarbecueRack.class, new TESRBarbecueRack());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileSqueezer.class, new AnimationTESR<>());
     }
 
 }

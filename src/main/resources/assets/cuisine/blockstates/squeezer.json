@@ -1,12 +1,13 @@
 {
   "forge_marker": 1,
-  "defaults": {
-    "model": "cuisine:piston_head"
-  },
   "variants": {
     "triggered": {
-      "true": {"submodel": "cuisine:piston_extension"},
-      "false": {"submodel": "cuisine:piston_extension"}
+      "true": {},
+      "false": {}
+    },
+    "static": {
+      "true": { "model": "cuisine:piston_head" },
+      "false": { "model": "cuisine:piston_extension" }
     }
   }
 }

@@ -1,0 +1,26 @@
+{
+  "joints": {
+    "piston_arm": { "0": [ 1.0 ], "1": [ 1.0 ] }
+  },
+  "clips": {
+    "arm_extended": {
+      "loop": false,
+      "joint_clips": {
+        "piston_arm": [
+          {
+            "variable": "offset_y",
+            "type": "uniform",
+            "interpolation": "nearest",
+            "samples": [ -0.625 ]
+          }
+        ]
+      },
+      "events": {}
+    },
+    "arm_extracted": {
+      "loop": false,
+      "joint_clips": {},
+      "events": {}
+    }
+  }
+}
