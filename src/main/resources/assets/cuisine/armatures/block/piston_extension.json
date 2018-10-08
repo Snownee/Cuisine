@@ -11,7 +11,7 @@
             "variable": "offset_y",
             "type": "uniform",
             "interpolation": "nearest",
-            "samples": [ -0.625 ]
+            "samples": [ -0.78125 ]
           }
         ]
       },

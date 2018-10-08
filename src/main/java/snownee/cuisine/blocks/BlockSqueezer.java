@@ -2,6 +2,8 @@ package snownee.cuisine.blocks;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockDispenser;
@@ -29,12 +31,11 @@ import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileSqueezer;
 import snownee.kiwi.block.BlockMod;
 
-import javax.annotation.Nullable;
-
 public class BlockSqueezer extends BlockMod
 {
 
     public static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.9375);
+    public static final AxisAlignedBB AABB_EXTENDED = new AxisAlignedBB(0.0625, -0.5, 0.0625, 0.9375, 0.9375, 0.9375);
 
     public BlockSqueezer(String name)
     {
@@ -128,7 +129,7 @@ public class BlockSqueezer extends BlockMod
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return AABB;
+        return state.getValue(BlockDispenser.TRIGGERED) ? AABB_EXTENDED : AABB;
     }
 
     @Override
@@ -158,9 +159,6 @@ public class BlockSqueezer extends BlockMod
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new ExtendedBlockState(this,
-                new IProperty<?>[] { BlockDispenser.TRIGGERED, Properties.StaticProperty },
-                new IUnlistedProperty<?>[] { Properties.AnimationProperty }
-                );
+        return new ExtendedBlockState(this, new IProperty<?>[] { BlockDispenser.TRIGGERED, Properties.StaticProperty }, new IUnlistedProperty<?>[] { Properties.AnimationProperty });
     }
 }
