@@ -21,7 +21,6 @@ public class CuisineFluids
     public static final Fluid FRUIT_VINEGAR;
     public static final Fluid SESAME_OIL;
     public static final Fluid EDIBLE_OIL;
-    public static final Fluid BEET_JUICE;
     public static final Fluid SUGARCANE_JUICE;
     public static final Fluid DRINK;
 
@@ -34,7 +33,6 @@ public class CuisineFluids
         FRUIT_VINEGAR = new VaporizableFluid("fruit_vinegar").setDensity(1001).setColor(0xEEFFFFFF);
         SESAME_OIL = new FluidOil("sesame_oil");
         EDIBLE_OIL = new FluidOil("edible_oil");
-        BEET_JUICE = new VaporizableFluid("beet_juice").setDensity(1001);
         SUGARCANE_JUICE = new VaporizableFluid("sugarcane_juice").setDensity(1001);
         DRINK = new FluidDrink("cuisine_drink");
     }
@@ -49,7 +47,6 @@ public class CuisineFluids
         FluidRegistry.registerFluid(FRUIT_VINEGAR);
         FluidRegistry.registerFluid(SESAME_OIL);
         FluidRegistry.registerFluid(EDIBLE_OIL);
-        FluidRegistry.registerFluid(BEET_JUICE);
         FluidRegistry.registerFluid(SUGARCANE_JUICE);
         FluidRegistry.registerFluid(DRINK);
         FluidRegistry.addBucketForFluid(DRINK);
@@ -68,10 +65,8 @@ public class CuisineFluids
         SESAME_OIL.setBlock(sesameOilBlock);
         BlockFluidOil edibleOilBlock = new BlockFluidOil(EDIBLE_OIL, "edible_oil");
         EDIBLE_OIL.setBlock(edibleOilBlock);
-        BlockFluidOil beetJuiceBlock = new BlockFluidOil(BEET_JUICE, "beet_juice");
-        BEET_JUICE.setBlock(beetJuiceBlock);
         BlockFluidOil sugarcaneJuiceBlock = new BlockFluidOil(SUGARCANE_JUICE, "sugarcane_juice");
         SUGARCANE_JUICE.setBlock(sugarcaneJuiceBlock);
-        event.getRegistry().registerAll(soyMilkBlock, milkBlock, soySauceBlock, riceVinegarBlock, fruitVinegarBlock, sesameOilBlock, edibleOilBlock, beetJuiceBlock, sugarcaneJuiceBlock);
+        event.getRegistry().registerAll(soyMilkBlock, milkBlock, soySauceBlock, riceVinegarBlock, fruitVinegarBlock, sesameOilBlock, edibleOilBlock, sugarcaneJuiceBlock);
     }
 }
