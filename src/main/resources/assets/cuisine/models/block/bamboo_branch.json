@@ -3,7 +3,6 @@
   "textures": {
     "particle": "cuisine:block/bamboo",
     "top": "cuisine:block/bamboo_leaves_top",
-    "empty": "cuisine:item/empty",
     "leaves": "cuisine:block/bamboo_leaves"
   },
   "elements": [
