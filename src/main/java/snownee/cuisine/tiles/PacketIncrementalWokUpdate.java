@@ -10,6 +10,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.kiwi.network.PacketMod;
@@ -53,6 +55,7 @@ public class PacketIncrementalWokUpdate implements PacketMod
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void handleClient(EntityPlayerSP player)
     {
         TileEntity tile = null;

@@ -3,6 +3,8 @@ package snownee.cuisine.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.kiwi.network.PacketMod;
 
 import java.util.List;
@@ -10,7 +12,9 @@ import java.util.List;
 public class PacketSkillLevelResponse implements PacketMod
 {
     List<String> skills;
-    public PacketSkillLevelResponse(List<String> skills) {
+
+    public PacketSkillLevelResponse(List<String> skills)
+    {
         this.skills = skills;
     }
 
@@ -26,6 +30,7 @@ public class PacketSkillLevelResponse implements PacketMod
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void handleClient(EntityPlayerSP entityPlayerSP)
     {
 
