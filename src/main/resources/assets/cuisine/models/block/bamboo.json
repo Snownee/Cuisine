@@ -20,7 +20,6 @@
 			"from": [ 5.25, 1, 5.25 ],
 			"to": [ 10.75, 16, 10.75 ],
 			"faces": {
-				"down": { "uv": [ 0, 0, 5, 5 ], "texture": "#particle" },
 				"up": { "uv": [ 0, 0, 5, 5 ], "texture": "#particle" },
 				"north": { "uv": [ 5, 0, 11, 1 ], "texture": "#particle", "tintindex": 0 },
 				"south": { "uv": [ 5, 0, 11, 1 ], "texture": "#particle", "tintindex": 0 },
