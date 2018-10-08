@@ -46,7 +46,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
 
     public static final AxisAlignedBB AABB = new AxisAlignedBB(0.3125D, 0, 0.3125D, 0.6875D, 1, 0.6875D);
     public static final AxisAlignedBB AABB_SHOOT = new AxisAlignedBB(0.3125D, 0, 0.3125D, 0.6875D, 0.6875D, 0.6875D);
-    public static final AxisAlignedBB AABB_LEAVES = new AxisAlignedBB(0.1875D, 0.1875D, 0.1875D, 0.8125D, 0.8125D, 0.8125D);
+    public static final AxisAlignedBB AABB_LEAVES = new AxisAlignedBB(0.1875D, 0, 0.1875D, 0.8125D, 0.625D, 0.8125D);
 
     public static long LAST_RAIN_TIME = -12000;
 
