@@ -3,6 +3,7 @@ package snownee.cuisine.plugins.hwyla;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.WailaPlugin;
+import snownee.cuisine.blocks.BlockBasin;
 import snownee.cuisine.blocks.BlockCuisineCrops;
 import snownee.cuisine.blocks.BlockFirePit;
 
@@ -14,7 +15,8 @@ public final class HWYLACompatibility implements IWailaPlugin
     @Override
     public void register(IWailaRegistrar registrar)
     {
-        registrar.registerBodyProvider(new CuisineCropBodyInfoProvider(), BlockCuisineCrops.class);
-        registrar.registerBodyProvider(new CuisineMachineBodyInfoProvider(), BlockFirePit.class);
+        registrar.registerBodyProvider(new CuisineCropProvider(), BlockCuisineCrops.class);
+        registrar.registerBodyProvider(new CuisineWokProvider(), BlockFirePit.class);
+        registrar.registerBodyProvider(new CuisineBasinProvider(), BlockBasin.class);
     }
 }

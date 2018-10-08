@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CuisineMachineBodyInfoProvider implements IWailaDataProvider
+public class CuisineWokProvider implements IWailaDataProvider
 {
 
     @Nonnull
