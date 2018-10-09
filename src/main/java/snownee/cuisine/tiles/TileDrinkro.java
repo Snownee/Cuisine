@@ -15,14 +15,24 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.api.CookingVessel;
+import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.blocks.BlockDrinkro;
+import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.internal.food.Drink;
-import snownee.cuisine.tiles.TileInventoryBase.StackHandler;
 
 public class TileDrinkro extends TileBase implements CookingVessel
 {
     protected static class DrinkroFluidWrapper implements IFluidHandler
     {
+        private final TileDrinkro tile;
+
+        public DrinkroFluidWrapper(TileDrinkro tile)
+        {
+            this.tile = tile;
+        }
 
         @Override
         public IFluidTankProperties[] getTankProperties()
@@ -33,7 +43,36 @@ public class TileDrinkro extends TileBase implements CookingVessel
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            // TODO Auto-generated method stub
+            if (resource == null)
+            {
+                return 0;
+            }
+            // 1 size = 500mB, fine-tuning needed
+            if (resource.getFluid() == CuisineFluids.DRINK)
+            {
+                // TODO
+                return 0;
+            }
+            Material material = CulinaryHub.API_INSTANCE.findMaterial(resource);
+            if (material != null)
+            {
+                float quantity = resource.amount / 500F;
+                Ingredient ingredient = new Ingredient(material, Form.JUICE, quantity);
+                if (doFill)
+                {
+                    if (tile.builder.addIngredient(null, ingredient, tile)) // FIXME: Nullable?!
+                    {
+                        return resource.amount;
+                    }
+                }
+                else
+                {
+                    if (tile.builder.canAddIntoThis(null, ingredient, tile)) // FIXME: Nullable?!
+                    {
+                        return resource.amount;
+                    }
+                }
+            }
             return 0;
         }
 
@@ -134,9 +173,38 @@ public class TileDrinkro extends TileBase implements CookingVessel
     }
 
     private boolean powered = false;
-    private Drink.Builder builder;
-    private ItemStackHandler input = new ItemStackHandler();
-    private ItemStackHandler output = new ItemStackHandler();
+    protected Drink.Builder builder;
+    private ItemStackHandler input = new ItemStackHandler(4)
+    {
+        public int getSlotLimit(int slot)
+        {
+            return 1;
+        };
+
+        public boolean isItemValid(int slot, ItemStack stack)
+        {
+            if (builder.isFeatureItem(stack))
+            {
+                // One drink can't have two or more feature items
+                for (ItemStack stack2 : stacks)
+                {
+                    if (builder.isFeatureItem(stack2))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return CulinaryHub.API_INSTANCE.isKnownSpice(stack);
+        };
+    };
+    private ItemStackHandler output = new ItemStackHandler()
+    {
+        public int getSlotLimit(int slot)
+        {
+            return 1;
+        };
+    };
 
     public void neighborChanged(IBlockState state)
     {
@@ -165,7 +233,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
-            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new DrinkroFluidWrapper());
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new DrinkroFluidWrapper(this));
         }
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
