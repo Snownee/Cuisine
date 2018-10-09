@@ -1,10 +1,14 @@
 package snownee.cuisine.internal.food;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.Cuisine;
@@ -14,16 +18,30 @@ import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Seasoning;
+import snownee.kiwi.crafting.input.ProcessingInput;
+import snownee.kiwi.util.definition.ItemDefinition;
+import snownee.kiwi.util.definition.OreDictDefinition;
 
 public class Drink extends CompositeFood
 {
     public static final class Builder extends CompositeFood.Builder<Drink>
     {
         private Drink completed;
+        protected final Map<ProcessingInput, DrinkType> featureInputs = new HashMap<>(4);
 
         protected Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
         {
             super(ingredients, seasonings, effects);
+            featureInputs.put(ItemDefinition.of(Items.SNOWBALL), DrinkType.SMOOTHIE);
+            featureInputs.put(ItemDefinition.of(Blocks.ICE), DrinkType.SMOOTHIE);
+            featureInputs.put(ItemDefinition.of(Blocks.PACKED_ICE), DrinkType.SMOOTHIE);
+            featureInputs.put(OreDictDefinition.of("slimeball"), DrinkType.GELO);
+            featureInputs.put(OreDictDefinition.of("dustRedstone"), DrinkType.SODA);
+        }
+
+        public boolean isFeatureItem(ItemStack item)
+        {
+            return featureInputs.keySet().stream().anyMatch(i -> i.matches(item));
         }
 
         @Override
@@ -33,13 +51,46 @@ public class Drink extends CompositeFood
         }
 
         @Override
+        public double getMaxSize()
+        {
+            return 1;
+        }
+
+        @Override
         public Optional<Drink> build(CookingVessel vessel, EntityPlayer cook)
         {
             return Optional.empty();
         }
     }
 
-    public static final ResourceLocation DISH_ID = new ResourceLocation(Cuisine.MODID, "drink");
+    public static class DrinkType
+    {
+        public static final DrinkType NORMAL = new DrinkType("normal", ItemDefinition.of(Items.GLASS_BOTTLE));
+        public static final DrinkType SMOOTHIE = new DrinkType("smoothie", ItemDefinition.of(CuisineRegistry.PLACED_DISH));
+        public static final DrinkType GELO = new DrinkType("gelo", ItemDefinition.EMPTY);
+        public static final DrinkType SODA = new DrinkType("soda", ItemDefinition.of(Items.GLASS_BOTTLE));
+
+        private final ItemDefinition containerItem;
+        private final String name;
+
+        public DrinkType(String name, ItemDefinition containerItem)
+        {
+            this.name = name;
+            this.containerItem = containerItem;
+        }
+
+        public String getTranslationKey()
+        {
+            return Cuisine.MODID + ".drink." + name;
+        }
+
+        public ItemStack getContainerItem()
+        {
+            return containerItem.getItemStack();
+        }
+    }
+
+    public static final ResourceLocation DRINK_ID = new ResourceLocation(Cuisine.MODID, "drink");
 
     private String modelType;
 
@@ -51,7 +102,7 @@ public class Drink extends CompositeFood
     @Override
     public ResourceLocation getIdentifier()
     {
-        return DISH_ID;
+        return DRINK_ID;
     }
 
     @Override
