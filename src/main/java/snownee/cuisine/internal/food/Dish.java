@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.Validate;
 import snownee.cuisine.Cuisine;
@@ -45,9 +46,9 @@ public class Dish extends CompositeFood
 
     private String modelType;
 
-    public Dish(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
+    public Dish(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int hungerHeal, float saturation)
     {
-        super(ingredients, seasonings, effects);
+        super(ingredients, seasonings, effects, hungerHeal, saturation);
     }
 
     @Override
@@ -152,6 +153,27 @@ public class Dish extends CompositeFood
             }
             else
             {
+                // Calculate hunger regeneration and saturation modifier
+                float saturationModifier = 0.4F;
+                for (Ingredient ingredient : this.getIngredients())
+                {
+                    saturationModifier += ingredient.getSaturationModifier(); // TODO: relate to size
+                    if (ingredient.hasTrait(IngredientTrait.PLAIN) || ingredient.hasTrait(IngredientTrait.OVERCOOKED))
+                    {
+                        saturationModifier -= 0.1;
+                    }
+                }
+                saturationModifier = Math.max(saturationModifier, 0);
+
+                float i = 0;
+                for (Ingredient ingredient : this.getIngredients())
+                {
+                    i += ingredient.getFoodLevel() * (ingredient.hasTrait(IngredientTrait.PLAIN) ? 0.5 : 1);
+                }
+                int foodLevel = MathHelper.ceil(i);
+
+                // Grant player cook skill bonus
+
                 // CulinarySkillPointContainer skill = playerIn.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
                 double modifier = 1.0;
                 // if (skill != null)
@@ -159,6 +181,8 @@ public class Dish extends CompositeFood
                 // modifier *= SkillUtil.getPlayerSkillLevel((EntityPlayerMP) playerIn, CuisineSharedSecrets.KEY_SKILL_WOK);
                 // SkillUtil.increaseSkillPoint((EntityPlayerMP) playerIn, 1);
                 // }
+
+                // Compute side effects
 
                 EffectCollector collector = new DefaultCookedCollector();
 
@@ -192,7 +216,7 @@ public class Dish extends CompositeFood
 
                 // collector.apply(this, cook); // TODO See, this is why I say this couples too many responsibilities
 
-                this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects());
+                this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects(), foodLevel, saturationModifier);
                 this.completed.setQualityBonus(modifier);
                 this.completed.getOrComputeModelType();
                 return Optional.of(completed);

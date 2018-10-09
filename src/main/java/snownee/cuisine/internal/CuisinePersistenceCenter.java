@@ -58,6 +58,8 @@ public interface CuisinePersistenceCenter
             data.setString("type", modelType);
         }
 
+        data.setInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL, dish.getFoodLevel());
+        data.setFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, dish.getSaturationModifier());
         data.setInteger(CuisineSharedSecrets.KEY_SERVES, dish.getServes());
         data.setFloat(CuisineSharedSecrets.KEY_USE_DURATION, dish.getUseDurationModifier());
         return data;
@@ -133,7 +135,10 @@ public interface CuisinePersistenceCenter
             duration = data.getFloat(CuisineSharedSecrets.KEY_USE_DURATION);
         }
 
-        Dish dish = new Dish(ingredients, seasonings, effects);
+        int foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
+        float saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
+
+        Dish dish = new Dish(ingredients, seasonings, effects, foodLevel, saturation);
         dish.setServes(serves);
         dish.setUseDurationModifier(duration);
 

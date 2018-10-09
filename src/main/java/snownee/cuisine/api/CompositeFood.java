@@ -59,14 +59,14 @@ public abstract class CompositeFood
     protected final List<Effect> effects;
 
     /**
-     * The saturation modifier of this dish.
+     * The fixed saturation modifier of this dish.
      */
-    private float saturationModifier;
+    private final float saturationModifier;
 
     /**
-     * The food level of this dish.
+     * The fixed food level of this dish.
      */
-    private int foodLevel;
+    private final int foodLevel;
 
     private float useDurationModifier = 1F;
 
@@ -98,10 +98,17 @@ public abstract class CompositeFood
      */
     protected CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
     {
+        this(ingredients, seasonings, effects, 0, 0F);
+    }
+
+    protected CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int hungerRestore, float saturation)
+    {
         this.ingredients = ingredients;
         this.seasonings = seasonings;
         this.effects = effects;
         this.maxServeSize = (this.durability = DEFAULT_SERVE_AMOUNT);
+        this.foodLevel = hungerRestore;
+        this.saturationModifier = saturation;
     }
 
     /**
@@ -223,43 +230,22 @@ public abstract class CompositeFood
         return effects.contains(effect) || ingredients.stream().anyMatch(i -> i.getEffects().contains(effect));
     }
 
+    /**
+     * Return the saturation modifier that this can provide.
+     * @return Saturation modifier
+     */
     public float getSaturationModifier()
     {
-        refreshState();
         return saturationModifier;
     }
 
+    /**
+     * Return the food level, i.e. the hunger bar regeneration amount, that this can provide.
+     * @return Food level
+     */
     public int getFoodLevel()
     {
-        refreshState();
         return foodLevel;
-    }
-
-    private void refreshState()
-    {
-        if (requireFoodStateRefresh)
-        {
-            // FIXME: what? no more place modify this value! consider removing this method?
-            requireFoodStateRefresh = false;
-
-            saturationModifier = 0.4F;
-            for (Ingredient ingredient : ingredients)
-            {
-                saturationModifier += ingredient.getSaturationModifier(); // TODO: relate to size
-                if (ingredient.hasTrait(IngredientTrait.PLAIN) || ingredient.hasTrait(IngredientTrait.OVERCOOKED))
-                {
-                    saturationModifier -= 0.1;
-                }
-            }
-            saturationModifier = Math.max(saturationModifier, 0);
-
-            float i = 0;
-            for (Ingredient ingredient : ingredients)
-            {
-                i += ingredient.getFoodLevel() * (ingredient.hasTrait(IngredientTrait.PLAIN) ? 0.5 : 1);
-            }
-            foodLevel = MathHelper.ceil(i);
-        }
     }
 
     public void setQualityBonus(double qualityBonus)

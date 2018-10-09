@@ -20,10 +20,13 @@ public interface CuisineSharedSecrets
     String KEY_TRAITS = "characteristics"; // It's not "traits" due to backward compatibility
     String KEY_SERVES = "durability";
     String KEY_USE_DURATION = "useDuration";
+    String KEY_FOOD_LEVEL = "foodLevel";
+    String KEY_SATURATION_MODIFIER = "saturation";
 
     /**
      * Used to indicate the actual type of CompositeFood, for (de)serialization purpose
      */
     String KEY_TYPE = "FoodType";
+
 
 }
