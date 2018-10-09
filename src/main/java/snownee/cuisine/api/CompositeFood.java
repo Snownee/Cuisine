@@ -71,18 +71,12 @@ public abstract class CompositeFood
     private float useDurationModifier = 1F;
 
     /**
-     * A signal used for lazy evaluation of foodLevel and saturationModifier. Never
-     * be serialized.
-     */
-    private transient boolean requireFoodStateRefresh = true;
-
-    /**
      * The overall quality bonus of this Dish, initial to 1.
      */
     private double qualityBonus = 1.0;
 
     /**
-     * The durability of this composite.
+     * The number of sevres of this composite.
      */
     private int durability;
 
