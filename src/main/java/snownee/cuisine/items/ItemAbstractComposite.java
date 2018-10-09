@@ -42,7 +42,6 @@ import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.util.I18nUtil;
 import snownee.cuisine.util.ItemNBTUtil;
@@ -133,7 +132,7 @@ public abstract class ItemAbstractComposite extends ItemMod
             // client needs to know is the "dish type" (or recipe name in the future),
             // which means that we could just sync a recipe name to client. Perhaps
             // we can add a config option for this?
-            data.setTag("dish", CuisinePersistenceCenter.serialize(food));
+            data.setTag("dish", CulinaryHub.API_INSTANCE.serialize(food.getIdentifier(), food));
         }
         return data;
     }
@@ -161,18 +160,12 @@ public abstract class ItemAbstractComposite extends ItemMod
         }
     }
 
+    @Nonnull
     @Override
     public String getItemStackDisplayName(ItemStack stack)
     {
         String s = ItemNBTUtil.getString(stack, "customName", "");
-        if (s.isEmpty())
-        {
-            return super.getItemStackDisplayName(stack);
-        }
-        else
-        {
-            return s;
-        }
+        return s.isEmpty() ? super.getItemStackDisplayName(stack) : s;
     }
 
     @Override
