@@ -24,6 +24,11 @@ import java.util.Collections;
 public final class ChoppingBoardOverride extends ItemOverrideList
 {
     /**
+     * Reference of ChoppingBoardOverride singleton instance.
+     */
+    static final ChoppingBoardOverride INSTANCE = new ChoppingBoardOverride();
+
+    /**
      * The transformation that transforms a wood block into a "chopping board".
      */
     static final TRSRTransformation CHOPPING_BOARD_SCALE_DOWN = new TRSRTransformation(new Vector3f(0F, -.38F, 0F), null, new Vector3f(0.75F, 0.25F, 0.75F), null);
@@ -77,9 +82,9 @@ public final class ChoppingBoardOverride extends ItemOverrideList
      * @param tx Translation x in pixel
      * @param ty Translation y in pixel
      * @param tz Translation z in pixel
-     * @param ax Angle x in degree
-     * @param ay Angle y in degree
-     * @param az Angle z in degree
+     * @param ax Rotation angle x in degree
+     * @param ay Rotation angle y in degree
+     * @param az Rotation angle z in degree
      * @param scale Uniform scale quantity
      *
      * @return The correct TRSRTransformation object
@@ -95,7 +100,7 @@ public final class ChoppingBoardOverride extends ItemOverrideList
         );
     }
 
-    ChoppingBoardOverride()
+    private ChoppingBoardOverride()
     {
         super(Collections.emptyList());
     }

@@ -106,11 +106,12 @@ public final class ChoppingBoardModel implements IModel
                 ItemStack cover = ((IExtendedBlockState) state).getValue(BlockChoppingBoard.COVER_KEY);
                 if (cover.isEmpty())
                 {
-                    // There was a certain amount of latency; we return an empty list for rendering
-                    // nothing if the cover data are not ready yet.
+                    // For whatsoever reason, there was a certain amount of latency.
+                    // We return an empty list for rendering nothing if the cover data are not ready yet.
                     return Collections.emptyList();
                 }
                 IBakedModel coverModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(cover, null, null);
+                // TODO (3TUSK): It is illogical to pass another block's block state into here. Passing null or something else instead?
                 List<BakedQuad> quads = coverModel.getQuads(state, side, rand);
                 // Doing magic to transform quads, so that they look small
                 if (coverModel.isBuiltInRenderer())
@@ -164,7 +165,7 @@ public final class ChoppingBoardModel implements IModel
         @Override
         public ItemOverrideList getOverrides()
         {
-            return new ChoppingBoardOverride();
+            return ChoppingBoardOverride.INSTANCE;
         }
 
     }
