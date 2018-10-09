@@ -27,6 +27,7 @@ import snownee.cuisine.internal.food.Dish;
 public interface CuisinePersistenceCenter
 {
 
+    // TODO (3TUSK) migrate to Dish, this is not designed for arbitrary CompositeFood
     static NBTTagCompound serialize(CompositeFood dish)
     {
         NBTTagCompound data = new NBTTagCompound();
@@ -89,6 +90,7 @@ public interface CuisinePersistenceCenter
         return data;
     }
 
+    // TODO (3TUSK) migrate to Dish, this is only for Dish
     static Dish deserialize(@Nonnull NBTTagCompound data)
     {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
@@ -156,6 +158,7 @@ public interface CuisinePersistenceCenter
         Material material = CulinaryHub.API_INSTANCE.findMaterial(materialKey);
         if (material == null)
         {
+            // TODO (3TUSK): how about only throwing exceptions in dev environment
             //throw new NullPointerException(String.format("Unknown material '%s'", materialKey));
             return null;
         }

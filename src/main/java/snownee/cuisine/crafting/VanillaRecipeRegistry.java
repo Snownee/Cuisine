@@ -71,10 +71,6 @@ public final class VanillaRecipeRegistry
     @SubscribeEvent
     public static void getBurnTime(FurnaceFuelBurnTimeEvent event)
     {
-        if (event.isCanceled())
-        {
-            return;
-        }
         ItemStack stack = event.getItemStack();
         if (stack.getItem() == Item.getItemFromBlock(CuisineRegistry.BAMBOO))
         {
