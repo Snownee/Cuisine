@@ -36,15 +36,15 @@ public final class FoodContainerCapability
         @Override
         public NBTBase writeNBT(Capability<FoodContainer> capability, FoodContainer instance, EnumFacing side)
         {
-            CompositeFood object = instance.get();
+            CompositeFood food = instance.get();
             NBTTagCompound data;
-            if (object == null)
+            if (food == null)
             {
                 data = new NBTTagCompound();
             }
             else
             {
-                data = CuisinePersistenceCenter.serialize(object);
+                data = CulinaryHub.API_INSTANCE.serialize(food.getIdentifier(), food);
             }
             return data;
         }
