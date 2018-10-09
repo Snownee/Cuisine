@@ -15,6 +15,8 @@ import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.blocks.BlockJar;
 import snownee.cuisine.blocks.BlockMill;
+import snownee.cuisine.blocks.BlockModLog;
+import snownee.cuisine.blocks.BlockModSapling;
 import snownee.cuisine.blocks.BlockMortar;
 import snownee.cuisine.blocks.BlockPlacedDish;
 import snownee.cuisine.blocks.BlockSqueezer;
@@ -93,6 +95,9 @@ public class CuisineRegistry implements IModule
     public static final BlockSqueezer SQUEEZER = new BlockSqueezer("squeezer");
 
     public static final BlockDrinkro DRINKRO = new BlockDrinkro("drinkro");
+
+    public static final BlockModLog LOG = new BlockModLog("log");
+    public static final BlockModSapling SAPLING = new BlockModSapling("sapling");
 
     public static final ItemBasicFood BASIC_FOOD = new ItemBasicFood("food");
 

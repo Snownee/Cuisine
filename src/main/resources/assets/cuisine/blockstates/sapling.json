@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross"
+  },
+  "variants": {
+    "variant": {
+      "pomelo":     { "textures": { "cross": "cuisine:block/sapling_pomelo" }},
+      "citron":     { "textures": { "cross": "cuisine:block/sapling_citron" }},
+      "tangerine":  { "textures": { "cross": "cuisine:block/sapling_tangerine" }},
+      "grapefruit": { "textures": { "cross": "cuisine:block/sapling_grapefruit" }},
+      "orange":     { "textures": { "cross": "cuisine:block/sapling_orange" }},
+      "lemon":      { "textures": { "cross": "cuisine:block/sapling_lemon" }},
+      "lime":       { "textures": { "cross": "cuisine:block/sapling_lime" }}
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cube_column"
+  },
+  "variants": {
+    "variant": {
+      "pomelo":     { "textures": { "end": "cuisine:block/log_pomelo_top",     "side": "cuisine:block/log_pomelo",     "all": "cuisine:block/log_pomelo" }},
+      "citron":     { "textures": { "end": "cuisine:block/log_citron_top",     "side": "cuisine:block/log_citron",     "all": "cuisine:block/log_citron" }},
+      "tangerine":  { "textures": { "end": "cuisine:block/log_tangerine_top",  "side": "cuisine:block/log_tangerine",  "all": "cuisine:block/log_tangerine" }},
+      "grapefruit": { "textures": { "end": "cuisine:block/log_grapefruit_top", "side": "cuisine:block/log_grapefruit", "all": "cuisine:block/log_grapefruit" }}
+    },
+    "axis": {
+      "y":    {},
+      "z":    { "x": 90 },
+      "x":    { "x": 90, "y": 90 },
+      "none": { "model": "cube_all" }
+    }
+  }
+}
