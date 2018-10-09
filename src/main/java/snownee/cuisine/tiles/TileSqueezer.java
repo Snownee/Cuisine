@@ -39,7 +39,6 @@ public class TileSqueezer extends TileBase
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        // TODO The following code is malfunctioning; it cannot properly do the transition from extended to extracting.
         this.triggered = this.world.getBlockState(this.pos).getValue(BlockDispenser.TRIGGERED);
         if (triggered)
         {
@@ -51,11 +50,8 @@ public class TileSqueezer extends TileBase
         }
         else
         {
-            if ("extended".equals(stateMachine.currentState()))
-            {
-                magic.setValue(Animation.getWorldTime(this.getWorld()));
-                stateMachine.transition("extracting");
-            }
+            magic.setValue(Animation.getWorldTime(this.getWorld()));
+            stateMachine.transition("extracting");
         }
     }
 

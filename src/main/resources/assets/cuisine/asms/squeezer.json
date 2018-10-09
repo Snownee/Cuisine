@@ -29,7 +29,7 @@
     "extending": [ "extended" ],
     "extracting": [ "extracted" ],
     "extended": [ "extracting", "extracted" ],
-    "extracted": [ "extending", "extended" ]
+    "extracted": [ "extending", "extended", "extracting" ]
   },
   "start_state": "extracted"
 }
