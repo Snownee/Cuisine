@@ -1,5 +1,7 @@
 package snownee.cuisine.tiles;
 
+import java.util.Optional;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,14 +16,20 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CookingVessel;
+import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
+import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.api.Spice;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.internal.food.Drink.DrinkType;
 
 public class TileDrinkro extends TileBase implements CookingVessel
 {
@@ -122,6 +130,10 @@ public class TileDrinkro extends TileBase implements CookingVessel
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
+            if (!isItemValid(slot, stack))
+            {
+                return stack;
+            }
             if (slot < input.getSlots())
             {
                 return input.insertItem(slot, stack, simulate);
@@ -174,7 +186,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
 
     private boolean powered = false;
     protected Drink.Builder builder;
-    private ItemStackHandler input = new ItemStackHandler(4)
+    public ItemStackHandler inputs = new ItemStackHandler(4)
     {
         public int getSlotLimit(int slot)
         {
@@ -185,26 +197,58 @@ public class TileDrinkro extends TileBase implements CookingVessel
         {
             if (builder.isFeatureItem(stack))
             {
+                return true;
+            }
+            Spice spice = CulinaryHub.API_INSTANCE.findSpice(stack);
+            return spice != null && builder.canAddIntoThis(null, new Seasoning(spice), TileDrinkro.this);
+        };
+
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+        {
+            if (builder.isFeatureItem(stack))
+            {
                 // One drink can't have two or more feature items
                 for (ItemStack stack2 : stacks)
                 {
                     if (builder.isFeatureItem(stack2))
                     {
-                        return false;
+                        return stack;
                     }
                 }
-                return true;
             }
-            return CulinaryHub.API_INSTANCE.isKnownSpice(stack);
+            else if (!isItemValid(slot, stack))
+            {
+                return stack;
+            }
+            return super.insertItem(slot, stack, simulate);
         };
     };
-    private ItemStackHandler output = new ItemStackHandler()
+    public ItemStackHandler output = new ItemStackHandler()
     {
         public int getSlotLimit(int slot)
         {
             return 1;
         };
+
+        public boolean isItemValid(int slot, ItemStack stack)
+        {
+            return builder.isContainerItem(stack);
+        };
+
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+        {
+            if (!isItemValid(slot, stack))
+            {
+                return stack;
+            }
+            return super.insertItem(slot, stack, simulate);
+        };
     };
+
+    public TileDrinkro()
+    {
+        builder = Drink.Builder.create();
+    }
 
     public void neighborChanged(IBlockState state)
     {
@@ -219,7 +263,84 @@ public class TileDrinkro extends TileBase implements CookingVessel
 
     public void stopProcess()
     {
-        // TODO Auto-generated method stub
+        if (world.isBlockPowered(pos))
+        {
+            // find feature
+            DrinkType type = DrinkType.NORMAL;
+            int featureSlot = -1;
+            for (int i = 0; i < inputs.getSlots(); i++)
+            {
+                ItemStack input = inputs.getStackInSlot(i);
+                if (!input.isEmpty())
+                {
+                    type = builder.findDrinkType(input);
+                    if (type != DrinkType.NORMAL)
+                    {
+                        // we can't remove this input here because we don't know
+                        // if it build successfully
+                        featureSlot = i;
+                        break;
+                    }
+                }
+            }
+            // check if container match the feature
+            if (!type.getContainer().matches(output.getStackInSlot(0)))
+            {
+                // TODO: way to modify player what error is,
+                // as it is redstone-powered, so we may need a `lastError` variable
+                return;
+            }
+            // add all inputs
+            for (int i = 0; i < inputs.getSlots(); i++)
+            {
+                if (i == featureSlot)
+                {
+                    continue;
+                }
+                ItemStack input = inputs.getStackInSlot(i);
+                if (!input.isEmpty())
+                {
+                    Spice spice = CulinaryHub.API_INSTANCE.findSpice(input);
+                    if (spice != null)
+                    {
+                        builder.addSeasoning(null, new Seasoning(spice), this);
+                    }
+                }
+            }
+            Optional<Drink> result = builder.build(this, null);
+            if (!result.isPresent())
+            {
+                // TODO: copy builder before adding seasonings.
+                // can't simply clear List<Seasoning> because effects may be added on stage of add seasoning
+                return;
+            }
+            Drink drink = result.get();
+
+            // No cook here, consider increasing point of who pick up this drink?
+            // SkillUtil.increasePoint(null, CulinarySkillPoint.EXPERTISE, (int) (completedDish.getFoodLevel() * completedDish.getSaturationModifier()));
+            // SkillUtil.increasePoint(null, CulinarySkillPoint.PROFICIENCY, 1);
+
+            ItemStack itemDrink = new ItemStack(CuisineRegistry.DRINK);
+            FoodContainer container = itemDrink.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+            if (container != null)
+            {
+                container.set(drink); // TODO AGAIN, THIS IS HACK
+            }
+            else
+            {
+                throw new NullPointerException("Null FoodContainer");
+            }
+            output.setStackInSlot(0, itemDrink);
+            for (int i = 0; i < inputs.getSlots(); i++)
+            {
+                ItemStack stack = inputs.getStackInSlot(i);
+                if (!stack.isEmpty())
+                {
+                    stack.shrink(1);
+                }
+            }
+            builder = Drink.Builder.create();
+        }
     }
 
     @Override
@@ -237,7 +358,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
         }
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new DrinkroItemWrapper(input, output));
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new DrinkroItemWrapper(inputs, output));
         }
         return super.getCapability(capability, facing);
     }

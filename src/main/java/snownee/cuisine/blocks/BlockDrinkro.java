@@ -9,15 +9,18 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.tiles.TileDrinkro;
 import snownee.kiwi.block.BlockModHorizontal;
@@ -32,6 +35,45 @@ public class BlockDrinkro extends BlockModHorizontal
         super(name, Material.IRON);
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setDefaultState(blockState.getBaseState().withProperty(NORMAL, true).withProperty(WORKING, false));
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileDrinkro)
+        {
+            TileDrinkro tileDrinkro = (TileDrinkro) tile;
+            ItemStack held = playerIn.getHeldItem(hand);
+            ItemStackHandler inv = hitY > 0.5 ? tileDrinkro.inputs : tileDrinkro.output;
+
+            if (held.isEmpty() || ItemHandlerHelper.insertItem(inv, held, true).getCount() == held.getCount())
+            {
+                for (int i = inv.getSlots() - 1; i >= 0; i--)
+                {
+                    ItemStack stack = inv.getStackInSlot(i);
+                    if (!stack.isEmpty())
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(playerIn, stack);
+                        inv.setStackInSlot(i, ItemStack.EMPTY);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < inv.getSlots(); i++)
+                {
+                    if (inv.getStackInSlot(i).isEmpty())
+                    {
+                        playerIn.setHeldItem(hand, ItemHandlerHelper.insertItemStacked(inv, held, false));
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -77,13 +119,13 @@ public class BlockDrinkro extends BlockModHorizontal
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-//        if (stateIn.getValue(WORKING))
-//        {
-//            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL.getParticleID(), pos.getX() + 0.5, pos.getY() + 1, pos.getZ(), 0xFF, 0, 0, 0xFFFF00FF);
-//            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0xFF, 0, 0, 0xFFFF00FF);
-//            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_INSTANT.getParticleID(), pos.getX(), pos.getY() + 1, pos.getZ() + 0.5, 0xFF, 0, 0, 0xFFFF00FF);
-//            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1, 0xFF, 0, 0, 0xFFFF00FF);
-//        }
+        //        if (stateIn.getValue(WORKING))
+        //        {
+        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL.getParticleID(), pos.getX() + 0.5, pos.getY() + 1, pos.getZ(), 0xFF, 0, 0, 0xFFFF00FF);
+        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0xFF, 0, 0, 0xFFFF00FF);
+        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_INSTANT.getParticleID(), pos.getX(), pos.getY() + 1, pos.getZ() + 0.5, 0xFF, 0, 0, 0xFFFF00FF);
+        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1, 0xFF, 0, 0, 0xFFFF00FF);
+        //        }
     }
 
     @Override
