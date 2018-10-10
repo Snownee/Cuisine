@@ -14,6 +14,7 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.prefab.SimpleFoodContainerImpl;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 
 /**
@@ -59,7 +60,7 @@ public class DishContainer extends SimpleFoodContainerImpl implements ICapabilit
         }
         else
         {
-            return CulinaryHub.API_INSTANCE.serialize(this.food.getIdentifier(), this.food);
+            return CulinaryHub.API_INSTANCE.serialize(this.food);
         }
     }
 
@@ -68,5 +69,9 @@ public class DishContainer extends SimpleFoodContainerImpl implements ICapabilit
     {
         ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
         this.food = CulinaryHub.API_INSTANCE.deserialize(id, data);
+        if (food == null)
+        {
+            this.food = CuisinePersistenceCenter.deserialize(data);
+        }
     }
 }

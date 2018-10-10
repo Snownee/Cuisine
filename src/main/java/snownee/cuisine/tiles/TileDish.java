@@ -16,6 +16,7 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public class TileDish extends TileBase
@@ -50,13 +51,18 @@ public class TileDish extends TileBase
         {
             this.dishContainer = new ItemStack(compound.getCompoundTag("DishContainer"));
         }
+        // Backward compatibility. At this point, the only possibility is that
+        // this is a serialized snownee.cuisine.internal.food.Dish object.
         else if (compound.hasKey("dish", Constants.NBT.TAG_COMPOUND))
         {
             NBTTagCompound data = compound.getCompoundTag("dish");
-            ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
-            CompositeFood dish = CulinaryHub.API_INSTANCE.deserialize(id, data);
+            // As stated above, since there was only one type of CompositeFood,
+            // we assume that the data structure is the same, so we use the
+            // corresponding deserializers to complete the migration.
+            CompositeFood dish = CuisinePersistenceCenter.deserialize(data);
             if (dish != null)
             {
+                // And finally we wrap it in an ItemStack.
                 this.dishContainer = dish.makeItemStack();
             }
         }

@@ -44,7 +44,7 @@ public final class FoodContainerCapability
             }
             else
             {
-                data = CulinaryHub.API_INSTANCE.serialize(food.getIdentifier(), food);
+                data = CulinaryHub.API_INSTANCE.serialize(food);
             }
             return data;
         }
@@ -57,6 +57,10 @@ public final class FoodContainerCapability
                 NBTTagCompound data = ((NBTTagCompound)nbt).getCompoundTag("dish");
                 ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
                 instance.set(CulinaryHub.API_INSTANCE.deserialize(id, data));
+                if (instance.get() == null)
+                {
+                    instance.set(CuisinePersistenceCenter.deserialize(data));
+                }
             }
             else
             {

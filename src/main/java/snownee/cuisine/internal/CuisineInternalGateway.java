@@ -181,9 +181,10 @@ public final class CuisineInternalGateway implements CuisineAPI
 
     @Override
     @SuppressWarnings("unchecked")
-    public <F extends CompositeFood> NBTTagCompound serialize(ResourceLocation identifier, F dishObject)
+    public <F extends CompositeFood> NBTTagCompound serialize(F dishObject)
     {
-        Function<F, NBTTagCompound> serializer = (Function<F, NBTTagCompound>) this.serializers.get(identifier.toString());
+        String identifier = dishObject.getIdentifier().toString();
+        Function<F, NBTTagCompound> serializer = (Function<F, NBTTagCompound>) this.serializers.get(identifier);
         if (serializer == null)
         {
             return new NBTTagCompound();
@@ -191,7 +192,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         else
         {
             NBTTagCompound data = serializer.apply(dishObject);
-            data.setString(CuisineSharedSecrets.KEY_TYPE, identifier.toString());
+            data.setString(CuisineSharedSecrets.KEY_TYPE, identifier);
             return data;
         }
     }
