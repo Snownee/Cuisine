@@ -3,6 +3,8 @@ package snownee.cuisine.blocks;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -42,7 +44,6 @@ import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
-import snownee.cuisine.items.ItemKitchenKnife;
 import snownee.cuisine.library.UnlistedPropertyItemStack;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.tiles.TileChoppingBoard;
@@ -52,8 +53,6 @@ import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.network.NetworkChannel;
 import snownee.kiwi.util.OreUtil;
-
-import javax.annotation.Nullable;
 
 @SuppressWarnings("deprecation")
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
@@ -71,10 +70,7 @@ public class BlockChoppingBoard extends BlockMod
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHardness(1.5F);
         setSoundType(SoundType.WOOD);
-        this.setDefaultState(this.blockState.getBaseState()
-                .withProperty(HAS_KITCHEN_KNIFE, Boolean.FALSE)
-                .withProperty(BlockHorizontal.FACING, EnumFacing.NORTH)
-        );
+        this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_KITCHEN_KNIFE, Boolean.FALSE).withProperty(BlockHorizontal.FACING, EnumFacing.NORTH));
     }
 
     @Override
@@ -86,10 +82,7 @@ public class BlockChoppingBoard extends BlockMod
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new ExtendedBlockState(this,
-                new IProperty<?>[] { HAS_KITCHEN_KNIFE, BlockHorizontal.FACING },
-                new IUnlistedProperty<?>[] { COVER_KEY }
-        );
+        return new ExtendedBlockState(this, new IProperty<?>[] { HAS_KITCHEN_KNIFE, BlockHorizontal.FACING }, new IUnlistedProperty<?>[] { COVER_KEY });
     }
 
     @Override
@@ -111,9 +104,7 @@ public class BlockChoppingBoard extends BlockMod
         if (tile instanceof TileChoppingBoard)
         {
             TileChoppingBoard board = (TileChoppingBoard) tile;
-            return state
-                    .withProperty(BlockHorizontal.FACING, board.getFacing())
-                    .withProperty(HAS_KITCHEN_KNIFE, board.hasKitchenKnife() ? Boolean.TRUE : Boolean.FALSE);
+            return state.withProperty(BlockHorizontal.FACING, board.getFacing()).withProperty(HAS_KITCHEN_KNIFE, board.hasKitchenKnife() ? Boolean.TRUE : Boolean.FALSE);
         }
         return state.withProperty(BlockHorizontal.FACING, EnumFacing.NORTH).withProperty(HAS_KITCHEN_KNIFE, Boolean.FALSE);
     }
@@ -124,9 +115,9 @@ public class BlockChoppingBoard extends BlockMod
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileChoppingBoard)
         {
-            return this.getActualState(((IExtendedBlockState)state).withProperty(COVER_KEY, ((TileChoppingBoard) tile).getCover()), world, pos);
+            return this.getActualState(((IExtendedBlockState) state).withProperty(COVER_KEY, ((TileChoppingBoard) tile).getCover()), world, pos);
         }
-        return this.getActualState(((IExtendedBlockState)state).withProperty(COVER_KEY, ItemStack.EMPTY), world, pos);
+        return this.getActualState(((IExtendedBlockState) state).withProperty(COVER_KEY, ItemStack.EMPTY), world, pos);
     }
 
     @Override
@@ -138,7 +129,7 @@ public class BlockChoppingBoard extends BlockMod
             TileChoppingBoard teCB = (TileChoppingBoard) te;
             ItemStack held = playerIn.getHeldItem(hand);
             boolean empty = teCB.stacks.getStackInSlot(0).isEmpty();
-            if (!empty && hand == EnumHand.MAIN_HAND && held.getItem() == CuisineRegistry.KITCHEN_KNIFE)
+            if (!empty && hand == EnumHand.MAIN_HAND && OreUtil.doesItemHaveOreName(held, "itemFoodCutter"))
             {
                 if (!worldIn.isRemote)
                 {
@@ -161,15 +152,14 @@ public class BlockChoppingBoard extends BlockMod
                     //return !teCB.stacks.getStackInSlot(0).isEmpty();
                 }
                 worldIn.notifyBlockUpdate(pos, state, state, 11);
-                return true;
             }
             else if (!empty)
             {
                 StacksUtil.dropInventoryItems(worldIn, pos, teCB.stacks, false);
                 teCB.resetProcess();
                 worldIn.notifyBlockUpdate(pos, state, state, 11);
-                return true;
             }
+            return true;
         }
 
         return false;
@@ -182,7 +172,7 @@ public class BlockChoppingBoard extends BlockMod
         if (te instanceof TileChoppingBoard)
         {
             ItemStack held = playerIn.getHeldItemMainhand();
-            if (held.getItem() == CuisineRegistry.KITCHEN_KNIFE)
+            if (OreUtil.doesItemHaveOreName(held, "itemFoodCutter"))
             {
                 ((TileChoppingBoard) te).process(playerIn, held, ProcessionType.KNIFE_HORIZONTAL, null);
             }
@@ -369,7 +359,7 @@ public class BlockChoppingBoard extends BlockMod
         if (event.getEntityPlayer().isCreative() && state.getBlock() == CuisineRegistry.CHOPPING_BOARD)
         {
             ItemStack held = event.getEntityPlayer().getHeldItem(event.getHand());
-            if (held.getItem() instanceof ItemKitchenKnife || held.getItem().getToolClasses(held).contains("axe"))
+            if (OreUtil.doesItemHaveOreName(held, "itemFoodCutter") || held.getItem().getToolClasses(held).contains("axe"))
             {
                 event.setCanceled(true);
                 state.getBlock().onBlockClicked(world, pos, event.getEntityPlayer());

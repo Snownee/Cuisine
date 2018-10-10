@@ -1,5 +1,6 @@
 package snownee.cuisine.internal.food;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Drink extends CompositeFood
         private Drink completed;
         protected final Map<ProcessingInput, DrinkType> featureInputs = new HashMap<>(4);
 
-        protected Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
+        Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
         {
             super(ingredients, seasonings, effects);
             featureInputs.put(ItemDefinition.of(Items.SNOWBALL), DrinkType.SMOOTHIE);
@@ -39,9 +40,33 @@ public class Drink extends CompositeFood
             featureInputs.put(OreDictDefinition.of("dustRedstone"), DrinkType.SODA);
         }
 
+        private Builder()
+        {
+            this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        }
+
+        public static Drink.Builder create()
+        {
+            return new Drink.Builder();
+        }
+
         public boolean isFeatureItem(ItemStack item)
         {
             return featureInputs.keySet().stream().anyMatch(i -> i.matches(item));
+        }
+
+        public boolean isContainerItem(ItemStack item)
+        {
+            return featureInputs.values().stream().anyMatch(i -> i.getContainer().matches(item));
+        }
+
+        public DrinkType findDrinkType(ItemStack item)
+        {
+            if (!item.isEmpty())
+            {
+
+            }
+            return DrinkType.NORMAL;
         }
 
         @Override
@@ -59,6 +84,10 @@ public class Drink extends CompositeFood
         @Override
         public Optional<Drink> build(CookingVessel vessel, EntityPlayer cook)
         {
+            if (getIngredients().isEmpty() || getIngredients().size() + getSeasonings().size() < 2)
+            {
+                return Optional.empty();
+            }
             return Optional.empty();
         }
     }
@@ -70,7 +99,7 @@ public class Drink extends CompositeFood
         public static final DrinkType GELO = new DrinkType("gelo", ItemDefinition.EMPTY);
         public static final DrinkType SODA = new DrinkType("soda", ItemDefinition.of(Items.GLASS_BOTTLE));
 
-        private final ItemDefinition containerItem;
+        private final ProcessingInput containerItem;
         private final String name;
 
         public DrinkType(String name, ItemDefinition containerItem)
@@ -84,9 +113,9 @@ public class Drink extends CompositeFood
             return Cuisine.MODID + ".drink." + name;
         }
 
-        public ItemStack getContainerItem()
+        public ProcessingInput getContainer()
         {
-            return containerItem.getItemStack();
+            return containerItem;
         }
     }
 

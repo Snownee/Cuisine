@@ -32,6 +32,7 @@ import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.util.OreUtil;
 
 public class TileChoppingBoard extends TileInventoryBase
 {
@@ -66,23 +67,19 @@ public class TileChoppingBoard extends TileInventoryBase
         }
         ItemStack ret = stacks.insertItem(0, stack, false);
         ItemStack con = stacks.getStackInSlot(0);
-        isAxe = CuisineConfig.PROGRESSION.axeChopping && !con.isEmpty() && con.getItem() != CuisineRegistry.KITCHEN_KNIFE && con.getItem() != CuisineRegistry.INGREDIENT && !CulinaryHub.API_INSTANCE.isKnownMaterial(con) && (Processing.CHOPPING.findRecipe(con) != null);
-        if (!isAxe && SkillUtil.hasPlayerLearnedSkill(player, CulinaryHub.CommonSkills.DOUBLE_CHOPPING))
-        {
-
-        }
+        isAxe = CuisineConfig.PROGRESSION.axeChopping && !con.isEmpty() && !OreUtil.doesItemHaveOreName(stack, "itemFoodCutter") && con.getItem() != CuisineRegistry.INGREDIENT && !CulinaryHub.API_INSTANCE.isKnownMaterial(con) && (Processing.CHOPPING.findRecipe(con) != null);
         return ret;
     }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
-        return stack.getItem() == CuisineRegistry.KITCHEN_KNIFE || stack.getItem() == CuisineRegistry.INGREDIENT || (CulinaryHub.API_INSTANCE.isKnownMaterial(stack) && !CulinaryHub.API_INSTANCE.findMaterial(stack).getValidForms().isEmpty()) || (CuisineConfig.PROGRESSION.axeChopping && Processing.CHOPPING.findRecipe(stack) != null);
+        return stack.getItem() == CuisineRegistry.INGREDIENT || OreUtil.doesItemHaveOreName(stack, "itemFoodCutter") || (CulinaryHub.API_INSTANCE.isKnownMaterial(stack) && !CulinaryHub.API_INSTANCE.findMaterial(stack).getValidForms().isEmpty()) || (CuisineConfig.PROGRESSION.axeChopping && Processing.CHOPPING.findRecipe(stack) != null);
     }
 
     public boolean hasKitchenKnife()
     {
-        return stacks.getStackInSlot(0).getItem() == CuisineRegistry.KITCHEN_KNIFE;
+        return OreUtil.doesItemHaveOreName(stacks.getStackInSlot(0), "itemFoodCutter");
     }
 
     public EnumFacing getFacing()
@@ -112,8 +109,7 @@ public class TileChoppingBoard extends TileInventoryBase
         {
             chopped = compound.getInteger("chopped");
         }
-        cover = compound.hasKey("cover", Constants.NBT.TAG_COMPOUND) ? new ItemStack(compound.getCompoundTag("cover"))
-                : DEFAULT_COVER;
+        cover = compound.hasKey("cover", Constants.NBT.TAG_COMPOUND) ? new ItemStack(compound.getCompoundTag("cover")) : DEFAULT_COVER;
         if (cover.isEmpty())
         {
             setCover(DEFAULT_COVER);
@@ -199,6 +195,7 @@ public class TileChoppingBoard extends TileInventoryBase
             }
             if (playerIn instanceof EntityPlayerMP)
             {
+                tool.attemptDamageItem(1, world.rand, (EntityPlayerMP) playerIn);
                 if (SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.SKILLED_CHOPPING))
                 {
                     if (processingIngredient.getMaterial() == CulinaryHub.CommonMaterials.PUFFERFISH)

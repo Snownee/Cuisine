@@ -1,5 +1,6 @@
 package snownee.cuisine.plugins.jei;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -9,6 +10,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Material;
@@ -17,8 +19,7 @@ import snownee.kiwi.crafting.input.ProcessingInput;
 
 public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
 {
-    private static final ItemStack KNIFE = new ItemStack(CuisineRegistry.KITCHEN_KNIFE);
-
+    private final List<ItemStack> knifes = new ArrayList<>();
     private final ProcessingInput input;
     private final Material output;
 
@@ -26,6 +27,11 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
     {
         this.input = input;
         this.output = material;
+        knifes.addAll(OreDictionary.getOres("itemFoodCutter", false));
+        if (knifes.isEmpty())
+        {
+            knifes.add(new ItemStack(CuisineRegistry.KITCHEN_KNIFE));
+        }
     }
 
     @Override
@@ -36,7 +42,7 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
         {
             return;
         }
-        ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(examples, Collections.singletonList(KNIFE)));
+        ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(examples, knifes));
         ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllValidFormsWithException(output, EnumSet.of(Form.FULL, Form.JUICE))));
     }
 

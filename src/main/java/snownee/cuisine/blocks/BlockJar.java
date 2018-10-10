@@ -30,7 +30,6 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.tiles.TileJar;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockMod;
-import snownee.kiwi.util.InventoryUtil;
 
 @SuppressWarnings("deprecation")
 public class BlockJar extends BlockMod
@@ -81,8 +80,12 @@ public class BlockJar extends BlockMod
             }
             else
             {
-                playerIn.setHeldItem(hand, ((TileJar) te).stacks.insertItem(held, false));
-                worldIn.updateComparatorOutputLevel(pos, this);
+                IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+                if (handler != null)
+                {
+                    playerIn.setHeldItem(hand, ItemHandlerHelper.insertItemStacked(handler, held, false));
+                    worldIn.updateComparatorOutputLevel(pos, this);
+                }
                 return true;
             }
         }
@@ -191,17 +194,9 @@ public class BlockJar extends BlockMod
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity te = worldIn.getTileEntity(pos);
-        if (te instanceof TileJar)
+        if (te instanceof TileJar && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
         {
-            IItemHandler inv = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inv == null)
-            {
-                return 0;
-            }
-            else
-            {
-                return InventoryUtil.calcRedstoneFromInventory(inv);
-            }
+            return ItemHandlerHelper.calcRedstoneFromInventory(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
         }
         return 0;
     }

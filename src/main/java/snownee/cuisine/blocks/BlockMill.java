@@ -21,12 +21,11 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.tiles.TileMill;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockModHorizontal;
-import snownee.kiwi.util.InventoryUtil;
 
 @SuppressWarnings("deprecation")
 public class BlockMill extends BlockModHorizontal
@@ -141,8 +140,7 @@ public class BlockMill extends BlockModHorizontal
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new ExtendedBlockState(this, new IProperty[] { BlockHorizontal.FACING,
-                Properties.StaticProperty }, new IUnlistedProperty[] { Properties.AnimationProperty });
+        return new ExtendedBlockState(this, new IProperty[] { BlockHorizontal.FACING, Properties.StaticProperty }, new IUnlistedProperty[] { Properties.AnimationProperty });
     }
 
     @Override
@@ -204,17 +202,9 @@ public class BlockMill extends BlockModHorizontal
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity te = worldIn.getTileEntity(pos);
-        if (te instanceof TileMill)
+        if (te instanceof TileMill && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
         {
-            IItemHandler inv = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inv == null)
-            {
-                return 0;
-            }
-            else
-            {
-                return InventoryUtil.calcRedstoneFromInventory(inv);
-            }
+            return ItemHandlerHelper.calcRedstoneFromInventory(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
         }
         return 0;
     }

@@ -13,13 +13,31 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemSeeds;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
+import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.entities.EntitySeed;
+import snownee.cuisine.items.ItemCrops;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.util.AABBUtil;
 
@@ -45,6 +63,10 @@ public class BlockBamboo extends BlockMod
         setDefaultState(stateDefault);
         setHardness(0.25F);
         setCreativeTab(Cuisine.CREATIVE_TAB);
+        if (CuisineConfig.GENERAL.bambooBlowpipe)
+        {
+            MinecraftForge.EVENT_BUS.register(this);
+        }
     }
 
     @Override
@@ -262,5 +284,56 @@ public class BlockBamboo extends BlockMod
             return blockState.getValue(NORTH) || blockState.getValue(SOUTH) || blockState.getValue(WEST) || blockState.getValue(EAST);
         }
         return true;
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
+    {
+        if (event.getHand() == EnumHand.MAIN_HAND && event.getItemStack().getItem() == Item.getItemFromBlock(this))
+        {
+            EntityPlayer player = event.getEntityPlayer();
+            ItemStack stack = player.getHeldItemOffhand();
+            if (stack.isEmpty())
+            {
+                return;
+            }
+            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variants.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variants.PEANUT.getMeta())))
+            {
+                event.setCanceled(true);
+                event.setCancellationResult(EnumActionResult.FAIL);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
+    {
+        if (event.getHand() == EnumHand.MAIN_HAND && event.getItemStack().getItem() == Item.getItemFromBlock(this))
+        {
+            EntityPlayer player = event.getEntityPlayer();
+            ItemStack stack = player.getHeldItemOffhand();
+            if (stack.isEmpty())
+            {
+                return;
+            }
+            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variants.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variants.PEANUT.getMeta())))
+            {
+                if (!event.getWorld().isRemote)
+                {
+                    EntitySeed seed = new EntitySeed(event.getWorld(), player, ItemHandlerHelper.copyStackWithSize(stack, 1));
+                    seed.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+                    event.getWorld().spawnEntity(seed);
+                }
+
+                player.getCooldownTracker().setCooldown(Item.getItemFromBlock(CuisineRegistry.BAMBOO), 20);
+                event.getWorld().playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (event.getWorld().rand.nextFloat() * 0.4F + 0.8F));
+                if (!player.capabilities.isCreativeMode)
+                {
+                    stack.shrink(1);
+                }
+                event.setCanceled(true);
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+            }
+        }
     }
 }

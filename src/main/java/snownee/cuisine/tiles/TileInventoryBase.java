@@ -55,20 +55,6 @@ public class TileInventoryBase extends TileBase
             return super.insertItem(slot, stack, simulate);
         }
 
-        public ItemStack insertItem(ItemStack stack, boolean simulate)
-        {
-            ItemStack copy = stack.copy();
-            for (int i = 0; i < getSlots(); ++i)
-            {
-                if (copy.isEmpty())
-                {
-                    break;
-                }
-                copy = insertItem(i, copy, simulate);
-            }
-            return copy;
-        }
-
         @Override
         protected void onContentsChanged(int slot)
         {
