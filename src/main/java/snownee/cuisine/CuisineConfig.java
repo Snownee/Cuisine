@@ -51,6 +51,12 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public int bamboosGenRate = 35;
 
+        @Config.Comment("Use bamboo as a blowpipe, shoot seeds")
+        @Config.LangKey("cuisine.config.general.bamboo_blowpipe")
+        @Config.Name("BambooBlowpipe")
+        @Config.RequiresMcRestart
+        public boolean bambooBlowpipe = false;
+
         @Config.Comment("Larger = Less possible to gen, 0 = Do not gen")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
         @Config.Name("CropsGenRate")
