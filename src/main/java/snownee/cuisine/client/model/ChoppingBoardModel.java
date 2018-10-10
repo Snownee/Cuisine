@@ -111,8 +111,17 @@ public final class ChoppingBoardModel implements IModel
                     return Collections.emptyList();
                 }
                 IBakedModel coverModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(cover, null, null);
-                // TODO (3TUSK): It is illogical to pass another block's block state into here. Passing null or something else instead?
-                List<BakedQuad> quads = coverModel.getQuads(state, side, rand);
+                List<BakedQuad> quads;
+                try
+                {
+                    quads = coverModel.getQuads(null, side, rand);
+                }
+                catch (Exception e)
+                {
+                    // Cuisine.logger.catching(e);
+                    // Looks like it's impossible to get quads now. Return empty list instead.
+                    return Collections.emptyList();
+                }
                 // Doing magic to transform quads, so that they look small
                 if (coverModel.isBuiltInRenderer())
                 {
