@@ -20,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -240,14 +239,9 @@ public class BlockChoppingBoard extends BlockMod
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
     public BlockRenderLayer getRenderLayer()
     {
+        // Doing so to make sure the kitchen knife has proper render.
         return BlockRenderLayer.CUTOUT;
     }
 
