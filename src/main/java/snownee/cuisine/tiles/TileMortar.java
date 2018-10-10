@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.CulinarySkillPoint;
 import snownee.cuisine.api.Form;
@@ -93,7 +94,7 @@ public class TileMortar extends TileInventoryBase
 
     public ItemStack insertItem(ItemStack stack)
     {
-        return stacks.insertItem(stack, false);
+        return ItemHandlerHelper.insertItemStacked(stacks, stack, false);
     }
 
     @Override

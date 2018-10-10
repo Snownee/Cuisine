@@ -23,14 +23,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.items.ItemMortar;
 import snownee.cuisine.tiles.TileMortar;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockModHorizontal;
-import snownee.kiwi.util.InventoryUtil;
 
 @SuppressWarnings("deprecation")
 public class BlockMortar extends BlockModHorizontal
@@ -196,15 +195,7 @@ public class BlockMortar extends BlockModHorizontal
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileMortar && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
         {
-            IItemHandler inv = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            if (inv == null)
-            {
-                return 0;
-            }
-            else
-            {
-                return InventoryUtil.calcRedstoneFromInventory(inv);
-            }
+            return ItemHandlerHelper.calcRedstoneFromInventory(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
         }
         return 0;
     }
