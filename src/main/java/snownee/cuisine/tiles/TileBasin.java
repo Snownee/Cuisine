@@ -1,5 +1,6 @@
 package snownee.cuisine.tiles;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.inventory.InventoryHelper;
@@ -55,12 +56,28 @@ public class TileBasin extends TileInventoryBase
         tank.readFromNBT(compound.getCompoundTag("tank"));
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
         compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
         return compound;
+    }
+
+    @Nonnull
+    @Override
+    protected NBTTagCompound writePacketData(NBTTagCompound data)
+    {
+        data.setTag("tank", this.tank.writeToNBT(new NBTTagCompound()));
+        return super.writePacketData(data);
+    }
+
+    @Override
+    protected void readPacketData(NBTTagCompound data)
+    {
+        super.readPacketData(data);
+        this.tank.readFromNBT(data.getCompoundTag("tank"));
     }
 
     public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input)

@@ -378,17 +378,22 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         return super.writeToNBT(compound);
     }
 
-    @Override
-    protected void readPacketData(NBTTagCompound data)
-    {
-
-    }
-
     @Nonnull
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        return new NBTTagCompound();
+        data.setInteger("temperature", this.temperature);
+        data.setInteger("water", this.water);
+        data.setInteger("oil", this.oil);
+        return data;
+    }
+
+    @Override
+    protected void readPacketData(NBTTagCompound data)
+    {
+        this.temperature = data.getInteger("temperature");
+        this.water = data.getInteger("water");
+        this.oil = data.getInteger("oil");
     }
 
     static final class Heating implements CookingStrategy

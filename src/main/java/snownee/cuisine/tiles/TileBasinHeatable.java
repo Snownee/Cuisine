@@ -13,6 +13,8 @@ import snownee.cuisine.api.process.Boiling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.util.StacksUtil;
 
+import javax.annotation.Nonnull;
+
 public class TileBasinHeatable extends TileBasin implements ITickable
 {
     public static final Map<Block, Integer> BLOCK_HEAT_SOURCES = new HashMap<>();
@@ -39,6 +41,8 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         {
             int heat = getHeatValueFromState(world.getBlockState(pos.down()));
             tickCheckHeating = heat > 0 ? 200 / heat : 600;
+            IBlockState currentState = this.world.getBlockState(this.pos);
+            this.world.notifyBlockUpdate(this.pos, currentState, currentState, 11);
             if (heat == 0 && !world.provider.isNether())
             {
                 if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
@@ -119,6 +123,13 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         return heat != null ? heat : 0;
     }
 
+    @Nonnull
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
+        return super.writeToNBT(compound);
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
@@ -126,5 +137,20 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         super.readFromNBT(compound);
         invLock = false;
         onContentsChanged(0);
+    }
+
+    @Nonnull
+    @Override
+    protected NBTTagCompound writePacketData(NBTTagCompound data)
+    {
+        data.setInteger("heatValue", this.tickCheckHeating);
+        return super.writePacketData(data);
+    }
+
+    @Override
+    protected void readPacketData(NBTTagCompound data)
+    {
+        super.readPacketData(data);
+        this.tickCheckHeating = data.getInteger("heatValue");
     }
 }
