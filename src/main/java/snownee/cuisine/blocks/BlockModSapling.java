@@ -123,7 +123,7 @@ public class BlockModSapling extends BlockBush implements IModBlock
         return SAPLING_AABB;
     }
 
-    public static enum Type implements IStringSerializable
+    public enum Type implements IStringSerializable
     {
         POMELO, CITRON, TANGERINE, GRAPEFRUIT, ORANGE, LEMON, LIME;
 

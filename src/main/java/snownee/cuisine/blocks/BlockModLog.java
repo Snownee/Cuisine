@@ -132,7 +132,7 @@ public class BlockModLog extends BlockLog implements IModBlock
         return state.getValue(VARIANT).ordinal();
     }
 
-    public static enum Type implements IStringSerializable
+    public enum Type implements IStringSerializable
     {
         POMELO, CITRON, TANGERINE, GRAPEFRUIT;
 

@@ -22,7 +22,7 @@ import snownee.cuisine.util.StacksUtil;
 
 public class EntitySeed extends EntityThrowable
 {
-    private static final DataParameter<ItemStack> ITEM = EntityDataManager.<ItemStack>createKey(EntityPotion.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<ItemStack> ITEM = EntityDataManager.createKey(EntityPotion.class, DataSerializers.ITEM_STACK);
 
     public EntitySeed(World worldIn)
     {

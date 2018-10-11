@@ -187,7 +187,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
         public int getSlotLimit(int slot)
         {
             return 1;
-        };
+        }
 
         public boolean isItemValid(int slot, ItemStack stack)
         {
@@ -197,7 +197,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
             }
             Spice spice = CulinaryHub.API_INSTANCE.findSpice(stack);
             return spice != null && builder.canAddIntoThis(null, new Seasoning(spice), TileDrinkro.this);
-        };
+        }
 
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
@@ -217,19 +217,19 @@ public class TileDrinkro extends TileBase implements CookingVessel
                 return stack;
             }
             return super.insertItem(slot, stack, simulate);
-        };
+        }
     };
     public ItemStackHandler output = new ItemStackHandler()
     {
         public int getSlotLimit(int slot)
         {
             return 1;
-        };
+        }
 
         public boolean isItemValid(int slot, ItemStack stack)
         {
             return builder.isContainerItem(stack);
-        };
+        }
 
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
@@ -238,7 +238,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
                 return stack;
             }
             return super.insertItem(slot, stack, simulate);
-        };
+        }
     };
 
     public TileDrinkro()

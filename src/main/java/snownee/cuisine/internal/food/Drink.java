@@ -1,12 +1,11 @@
 package snownee.cuisine.internal.food;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,7 +67,7 @@ public class Drink extends CompositeFood
         {
             if (!item.isEmpty())
             {
-                for (Entry<ProcessingInput, DrinkType> entry : featureInputs.entrySet())
+                for (Map.Entry<ProcessingInput, DrinkType> entry : featureInputs.entrySet())
                 {
                     if (entry.getKey().matches(item))
                     {
@@ -195,6 +194,6 @@ public class Drink extends CompositeFood
     @Override
     public Collection<String> getKeywords()
     {
-        return Arrays.asList("drink");
+        return Collections.singletonList("drink");
     }
 }
