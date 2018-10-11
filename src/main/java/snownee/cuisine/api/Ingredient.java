@@ -18,7 +18,7 @@ public final class Ingredient
 {
     private final Material material;
     private Form form;
-    private float quantity;
+    private double quantity;
     private int water, oil, heat;
     private final EnumSet<IngredientTrait> traits;
     private final Set<Effect> effects;
@@ -28,17 +28,17 @@ public final class Ingredient
         this(material, 1);
     }
 
-    public Ingredient(Material material, float quantity)
+    public Ingredient(Material material, double quantity)
     {
         this(material, Form.FULL, quantity);
     }
 
-    public Ingredient(Material material, Form form, float quantity)
+    public Ingredient(Material material, Form form, double quantity)
     {
         this(material, form, quantity, EnumSet.of(IngredientTrait.UNDERCOOKED));
     }
 
-    public Ingredient(Material material, Form form, float quantity, EnumSet<IngredientTrait> traits)
+    public Ingredient(Material material, Form form, double quantity, EnumSet<IngredientTrait> traits)
     {
         this.material = material;
         this.form = form;
@@ -67,7 +67,7 @@ public final class Ingredient
         return null;
     }
 
-    public float getSize()
+    public double getSize()
     {
         return quantity;
     }
@@ -77,12 +77,12 @@ public final class Ingredient
         return getSize() * getMaterial().getCategories().size();
     }
 
-    public void increaseSizeBy(float increment)
+    public void increaseSizeBy(double increment)
     {
         quantity += increment;
     }
 
-    public void decreaseSizeBy(float decrement)
+    public void decreaseSizeBy(double decrement)
     {
         quantity -= decrement;
     }
