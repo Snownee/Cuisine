@@ -251,23 +251,10 @@ public class Dish extends CompositeFood
             else
             {
                 // Calculate hunger regeneration and saturation modifier
-                float saturationModifier = 0.4F;
-                for (Ingredient ingredient : this.getIngredients())
-                {
-                    saturationModifier += ingredient.getSaturationModifier(); // TODO: relate to size
-                    if (ingredient.hasTrait(IngredientTrait.PLAIN) || ingredient.hasTrait(IngredientTrait.OVERCOOKED))
-                    {
-                        saturationModifier -= 0.1;
-                    }
-                }
-                saturationModifier = Math.max(saturationModifier, 0);
-
-                float i = 0;
-                for (Ingredient ingredient : this.getIngredients())
-                {
-                    i += ingredient.getFoodLevel() * (ingredient.hasTrait(IngredientTrait.PLAIN) ? 0.5 : 1);
-                }
-                int foodLevel = MathHelper.ceil(i);
+                FoodValueCounter counter = new FoodValueCounter(0, 0.4F);
+                this.apply(counter, vessel);
+                float saturationModifier = counter.getSaturation();
+                int foodLevel = counter.getHungerRegen();
 
                 // Grant player cook skill bonus
 

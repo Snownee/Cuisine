@@ -244,7 +244,7 @@ public abstract class ItemAbstractComposite extends ItemMod
             if (flagIn.isAdvanced())
             {
                 tooltip.add(I18nUtil.translate("tip.food.hunger_regen", dish.getFoodLevel()));
-                tooltip.add(I18nUtil.translate("tip.food.saturation", ItemStack.DECIMALFORMAT.format(dish.getSaturationModifier()))); // TODO (3TUSK): i18n
+                tooltip.add(I18nUtil.translate("tip.food.saturation", ItemStack.DECIMALFORMAT.format(dish.getSaturationModifier())));
             }
         }
     }
