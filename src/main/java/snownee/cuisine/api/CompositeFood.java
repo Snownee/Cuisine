@@ -179,15 +179,6 @@ public abstract class CompositeFood
         return this.getSize() + ingredient.getSize() <= this.getMaxSize() /*&& ingredient.getMaterial().canAddInto(this, ingredient)*/;
     }
 
-    public CompositeFood addEffect(final Effect effect)
-    {
-        if (!contains(effect))
-        {
-            this.effects.add(effect);
-        }
-        return this;
-    }
-
     /**
      * @param material The material to lookup
      * @return true if there is at least one Ingredient whose Material is equals to
@@ -402,11 +393,6 @@ public abstract class CompositeFood
     @Deprecated
     public abstract void setModelType(String type);
 
-    public void removeEffect(Effect effect) // TODO?
-    {
-        this.effects.removeIf(e -> e == effect);
-    }
-
     /**
      * A {@code Builder} represents an unfinished {@link CompositeFood} object.
      *
@@ -499,13 +485,23 @@ public abstract class CompositeFood
             return seasonings;
         }
 
-        // TODO Javadoc
+        /**
+         * Retrieve the list of current {@link Effect effects} present.
+         * @return A list of effects
+         */
         public List<Effect> getEffects()
         {
             return effects;
         }
 
-        // TODO Javadoc
+        /**
+         * Determine whether this contains an instance of {@link Ingredient ingredient}
+         * with specified {@link Material}.
+         *
+         * @param mat The material in question
+         * @return true if there is at least one instance of Ingredient has given
+         *         Material; false otherwise.
+         */
         public boolean contains(Material mat)
         {
             for (Ingredient ingredient : this.ingredients)
@@ -518,7 +514,14 @@ public abstract class CompositeFood
             return false;
         }
 
-        // TODO Javadoc
+        /**
+         * Determine whether this contains an instance of {@link Seasoning seasoning}
+         * with specified {@link Spice}.
+         *
+         * @param spice The spice in question
+         * @return true if there is at least one instance of Seasoning has given
+         *         Spice; false otherwise.
+         */
         public boolean contains(Spice spice)
         {
             for (Seasoning seasoning : this.seasonings)
@@ -642,7 +645,11 @@ public abstract class CompositeFood
             }
         }
 
-        // TODO Javadoc
+        /**
+         * Attempt to add an {@link Effect} into this.
+         *
+         * @param e new effect to be added
+         */
         public void addEffect(Effect e)
         {
             this.effects.add(e);
