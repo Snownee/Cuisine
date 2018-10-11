@@ -41,8 +41,6 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         {
             int heat = getHeatValueFromState(world.getBlockState(pos.down()));
             tickCheckHeating = heat > 0 ? 200 / heat : 600;
-            IBlockState currentState = this.world.getBlockState(this.pos);
-            this.world.notifyBlockUpdate(this.pos, currentState, currentState, 11);
             if (heat == 0 && !world.provider.isNether())
             {
                 if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
@@ -67,6 +65,11 @@ public class TileBasinHeatable extends TileBasin implements ITickable
             {
                 failed = true;
             }
+        }
+        else
+        {
+            IBlockState currentState = this.world.getBlockState(this.pos);
+            this.world.notifyBlockUpdate(this.pos, currentState, currentState, 11);
         }
     }
 
