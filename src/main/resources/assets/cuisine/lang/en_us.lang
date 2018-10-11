@@ -209,10 +209,7 @@ fluid.rice_vinegar=Rice Vinegar
 fluid.fruit_vinegar=Fruit Vinegar
 fluid.beet_juice=Beet Juice
 fluid.sugarcane_juice=Sugarcane Juice
-fluid.cuisine_drink=Fruit Juice
-cuisine.fluid.drink.vegetables=Vegetable Juice Blend
-cuisine.fluid.drink.fruit=Fruit Juice Blend
-cuisine.fluid.drink.mixed=Vege-fruit Juice Blend
+fluid.cuisine_juice=Juice
 
 entity.cuisine.falling_flower.name=Falling Block
 
