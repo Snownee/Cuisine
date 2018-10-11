@@ -73,9 +73,6 @@ public class DrinkContainer extends SimpleFoodContainerImpl implements ICapabili
     {
         ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
         this.food = CulinaryHub.API_INSTANCE.deserialize(id, data);
-        if (food == null)
-        {
-            this.food = CuisinePersistenceCenter.deserialize(data);
-        }
+        // TODO (3TUSK): check if the CompositeFood is indeed a Drink?
     }
 }
