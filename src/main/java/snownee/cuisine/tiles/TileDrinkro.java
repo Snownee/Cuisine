@@ -69,7 +69,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
                 return 0;
             }
             Ingredient ingredient = new Ingredient(material, Form.JUICE, amountAdded / 500D);
-            if (tile.builder.canAddIntoThis(null, ingredient, tile))
+            if (!tile.builder.canAddIntoThis(null, ingredient, tile))
             {
                 return 0;
             }
@@ -275,12 +275,13 @@ public class TileDrinkro extends TileBase implements CookingVessel
                         // we can't remove this input here because we don't know
                         // if it build successfully
                         featureSlot = i;
+                        builder.drinkType = type;
                         break;
                     }
                 }
             }
             // check if container match the feature
-            if (!type.getContainer().matches(output.getStackInSlot(0)))
+            if (!type.getContainerPre().matches(output.getStackInSlot(0)))
             {
                 // TODO: way to modify player what error is,
                 // as it is redstone-powered, so we may need a `lastError` variable

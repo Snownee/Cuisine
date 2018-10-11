@@ -29,7 +29,8 @@ public class Drink extends CompositeFood
 {
     public static final class Builder extends CompositeFood.Builder<Drink>
     {
-        private Drink completed;
+        public Drink completed;
+        public DrinkType drinkType;
         protected final Map<ProcessingInput, DrinkType> featureInputs = new HashMap<>(4);
 
         Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
@@ -40,6 +41,7 @@ public class Drink extends CompositeFood
             featureInputs.put(ItemDefinition.of(Blocks.PACKED_ICE), DrinkType.SMOOTHIE);
             featureInputs.put(OreDictDefinition.of("slimeball"), DrinkType.GELO);
             featureInputs.put(OreDictDefinition.of("dustRedstone"), DrinkType.SODA);
+            drinkType = DrinkType.NORMAL;
         }
 
         private Builder()
@@ -59,7 +61,7 @@ public class Drink extends CompositeFood
 
         public boolean isContainerItem(ItemStack item)
         {
-            return featureInputs.values().stream().anyMatch(i -> i.getContainer().matches(item));
+            return featureInputs.values().stream().anyMatch(i -> i.getContainerPre().matches(item));
         }
 
         public DrinkType findDrinkType(ItemStack item)
@@ -86,13 +88,13 @@ public class Drink extends CompositeFood
         @Override
         public double getMaxSize()
         {
-            return 1;
+            return 2;
         }
 
         @Override
         public int getMaxIngredientLimit()
         {
-            return 2;
+            return 4;
         }
 
         @Override
@@ -102,25 +104,32 @@ public class Drink extends CompositeFood
             {
                 return Optional.empty();
             }
-            completed = new Drink(getIngredients(), getSeasonings(), getEffects());
+            completed = new Drink(getIngredients(), getSeasonings(), getEffects(), drinkType);
             return Optional.of(completed);
         }
     }
 
     public static class DrinkType
     {
-        public static final DrinkType NORMAL = new DrinkType("normal", ItemDefinition.of(Items.GLASS_BOTTLE));
+        public static final DrinkType NORMAL = new DrinkType("drink", ItemDefinition.of(Items.GLASS_BOTTLE));
         public static final DrinkType SMOOTHIE = new DrinkType("smoothie", ItemDefinition.of(CuisineRegistry.PLACED_DISH));
         public static final DrinkType GELO = new DrinkType("gelo", ItemDefinition.EMPTY);
         public static final DrinkType SODA = new DrinkType("soda", ItemDefinition.of(Items.GLASS_BOTTLE));
 
-        private final ProcessingInput containerItem;
+        private final ProcessingInput containerPre;
+        private final ItemDefinition containerPost;
         private final String name;
 
-        public DrinkType(String name, ItemDefinition containerItem)
+        public DrinkType(String name, ItemDefinition container)
+        {
+            this(name, container, container);
+        }
+
+        public DrinkType(String name, ProcessingInput containerPre, ItemDefinition containerPost)
         {
             this.name = name;
-            this.containerItem = containerItem;
+            this.containerPre = containerPre;
+            this.containerPost = containerPost;
         }
 
         public String getName()
@@ -133,9 +142,14 @@ public class Drink extends CompositeFood
             return Cuisine.MODID + ".drink." + name;
         }
 
-        public ProcessingInput getContainer()
+        public ProcessingInput getContainerPre()
         {
-            return containerItem;
+            return containerPre;
+        }
+
+        public ItemStack getContainerPost()
+        {
+            return containerPost.getItemStack();
         }
     }
 
@@ -143,9 +157,10 @@ public class Drink extends CompositeFood
 
     private DrinkType drinkType;
 
-    protected Drink(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
+    protected Drink(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, DrinkType drinkType)
     {
         super(ingredients, seasonings, effects);
+        this.drinkType = drinkType;
     }
 
     @Override
@@ -166,6 +181,11 @@ public class Drink extends CompositeFood
         return drinkType.getName();
     }
 
+    public DrinkType getDrinkType()
+    {
+        return drinkType;
+    }
+
     @Override
     public void setModelType(String type)
     {
@@ -177,5 +197,4 @@ public class Drink extends CompositeFood
     {
         return Arrays.asList("drink");
     }
-
 }
