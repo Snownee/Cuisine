@@ -138,6 +138,7 @@ public class TileMortar extends TileInventoryBase
         this.processTime = data.getInteger("ProcessTime");
         if (world.isRemote)
         {
+            // Call this on client to ensure that rendering get a refresh
             world.markBlockRangeForRenderUpdate(pos, pos);
         }
     }

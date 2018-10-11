@@ -65,7 +65,6 @@ public class BlockMortar extends BlockModHorizontal
     {
         // We do not serialize this field for backward compatibility reason
         // As result, we query it via TileEntity.
-        // TODO Should we keep backward compatibility?
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileMortar)
         {
@@ -98,8 +97,6 @@ public class BlockMortar extends BlockModHorizontal
                     mortar.process(playerIn);
                     // Call this to sync data to client
                     worldIn.notifyBlockUpdate(pos, state, state, 3);
-                    // Call this to ensure client knows that render needs refresh
-                    worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 }
             }
             else
