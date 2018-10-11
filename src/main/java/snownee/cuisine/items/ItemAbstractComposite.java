@@ -42,6 +42,7 @@ import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.util.I18nUtil;
 import snownee.cuisine.util.ItemNBTUtil;
@@ -132,7 +133,7 @@ public abstract class ItemAbstractComposite extends ItemMod
             // client needs to know is the "dish type" (or recipe name in the future),
             // which means that we could just sync a recipe name to client. Perhaps
             // we can add a config option for this?
-            data.setTag("dish", CulinaryHub.API_INSTANCE.serialize(food.getIdentifier(), food));
+            data.setTag("dish", CulinaryHub.API_INSTANCE.serialize(food));
         }
         return data;
     }
@@ -152,6 +153,10 @@ public abstract class ItemAbstractComposite extends ItemMod
                 NBTTagCompound data = nbt.getCompoundTag("dish");
                 ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
                 foodContainer.set(CulinaryHub.API_INSTANCE.deserialize(id, data));
+                if (foodContainer.get() == null)
+                {
+                    foodContainer.set(CuisinePersistenceCenter.deserialize(data));
+                }
             }
         }
         if (nbt.hasKey("default"))

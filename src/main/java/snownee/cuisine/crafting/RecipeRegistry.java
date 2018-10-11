@@ -85,13 +85,11 @@ public class RecipeRegistry
 
         Processing.BOILING.add(new DistillationBoiling(new FluidStack(FluidRegistry.WATER, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), 0));
         Processing.BOILING.add(new DistillationBoiling(new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
-        //Processing.BOILING.add(new DistillationBoiling(new FluidStack(CuisineFluids.BEET_JUICE, 200), new ItemStack(Items.SUGAR), 2));
-
+       
         ItemStack sugar = new ItemStack(Items.SUGAR);
         Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
         Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(Items.COAL, 1), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
 
-        //Processing.SQUEEZING.add(new SimpleSqueezing(ItemDefinition.of(Items.BEETROOT), new FluidStack(CuisineFluids.BEET_JUICE, 200))); // TODO: output beet seeds?
         Processing.SQUEEZING.add(new SimpleSqueezing(ItemDefinition.of(Blocks.REEDS), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
 
         CulinaryHub.API_INSTANCE.getKnownMaterials().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));

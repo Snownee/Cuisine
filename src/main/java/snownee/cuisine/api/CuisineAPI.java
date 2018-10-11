@@ -76,14 +76,13 @@ public interface CuisineAPI
 
     /**
      *
-     * @param identifier the unique identifier for identification purpose
      * @param dishObject the actual CompositeFood object being serialized
      *
      * @param <F> the concrete type of CompositeFood
      *
      * @return a NBTTagCompound instance that contains serialized data for dishObject
      */
-    <F extends CompositeFood> NBTTagCompound serialize(ResourceLocation identifier, F dishObject);
+    <F extends CompositeFood> NBTTagCompound serialize(F dishObject);
 
     /**
      *
