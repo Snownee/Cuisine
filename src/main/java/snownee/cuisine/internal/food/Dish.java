@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants;
-import org.apache.commons.lang3.Validate;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
@@ -60,6 +59,7 @@ public class Dish extends CompositeFood
     @Override
     public Collection<String> getKeywords()
     {
+        // TODO Anything... else?
         return Arrays.asList("east-asian", "wok");
     }
 
@@ -112,21 +112,21 @@ public class Dish extends CompositeFood
         NBTTagCompound data = new NBTTagCompound();
         NBTTagList ingredientList = new NBTTagList();
 
-        for (Ingredient ingredient : dish.getIngredients())
+        for (Ingredient ingredient : dish.ingredients)
         {
             ingredientList.appendTag(CuisinePersistenceCenter.serialize(ingredient));
         }
         data.setTag(CuisineSharedSecrets.KEY_INGREDIENT_LIST, ingredientList);
 
         NBTTagList seasoningList = new NBTTagList();
-        for (Seasoning seasoning : dish.getSeasonings())
+        for (Seasoning seasoning : dish.seasonings)
         {
             seasoningList.appendTag(CuisinePersistenceCenter.serialize(seasoning));
         }
         data.setTag(CuisineSharedSecrets.KEY_SEASONING_LIST, seasoningList);
 
         NBTTagList effectList = new NBTTagList();
-        for (Effect effect : dish.getEffects())
+        for (Effect effect : dish.effects)
         {
             effectList.appendTag(new NBTTagString(effect.getID()));
         }
@@ -157,7 +157,6 @@ public class Dish extends CompositeFood
         {
             if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
             {
-                Validate.isTrue(baseTag instanceof NBTTagCompound);
                 ingredients.add(CuisinePersistenceCenter.deserializeIngredient((NBTTagCompound) baseTag));
             }
         }
@@ -167,7 +166,6 @@ public class Dish extends CompositeFood
         {
             if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
             {
-                Validate.isTrue(baseTag instanceof NBTTagCompound);
                 seasonings.add(CuisinePersistenceCenter.deserializeSeasoning((NBTTagCompound) baseTag));
             }
         }
@@ -363,7 +361,6 @@ public class Dish extends CompositeFood
             {
                 if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
                 {
-                    Validate.isTrue(baseTag instanceof NBTTagCompound);
                     ingredients.add(CuisinePersistenceCenter.deserializeIngredient((NBTTagCompound) baseTag));
                 }
             }
@@ -373,7 +370,6 @@ public class Dish extends CompositeFood
             {
                 if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
                 {
-                    Validate.isTrue(baseTag instanceof NBTTagCompound);
                     seasonings.add(CuisinePersistenceCenter.deserializeSeasoning((NBTTagCompound) baseTag));
                 }
             }
