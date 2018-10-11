@@ -313,13 +313,11 @@ public class BlockChoppingBoard extends BlockMod
         super.breakBlock(worldIn, pos, state);
     }
 
-    public static NonNullList<ItemStack> getSuitableCovers()
+    public static List<ItemStack> getSuitableCovers()
     {
-        // TODO We probably want to expose the NonNullList constructor that allows custom delegates
-        List<ItemStack> items = OreUtil.getItemsFromOre("logWood", 1).stream().filter(i -> i.getItem() instanceof ItemBlock).collect(Collectors.toList());
-        NonNullList<ItemStack> results = NonNullList.create();
-        results.addAll(items);
-        return results;
+        return OreUtil.getItemsFromOre("logWood", 1).stream()
+                .filter(i -> i.getItem() instanceof ItemBlock)
+                .collect(Collectors.toList());
     }
 
     @Override
