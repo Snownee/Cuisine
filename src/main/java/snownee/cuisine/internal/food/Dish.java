@@ -175,7 +175,7 @@ public class Dish extends CompositeFood
                 // Grant player cook skill bonus
 
                 // CulinarySkillPointContainer skill = playerIn.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
-                double modifier = 1.0;
+                // double modifier = 1.0;
                 // if (skill != null)
                 // {
                 // modifier *= SkillUtil.getPlayerSkillLevel((EntityPlayerMP) playerIn, CuisineSharedSecrets.KEY_SKILL_WOK);
@@ -214,10 +214,9 @@ public class Dish extends CompositeFood
                     material.onCooked(this, ingredient, vessel, collector);
                 }
 
-                // collector.apply(this, cook); // TODO See, this is why I say this couples too many responsibilities
-
                 this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects(), foodLevel, saturationModifier);
-                this.completed.setQualityBonus(modifier);
+                collector.apply(this.completed, cook); // TODO See, this is why I say this couples too many responsibilities
+                // this.completed.setQualityBonus(modifier);
                 this.completed.getOrComputeModelType();
                 return Optional.of(completed);
             }

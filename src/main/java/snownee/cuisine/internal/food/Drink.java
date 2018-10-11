@@ -1,10 +1,12 @@
 package snownee.cuisine.internal.food;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -64,7 +66,13 @@ public class Drink extends CompositeFood
         {
             if (!item.isEmpty())
             {
-
+                for (Entry<ProcessingInput, DrinkType> entry : featureInputs.entrySet())
+                {
+                    if (entry.getKey().matches(item))
+                    {
+                        return entry.getValue();
+                    }
+                }
             }
             return DrinkType.NORMAL;
         }
@@ -88,7 +96,8 @@ public class Drink extends CompositeFood
             {
                 return Optional.empty();
             }
-            return Optional.empty();
+            completed = new Drink(getIngredients(), getSeasonings(), getEffects());
+            return Optional.of(completed);
         }
     }
 
@@ -108,6 +117,11 @@ public class Drink extends CompositeFood
             this.containerItem = containerItem;
         }
 
+        public String getName()
+        {
+            return name;
+        }
+
         public String getTranslationKey()
         {
             return Cuisine.MODID + ".drink." + name;
@@ -121,7 +135,7 @@ public class Drink extends CompositeFood
 
     public static final ResourceLocation DRINK_ID = new ResourceLocation(Cuisine.MODID, "drink");
 
-    private String modelType;
+    private DrinkType drinkType;
 
     protected Drink(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
     {
@@ -143,19 +157,19 @@ public class Drink extends CompositeFood
     @Override
     public String getOrComputeModelType()
     {
-        return modelType != null ? modelType : "bottle";
+        return drinkType.getName();
     }
 
     @Override
     public void setModelType(String type)
     {
-        this.modelType = type;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Collection<String> getKeywords()
     {
-        return null;
+        return Arrays.asList("drink");
     }
 
 }

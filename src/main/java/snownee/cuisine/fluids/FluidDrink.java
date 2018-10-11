@@ -100,6 +100,16 @@ public class FluidDrink extends VaporizableFluid
         String name;
         int color;
 
+        public List<WeightedMaterial> getMaterials()
+        {
+            return materials;
+        }
+
+        public int getColor()
+        {
+            return color;
+        }
+
         public void refreshState()
         {
             float size = 0;
@@ -110,8 +120,8 @@ public class FluidDrink extends VaporizableFluid
             {
                 int color = material.material.getRawColorCode();
                 r += material.weight * (color >> 16 & 255) / 255.0F;
-                g += material.weight * (color >>  8 & 255) / 255.0F;
-                b += material.weight * (color       & 255) / 255.0F;
+                g += material.weight * (color >> 8 & 255) / 255.0F;
+                b += material.weight * (color & 255) / 255.0F;
                 size += material.weight;
             }
             if (size > 0)

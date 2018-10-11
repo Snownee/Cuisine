@@ -10,13 +10,16 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -45,6 +48,17 @@ public class BlockDrinkro extends BlockModHorizontal
         {
             TileDrinkro tileDrinkro = (TileDrinkro) tile;
             ItemStack held = playerIn.getHeldItem(hand);
+
+            if (held.getItem() != Items.GLASS_BOTTLE)
+            {
+                IFluidHandlerItem handler = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(held, 1));
+                if (handler != null)
+                {
+                    FluidUtil.interactWithFluidHandler(playerIn, hand, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing));
+                    return true;
+                }
+            }
+
             ItemStackHandler inv = hitY > 0.5 ? tileDrinkro.inputs : tileDrinkro.output;
 
             if (held.isEmpty() || ItemHandlerHelper.insertItem(inv, held, true).getCount() == held.getCount())
@@ -66,7 +80,7 @@ public class BlockDrinkro extends BlockModHorizontal
                 {
                     if (inv.getStackInSlot(i).isEmpty())
                     {
-                        playerIn.setHeldItem(hand, ItemHandlerHelper.insertItemStacked(inv, held, false));
+                        playerIn.setHeldItem(hand, inv.insertItem(i, held, false));
                         break;
                     }
                 }
@@ -156,14 +170,6 @@ public class BlockDrinkro extends BlockModHorizontal
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess worldIn, BlockPos pos, EnumFacing side)
-    {
-        return super.shouldSideBeRendered(blockState, worldIn, pos, side);
     }
 
 }

@@ -28,6 +28,7 @@ import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.fluids.CuisineFluids;
+import snownee.cuisine.fluids.FluidDrink.JuiceInfo;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 
@@ -58,13 +59,23 @@ public class TileDrinkro extends TileBase implements CookingVessel
             // 1 size = 500mB, fine-tuning needed
             if (resource.getFluid() == CuisineFluids.DRINK)
             {
-                // TODO
+                if (resource.tag == null)
+                {
+                    return 0;
+                }
+                JuiceInfo info = new JuiceInfo();
+                info.deserializeNBT(resource.tag);
+                if (info.getMaterials() == null || info.getMaterials().isEmpty())
+                {
+                    return 0;
+                }
                 return 0;
             }
             Material material = CulinaryHub.API_INSTANCE.findMaterial(resource);
             if (material != null)
             {
                 float quantity = resource.amount / 500F;
+                double maxQuantity = tile.builder.getMaxSize();
                 Ingredient ingredient = new Ingredient(material, Form.JUICE, quantity);
                 if (doFill)
                 {
