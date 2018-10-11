@@ -22,7 +22,7 @@ public class CuisineFluids
     public static final Fluid SESAME_OIL;
     public static final Fluid EDIBLE_OIL;
     public static final Fluid SUGARCANE_JUICE;
-    public static final Fluid DRINK;
+    public static final Fluid JUICE;
 
     static
     {
@@ -34,7 +34,7 @@ public class CuisineFluids
         SESAME_OIL = new FluidOil("sesame_oil");
         EDIBLE_OIL = new FluidOil("edible_oil");
         SUGARCANE_JUICE = new VaporizableFluid("sugarcane_juice").setDensity(1001);
-        DRINK = new FluidDrink("cuisine_drink");
+        JUICE = new FluidJuice("cuisine_juice");
     }
 
     @SubscribeEvent
@@ -48,8 +48,8 @@ public class CuisineFluids
         FluidRegistry.registerFluid(SESAME_OIL);
         FluidRegistry.registerFluid(EDIBLE_OIL);
         FluidRegistry.registerFluid(SUGARCANE_JUICE);
-        FluidRegistry.registerFluid(DRINK);
-        FluidRegistry.addBucketForFluid(DRINK);
+        FluidRegistry.registerFluid(JUICE);
+        FluidRegistry.addBucketForFluid(JUICE);
 
         BlockFluidSoyMilk soyMilkBlock = new BlockFluidSoyMilk(SOY_MILK);
         SOY_MILK.setBlock(soyMilkBlock);

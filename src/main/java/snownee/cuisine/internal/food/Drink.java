@@ -90,6 +90,12 @@ public class Drink extends CompositeFood
         }
 
         @Override
+        public int getMaxIngredientLimit()
+        {
+            return 2;
+        }
+
+        @Override
         public Optional<Drink> build(CookingVessel vessel, EntityPlayer cook)
         {
             if (getIngredients().isEmpty() || getIngredients().size() + getSeasonings().size() < 2)

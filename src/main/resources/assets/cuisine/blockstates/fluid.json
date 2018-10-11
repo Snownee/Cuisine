@@ -33,9 +33,9 @@
       "model": "forge:fluid",
       "custom": { "fluid": "sugarcane_juice" }
     },
-    "cuisine_drink": {
+    "cuisine_juice": {
       "model": "forge:fluid",
-      "custom": { "fluid": "cuisine_drink" }
+      "custom": { "fluid": "cuisine_juice" }
     }
   }
 }

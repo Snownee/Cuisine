@@ -27,8 +27,6 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.blocks.BlockDrinkro;
-import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.fluids.FluidDrink.JuiceInfo;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 
@@ -52,47 +50,34 @@ public class TileDrinkro extends TileBase implements CookingVessel
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
+            // TODO (Snownee): fire event
             if (resource == null)
             {
                 return 0;
             }
             // 1 size = 500mB, fine-tuning needed
-            if (resource.getFluid() == CuisineFluids.DRINK)
+
+            if (((int) tile.builder.getMaxSize() - tile.builder.getCurrentSize()) <= 0)
             {
-                if (resource.tag == null)
-                {
-                    return 0;
-                }
-                JuiceInfo info = new JuiceInfo();
-                info.deserializeNBT(resource.tag);
-                if (info.getMaterials() == null || info.getMaterials().isEmpty())
-                {
-                    return 0;
-                }
                 return 0;
             }
+            int amountAdded = (int) Math.min(resource.amount, (tile.builder.getMaxSize() - tile.builder.getCurrentSize()) * 500);
+
             Material material = CulinaryHub.API_INSTANCE.findMaterial(resource);
-            if (material != null)
+            if (material == null)
             {
-                float quantity = resource.amount / 500F;
-                double maxQuantity = tile.builder.getMaxSize();
-                Ingredient ingredient = new Ingredient(material, Form.JUICE, quantity);
-                if (doFill)
-                {
-                    if (tile.builder.addIngredient(null, ingredient, tile)) // FIXME: Nullable?!
-                    {
-                        return resource.amount;
-                    }
-                }
-                else
-                {
-                    if (tile.builder.canAddIntoThis(null, ingredient, tile)) // FIXME: Nullable?!
-                    {
-                        return resource.amount;
-                    }
-                }
+                return 0;
             }
-            return 0;
+            Ingredient ingredient = new Ingredient(material, Form.JUICE, amountAdded / 500D);
+            if (tile.builder.canAddIntoThis(null, ingredient, tile))
+            {
+                return 0;
+            }
+            if (doFill && !tile.builder.addIngredient(null, ingredient, tile))
+            {
+                return 0;
+            }
+            return amountAdded;
         }
 
         @Override

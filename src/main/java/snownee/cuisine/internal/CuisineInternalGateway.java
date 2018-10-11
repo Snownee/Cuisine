@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -15,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,8 +54,6 @@ import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
-
-import javax.annotation.Nullable;
 
 /**
  * The main implementation of CuisineAPI.
@@ -161,10 +162,7 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator,
-                                                           Class<F> typeToken,
-                                                           Function<F, NBTTagCompound> serializer,
-                                                           Function<NBTTagCompound, F> deserializer)
+    public <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator, Class<F> typeToken, Function<F, NBTTagCompound> serializer, Function<NBTTagCompound, F> deserializer)
     {
         if (uniqueLocator.getNamespace().equals(Loader.instance().activeModContainer().getModId()))
         {
@@ -300,6 +298,14 @@ public final class CuisineInternalGateway implements CuisineAPI
     @Override
     public Material findMaterial(FluidStack fluid)
     {
+        if (fluid.getFluid() == CuisineFluids.JUICE)
+        {
+            if (fluid.tag == null || !fluid.tag.hasKey("material", Constants.NBT.TAG_STRING))
+            {
+                return null;
+            }
+            return findMaterial(fluid.tag.getString("material"));
+        }
         return fluidToMaterialMapping.get(fluid.getFluid());
     }
 
@@ -354,6 +360,14 @@ public final class CuisineInternalGateway implements CuisineAPI
     @Override
     public boolean isKnownMaterial(FluidStack fluid)
     {
+        if (fluid.getFluid() == CuisineFluids.JUICE)
+        {
+            if (fluid.tag == null || !fluid.tag.hasKey("material", Constants.NBT.TAG_STRING))
+            {
+                return false;
+            }
+            return findMaterial(fluid.tag.getString("material")) != null;
+        }
         return fluidToMaterialMapping.containsKey(fluid.getFluid());
     }
 
@@ -370,11 +384,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         // Distribute API references
         CulinaryHub.API_INSTANCE = CuisineInternalGateway.INSTANCE = api;
 
-        api.registerFoodType(new ResourceLocation(Cuisine.MODID, "dish"),
-                Dish.class,
-                CuisinePersistenceCenter::serialize,
-                CuisinePersistenceCenter::deserialize
-        );
+        api.registerFoodType(new ResourceLocation(Cuisine.MODID, "dish"), Dish.class, CuisinePersistenceCenter::serialize, CuisinePersistenceCenter::deserialize);
 
         // Initialize Effects first, Material registration will use them
         api.register(new EffectExperienced());

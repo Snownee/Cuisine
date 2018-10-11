@@ -541,6 +541,11 @@ public abstract class CompositeFood
             return CompositeFood.DEFAULT_MAX_SIZE;
         }
 
+        public int getMaxIngredientLimit()
+        {
+            return 6;
+        }
+
         // mutating operations
 
         public boolean canAddIntoThis(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
@@ -582,6 +587,10 @@ public abstract class CompositeFood
                 }
                 if (!merged)
                 {
+                    if (ingredients.size() >= getMaxIngredientLimit())
+                    {
+                        return false;
+                    }
                     ingredients.add(ingredient);
                 }
                 ingredient.getMaterial().onAddedInto(this, ingredient, vessel);

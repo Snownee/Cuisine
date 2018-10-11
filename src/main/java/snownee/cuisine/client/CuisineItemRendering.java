@@ -3,8 +3,9 @@ package snownee.cuisine.client;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,7 +14,6 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Spice;
-import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
@@ -57,20 +57,13 @@ public final class CuisineItemRendering
         }, CuisineRegistry.SPICE_BOTTLE);
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> {
-            if (tintIndex == 0 && stack.hasTagCompound())
+            if (tintIndex == 0 && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
             {
-                NBTTagCompound data = stack.getTagCompound();
-                if (data.hasKey(FluidHandlerItemStack.FLUID_NBT_KEY, Constants.NBT.TAG_COMPOUND))
+                IFluidHandlerItem handlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                FluidStack fluid = handlerItem.drain(Integer.MAX_VALUE, false);
+                if (fluid != null)
                 {
-                    data = data.getCompoundTag(FluidHandlerItemStack.FLUID_NBT_KEY);
-                    if (data.hasKey("FluidName", Constants.NBT.TAG_STRING) && data.getString("FluidName").equals(CuisineFluids.DRINK.getName()) && data.hasKey("Tag", Constants.NBT.TAG_COMPOUND))
-                    {
-                        data = data.getCompoundTag("Tag");
-                        if (data.hasKey("color", Constants.NBT.TAG_INT))
-                        {
-                            return data.getInteger("color");
-                        }
-                    }
+                    return fluid.getFluid().getColor(fluid);
                 }
             }
             return -1;

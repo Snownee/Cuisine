@@ -15,7 +15,6 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.fluids.FluidDrink;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 
 public class MaterialSqueezing implements BasinInteracting
@@ -34,7 +33,7 @@ public class MaterialSqueezing implements BasinInteracting
     @Override
     public boolean matches(ItemStack item, @Nullable FluidStack fluid)
     {
-        return matchesItem(item) && (fluid == null || fluid.getFluid() == CuisineFluids.DRINK || CulinaryHub.API_INSTANCE.isKnownMaterial(fluid));
+        return matchesItem(item) && (fluid == null || material == CulinaryHub.API_INSTANCE.findMaterial(fluid));
     }
 
     @Override
@@ -76,19 +75,13 @@ public class MaterialSqueezing implements BasinInteracting
         }
         if (ingredient == null)
         {
-            return new Output(null, ItemStack.EMPTY);
+            return new Output(fluid, ItemStack.EMPTY);
         }
-        if (fluid != null && fluid.getFluid() != CuisineFluids.DRINK)
-        {
-            Material material = CulinaryHub.API_INSTANCE.findMaterial(fluid);
-            if (material == null)
-            {
-                return new Output(null, ItemStack.EMPTY);
-            }
-            FluidDrink.addIngredient(fluid, new FluidDrink.WeightedMaterial(material, fluid.amount));
-        }
-        FluidStack outputFluid = fluid == null ? new FluidStack(CuisineFluids.DRINK, 0) : fluid.copy();
-        FluidDrink.addIngredient(outputFluid, new FluidDrink.WeightedMaterial(ingredient.getMaterial(), ingredient.getSize() * 500));
+        NBTTagCompound data = new NBTTagCompound();
+        data.setString("material", material.getID());
+        int amount = fluid == null ? 0 : fluid.amount;
+        amount += ingredient.getSize() * 500;
+        FluidStack outputFluid = new FluidStack(CuisineFluids.JUICE, amount, data);
         item.shrink(1);
         return new Output(outputFluid, ItemStack.EMPTY);
     }
