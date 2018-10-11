@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import snownee.cuisine.api.CulinaryHub.CommonEffects;
 import snownee.cuisine.api.prefab.DefaultConsumedCollector;
