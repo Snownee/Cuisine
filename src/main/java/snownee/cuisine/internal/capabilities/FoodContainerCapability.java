@@ -13,6 +13,7 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.prefab.SimpleFoodContainerImpl;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public final class FoodContainerCapability
