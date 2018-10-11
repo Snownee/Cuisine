@@ -220,6 +220,8 @@ fluid.cuisine_juice=果汁
 
 entity.cuisine.falling_flower.name=下落的方块
 
+cuisine.tip.food.hunger_regen=饥饿值恢复：
+cuisine.tip.food.saturation=饱和度增加：
 cuisine.tip.properties=属性：
 cuisine.tip.ingredients=主料：
 cuisine.tip.seasonings=调料：
@@ -287,7 +289,7 @@ cuisine.toast.skill.description=%s提升至%d级！
 
 cuisine.command.culinaryskill=/culinaryskill <玩家> get <技能点> 或 /culinaryskill <玩家> set <技能点> <新的值>
 
-## Special override - can be used when combined name is either incorrect or not following convention
+## Special override - can be used when combined name is either grammatrically incorrect or not following convention
 cuisine.ingredient.chili.cubed=辣椒段
 cuisine.ingredient.cucumber.cubed=黄瓜段
 cuisine.ingredient.leek.cubed=韭菜段

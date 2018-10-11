@@ -200,6 +200,13 @@ cuisine.spice.edible_oil=Edible Oil
 cuisine.spice.rice_vinegar=Rice Vinegar
 cuisine.spice.fruit_vinegar=Fruit Vinegar
 
+cuisine.drink.drink=Drinks
+cuisine.drink.smoothie=Smoothie
+cuisine.drink.gelo=Gelo
+cuisine.drink.soda=Soda
+# Easter egg, don't translate. - TODO (3TUSK): at least there should be an English phrase...
+cuisine.drink.snownee=???
+
 fluid.soy_milk=Soy Milk
 fluid.milk=Milk
 fluid.soy_sauce=Soy Sauce
@@ -213,6 +220,8 @@ fluid.cuisine_juice=Juice
 
 entity.cuisine.falling_flower.name=Falling Block
 
+cuisine.tip.food.hunger_regen=Food points:
+cuisine.tip.food.saturation=Saturation:
 cuisine.tip.properties=Properties:
 cuisine.tip.ingredients=Major ingredients:
 cuisine.tip.seasonings=Seasonings:
@@ -227,7 +236,7 @@ cuisine.tip.crops.plains=Crops from plain
 cuisine.tip.crops.cave=Crops from cave
 cuisine.tip.crops.beach=Crops from wetland
 cuisine.tip.solvent=Does not consume solvent
-cuisine.tip.empty_dish=Apparently this dish is empty and the plate is shining.
+cuisine.tip.empty_dish=Apparently this dish is empty, and it looks shining.
 
 cuisine.potion.dispersal=Dispersal
 cuisine.potion.hot=Hot
