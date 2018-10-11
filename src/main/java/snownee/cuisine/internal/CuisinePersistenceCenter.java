@@ -71,7 +71,7 @@ public interface CuisinePersistenceCenter
         NBTTagCompound data = new NBTTagCompound();
         data.setString(CuisineSharedSecrets.KEY_MATERIAL, ingredient.getMaterial().getID());
         data.setString(CuisineSharedSecrets.KEY_FORM, ingredient.getForm().name());
-        data.setFloat(CuisineSharedSecrets.KEY_QUANTITY, ingredient.getSize());
+        data.setDouble(CuisineSharedSecrets.KEY_QUANTITY, ingredient.getSize());
         data.setIntArray(CuisineSharedSecrets.KEY_TRAITS, ingredient.getAllTraits().stream().mapToInt(Enum::ordinal).toArray());
         NBTTagList effectList = new NBTTagList();
         for (Effect effect : ingredient.getEffects())

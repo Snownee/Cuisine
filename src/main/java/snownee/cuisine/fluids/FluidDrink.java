@@ -200,9 +200,9 @@ public class FluidDrink extends VaporizableFluid
     public static class WeightedMaterial implements INBTSerializable<NBTTagCompound>
     {
         Material material;
-        float weight;
+        double weight;
 
-        public WeightedMaterial(Material material, float weight)
+        public WeightedMaterial(Material material, double weight)
         {
             this.material = material;
             this.weight = weight;
@@ -213,7 +213,7 @@ public class FluidDrink extends VaporizableFluid
         {
             NBTTagCompound data = new NBTTagCompound();
             data.setString(CuisineSharedSecrets.KEY_MATERIAL, material.getID());
-            data.setFloat("weight", weight);
+            data.setDouble("weight", weight);
             return data;
         }
 
