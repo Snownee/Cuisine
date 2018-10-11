@@ -107,6 +107,105 @@ public class Dish extends CompositeFood
         return new ItemStack(CuisineRegistry.DISH);
     }
 
+    public static NBTTagCompound serialize(Dish dish)
+    {
+        NBTTagCompound data = new NBTTagCompound();
+        NBTTagList ingredientList = new NBTTagList();
+
+        for (Ingredient ingredient : dish.getIngredients())
+        {
+            ingredientList.appendTag(CuisinePersistenceCenter.serialize(ingredient));
+        }
+        data.setTag(CuisineSharedSecrets.KEY_INGREDIENT_LIST, ingredientList);
+
+        NBTTagList seasoningList = new NBTTagList();
+        for (Seasoning seasoning : dish.getSeasonings())
+        {
+            seasoningList.appendTag(CuisinePersistenceCenter.serialize(seasoning));
+        }
+        data.setTag(CuisineSharedSecrets.KEY_SEASONING_LIST, seasoningList);
+
+        NBTTagList effectList = new NBTTagList();
+        for (Effect effect : dish.getEffects())
+        {
+            effectList.appendTag(new NBTTagString(effect.getID()));
+        }
+        data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
+
+        String modelType = dish.getOrComputeModelType();
+        if (modelType != null)
+        {
+            data.setString("type", modelType);
+        }
+
+        data.setInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL, dish.getFoodLevel());
+        data.setFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, dish.getSaturationModifier());
+        data.setInteger(CuisineSharedSecrets.KEY_SERVES, dish.getServes());
+        data.setFloat(CuisineSharedSecrets.KEY_USE_DURATION, dish.getUseDurationModifier());
+        return data;
+    }
+
+    public static Dish deserialize(NBTTagCompound data)
+    {
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ArrayList<Seasoning> seasonings = new ArrayList<>();
+        ArrayList<Effect> effects = new ArrayList<>();
+        int serves = 0;
+        float duration = 1;
+        NBTTagList ingredientList = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
+        for (NBTBase baseTag : ingredientList)
+        {
+            if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+            {
+                Validate.isTrue(baseTag instanceof NBTTagCompound);
+                ingredients.add(CuisinePersistenceCenter.deserializeIngredient((NBTTagCompound) baseTag));
+            }
+        }
+
+        NBTTagList seasoningList = data.getTagList(CuisineSharedSecrets.KEY_SEASONING_LIST, Constants.NBT.TAG_COMPOUND);
+        for (NBTBase baseTag : seasoningList)
+        {
+            if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+            {
+                Validate.isTrue(baseTag instanceof NBTTagCompound);
+                seasonings.add(CuisinePersistenceCenter.deserializeSeasoning((NBTTagCompound) baseTag));
+            }
+        }
+
+        NBTTagList effectList = data.getTagList(CuisineSharedSecrets.KEY_EFFECT_LIST, Constants.NBT.TAG_STRING);
+        for (NBTBase baseTag : effectList)
+        {
+            if (baseTag.getId() == Constants.NBT.TAG_STRING)
+            {
+                effects.add(CulinaryHub.API_INSTANCE.findEffect(((NBTTagString) baseTag).getString()));
+            }
+        }
+
+        if (data.hasKey(CuisineSharedSecrets.KEY_SERVES, Constants.NBT.TAG_INT))
+        {
+            serves = data.getInteger(CuisineSharedSecrets.KEY_SERVES);
+        }
+
+        if (data.hasKey(CuisineSharedSecrets.KEY_USE_DURATION, Constants.NBT.TAG_FLOAT))
+        {
+            duration = data.getFloat(CuisineSharedSecrets.KEY_USE_DURATION);
+        }
+
+        int foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
+        float saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
+
+        Dish dish = new Dish(ingredients, seasonings, effects, foodLevel, saturation);
+        dish.setServes(serves);
+        dish.setUseDurationModifier(duration);
+
+        if (data.hasKey("type", Constants.NBT.TAG_STRING))
+        {
+            dish.setModelType(data.getString("type"));
+        }
+
+        return dish;
+    }
+
     public static final class Builder extends CompositeFood.Builder<Dish>
     {
         private Dish completed;
@@ -215,7 +314,7 @@ public class Dish extends CompositeFood
                 }
 
                 this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects(), foodLevel, saturationModifier);
-                collector.apply(this.completed, cook); // TODO See, this is why I say this couples too many responsibilities
+                collector.apply(this.completed, cook); // TODO (3TUSK): See, this is why I say this couples too many responsibilities
                 // this.completed.setQualityBonus(modifier);
                 this.completed.getOrComputeModelType();
                 return Optional.of(completed);

@@ -16,6 +16,7 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.prefab.SimpleFoodContainerImpl;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.internal.food.Dish;
 
 /**
  * The {@link snownee.cuisine.api.FoodContainer} implementation used by
@@ -71,7 +72,9 @@ public class DishContainer extends SimpleFoodContainerImpl implements ICapabilit
         this.food = CulinaryHub.API_INSTANCE.deserialize(id, data);
         if (food == null)
         {
-            this.food = CuisinePersistenceCenter.deserialize(data);
+            // Backward compatibility: assume failed-to-load data are from previous version.
+            // See TileDish.readFromNBT for more info
+            this.food = Dish.deserialize(data);
         }
     }
 }

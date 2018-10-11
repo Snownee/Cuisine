@@ -13,8 +13,8 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.prefab.SimpleFoodContainerImpl;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.internal.food.Dish;
 
 public final class FoodContainerCapability
 {
@@ -59,7 +59,9 @@ public final class FoodContainerCapability
                 instance.set(CulinaryHub.API_INSTANCE.deserialize(id, data));
                 if (instance.get() == null)
                 {
-                    instance.set(CuisinePersistenceCenter.deserialize(data));
+                    // Backward compatibility: assume failed-to-load data are from previous version.
+                    // See TileDish.readFromNBT for more info
+                    instance.set(Dish.deserialize(data));
                 }
             }
             else

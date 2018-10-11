@@ -42,8 +42,8 @@ import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.util.I18nUtil;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
@@ -155,7 +155,9 @@ public abstract class ItemAbstractComposite extends ItemMod
                 foodContainer.set(CulinaryHub.API_INSTANCE.deserialize(id, data));
                 if (foodContainer.get() == null)
                 {
-                    foodContainer.set(CuisinePersistenceCenter.deserialize(data));
+                    // Backward compatibility: assume failed-to-load data are from previous version.
+                    // See TileDish.readFromNBT for more info
+                    foodContainer.set(Dish.deserialize(data));
                 }
             }
         }

@@ -1,19 +1,15 @@
 package snownee.cuisine.internal;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.Validate;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
-import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Form;
@@ -22,49 +18,9 @@ import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
-import snownee.cuisine.internal.food.Dish;
 
 public interface CuisinePersistenceCenter
 {
-
-    // TODO (3TUSK) migrate to Dish, this is not designed for arbitrary CompositeFood
-    static NBTTagCompound serialize(CompositeFood dish)
-    {
-        NBTTagCompound data = new NBTTagCompound();
-        NBTTagList ingredientList = new NBTTagList();
-
-        for (Ingredient ingredient : dish.getIngredients())
-        {
-            ingredientList.appendTag(serialize(ingredient));
-        }
-        data.setTag(CuisineSharedSecrets.KEY_INGREDIENT_LIST, ingredientList);
-
-        NBTTagList seasoningList = new NBTTagList();
-        for (Seasoning seasoning : dish.getSeasonings())
-        {
-            seasoningList.appendTag(serialize(seasoning));
-        }
-        data.setTag(CuisineSharedSecrets.KEY_SEASONING_LIST, seasoningList);
-
-        NBTTagList effectList = new NBTTagList();
-        for (Effect effect : dish.getEffects())
-        {
-            effectList.appendTag(new NBTTagString(effect.getID()));
-        }
-        data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
-
-        String modelType = dish.getOrComputeModelType();
-        if (modelType != null)
-        {
-            data.setString("type", modelType);
-        }
-
-        data.setInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL, dish.getFoodLevel());
-        data.setFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, dish.getSaturationModifier());
-        data.setInteger(CuisineSharedSecrets.KEY_SERVES, dish.getServes());
-        data.setFloat(CuisineSharedSecrets.KEY_USE_DURATION, dish.getUseDurationModifier());
-        return data;
-    }
 
     static NBTTagCompound serialize(Ingredient ingredient)
     {
@@ -88,68 +44,6 @@ public interface CuisinePersistenceCenter
         data.setString(CuisineSharedSecrets.KEY_SPICE, seasoning.getSpice().getID());
         data.setInteger(CuisineSharedSecrets.KEY_QUANTITY, seasoning.getSize());
         return data;
-    }
-
-    // TODO (3TUSK) migrate to Dish, this is only for Dish
-    static Dish deserialize(@Nonnull NBTTagCompound data)
-    {
-        ArrayList<Ingredient> ingredients = new ArrayList<>();
-        ArrayList<Seasoning> seasonings = new ArrayList<>();
-        ArrayList<Effect> effects = new ArrayList<>();
-        int serves = 0;
-        float duration = 1;
-        NBTTagList ingredientList = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
-        for (NBTBase baseTag : ingredientList)
-        {
-            if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
-            {
-                Validate.isTrue(baseTag instanceof NBTTagCompound);
-                ingredients.add(deserializeIngredient((NBTTagCompound) baseTag));
-            }
-        }
-
-        NBTTagList seasoningList = data.getTagList(CuisineSharedSecrets.KEY_SEASONING_LIST, Constants.NBT.TAG_COMPOUND);
-        for (NBTBase baseTag : seasoningList)
-        {
-            if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
-            {
-                Validate.isTrue(baseTag instanceof NBTTagCompound);
-                seasonings.add(deserializeSeasoning((NBTTagCompound) baseTag));
-            }
-        }
-
-        NBTTagList effectList = data.getTagList(CuisineSharedSecrets.KEY_EFFECT_LIST, Constants.NBT.TAG_STRING);
-        for (NBTBase baseTag : effectList)
-        {
-            if (baseTag.getId() == Constants.NBT.TAG_STRING)
-            {
-                effects.add(CulinaryHub.API_INSTANCE.findEffect(((NBTTagString) baseTag).getString()));
-            }
-        }
-
-        if (data.hasKey(CuisineSharedSecrets.KEY_SERVES, Constants.NBT.TAG_INT))
-        {
-            serves = data.getInteger(CuisineSharedSecrets.KEY_SERVES);
-        }
-
-        if (data.hasKey(CuisineSharedSecrets.KEY_USE_DURATION, Constants.NBT.TAG_FLOAT))
-        {
-            duration = data.getFloat(CuisineSharedSecrets.KEY_USE_DURATION);
-        }
-
-        int foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
-        float saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
-
-        Dish dish = new Dish(ingredients, seasonings, effects, foodLevel, saturation);
-        dish.setServes(serves);
-        dish.setUseDurationModifier(duration);
-
-        if (data.hasKey("type", Constants.NBT.TAG_STRING))
-        {
-            dish.setModelType(data.getString("type"));
-        }
-
-        return dish;
     }
 
     static @Nullable Ingredient deserializeIngredient(@Nonnull NBTTagCompound data)

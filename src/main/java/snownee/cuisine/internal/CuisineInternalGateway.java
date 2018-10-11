@@ -384,7 +384,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         // Distribute API references
         CulinaryHub.API_INSTANCE = CuisineInternalGateway.INSTANCE = api;
 
-        api.registerFoodType(new ResourceLocation(Cuisine.MODID, "dish"), Dish.class, CuisinePersistenceCenter::serialize, CuisinePersistenceCenter::deserialize);
+        api.registerFoodType(Dish.DISH_ID, Dish.class, Dish::serialize, Dish::deserialize);
 
         // Initialize Effects first, Material registration will use them
         api.register(new EffectExperienced());

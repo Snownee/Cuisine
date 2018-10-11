@@ -18,6 +18,7 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.internal.food.Dish;
 
 public class TileDish extends TileBase
 {
@@ -59,7 +60,7 @@ public class TileDish extends TileBase
             // As stated above, since there was only one type of CompositeFood,
             // we assume that the data structure is the same, so we use the
             // corresponding deserializers to complete the migration.
-            CompositeFood dish = CuisinePersistenceCenter.deserialize(data);
+            CompositeFood dish = Dish.deserialize(data);
             if (dish != null)
             {
                 // And finally we wrap it in an ItemStack.
