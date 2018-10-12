@@ -220,8 +220,8 @@ fluid.cuisine_juice=果汁
 
 entity.cuisine.falling_flower.name=下落的方块
 
-cuisine.tip.food.hunger_regen=饥饿值恢复：
-cuisine.tip.food.saturation=饱和度增加：
+cuisine.tip.food.hunger_regen=饥饿值恢复：%d
+cuisine.tip.food.saturation=饱和度增加：{0,number,#.##}
 cuisine.tip.properties=属性：
 cuisine.tip.ingredients=主料：
 cuisine.tip.seasonings=调料：

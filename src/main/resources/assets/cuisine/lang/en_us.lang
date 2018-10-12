@@ -220,8 +220,8 @@ fluid.cuisine_juice=Juice
 
 entity.cuisine.falling_flower.name=Falling Block
 
-cuisine.tip.food.hunger_regen=Food points:
-cuisine.tip.food.saturation=Saturation:
+cuisine.tip.food.hunger_regen=Food points: %.d
+cuisine.tip.food.saturation=Saturation: {0,number,#.##}
 cuisine.tip.properties=Properties:
 cuisine.tip.ingredients=Major ingredients:
 cuisine.tip.seasonings=Seasonings:
