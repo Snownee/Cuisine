@@ -37,9 +37,9 @@ public class FoodValueCounter implements CookingStrategy
     @Override
     public void cook(Ingredient ingredient, CookingVessel vessel)
     {
-        // Base saturation * natural logarithm of ingredient size.
+        // Base saturation * natural logarithm of ingredient size. (Commented for now)
         // So that the bonus will be less significant as the size grows up.
-        this.saturation += ingredient.getSaturationModifier() * Math.max(Math.log(ingredient.getSize()), 0.1);
+        this.saturation += ingredient.getSaturationModifier()/* * Math.max(Math.log(ingredient.getSize()), 1.0)*/;
         if (ingredient.hasTrait(IngredientTrait.PLAIN) || ingredient.hasTrait(IngredientTrait.OVERCOOKED))
         {
             this.saturation -= 0.1;
