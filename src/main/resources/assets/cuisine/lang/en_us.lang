@@ -202,10 +202,14 @@ cuisine.spice.fruit_vinegar=Fruit Vinegar
 
 cuisine.drink.name=Drinks
 cuisine.smoothie.name=Smoothie
+cuisine.smoothie.specific=%s Smoothie
 cuisine.gelo.name=Gelo
+cuisine.gelo.specific=%s Gelo
 cuisine.soda.name=Soda
+cuisine.soda.specific=%s Soda
 # Easter egg, don't translate. - TODO (3TUSK): at least there should be an English phrase...
 cuisine.snownee.name=???
+cuisine.snownee.specific=%s???
 
 fluid.soy_milk=Soy Milk
 fluid.milk=Milk
