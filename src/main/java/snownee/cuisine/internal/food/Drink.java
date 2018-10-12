@@ -40,16 +40,20 @@ public class Drink extends CompositeFood
     {
         public Drink completed;
         public DrinkType drinkType;
-        public final Map<ProcessingInput, DrinkType> featureInputs = new HashMap<>(4);
+        public static final Map<ProcessingInput, DrinkType> FEATURE_INPUTS = new HashMap<>(4);
+
+        static
+        {
+            FEATURE_INPUTS.put(ItemDefinition.of(Items.SNOWBALL), DrinkType.SMOOTHIE);
+            FEATURE_INPUTS.put(ItemDefinition.of(Blocks.ICE), DrinkType.SMOOTHIE);
+            FEATURE_INPUTS.put(ItemDefinition.of(Blocks.PACKED_ICE), DrinkType.SMOOTHIE);
+            FEATURE_INPUTS.put(OreDictDefinition.of("slimeball"), DrinkType.GELO);
+            FEATURE_INPUTS.put(OreDictDefinition.of("dustRedstone"), DrinkType.SODA);
+        }
 
         Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
         {
             super(ingredients, seasonings, effects);
-            featureInputs.put(ItemDefinition.of(Items.SNOWBALL), DrinkType.SMOOTHIE);
-            featureInputs.put(ItemDefinition.of(Blocks.ICE), DrinkType.SMOOTHIE);
-            featureInputs.put(ItemDefinition.of(Blocks.PACKED_ICE), DrinkType.SMOOTHIE);
-            featureInputs.put(OreDictDefinition.of("slimeball"), DrinkType.GELO);
-            featureInputs.put(OreDictDefinition.of("dustRedstone"), DrinkType.SODA);
             drinkType = DrinkType.NORMAL;
         }
 
@@ -65,19 +69,19 @@ public class Drink extends CompositeFood
 
         public boolean isFeatureItem(ItemStack item)
         {
-            return featureInputs.keySet().stream().anyMatch(i -> i.matches(item));
+            return FEATURE_INPUTS.keySet().stream().anyMatch(i -> i.matches(item));
         }
 
         public boolean isContainerItem(ItemStack item)
         {
-            return featureInputs.values().stream().anyMatch(i -> i.getContainerPre().matches(item));
+            return FEATURE_INPUTS.values().stream().anyMatch(i -> i.getContainerPre().matches(item));
         }
 
         public DrinkType findDrinkType(ItemStack item)
         {
             if (!item.isEmpty())
             {
-                for (Map.Entry<ProcessingInput, DrinkType> entry : featureInputs.entrySet())
+                for (Map.Entry<ProcessingInput, DrinkType> entry : FEATURE_INPUTS.entrySet())
                 {
                     if (entry.getKey().matches(item))
                     {
