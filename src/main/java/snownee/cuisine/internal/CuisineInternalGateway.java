@@ -43,6 +43,7 @@ import snownee.cuisine.internal.effect.EffectHarmony;
 import snownee.cuisine.internal.effect.EffectPotions;
 import snownee.cuisine.internal.effect.EffectTeleport;
 import snownee.cuisine.internal.food.Dish;
+import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.material.MaterialApple;
 import snownee.cuisine.internal.material.MaterialChili;
 import snownee.cuisine.internal.material.MaterialChorusFruit;
@@ -385,6 +386,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         CulinaryHub.API_INSTANCE = CuisineInternalGateway.INSTANCE = api;
 
         api.registerFoodType(Dish.DISH_ID, Dish.class, Dish::serialize, Dish::deserialize);
+        api.registerFoodType(Drink.DRINK_ID, Drink.class, Drink::serialize, Drink::deserialize);
 
         // Initialize Effects first, Material registration will use them
         api.register(new EffectExperienced());

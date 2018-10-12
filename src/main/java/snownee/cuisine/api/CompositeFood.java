@@ -94,12 +94,17 @@ public abstract class CompositeFood
         this(ingredients, seasonings, effects, 0, 0F);
     }
 
-    protected CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int hungerRestore, float saturation)
+    public CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int hungerRestore, float saturation)
+    {
+        this(ingredients, seasonings, effects, hungerRestore, saturation, DEFAULT_SERVE_AMOUNT);
+    }
+
+    protected CompositeFood(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int hungerRestore, float saturation, int serve_amount)
     {
         this.ingredients = ingredients;
         this.seasonings = seasonings;
         this.effects = effects;
-        this.maxServeSize = (this.durability = DEFAULT_SERVE_AMOUNT);
+        this.maxServeSize = (this.durability = serve_amount);
         this.foodLevel = hungerRestore;
         this.saturationModifier = saturation;
     }

@@ -200,12 +200,12 @@ cuisine.spice.edible_oil=食用油
 cuisine.spice.rice_vinegar=米醋
 cuisine.spice.fruit_vinegar=果醋
 
-cuisine.drink.drink=饮料
-cuisine.drink.smoothie=冰沙
-cuisine.drink.gelo=凝胶球
-cuisine.drink.soda=苏打水
+cuisine.drink.name=饮料
+cuisine.smoothie.name=冰沙
+cuisine.gelo.name=凝胶球
+cuisine.soda.name=苏打水
 # Easter egg, don't translate.
-cuisine.drink.snownee=雪泥
+cuisine.snownee.name=雪泥
 
 fluid.soy_milk=豆浆
 fluid.milk=牛奶
@@ -220,8 +220,8 @@ fluid.cuisine_juice=果汁
 
 entity.cuisine.falling_flower.name=下落的方块
 
-cuisine.tip.food.hunger_regen=饥饿值恢复：
-cuisine.tip.food.saturation=饱和度增加：
+cuisine.tip.food.hunger_regen=饥饿值恢复：%d
+cuisine.tip.food.saturation=饱和度增加：%d
 cuisine.tip.properties=属性：
 cuisine.tip.ingredients=主料：
 cuisine.tip.seasonings=调料：

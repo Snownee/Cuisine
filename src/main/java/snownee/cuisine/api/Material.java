@@ -55,7 +55,10 @@ public interface Material
 
     default void onCrafted(final Ingredient ingredient)
     {
-        // NO-OP
+        if (this.isUnderCategoryOf(MaterialCategory.FRUIT) && this.isUnderCategoryOf(MaterialCategory.SUPERNATURAL) && this.isUnderCategoryOf(MaterialCategory.UNKNOWN))
+        {
+            ingredient.addTrait(IngredientTrait.UNDERCOOKED);
+        }
     }
 
     boolean isUnderCategoryOf(MaterialCategory category);

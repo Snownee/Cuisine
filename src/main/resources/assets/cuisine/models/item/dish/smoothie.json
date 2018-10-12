@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "cuisine:item/smoothie_base",
+        "layer1": "cuisine:item/smoothie_overlay"
+    }
+}
