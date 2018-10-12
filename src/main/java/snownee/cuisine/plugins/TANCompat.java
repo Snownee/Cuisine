@@ -16,6 +16,8 @@ import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.ItemDefinition;
 import toughasnails.api.TANBlocks;
 import toughasnails.api.TANCapabilities;
+import toughasnails.api.config.GameplayOption;
+import toughasnails.api.config.SyncedConfig;
 import toughasnails.api.item.TANItems;
 import toughasnails.api.stat.capability.IThirst;
 
@@ -44,6 +46,12 @@ public class TANCompat implements IModule
     @SubscribeEvent
     public void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
+        if (!SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST))
+        {
+            // Do nothing if Tough As Nail thirsty is disabled
+            return;
+        }
+
         if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null) && event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
         {
             FoodContainer container = event.getItem().getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
