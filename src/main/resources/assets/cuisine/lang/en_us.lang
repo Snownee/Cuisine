@@ -200,12 +200,12 @@ cuisine.spice.edible_oil=Edible Oil
 cuisine.spice.rice_vinegar=Rice Vinegar
 cuisine.spice.fruit_vinegar=Fruit Vinegar
 
-cuisine.drink.drink=Drinks
-cuisine.drink.smoothie=Smoothie
-cuisine.drink.gelo=Gelo
-cuisine.drink.soda=Soda
+cuisine.drink.name=Drinks
+cuisine.smoothie.name=Smoothie
+cuisine.gelo.name=Gelo
+cuisine.soda.name=Soda
 # Easter egg, don't translate. - TODO (3TUSK): at least there should be an English phrase...
-cuisine.drink.snownee=???
+cuisine.snownee.name=???
 
 fluid.soy_milk=Soy Milk
 fluid.milk=Milk
