@@ -474,6 +474,8 @@ public abstract class CompositeFood
 
         /**
          * Retrieve the list of current {@link Ingredient ingredients} present.
+         * All implementations should guarantee that the returned list is
+         * mutable.
          * @return A list of ingredients
          */
         public List<Ingredient> getIngredients()
@@ -483,6 +485,8 @@ public abstract class CompositeFood
 
         /**
          * Retrieve the list of current {@link Seasoning seasonings} present.
+         * All implementations should guarantee that the returned list is
+         * mutable.
          * @return A list of seasonings
          */
         public List<Seasoning> getSeasonings()
@@ -492,6 +496,8 @@ public abstract class CompositeFood
 
         /**
          * Retrieve the list of current {@link Effect effects} present.
+         * All implementations should guarantee that the returned list is
+         * mutable.
          * @return A list of effects
          */
         public List<Effect> getEffects()

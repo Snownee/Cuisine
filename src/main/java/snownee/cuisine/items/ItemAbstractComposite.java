@@ -245,7 +245,7 @@ public abstract class ItemAbstractComposite extends ItemMod
             if (flagIn.isAdvanced() && Minecraft.getMinecraft().gameSettings.showDebugInfo)
             {
                 tooltip.add(I18nUtil.translate("tip.food.hunger_regen", dish.getFoodLevel()));
-                tooltip.add(I18nUtil.translate("tip.food.saturation", ItemStack.DECIMALFORMAT.format(dish.getSaturationModifier())));
+                tooltip.add(I18nUtil.translateWithFormat("tip.food.saturation", dish.getSaturationModifier()));
             }
         }
     }
