@@ -20,7 +20,7 @@ import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.client.model.DishMeshDefinition;
-import snownee.cuisine.internal.capabilities.DishContainer;
+import snownee.cuisine.internal.capabilities.DrinkContainer;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.proxy.ClientProxy;
@@ -48,7 +48,7 @@ public class ItemDrink extends ItemAbstractComposite
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
-        return new DishContainer();
+        return new DrinkContainer();
     }
 
     @Nonnull

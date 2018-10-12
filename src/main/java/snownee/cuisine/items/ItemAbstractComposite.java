@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -28,6 +27,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -335,5 +335,22 @@ public abstract class ItemAbstractComposite extends ItemMod
     public FontRenderer getFontRenderer(ItemStack stack)
     {
         return AdvancedFontRenderer.INSTANCE;
+    }
+
+    @Override
+    public boolean hasContainerItem(ItemStack stack)
+    {
+        return true;
+    };
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack)
+    {
+        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+        if (container != null)
+        {
+            return container.getEmptyContainer(stack);
+        }
+        return ItemStack.EMPTY;
     }
 }
