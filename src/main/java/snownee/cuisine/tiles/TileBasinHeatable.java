@@ -72,11 +72,6 @@ public class TileBasinHeatable extends TileBasin implements ITickable
                 failed = true;
             }
         }
-     // else
-     // {
-     //     IBlockState currentState = this.world.getBlockState(this.pos);
-     //     this.world.notifyBlockUpdate(this.pos, currentState, currentState, 11);
-     // }
     }
 
     public boolean isWorking()
@@ -148,18 +143,4 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         onContentsChanged(0);
     }
 
-    @Nonnull
-    @Override
-    protected NBTTagCompound writePacketData(NBTTagCompound data)
-    {
-        data.setInteger("heatValue", this.tickCheckHeating);
-        return super.writePacketData(data);
-    }
-
-    @Override
-    protected void readPacketData(NBTTagCompound data)
-    {
-        super.readPacketData(data);
-        this.tickCheckHeating = data.getInteger("heatValue");
-    }
 }

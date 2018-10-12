@@ -17,6 +17,8 @@ public final class HWYLACompatibility implements IWailaPlugin
     {
         registrar.registerBodyProvider(new CuisineCropProvider(), BlockCuisineCrops.class);
         registrar.registerBodyProvider(new CuisineWokProvider(), BlockFirePit.class);
-        registrar.registerBodyProvider(new CuisineBasinProvider(), BlockBasin.class);
+        CuisineBasinProvider basinProvider = new CuisineBasinProvider();
+        registrar.registerBodyProvider(basinProvider, BlockBasin.class);
+        registrar.registerNBTProvider(basinProvider, BlockBasin.class);
     }
 }

@@ -8,9 +8,15 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.SpecialChars;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import snownee.cuisine.Cuisine;
@@ -25,17 +31,20 @@ public class CuisineBasinProvider implements IWailaDataProvider
     {
         if (accessor.getTileEntity() instanceof TileBasinHeatable)
         {
-            TileBasinHeatable tileBasinHeatable = (TileBasinHeatable) accessor.getTileEntity();
-            if (tileBasinHeatable.isWorking())
+            TileBasinHeatable tile = (TileBasinHeatable) accessor.getTileEntity();
+            NBTTagCompound data = accessor.getNBTData();
+            boolean working = data.getBoolean("working");
+            if (working)
             {
-                IFluidHandler handler = tileBasinHeatable.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                if (handler != null && handler.getTankProperties().length > 0 && handler.getTankProperties()[0].getContents() != null)
+                FluidStack fluidContent = FluidStack.loadFluidStackFromNBT(data.getCompoundTag("fluidContent"));
+                if (fluidContent != null)
                 {
-                    tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.fluid_show", handler.getTankProperties()[0].getContents().getLocalizedName(), handler.getTankProperties()[0].getContents().amount));
+                    tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.fluid_show", fluidContent.getLocalizedName(), fluidContent.amount));
                 }
                 tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.progress"));
-                int max = tileBasinHeatable.getMaxHeatingTick();
-                tooltip.add(SpecialChars.getRenderString("waila.progress", String.valueOf(max - tileBasinHeatable.getCurrentHeatingTick()), String.valueOf(max)));
+                int currentProgress = data.getInteger("heatValue");
+                int max = tile.getMaxHeatingTick();
+                tooltip.add(SpecialChars.getRenderString("waila.progress", String.valueOf(max - currentProgress), String.valueOf(max)));
             }
             else
             {
@@ -43,5 +52,18 @@ public class CuisineBasinProvider implements IWailaDataProvider
             }
         }
         return tooltip;
+    }
+
+    @Nonnull
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    {
+        if (te instanceof TileBasinHeatable)
+        {
+            tag.setTag("fluidContent", ((TileBasinHeatable) te).getCurrentFluidContent().writeToNBT(new NBTTagCompound()));
+            tag.setInteger("heatValue", ((TileBasinHeatable) te).getCurrentHeatingTick());
+            tag.setBoolean("working", ((TileBasinHeatable) te).isWorking());
+        }
+        return tag;
     }
 }

@@ -65,21 +65,6 @@ public class TileBasin extends TileInventoryBase
         return compound;
     }
 
-    @Nonnull
-    @Override
-    protected NBTTagCompound writePacketData(NBTTagCompound data)
-    {
-        data.setTag("tank", this.tank.writeToNBT(new NBTTagCompound()));
-        return super.writePacketData(data);
-    }
-
-    @Override
-    protected void readPacketData(NBTTagCompound data)
-    {
-        super.readPacketData(data);
-        this.tank.readFromNBT(data.getCompoundTag("tank"));
-    }
-
     public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input)
     {
         if (input.isEmpty())
@@ -114,6 +99,11 @@ public class TileBasin extends TileInventoryBase
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
         return BasinInteracting.isKnownInput(Processing.SQUEEZING, stack);
+    }
+
+    public FluidStack getCurrentFluidContent()
+    {
+        return this.tank.getFluid().copy();
     }
 
 }
