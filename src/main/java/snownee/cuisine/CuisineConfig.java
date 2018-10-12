@@ -69,6 +69,12 @@ public final class CuisineConfig
         @Config.Name("MillWorkCycle")
         @Config.RangeInt(min = 1)
         public int millWorkPeriod = 160;
+
+        @Config.Comment("BasinHeatingInDaylight")
+        @Config.LangKey("cuisine.config.general.basin_heating_in_daylight")
+        @Config.Name("BasinHeatingInDaylight")
+        @Config.RequiresMcRestart
+        public boolean basinHeatingInDaylight = true;
     }
 
     @Config.Comment("Progression features of Cuisine.")

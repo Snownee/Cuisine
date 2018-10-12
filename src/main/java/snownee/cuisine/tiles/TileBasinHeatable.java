@@ -3,17 +3,18 @@ package snownee.cuisine.tiles;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.Boiling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.util.StacksUtil;
-
-import javax.annotation.Nonnull;
 
 public class TileBasinHeatable extends TileBasin implements ITickable
 {
@@ -40,6 +41,11 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         if (!world.isRemote && !failed && tank.getFluid() != null && --tickCheckHeating <= 0)
         {
             int heat = getHeatValueFromState(world.getBlockState(pos.down()));
+            if (heat == 0 && !CuisineConfig.GENERAL.basinHeatingInDaylight)
+            {
+                failed = true;
+                return;
+            }
             tickCheckHeating = heat > 0 ? 200 / heat : 600;
             if (heat == 0 && !world.provider.isNether())
             {
@@ -66,11 +72,11 @@ public class TileBasinHeatable extends TileBasin implements ITickable
                 failed = true;
             }
         }
-        else
-        {
-            IBlockState currentState = this.world.getBlockState(this.pos);
-            this.world.notifyBlockUpdate(this.pos, currentState, currentState, 11);
-        }
+     // else
+     // {
+     //     IBlockState currentState = this.world.getBlockState(this.pos);
+     //     this.world.notifyBlockUpdate(this.pos, currentState, currentState, 11);
+     // }
     }
 
     public boolean isWorking()
