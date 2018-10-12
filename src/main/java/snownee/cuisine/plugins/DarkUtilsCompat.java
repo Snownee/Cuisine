@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.items.ItemAbstractComposite;
+import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 
@@ -31,7 +31,7 @@ public class DarkUtilsCompat implements IModule
     @SubscribeEvent
     public void onItemUse(LivingEntityUseItemEvent.Tick event)
     {
-        if (event.getEntityLiving() instanceof EntityPlayer && event.getItem().getItem() instanceof ItemAbstractComposite && hasItem(itemGluttonyCharm, (EntityPlayer) event.getEntityLiving()) && !event.getItem().isEmpty())
+        if (event.getEntityLiving() instanceof EntityPlayer && event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null) && hasItem(itemGluttonyCharm, (EntityPlayer) event.getEntityLiving()) && !event.getItem().isEmpty())
         {
             event.setDuration(0);
         }
