@@ -13,10 +13,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
-import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
-import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Dish;
 
 public class TileDish extends TileBase
