@@ -162,7 +162,7 @@ public class Drink extends CompositeFood
             if (this == SMOOTHIE)
             {
                 Calendar calendar = Calendar.getInstance();
-                if (calendar.get(Calendar.MONTH) == 4 && calendar.get(Calendar.DAY_OF_MONTH) == 18)
+                if (calendar.get(Calendar.MONTH) == Calendar.MAY && calendar.get(Calendar.DAY_OF_MONTH) == 18)
                 {
                     return Cuisine.MODID + ".snownee";
                 }

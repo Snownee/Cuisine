@@ -7,6 +7,11 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
 
+/**
+ * A pseudo-cooking-strategy that does not manipulate {@link Ingredient ingredients}
+ * nor {@link Seasoning seasonings} at all, but calculates the total food values
+ * (including hunger regeneration and saturation value).
+ */
 public class FoodValueCounter implements CookingStrategy
 {
     private float hungerRegen, saturation;
