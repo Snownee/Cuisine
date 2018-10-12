@@ -125,7 +125,7 @@ public class BlockModSapling extends BlockBush implements IModBlock
 
     public enum Type implements IStringSerializable
     {
-        POMELO, CITRON, TANGERINE, GRAPEFRUIT, ORANGE, LEMON, LIME;
+        POMELO, CITRON, MANDARIN, GRAPEFRUIT, ORANGE, LEMON, LIME;
 
         @Override
         public String getName()

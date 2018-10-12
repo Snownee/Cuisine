@@ -134,7 +134,7 @@ public class BlockModLog extends BlockLog implements IModBlock
 
     public enum Type implements IStringSerializable
     {
-        POMELO, CITRON, TANGERINE, GRAPEFRUIT;
+        POMELO, CITRON, MANDARIN, GRAPEFRUIT;
 
         @Override
         public String getName()

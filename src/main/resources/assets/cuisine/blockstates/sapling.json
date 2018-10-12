@@ -7,7 +7,7 @@
     "variant": {
       "pomelo":     { "textures": { "cross": "cuisine:block/sapling_pomelo" }},
       "citron":     { "textures": { "cross": "cuisine:block/sapling_citron" }},
-      "tangerine":  { "textures": { "cross": "cuisine:block/sapling_tangerine" }},
+      "mandarin":  { "textures": { "cross": "cuisine:block/sapling_mandarin" }},
       "grapefruit": { "textures": { "cross": "cuisine:block/sapling_grapefruit" }},
       "orange":     { "textures": { "cross": "cuisine:block/sapling_orange" }},
       "lemon":      { "textures": { "cross": "cuisine:block/sapling_lemon" }},

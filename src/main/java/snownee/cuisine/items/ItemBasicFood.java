@@ -126,7 +126,7 @@ public class ItemBasicFood extends ItemFood implements IModItem
         public static final Variant<SubItem> PICKLED_CUCUMBER = INSTANCE.addVariant(new SubItem("pickled_cucumber"));
         public static final Variant<SubItem> PICKLED_PEPPER = INSTANCE.addVariant(new SubItem("pickled_pepper"));
         public static final Variant<SubItem> PICKLED_TURNIP = INSTANCE.addVariant(new SubItem("pickled_turnip"));
-        public static final Variant<SubItem> TANGERINE = INSTANCE.addVariant(new SubItem("tangerine"));
+        public static final Variant<SubItem> MANDARIN = INSTANCE.addVariant(new SubItem("mandarin"));
         public static final Variant<SubItem> CITRON = INSTANCE.addVariant(new SubItem("citron"));
         public static final Variant<SubItem> POMELO = INSTANCE.addVariant(new SubItem("pomelo"));
         public static final Variant<SubItem> ORANGE = INSTANCE.addVariant(new SubItem("orange"));
