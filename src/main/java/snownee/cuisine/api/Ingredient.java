@@ -35,7 +35,7 @@ public final class Ingredient
 
     public Ingredient(Material material, Form form, double quantity)
     {
-        this(material, form, quantity, EnumSet.of(IngredientTrait.UNDERCOOKED));
+        this(material, form, quantity, EnumSet.noneOf(IngredientTrait.class));
     }
 
     public Ingredient(Material material, Form form, double quantity, EnumSet<IngredientTrait> traits)

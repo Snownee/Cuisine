@@ -11,10 +11,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CompositeFood;
+import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.internal.food.Drink;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
 public final class CuisineItemRendering
@@ -68,5 +72,18 @@ public final class CuisineItemRendering
             }
             return -1;
         }, CuisineRegistry.BOTTLE);
+
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
+            if (tintIndex == 1 && stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+            {
+                FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+                CompositeFood food = container.get();
+                if (food != null && food.getClass() == Drink.class)
+                {
+                    return ((Drink) food).getColor();
+                }
+            }
+            return -1;
+        }, CuisineRegistry.DRINK);
     }
 }

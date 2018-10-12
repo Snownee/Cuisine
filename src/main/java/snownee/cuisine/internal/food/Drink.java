@@ -12,14 +12,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
@@ -30,7 +39,7 @@ public class Drink extends CompositeFood
     {
         public Drink completed;
         public DrinkType drinkType;
-        protected final Map<ProcessingInput, DrinkType> featureInputs = new HashMap<>(4);
+        public final Map<ProcessingInput, DrinkType> featureInputs = new HashMap<>(4);
 
         Builder(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects)
         {
@@ -103,13 +112,23 @@ public class Drink extends CompositeFood
             {
                 return Optional.empty();
             }
-            completed = new Drink(getIngredients(), getSeasonings(), getEffects(), drinkType);
+            for (Ingredient ingredient : getIngredients())
+            {
+                ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
+            }
+            FoodValueCounter counter = new FoodValueCounter(0, 0.4F);
+            this.apply(counter, vessel);
+            float saturationModifier = counter.getSaturation();
+            int foodLevel = counter.getHungerRegen();
+            completed = new Drink(getIngredients(), getSeasonings(), getEffects(), foodLevel, saturationModifier, drinkType);
             return Optional.of(completed);
         }
     }
 
     public static class DrinkType
     {
+        public static final Map<String, DrinkType> DRINK_TYPES = new HashMap<>(8);
+
         public static final DrinkType NORMAL = new DrinkType("drink", ItemDefinition.of(Items.GLASS_BOTTLE));
         public static final DrinkType SMOOTHIE = new DrinkType("smoothie", ItemDefinition.of(CuisineRegistry.PLACED_DISH));
         public static final DrinkType GELO = new DrinkType("gelo", ItemDefinition.EMPTY);
@@ -122,6 +141,7 @@ public class Drink extends CompositeFood
         public DrinkType(String name, ItemDefinition container)
         {
             this(name, container, container);
+            DRINK_TYPES.put(name, this);
         }
 
         public DrinkType(String name, ProcessingInput containerPre, ItemDefinition containerPost)
@@ -138,7 +158,7 @@ public class Drink extends CompositeFood
 
         public String getTranslationKey()
         {
-            return Cuisine.MODID + ".drink." + name;
+            return Cuisine.MODID + "." + name;
         }
 
         public ProcessingInput getContainerPre()
@@ -155,11 +175,32 @@ public class Drink extends CompositeFood
     public static final ResourceLocation DRINK_ID = new ResourceLocation(Cuisine.MODID, "drink");
 
     private DrinkType drinkType;
+    private int color = -1;
 
-    protected Drink(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, DrinkType drinkType)
+    protected Drink(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int foodLevel, float saturation, DrinkType drinkType)
     {
-        super(ingredients, seasonings, effects);
+        super(ingredients, seasonings, effects, foodLevel, saturation, 2);
         this.drinkType = drinkType;
+
+        double size = 0;
+        float r = 0;
+        float g = 0;
+        float b = 0;
+        for (Ingredient ingredient : getIngredients())
+        {
+            int color = ingredient.getMaterial().getRawColorCode();
+            r += ingredient.getSize() * (color >> 16 & 255) / 255.0F;
+            g += ingredient.getSize() * (color >> 8 & 255) / 255.0F;
+            b += ingredient.getSize() * (color & 255) / 255.0F;
+            size += ingredient.getSize();
+        }
+        if (size > 0)
+        {
+            r = (float) (r / size * 255.0F);
+            g = (float) (g / size * 255.0F);
+            b = (float) (b / size * 255.0F);
+            color = (int) r << 16 | (int) g << 8 | (int) b;
+        }
     }
 
     @Override
@@ -195,5 +236,116 @@ public class Drink extends CompositeFood
     public Collection<String> getKeywords()
     {
         return Collections.singletonList("drink");
+    }
+
+    public static NBTTagCompound serialize(Drink drink)
+    {
+        NBTTagCompound data = new NBTTagCompound();
+        NBTTagList ingredientList = new NBTTagList();
+
+        for (Ingredient ingredient : drink.ingredients)
+        {
+            ingredientList.appendTag(CuisinePersistenceCenter.serialize(ingredient));
+        }
+        data.setTag(CuisineSharedSecrets.KEY_INGREDIENT_LIST, ingredientList);
+
+        NBTTagList seasoningList = new NBTTagList();
+        for (Seasoning seasoning : drink.seasonings)
+        {
+            seasoningList.appendTag(CuisinePersistenceCenter.serialize(seasoning));
+        }
+        data.setTag(CuisineSharedSecrets.KEY_SEASONING_LIST, seasoningList);
+
+        NBTTagList effectList = new NBTTagList();
+        for (Effect effect : drink.effects)
+        {
+            effectList.appendTag(new NBTTagString(effect.getID()));
+        }
+        data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
+
+        data.setString("type", drink.getDrinkType().getName());
+        data.setInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL, drink.getFoodLevel());
+        data.setFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, drink.getSaturationModifier());
+        data.setInteger(CuisineSharedSecrets.KEY_SERVES, drink.getServes());
+        data.setFloat(CuisineSharedSecrets.KEY_USE_DURATION, drink.getUseDurationModifier());
+        return data;
+    }
+
+    public static Drink deserialize(NBTTagCompound data)
+    {
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ArrayList<Seasoning> seasonings = new ArrayList<>();
+        ArrayList<Effect> effects = new ArrayList<>();
+        NBTTagList ingredientList = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
+        for (NBTBase baseTag : ingredientList)
+        {
+            if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+            {
+                ingredients.add(CuisinePersistenceCenter.deserializeIngredient((NBTTagCompound) baseTag));
+            }
+        }
+
+        NBTTagList seasoningList = data.getTagList(CuisineSharedSecrets.KEY_SEASONING_LIST, Constants.NBT.TAG_COMPOUND);
+        for (NBTBase baseTag : seasoningList)
+        {
+            if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+            {
+                seasonings.add(CuisinePersistenceCenter.deserializeSeasoning((NBTTagCompound) baseTag));
+            }
+        }
+
+        NBTTagList effectList = data.getTagList(CuisineSharedSecrets.KEY_EFFECT_LIST, Constants.NBT.TAG_STRING);
+        for (NBTBase baseTag : effectList)
+        {
+            if (baseTag.getId() == Constants.NBT.TAG_STRING)
+            {
+                effects.add(CulinaryHub.API_INSTANCE.findEffect(((NBTTagString) baseTag).getString()));
+            }
+        }
+
+        int serves = 0;
+        if (data.hasKey(CuisineSharedSecrets.KEY_SERVES, Constants.NBT.TAG_INT))
+        {
+            serves = data.getInteger(CuisineSharedSecrets.KEY_SERVES);
+        }
+
+        float duration = 1;
+        if (data.hasKey(CuisineSharedSecrets.KEY_USE_DURATION, Constants.NBT.TAG_FLOAT))
+        {
+            duration = data.getFloat(CuisineSharedSecrets.KEY_USE_DURATION);
+        }
+
+        int foodLevel = 0;
+        if (data.hasKey(CuisineSharedSecrets.KEY_FOOD_LEVEL, Constants.NBT.TAG_INT))
+        {
+            foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
+        }
+
+        float saturation = 0;
+        if (data.hasKey(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, Constants.NBT.TAG_FLOAT))
+        {
+            saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
+        }
+
+        DrinkType drinkType = null;
+        if (data.hasKey("type", Constants.NBT.TAG_STRING))
+        {
+            drinkType = DrinkType.DRINK_TYPES.get(data.getString("type"));
+        }
+        if (drinkType == null)
+        {
+            drinkType = DrinkType.NORMAL;
+        }
+
+        Drink drink = new Drink(ingredients, seasonings, effects, foodLevel, saturation, drinkType);
+        drink.setServes(serves);
+        drink.setUseDurationModifier(duration);
+
+        return drink;
+    }
+
+    public int getColor()
+    {
+        return color;
     }
 }

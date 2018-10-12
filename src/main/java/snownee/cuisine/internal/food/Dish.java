@@ -149,8 +149,6 @@ public class Dish extends CompositeFood
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ArrayList<Seasoning> seasonings = new ArrayList<>();
         ArrayList<Effect> effects = new ArrayList<>();
-        int serves = 0;
-        float duration = 1;
         NBTTagList ingredientList = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
         for (NBTBase baseTag : ingredientList)
         {
@@ -178,18 +176,29 @@ public class Dish extends CompositeFood
             }
         }
 
+        int serves = 0;
         if (data.hasKey(CuisineSharedSecrets.KEY_SERVES, Constants.NBT.TAG_INT))
         {
             serves = data.getInteger(CuisineSharedSecrets.KEY_SERVES);
         }
 
+        float duration = 1;
         if (data.hasKey(CuisineSharedSecrets.KEY_USE_DURATION, Constants.NBT.TAG_FLOAT))
         {
             duration = data.getFloat(CuisineSharedSecrets.KEY_USE_DURATION);
         }
 
-        int foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
-        float saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
+        int foodLevel = 0;
+        if (data.hasKey(CuisineSharedSecrets.KEY_FOOD_LEVEL, Constants.NBT.TAG_INT))
+        {
+            foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
+        }
+
+        float saturation = 0;
+        if (data.hasKey(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, Constants.NBT.TAG_FLOAT))
+        {
+            saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
+        }
 
         Dish dish = new Dish(ingredients, seasonings, effects, foodLevel, saturation);
         dish.setServes(serves);

@@ -200,12 +200,12 @@ cuisine.spice.edible_oil=食用油
 cuisine.spice.rice_vinegar=米醋
 cuisine.spice.fruit_vinegar=果醋
 
-cuisine.drink.drink=饮料
-cuisine.drink.smoothie=冰沙
-cuisine.drink.gelo=凝胶球
-cuisine.drink.soda=苏打水
+cuisine.drink.name=饮料
+cuisine.smoothie.name=冰沙
+cuisine.gelo.name=凝胶球
+cuisine.soda.name=苏打水
 # Easter egg, don't translate.
-cuisine.drink.snownee=雪泥
+cuisine.snownee.name=雪泥
 
 fluid.soy_milk=豆浆
 fluid.milk=牛奶

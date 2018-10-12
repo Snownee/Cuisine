@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -241,7 +242,7 @@ public abstract class ItemAbstractComposite extends ItemMod
 
             tooltip.add(TextFormatting.WHITE + TextFormatting.ITALIC.toString() + I18nUtil.translate("tip.shift_ingredients"));
 
-            if (flagIn.isAdvanced())
+            if (flagIn.isAdvanced() && Minecraft.getMinecraft().gameSettings.showDebugInfo)
             {
                 tooltip.add(I18nUtil.translate("tip.food.hunger_regen", dish.getFoodLevel()));
                 tooltip.add(I18nUtil.translateWithFormat("tip.food.saturation", dish.getSaturationModifier()));
