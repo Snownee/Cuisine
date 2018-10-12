@@ -1,34 +1,43 @@
 {
-  "__comment": "Designed by YurisCat with Cubik Studio - https://cubik.studio",
-  "textures": {
-    "piston_bottom": "blocks/piston_bottom",
-    "piston_inner": "blocks/piston_inner",
-    "piston_side": "blocks/piston_side",
-    "piston_top": "blocks/piston_top_normal"
-  },
-  "elements": [
-    {
-      "from": [ 1, 1, 1 ],
-      "to": [ 15, 4.5, 15 ],
-      "faces": {
-        "down": { "uv": [ 0, 0, 16, 16 ], "texture": "#piston_top" },
-        "up": { "uv": [ 0, 0, 16, 16 ], "texture": "#piston_top" },
-        "north": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 },
-        "south": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 },
-        "west": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 },
-        "east": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 }
-      }
-    },
-    {
-      "from": [ 6.25, 4.5, 6.25 ],
-      "to": [ 9.75, 14.5, 9.75 ],
-      "faces": {
-        "down": { "uv": [ 6, 6.5, 9.5, 10 ], "texture": "#piston_side" },
-        "north": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
-        "south": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
-        "west": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
-        "east": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 }
-      }
-    }
-  ]
+	"__comment": "Designed by YurisCat with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"piston_side": "blocks/piston_side",
+		"piston_top": "blocks/piston_top_normal"
+	},
+	"elements": [
+		{
+			"from": [ 1, 1, 1 ],
+			"to": [ 15, 4.5, 15 ],
+			"faces": {
+				"down": { "uv": [ 0, 0, 16, 16 ], "texture": "#piston_top" },
+				"up": { "uv": [ 0, 0, 16, 16 ], "texture": "#piston_top" },
+				"north": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 },
+				"south": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 },
+				"west": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 },
+				"east": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 180 }
+			}
+		},
+		{
+			"from": [ 6.25, 4.5, 6.25 ],
+			"to": [ 9.75, 14.5, 9.75 ],
+			"faces": {
+				"down": { "uv": [ 6, 6.5, 9.5, 10 ], "texture": "#piston_side" },
+				"north": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
+				"south": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
+				"west": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
+				"east": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 }
+			}
+		},
+		{
+			"from": [ 5.375, 4.5, 5.375 ],
+			"to": [ 10.625, 14.5, 10.625 ],
+			"faces": {
+				"down": { "uv": [ 6, 6.5, 9.5, 10 ], "texture": "#piston_side" },
+				"north": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
+				"south": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
+				"west": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 },
+				"east": { "uv": [ 0, 0, 16, 4 ], "texture": "#piston_side", "rotation": 90 }
+			}
+		}
+	]
 }
