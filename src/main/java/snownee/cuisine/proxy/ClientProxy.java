@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -26,7 +25,6 @@ public class ClientProxy extends CommonProxy
         {
             RenderingRegistry.registerEntityRenderingHandler(EntitySeed.class, RenderEntitySeed.FACTORY);
         }
-        OBJLoader.INSTANCE.addDomain(Cuisine.MODID);
     }
 
     @Override
