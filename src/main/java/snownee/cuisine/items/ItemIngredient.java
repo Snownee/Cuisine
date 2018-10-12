@@ -4,11 +4,16 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -23,9 +28,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Effect;
+import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
+import snownee.cuisine.api.prefab.DefaultConsumedCollector;
 import snownee.cuisine.client.model.IngredientMeshDefinition;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.proxy.ClientProxy;
@@ -33,9 +40,6 @@ import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.IModItem;
 import snownee.kiwi.util.Util;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public final class ItemIngredient extends ItemFood implements IModItem
 {
@@ -69,6 +73,27 @@ public final class ItemIngredient extends ItemFood implements IModItem
     {
         ModelLoader.setCustomMeshDefinition(this, IngredientMeshDefinition.INSTANCE);
         ModelBakery.registerItemVariants(this, ClientProxy.EMPTY, new ResourceLocation(Cuisine.MODID, "cmaterial/cubed"), new ResourceLocation(Cuisine.MODID, "cmaterial/diced"), new ResourceLocation(Cuisine.MODID, "cmaterial/minced"), new ResourceLocation(Cuisine.MODID, "cmaterial/paste"), new ResourceLocation(Cuisine.MODID, "cmaterial/shredded"), new ResourceLocation(Cuisine.MODID, "cmaterial/sliced"));
+    }
+
+    @Override
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
+    {
+        Ingredient ingredient = null;
+        if (stack.getTagCompound() != null && entityLiving instanceof EntityPlayer)
+        {
+            ingredient = CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound());
+        }
+        ItemStack ret = super.onItemUseFinish(stack, worldIn, entityLiving);
+        if (ingredient != null)
+        {
+            EffectCollector collector = new DefaultConsumedCollector();
+            for (Effect effect : ingredient.getEffects())
+            {
+                effect.onEaten(stack, (EntityPlayer) entityLiving, null, ingredient, collector);
+            }
+            collector.apply(null, (EntityPlayer) entityLiving); // FIXME: bad. maybe we should build a ingredient food at first
+        }
+        return ret;
     }
 
     @Override

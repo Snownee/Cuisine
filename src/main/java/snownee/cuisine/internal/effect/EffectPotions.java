@@ -31,7 +31,7 @@ public class EffectPotions extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, @Nullable CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
     {
         double size = ingredient == null ? 1 : ingredient.getSize();
         int modifier = ingredient == null || ingredient.getForm().ordinal() > 3 ? 1 : 2;
