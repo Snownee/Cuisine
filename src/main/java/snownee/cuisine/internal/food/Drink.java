@@ -1,6 +1,7 @@
 package snownee.cuisine.internal.food;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -158,6 +159,14 @@ public class Drink extends CompositeFood
 
         public String getTranslationKey()
         {
+            if (this == SMOOTHIE)
+            {
+                Calendar calendar = Calendar.getInstance();
+                if (calendar.get(Calendar.MONTH) == 4 && calendar.get(Calendar.DAY_OF_MONTH) == 18)
+                {
+                    return Cuisine.MODID + ".snownee";
+                }
+            }
             return Cuisine.MODID + "." + name;
         }
 
