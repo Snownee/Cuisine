@@ -1,5 +1,7 @@
 package snownee.cuisine.client.model;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
@@ -20,6 +22,8 @@ import snownee.cuisine.util.ItemNBTUtil;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public final class ChoppingBoardOverride extends ItemOverrideList
 {
@@ -100,6 +104,12 @@ public final class ChoppingBoardOverride extends ItemOverrideList
         );
     }
 
+    private final Cache<ItemStack, IBakedModel> modelCache = CacheBuilder.newBuilder()
+            .maximumSize(500L)
+            .expireAfterWrite(300L, TimeUnit.SECONDS)
+            .weakKeys()
+            .build();
+
     private ChoppingBoardOverride()
     {
         super(Collections.emptyList());
@@ -107,6 +117,18 @@ public final class ChoppingBoardOverride extends ItemOverrideList
 
     @Override
     public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
+    {
+        try
+        {
+            return modelCache.get(stack, () -> this.getChoppingBoardModel(stack, world, entity));
+        }
+        catch (ExecutionException e)
+        {
+            return originalModel; // Signify the issue when there is one
+        }
+    }
+
+    private IBakedModel getChoppingBoardModel(ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
     {
         NBTTagCompound tag = ItemNBTUtil.getCompound(stack, "BlockEntityTag", true);
         IBakedModel rawModel;
