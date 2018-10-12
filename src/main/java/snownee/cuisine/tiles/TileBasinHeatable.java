@@ -140,7 +140,17 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         invLock = true;
         super.readFromNBT(compound);
         invLock = false;
-        onContentsChanged(0);
     }
 
+    @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        // Split from readFromNBT, since TileEntity.world may not be ready
+        // when TileEntity data are read from disk, but it is ready at this
+        // time moment.
+        // After all, this method is here for catching up the very first
+        // "tick" (actually a pseudo-tick) of TileEntity lifecycle.
+        this.onContentsChanged(0);
+    }
 }

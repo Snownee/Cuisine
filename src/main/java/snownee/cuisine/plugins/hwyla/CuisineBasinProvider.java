@@ -60,7 +60,11 @@ public class CuisineBasinProvider implements IWailaDataProvider
     {
         if (te instanceof TileBasinHeatable)
         {
-            tag.setTag("fluidContent", ((TileBasinHeatable) te).getCurrentFluidContent().writeToNBT(new NBTTagCompound()));
+            FluidStack fluid = ((TileBasinHeatable) te).getCurrentFluidContent();
+            if (fluid != null)
+            {
+                tag.setTag("fluidContent", fluid.writeToNBT(new NBTTagCompound()));
+            }
             tag.setInteger("heatValue", ((TileBasinHeatable) te).getCurrentHeatingTick());
             tag.setBoolean("working", ((TileBasinHeatable) te).isWorking());
         }

@@ -103,7 +103,16 @@ public class TileBasin extends TileInventoryBase
 
     public FluidStack getCurrentFluidContent()
     {
-        return this.tank.getFluid().copy();
+        FluidStack content = this.tank.getFluid();
+        if (content == null)
+        {
+            return null;
+        }
+        else
+        {
+            // Never assume people won't do bad things such as manipulating the return value
+            return content.copy();
+        }
     }
 
 }
