@@ -7,6 +7,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.animation.AnimationTESR;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -43,6 +44,8 @@ public final class CuisineBlockRendering
     @SubscribeEvent
     public static void onModelRegister(ModelRegistryEvent event)
     {
+        OBJLoader.INSTANCE.addDomain(Cuisine.MODID);
+
         ModelLoaderRegistry.registerLoader(ChoppingBoardModel.Loader.INSTANCE);
 
         ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_MILK); // Work around. Belows are the same.
