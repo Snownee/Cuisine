@@ -1,0 +1,28 @@
+{
+  "type": "forge:ore_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "toughasnails"
+    }
+  ],
+  "pattern": [
+    "#",
+    "C",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "type": "forge:ore_dict",
+      "ore": "paper"
+    },
+    "C": {
+      "item" : "cuisine:material",
+      "data": 6
+    }
+  },
+  "result": {
+    "item": "toughasnails:charcoal_filter",
+    "count": 3
+  }
+}
