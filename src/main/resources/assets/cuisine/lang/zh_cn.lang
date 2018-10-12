@@ -202,10 +202,14 @@ cuisine.spice.fruit_vinegar=果醋
 
 cuisine.drink.name=饮料
 cuisine.smoothie.name=冰沙
+cuisine.smoothie.specific=%s冰沙
 cuisine.gelo.name=凝胶球
+cuisine.gelo.specific=%s凝胶球
 cuisine.soda.name=苏打水
+cuisine.soda.specific=%s苏打水
 # Easter egg, don't translate.
 cuisine.snownee.name=雪泥
+cuisine.snownee.specific=%s雪泥
 
 fluid.soy_milk=豆浆
 fluid.milk=牛奶

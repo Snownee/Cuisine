@@ -1,8 +1,12 @@
 package snownee.cuisine.items;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -14,10 +18,13 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.client.model.DishMeshDefinition;
 import snownee.cuisine.internal.capabilities.DishContainer;
 import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.proxy.ClientProxy;
+import snownee.cuisine.util.ItemNBTUtil;
 
 public class ItemDrink extends ItemAbstractComposite
 {
@@ -42,6 +49,39 @@ public class ItemDrink extends ItemAbstractComposite
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
     {
         return new DishContainer();
+    }
+
+    @Nonnull
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getItemStackDisplayName(ItemStack stack)
+    {
+        String s = ItemNBTUtil.getString(stack, "customName", "");
+        if (!s.isEmpty())
+        {
+            return s;
+        }
+        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+        if (container != null)
+        {
+            CompositeFood drink = container.get();
+            if (drink != null && drink.getClass() == Drink.class)
+            {
+                List<Ingredient> ingredients = drink.getIngredients();
+                if (ingredients.size() == 1)
+                {
+                    if (((Drink) drink).getDrinkType() == DrinkType.NORMAL)
+                    {
+                        return ingredients.get(0).getTranslation();
+                    }
+                    else
+                    {
+                        return I18n.format(((Drink) drink).getDrinkType().getTranslationKey() + ".specific", I18n.format(ingredients.get(0).getMaterial().getTranslationKey()));
+                    }
+                }
+            }
+        }
+        return super.getItemStackDisplayName(stack);
     }
 
     @Override
