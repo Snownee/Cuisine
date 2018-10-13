@@ -41,7 +41,7 @@ public class CuisineBasinProvider implements IWailaDataProvider
                 }
                 int currentProgress = data.getInteger("heatValue");
                 int max = tile.getMaxHeatingTick();
-                tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.progress", (double)currentProgress / max));
+                tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.progress.percentage", (double)currentProgress / max));
             }
             else
             {
