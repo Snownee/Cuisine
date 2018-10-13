@@ -1,7 +1,8 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "cuisine:item/soda_base",
-        "layer1": "cuisine:item/soda_overlay"
+        "layer2": "cuisine:item/soda_base",
+        "layer1": "cuisine:item/soda_overlay",
+        "layer0": "cuisine:item/empty"
     }
 }
