@@ -42,19 +42,19 @@ public final class VanillaRecipeRegistry
             if (CuisineConfig.HARDCORE.harderSugarProduction)
             {
                 final ResourceLocation sugarRecipeName = new ResourceLocation("minecraft", "sugar");
-                event.getRegistry().register(new DummyVanillaRecipe("").setRegistryName(sugarRecipeName));
+                event.getRegistry().register(new DummyVanillaRecipe().setRegistryName(sugarRecipeName));
             }
 
             if (CuisineConfig.HARDCORE.harderBreadProduction)
             {
                 final ResourceLocation breadRecipeName = new ResourceLocation("minecraft", "bread");
-                event.getRegistry().register(new DummyVanillaRecipe("").setRegistryName(breadRecipeName));
+                event.getRegistry().register(new DummyVanillaRecipe().setRegistryName(breadRecipeName));
             }
 
             if (CuisineConfig.HARDCORE.harderCookieProduction)
             {
                 final ResourceLocation cookieRecipeName = new ResourceLocation("minecraft", "cookie");
-                event.getRegistry().register(new DummyVanillaRecipe("").setRegistryName(cookieRecipeName));
+                event.getRegistry().register(new DummyVanillaRecipe().setRegistryName(cookieRecipeName));
             }
 
             Loader.instance().setActiveModContainer(cuisineModContainer);

@@ -21,12 +21,6 @@ public final class DummyVanillaRecipe implements IRecipe
 {
 
     private ResourceLocation identifier;
-    private final String group;
-
-    public DummyVanillaRecipe(final String group)
-    {
-        this.group = group;
-    }
 
     @Override
     public boolean matches(InventoryCrafting inv, World worldIn)
@@ -70,12 +64,6 @@ public final class DummyVanillaRecipe implements IRecipe
     public boolean isDynamic()
     {
         return false;
-    }
-
-    @Override
-    public String getGroup()
-    {
-        return this.group;
     }
 
     @Override

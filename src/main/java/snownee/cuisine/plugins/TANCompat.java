@@ -55,7 +55,7 @@ public class TANCompat implements IModule
         if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null) && event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
         {
             FoodContainer container = event.getItem().getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-            CompositeFood food = container.get();
+            CompositeFood food = container.get(); // Null-safety is guaranteed by the hasCapability check
             if (food != null && food.getKeywords().contains("drink"))
             {
                 IThirst handler = event.getEntityLiving().getCapability(TANCapabilities.THIRST, null);

@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockCuisineCrops;
@@ -27,7 +27,7 @@ public class BetterHarvest
 {
 
     @SubscribeEvent
-    public void onRightClick(RightClickBlock event)
+    public void onRightClick(PlayerInteractEvent.RightClickBlock event)
     {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
@@ -81,7 +81,7 @@ public class BetterHarvest
         }
     }
 
-    public static void plant(World world, BlockPos pos, EntityPlayer player, ItemStack stack)
+    private static void plant(World world, BlockPos pos, EntityPlayer player, ItemStack stack)
     {
         IBlockState state;
         if (stack.getItem() instanceof ItemCrops)
