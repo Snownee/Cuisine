@@ -275,9 +275,8 @@ cuisine.gui.grown=生长进度：%d%%
 cuisine.gui.temperature=温度：%d
 cuisine.gui.water_amount=水含量：%d
 cuisine.gui.oil_amount=油含量：%d
-cuisine.gui.progress=进度：
-cuisine.gui.progress.percentage=进度：%.2f%%
-cuisine.gui.suspended=进度：暂停
+# < 0: suspended; [0, 1]: percentage; > 1: Using TOP progress bar;
+cuisine.gui.progress=进度：{0,choice,-1#暂停|0<{0,number,percent}|1<}
 cuisine.gui.fluid_show=液体：%s * %d mB
 cuisine.gui.openlink=交流群
 cuisine.gui.welcome=感谢游玩料理工艺！\n\n模组仍在努力开发中， 更多内容请关注后续更新！\n\n开始游玩后你需要先收集食材并制作基础的食物加工机器。相关物品配方可通过安装JEI模组查看。\n\n如果你想了解更多关于料理工艺的信息， 欢迎加入我们的交流群：\n645696370

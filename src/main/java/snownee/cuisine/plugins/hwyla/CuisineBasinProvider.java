@@ -1,5 +1,6 @@
 package snownee.cuisine.plugins.hwyla;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -7,7 +8,6 @@ import javax.annotation.Nonnull;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.SpecialChars;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.tiles.TileBasinHeatable;
@@ -32,6 +33,7 @@ public class CuisineBasinProvider implements IWailaDataProvider
             TileBasinHeatable tile = (TileBasinHeatable) accessor.getTileEntity();
             NBTTagCompound data = accessor.getNBTData();
             boolean working = data.getBoolean("working");
+            MessageFormat formatter = new MessageFormat(I18n.translateToLocal(Cuisine.MODID + ".gui.progress"), MinecraftForgeClient.getLocale());
             if (working)
             {
                 FluidStack fluidContent = FluidStack.loadFluidStackFromNBT(data.getCompoundTag("fluidContent"));
@@ -41,11 +43,11 @@ public class CuisineBasinProvider implements IWailaDataProvider
                 }
                 int currentProgress = data.getInteger("heatValue");
                 int max = tile.getMaxHeatingTick();
-                tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.progress.percentage", (double)currentProgress / max));
+                tooltip.add(TextFormatting.GRAY + formatter.format(new Object[] { 1 - (double)currentProgress / max }));
             }
             else
             {
-                tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.suspended"));
+                tooltip.add(TextFormatting.GRAY + formatter.format(new Object[] { -1 }));
             }
         }
         return tooltip;
