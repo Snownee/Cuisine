@@ -181,7 +181,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
     }
 
     private boolean powered = false;
-    protected Drink.Builder builder;
+    public Drink.Builder builder;
     public ItemStackHandler inputs = new ItemStackHandler(4)
     {
         public int getSlotLimit(int slot)
@@ -261,6 +261,18 @@ public class TileDrinkro extends TileBase implements CookingVessel
     {
         if (world.isBlockPowered(pos))
         {
+            int slotCount = 0;
+            for (int i = 0; i < inputs.getSlots(); i++)
+            {
+                if (!inputs.getStackInSlot(i).isEmpty())
+                {
+                    ++slotCount;
+                }
+            }
+            if (builder.getIngredients().isEmpty() && builder.getIngredients().size() + builder.getIngredients().size() + slotCount < 2)
+            {
+                return;
+            }
             // find feature
             DrinkType type = DrinkType.NORMAL;
             int featureSlot = -1;

@@ -113,7 +113,7 @@ public class Drink extends CompositeFood
         @Override
         public Optional<Drink> build(CookingVessel vessel, EntityPlayer cook)
         {
-            if (getIngredients().isEmpty() || getIngredients().size() + getSeasonings().size() < 2)
+            if (getIngredients().isEmpty())
             {
                 return Optional.empty();
             }
