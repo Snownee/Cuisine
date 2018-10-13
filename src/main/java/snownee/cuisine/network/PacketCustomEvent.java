@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
@@ -16,11 +15,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.client.particle.ParticleGrowth;
-import snownee.cuisine.items.ItemLifeEssence;
 import snownee.cuisine.tiles.TileJar;
 import snownee.cuisine.tiles.TileWok;
 import snownee.kiwi.network.PacketMod;
+
+import java.util.Random;
 
 public class PacketCustomEvent implements PacketMod
 {
@@ -87,11 +86,6 @@ public class PacketCustomEvent implements PacketMod
     {
         switch (event)
         {
-        case 1:
-        {
-            ItemLifeEssence.splashParticles(Minecraft.getMinecraft().world, new Vec3d(posX, posY, posZ));
-            break;
-        }
         case 2:
         {
             World world = Minecraft.getMinecraft().world;
@@ -104,19 +98,19 @@ public class PacketCustomEvent implements PacketMod
         {
             // TODO Fine tuning on FX
             World world = Minecraft.getMinecraft().world;
+            Random rand = world.rand;
             TileEntity te = world.getTileEntity(new BlockPos(posX, posY, posZ));
-            if (!(te instanceof TileWok))
+            if (te instanceof TileWok)
             {
-                return;
+                ++((TileWok) te).actionCycle;
+                for (int k = 0; k < 4; ++k)
+                {
+                    double x = posX + 0.5D + rand.nextGaussian() * 0.2D;
+                    double z = posZ + 0.5D + rand.nextGaussian() * 0.2D;
+                    world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, x, posY + 0.25, z, 0D, 0.1D, 0D);
+                }
+                world.playSound(posX + 0.5D + rand.nextGaussian() * 0.2D, posY + 0.25, posZ + 0.5D + rand.nextGaussian() * 0.2D, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, 1F, 1F, true);
             }
-            ++((TileWok) te).actionCycle;
-            for (int k = 0; k < 4; ++k)
-            {
-                double x = posX + 0.5D + world.rand.nextGaussian() * 0.2D;
-                double z = posZ + 0.5D + world.rand.nextGaussian() * 0.2D;
-                world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, x, posY + 0.25, z, 0D, 0.1D, 0D);
-            }
-            world.playSound(posX + 0.5D + world.rand.nextGaussian() * 0.2D, posY + 0.25, posZ + 0.5D + world.rand.nextGaussian() * 0.2D, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, 1F, 1F, true);
         }
         case 4:
         {
@@ -132,22 +126,9 @@ public class PacketCustomEvent implements PacketMod
             }
             break;
         }
-        case 6:
-        {
-            WorldClient world = Minecraft.getMinecraft().world;
-            if (world.rand.nextInt(5) == 0)
-            {
-                double mx = world.rand.nextGaussian() * 0.05D;
-                double my = world.rand.nextGaussian() * 0.01D + 0.3D;
-                double mz = world.rand.nextGaussian() * 0.05D;
-                ParticleGrowth particle = new ParticleGrowth(world, posX + 0.5D, posY, posZ + 0.5D, mx, my, mz);
-                Minecraft.getMinecraft().effectRenderer.addEffect(particle);
-            }
-            break;
-        }
         default:
         {
-            Cuisine.logger.error("Undefined event: {} {}, {}, {} {}", event, posX, posY, posZ, extraData);
+            Cuisine.logger.warn("Undefined event: {} {}, {}, {} {}. Skipping", event, posX, posY, posZ, extraData);
             break;
         }
         }

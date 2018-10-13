@@ -1,4 +1,4 @@
-package snownee.cuisine.entities;
+/*package snownee.cuisine.entities;
 
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.entity.Entity;
@@ -254,4 +254,4 @@ public class EntityLifeEssence extends Entity
         GARDEN, FLOWER
     }
 
-}
+}*/

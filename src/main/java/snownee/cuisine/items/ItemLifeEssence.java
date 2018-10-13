@@ -1,4 +1,4 @@
-package snownee.cuisine.items;
+/*package snownee.cuisine.items;
 
 import javax.annotation.Nullable;
 
@@ -230,3 +230,4 @@ public class ItemLifeEssence extends ItemMod
         return true;
     }
 }
+*/

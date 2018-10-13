@@ -1,4 +1,4 @@
-package snownee.cuisine.entities;
+/*package snownee.cuisine.entities;
 
 import javax.annotation.Nonnull;
 
@@ -117,4 +117,4 @@ public class EntityFallingFlower extends EntityFallingBlock implements IEntityAd
         this.instrument = ByteBufUtils.readRegistryEntry(additionalData, ForgeRegistries.SOUND_EVENTS);
     }
 
-}
+}*/

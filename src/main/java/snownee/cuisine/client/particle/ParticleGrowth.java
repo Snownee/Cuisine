@@ -1,4 +1,4 @@
-package snownee.cuisine.client.particle;
+/*package snownee.cuisine.client.particle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -132,4 +132,4 @@ public class ParticleGrowth extends Particle
         super.onUpdate();
     }
 
-}
+}*/
