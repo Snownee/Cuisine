@@ -25,6 +25,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.tiles.TileDrinkro;
 import snownee.kiwi.block.BlockModHorizontal;
 
@@ -57,6 +59,13 @@ public class BlockDrinkro extends BlockModHorizontal
                     FluidUtil.interactWithFluidHandler(playerIn, hand, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing));
                     return true;
                 }
+            }
+
+            Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(held);
+            if (ingredient != null)
+            {
+                tileDrinkro.builder.addIngredient(playerIn, ingredient, tileDrinkro);
+                return true;
             }
 
             ItemStackHandler inv = hitY > 0.5 ? tileDrinkro.inputs : tileDrinkro.output;

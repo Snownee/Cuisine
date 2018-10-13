@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
@@ -61,13 +62,17 @@ public final class CuisineItemRendering
         }, CuisineRegistry.SPICE_BOTTLE);
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> {
-            if (tintIndex == 0 && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+            if (tintIndex == 0)
             {
+                stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
                 IFluidHandlerItem handlerItem = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-                FluidStack fluid = handlerItem.drain(Integer.MAX_VALUE, false);
-                if (fluid != null)
+                if (handlerItem != null)
                 {
-                    return fluid.getFluid().getColor(fluid);
+                    FluidStack fluid = handlerItem.drain(Integer.MAX_VALUE, false);
+                    if (fluid != null)
+                    {
+                        return fluid.getFluid().getColor(fluid);
+                    }
                 }
             }
             return -1;

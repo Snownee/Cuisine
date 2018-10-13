@@ -1,19 +1,38 @@
 package snownee.cuisine.items;
 
+import java.util.Optional;
+
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
+import snownee.cuisine.api.CookingVessel;
+import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.internal.capabilities.GlassBottleWrapper;
+import snownee.cuisine.internal.food.Drink;
 import snownee.kiwi.item.ItemMod;
 
-public class ItemBottle extends ItemMod
+public class ItemBottle extends ItemMod implements CookingVessel
 {
 
     public ItemBottle(String name)
@@ -32,6 +51,7 @@ public class ItemBottle extends ItemMod
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack)
     {
+        stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
         IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack);
         if (handler != null)
         {
@@ -42,5 +62,101 @@ public class ItemBottle extends ItemMod
             }
         }
         return super.getItemStackDisplayName(stack);
+    }
+
+    public int getMaxItemUseDuration(ItemStack stack)
+    {
+        return 32;
+    }
+
+    public EnumAction getItemUseAction(ItemStack stack)
+    {
+        return EnumAction.DRINK;
+    }
+
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    {
+        playerIn.setActiveHand(handIn);
+        return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+    }
+
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
+    {
+        if (!(entityLiving instanceof EntityPlayer))
+        {
+            return stack;
+        }
+        EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+
+        stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
+        IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack);
+        if (handler == null)
+        {
+            return stack;
+        }
+        FluidStack fluid = handler.drain(Integer.MAX_VALUE, false);
+        if (fluid == null)
+        {
+            return stack;
+        }
+        Material material = CulinaryHub.API_INSTANCE.findMaterial(fluid);
+        if (material == null || !material.isValidForm(Form.JUICE))
+        {
+            return stack;
+        }
+        Drink.Builder builder = Drink.Builder.create();
+        builder.addIngredient(entityplayer, new Ingredient(material, Form.JUICE, 0.5), this);
+        Optional<Drink> result = builder.build(this, entityplayer);
+        if (!result.isPresent())
+        {
+            return stack;
+        }
+        result.get().onEaten(stack, worldIn, entityplayer);
+
+        if (!entityplayer.capabilities.isCreativeMode)
+        {
+            stack.shrink(1);
+        }
+
+        if (entityplayer instanceof EntityPlayerMP)
+        {
+            CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) entityplayer, stack);
+        }
+
+        entityplayer.addStat(StatList.getObjectUseStats(this));
+
+        if (!entityplayer.capabilities.isCreativeMode)
+        {
+            if (stack.isEmpty())
+            {
+                return new ItemStack(Items.GLASS_BOTTLE);
+            }
+
+            // I don't know why it would not add 2 items, but it works
+            entityplayer.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
+        }
+
+        return stack;
+    }
+
+    @Override
+    public int getTemperature()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getWaterAmount()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getOilAmount()
+    {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

@@ -67,17 +67,17 @@ public class Drink extends CompositeFood
             return new Drink.Builder();
         }
 
-        public boolean isFeatureItem(ItemStack item)
+        public static boolean isFeatureItem(ItemStack item)
         {
             return FEATURE_INPUTS.keySet().stream().anyMatch(i -> i.matches(item));
         }
 
-        public boolean isContainerItem(ItemStack item)
+        public static boolean isContainerItem(ItemStack item)
         {
             return FEATURE_INPUTS.values().stream().anyMatch(i -> i.getContainerPre().matches(item));
         }
 
-        public DrinkType findDrinkType(ItemStack item)
+        public static DrinkType findDrinkType(ItemStack item)
         {
             if (!item.isEmpty())
             {
@@ -113,7 +113,7 @@ public class Drink extends CompositeFood
         @Override
         public Optional<Drink> build(CookingVessel vessel, EntityPlayer cook)
         {
-            if (getIngredients().isEmpty() || getIngredients().size() + getSeasonings().size() < 2)
+            if (getIngredients().isEmpty())
             {
                 return Optional.empty();
             }
@@ -127,6 +127,77 @@ public class Drink extends CompositeFood
             int foodLevel = counter.getHungerRegen();
             completed = new Drink(getIngredients(), getSeasonings(), getEffects(), foodLevel, saturationModifier, drinkType);
             return Optional.of(completed);
+        }
+
+        public static NBTTagCompound toNBT(Drink.Builder builder)
+        {
+            NBTTagCompound data = new NBTTagCompound();
+            NBTTagList ingredientList = new NBTTagList();
+            for (Ingredient ingredient : builder.getIngredients())
+            {
+                ingredientList.appendTag(CuisinePersistenceCenter.serialize(ingredient));
+            }
+            data.setTag(CuisineSharedSecrets.KEY_INGREDIENT_LIST, ingredientList);
+
+            NBTTagList seasoningList = new NBTTagList();
+            for (Seasoning seasoning : builder.getSeasonings())
+            {
+                seasoningList.appendTag(CuisinePersistenceCenter.serialize(seasoning));
+            }
+            data.setTag(CuisineSharedSecrets.KEY_SEASONING_LIST, seasoningList);
+
+            NBTTagList effectList = new NBTTagList();
+            for (Effect effect : builder.getEffects())
+            {
+                effectList.appendTag(new NBTTagString(effect.getID()));
+            }
+            data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
+
+            data.setString("type", builder.drinkType.getName());
+
+            return data;
+        }
+
+        public static Drink.Builder fromNBT(NBTTagCompound data)
+        {
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+            ArrayList<Seasoning> seasonings = new ArrayList<>();
+            ArrayList<Effect> effects = new ArrayList<>();
+            NBTTagList ingredientList = data.getTagList(CuisineSharedSecrets.KEY_INGREDIENT_LIST, Constants.NBT.TAG_COMPOUND);
+            for (NBTBase baseTag : ingredientList)
+            {
+                if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+                {
+                    ingredients.add(CuisinePersistenceCenter.deserializeIngredient((NBTTagCompound) baseTag));
+                }
+            }
+
+            NBTTagList seasoningList = data.getTagList(CuisineSharedSecrets.KEY_SEASONING_LIST, Constants.NBT.TAG_COMPOUND);
+            for (NBTBase baseTag : seasoningList)
+            {
+                if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
+                {
+                    seasonings.add(CuisinePersistenceCenter.deserializeSeasoning((NBTTagCompound) baseTag));
+                }
+            }
+
+            NBTTagList effectList = data.getTagList(CuisineSharedSecrets.KEY_EFFECT_LIST, Constants.NBT.TAG_STRING);
+            for (NBTBase baseTag : effectList)
+            {
+                if (baseTag.getId() == Constants.NBT.TAG_STRING)
+                {
+                    effects.add(CulinaryHub.API_INSTANCE.findEffect(((NBTTagString) baseTag).getString()));
+                }
+            }
+
+            Drink.Builder builder = new Drink.Builder(ingredients, seasonings, effects);
+            builder.drinkType = DrinkType.DRINK_TYPES.get(data.getString("type"));
+            if (builder.drinkType == null)
+            {
+                builder.drinkType = DrinkType.NORMAL;
+            }
+
+            return builder;
         }
     }
 
