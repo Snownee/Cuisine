@@ -413,22 +413,4 @@ public class TileDrinkro extends TileBase implements CookingVessel
         return oldState.getBlock() != newState.getBlock();
     }
 
-    @Override
-    public int getTemperature()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getWaterAmount()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getOilAmount()
-    {
-        return 0;
-    }
-
 }
