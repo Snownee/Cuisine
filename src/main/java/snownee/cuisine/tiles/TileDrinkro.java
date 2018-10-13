@@ -191,7 +191,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
 
         public boolean isItemValid(int slot, ItemStack stack)
         {
-            if (builder.isFeatureItem(stack))
+            if (Drink.Builder.isFeatureItem(stack))
             {
                 return true;
             }
@@ -201,12 +201,12 @@ public class TileDrinkro extends TileBase implements CookingVessel
 
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
-            if (builder.isFeatureItem(stack))
+            if (Drink.Builder.isFeatureItem(stack))
             {
                 // One drink can't have two or more feature items
                 for (ItemStack stack2 : stacks)
                 {
-                    if (builder.isFeatureItem(stack2))
+                    if (Drink.Builder.isFeatureItem(stack2))
                     {
                         return stack;
                     }
@@ -228,7 +228,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
 
         public boolean isItemValid(int slot, ItemStack stack)
         {
-            return builder.isContainerItem(stack);
+            return Drink.Builder.isContainerItem(stack);
         }
 
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
@@ -365,6 +365,9 @@ public class TileDrinkro extends TileBase implements CookingVessel
     {
         super.readFromNBT(data);
         powered = data.getBoolean("powered");
+        inputs.deserializeNBT(data.getCompoundTag("inputs"));
+        output.deserializeNBT(data.getCompoundTag("outputs"));
+        builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
     }
 
     @Override
@@ -372,6 +375,9 @@ public class TileDrinkro extends TileBase implements CookingVessel
     {
         super.writeToNBT(data);
         data.setBoolean("powered", powered);
+        data.setTag("inputs", inputs.serializeNBT());
+        data.setTag("outputs", output.serializeNBT());
+        data.setTag("builder", Drink.Builder.toNBT(builder));
         return data;
     }
 
