@@ -3,9 +3,14 @@ package snownee.cuisine.plugins.hwyla;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.tiles.TileWok;
 
@@ -22,11 +27,25 @@ public class CuisineWokProvider implements IWailaDataProvider
     {
         if (accessor.getPlayer().isCreative() && accessor.getTileEntity() instanceof TileWok)
         {
-            TileWok wok = (TileWok) accessor.getTileEntity();
-            tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.temperature", wok.getTemperature()));
-            tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.water_amount", wok.getWaterAmount()));
-            tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.oil_amount", wok.getOilAmount()));
+            NBTTagCompound data = accessor.getNBTData();
+            tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.temperature", data.getInteger("temperature")));
+            tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.water_amount", data.getInteger("water")));
+            tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.oil_amount", data.getInteger("oil")));
         }
         return tooltip;
+    }
+
+    @Nonnull
+    @Override
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos)
+    {
+        if (te instanceof TileWok)
+        {
+            TileWok wok = (TileWok) te;
+            tag.setInteger("temperature", wok.getTemperature());
+            tag.setInteger("water", wok.getWaterAmount());
+            tag.setInteger("oil", wok.getOilAmount());
+        }
+        return tag;
     }
 }
