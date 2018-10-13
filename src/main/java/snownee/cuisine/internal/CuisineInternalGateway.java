@@ -553,4 +553,30 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToSpiceMapping.put("dustCrudesalt", CulinaryHub.CommonSpices.CRUDE_SALT);
 
     }
+
+    public final Map<ItemDefinition, SimpleJuice> simpleJuiceMapping = new HashMap<>();
+
+    public static class SimpleJuice
+    {
+        public final Material material;
+        public final double quantity;
+
+        public SimpleJuice(Material material, double quantity)
+        {
+            this.material = material;
+            this.quantity = quantity;
+        }
+
+        public Ingredient makeIngredient()
+        {
+            return new Ingredient(material, Form.JUICE, quantity);
+        }
+    }
+
+    @Override
+    public Ingredient findIngredient(ItemStack item)
+    {
+        SimpleJuice juice = simpleJuiceMapping.get(ItemDefinition.of(item));
+        return juice == null ? null : juice.makeIngredient();
+    }
 }

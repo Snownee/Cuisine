@@ -1,13 +1,14 @@
 package snownee.cuisine.api;
 
+import java.util.Collection;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.function.Function;
 
 /**
  * Main interface that one can use to interact with Cuisine's internal.
@@ -68,10 +69,7 @@ public interface CuisineAPI
      *
      * @param <F> the concrete type of CompositeFood
      */
-    <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator,
-                                                    Class<F> typeToken,
-                                                    Function<F, NBTTagCompound> serializer,
-                                                    Function<NBTTagCompound, F> deserializer);
+    <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator, Class<F> typeToken, Function<F, NBTTagCompound> serializer, Function<NBTTagCompound, F> deserializer);
     // TODO Do we really need that typeToken?
 
     /**
@@ -238,5 +236,7 @@ public interface CuisineAPI
      * @return true if there is an associated Material; false otherwise.
      */
     boolean isKnownSpice(FluidStack fluid);
+
+    Ingredient findIngredient(ItemStack item);
 
 }
