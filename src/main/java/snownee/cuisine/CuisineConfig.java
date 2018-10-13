@@ -14,7 +14,7 @@ public final class CuisineConfig
 
     private CuisineConfig()
     {
-        // No-op, no instance for you
+        throw new UnsupportedOperationException("No instance for you");
     }
 
     @SubscribeEvent
@@ -38,39 +38,39 @@ public final class CuisineConfig
             // No-op. Package-level access.
         }
 
-        @Config.Comment("Give new player manual")
+        @Config.Comment("Give player the manual of Cuisine Mod when they firstly spawn in world.")
         @Config.LangKey("cuisine.config.general.spawn_book")
         @Config.Name("SpawnBook")
         @Config.RequiresMcRestart
         public boolean spawnBook = true;
 
-        @Config.Comment("Larger = Less possible to gen, 0 = Do not gen")
+        @Config.Comment("Generation rate of bamboo; larger value means lower generation rate; set to 0 to completely disable.")
         @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
         @Config.Name("BamboosGenRate")
         @Config.RangeInt(min = 0)
         @Config.RequiresMcRestart
         public int bamboosGenRate = 35;
 
-        @Config.Comment("Use bamboo as a blowpipe, shoot seeds")
+        @Config.Comment("If true, bamboo can be used as a blowpipe which can shoot seeds.")
         @Config.LangKey("cuisine.config.general.bamboo_blowpipe")
         @Config.Name("BambooBlowpipe")
         @Config.RequiresMcRestart
         public boolean bambooBlowpipe = false;
 
-        @Config.Comment("Larger = Less possible to gen, 0 = Do not gen")
+        @Config.Comment("Generation rate of wild crops; larger value means lower generation rate; set to 0 to completely disable.")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
         @Config.Name("CropsGenRate")
         @Config.RangeInt(min = 0)
         @Config.RequiresMcRestart
         public int cropsGenRate = 4;
 
-        @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, 1 second is 20 ticks.")
+        @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
         @Config.LangKey("cuisine.config.general.mill_work_cycle")
         @Config.Name("MillWorkCycle")
         @Config.RangeInt(min = 1)
         public int millWorkPeriod = 160;
 
-        @Config.Comment("BasinHeatingInDaylight")
+        @Config.Comment("If true, natural sunlight will be considered as a valid heat source for earthen basin.")
         @Config.LangKey("cuisine.config.general.basin_heating_in_daylight")
         @Config.Name("BasinHeatingInDaylight")
         @Config.RequiresMcRestart
@@ -89,12 +89,12 @@ public final class CuisineConfig
             // No-op. Package-level access.
         }
 
-        @Config.Comment("Allow chopping board to chop woods (for pack devs)")
+        @Config.Comment("Allow axes to chop things on chopping board. Pack creators may wish to adjust it.")
         @Config.LangKey("cuisine.config.progression.axe_chopping")
         @Config.Name("AxeChopping")
         public boolean axeChopping = true;
 
-        @Config.Comment("Axes show in JEI recipes. This doesn't affect actual behavior")
+        @Config.Comment("List of axes that will show in JEI recipes. This doesn't affect actual behavior.")
         @Config.LangKey("cuisine.config.progression.axe_list")
         @Config.Name("AxeList")
         @Config.RequiresMcRestart
