@@ -165,7 +165,7 @@ public abstract class CompositeFood
      */
     public final boolean isEmpty()
     {
-        return this.durability < 1 || this.maxServeSize < 1;
+        return this.durability < 1 || this.maxServeSize < 1 || this.ingredients.isEmpty();
     }
 
     /*
@@ -322,6 +322,8 @@ public abstract class CompositeFood
         }
 
         collector.apply(this, player);
+
+        player.getFoodStats().addStats(getFoodLevel(), getSaturationModifier());
     }
 
     protected Collection<IngredientBinding> getEffectBindings()

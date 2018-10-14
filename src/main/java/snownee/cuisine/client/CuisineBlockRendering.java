@@ -18,10 +18,12 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.CuisineBlocks;
 import snownee.cuisine.client.model.ChoppingBoardModel;
 import snownee.cuisine.client.renderer.TESRBarbecueRack;
+import snownee.cuisine.client.renderer.TESRBasin;
 import snownee.cuisine.client.renderer.TESRChoppingBoard;
 import snownee.cuisine.client.renderer.TESRMortar;
 import snownee.cuisine.client.renderer.TESRWok;
 import snownee.cuisine.tiles.TileBarbecueRack;
+import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileChoppingBoard;
 import snownee.cuisine.tiles.TileMill;
 import snownee.cuisine.tiles.TileMortar;
@@ -63,6 +65,7 @@ public final class CuisineBlockRendering
         ClientRegistry.bindTileEntitySpecialRenderer(TileWok.class, new TESRWok());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBarbecueRack.class, new TESRBarbecueRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSqueezer.class, new AnimationTESR<>());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileBasin.class, new TESRBasin());
     }
 
 }

@@ -100,7 +100,6 @@ public class TileDish extends TileBase
         {
             if (!(player instanceof FakePlayer) && hasWorld() && player.canEat(dish.alwaysEdible()))
             {
-                player.getFoodStats().addStats(dish.getFoodLevel(), dish.getSaturationModifier());
                 dish.setServes(dish.getServes() - 1);
                 getWorld().playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.9F);
                 dish.onEaten(this.dishContainer, getWorld(), player);

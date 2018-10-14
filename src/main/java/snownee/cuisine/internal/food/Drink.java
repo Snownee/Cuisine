@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
@@ -25,14 +26,19 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
+import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.api.prefab.DefaultConsumedCollector;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.kiwi.Kiwi;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
+import toughasnails.api.config.GameplayOption;
+import toughasnails.api.config.SyncedConfig;
 
 public class Drink extends CompositeFood
 {
@@ -320,6 +326,32 @@ public class Drink extends CompositeFood
     public Collection<String> getKeywords()
     {
         return Collections.singletonList("drink");
+    }
+
+    @Override
+    public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
+    {
+        Collection<IngredientBinding> bindings = getEffectBindings();
+        EffectCollector collector = new DefaultConsumedCollector();
+
+        // And then apply them
+        for (IngredientBinding binding : bindings)
+        {
+            binding.effect.onEaten(stack, player, this, binding.ingredient, collector);
+        }
+
+        // And finally, consume seasonings
+        for (Seasoning seasoning : seasonings)
+        {
+            seasoning.getSpice().onConsumed(stack, player, worldIn, seasoning, collector);
+        }
+
+        collector.apply(this, player);
+
+        if (!Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST))
+        {
+            player.getFoodStats().addStats(Math.min((int) (getFoodLevel() * 0.5), 2), getSaturationModifier());
+        }
     }
 
     public static NBTTagCompound serialize(Drink drink)
