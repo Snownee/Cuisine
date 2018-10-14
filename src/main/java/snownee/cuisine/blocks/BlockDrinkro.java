@@ -29,6 +29,7 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.tiles.TileDrinkro;
 import snownee.kiwi.block.BlockModHorizontal;
+import snownee.kiwi.util.PlayerUtil;
 
 public class BlockDrinkro extends BlockModHorizontal
 {
@@ -65,6 +66,12 @@ public class BlockDrinkro extends BlockModHorizontal
             if (ingredient != null)
             {
                 tileDrinkro.builder.addIngredient(playerIn, ingredient, tileDrinkro);
+                ItemStack container = held.getItem().getContainerItem(held);
+                held.shrink(1);
+                if (!container.isEmpty())
+                {
+                    PlayerUtil.mergeItemStack(container, playerIn, hand);
+                }
                 return true;
             }
 
