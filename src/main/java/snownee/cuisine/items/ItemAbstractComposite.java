@@ -87,7 +87,7 @@ public abstract class ItemAbstractComposite extends ItemMod
                 stack.setCount(0);
                 return stack;
             }
-            player.getFoodStats().addStats(dish.getFoodLevel(), dish.getSaturationModifier());
+
             dish.setServes(dish.getServes() - 1);
             worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
             dish.onEaten(stack, worldIn, player);

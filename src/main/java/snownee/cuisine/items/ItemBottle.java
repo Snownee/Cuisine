@@ -132,7 +132,6 @@ public class ItemBottle extends ItemMod implements CookingVessel
                 return new ItemStack(Items.GLASS_BOTTLE);
             }
 
-            // I don't know why it would not add 2 items, but it works
             entityplayer.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
         }
 

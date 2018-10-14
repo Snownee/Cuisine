@@ -37,8 +37,6 @@ import snownee.cuisine.proxy.ClientProxy;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.Kiwi;
 import toughasnails.api.TANCapabilities;
-import toughasnails.api.config.GameplayOption;
-import toughasnails.api.config.SyncedConfig;
 import toughasnails.api.stat.capability.IThirst;
 
 public class ItemDrink extends ItemAbstractComposite
@@ -176,11 +174,6 @@ public class ItemDrink extends ItemAbstractComposite
             {
                 stack.setCount(0);
                 return stack;
-            }
-
-            if (!Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST))
-            {
-                player.getFoodStats().addStats(Math.min((int) (drink.getFoodLevel() * 0.5), 2), drink.getSaturationModifier());
             }
 
             drink.setServes(drink.getServes() - 1);

@@ -322,6 +322,8 @@ public abstract class CompositeFood
         }
 
         collector.apply(this, player);
+
+        player.getFoodStats().addStats(getFoodLevel(), getSaturationModifier());
     }
 
     protected Collection<IngredientBinding> getEffectBindings()
