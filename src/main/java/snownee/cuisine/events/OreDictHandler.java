@@ -104,8 +104,8 @@ public class OreDictHandler
         OreDictionary.registerOre("foodFlour", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.FLOUR));
         OreDictionary.registerOre("foodDough", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.DOUGH));
         OreDictionary.registerOre("itemFoodCutter", CuisineRegistry.KITCHEN_KNIFE);
-        OreDictionary.registerOre("logWood", CuisineRegistry.LOG);
-        OreDictionary.registerOre("treeSapling", CuisineRegistry.SAPLING);
+        OreDictionary.registerOre("logWood", new ItemStack(CuisineRegistry.LOG, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("treeSapling", new ItemStack(CuisineRegistry.SAPLING, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("foodDrink", CuisineRegistry.BOTTLE);
 
         // The wood handle
