@@ -87,7 +87,7 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
             GL11.glDepthMask(false);
             GlStateManager.translate(0.5, 0.0625, 0.5);
             RenderItem renderItem = mc.getRenderItem();
-            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(item, te.getWorld(), mc.player);
+            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(item, te.getWorld(), null);
             if (bakedModel.isGui3d())
             {
                 // Block

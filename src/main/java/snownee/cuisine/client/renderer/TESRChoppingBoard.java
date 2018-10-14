@@ -21,7 +21,7 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
         if (!itemStack.isEmpty() && !tile.hasKitchenKnife())
         {
             RenderItem renderItem = mc.getRenderItem();
-            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), mc.player);
+            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), null);
 
             GlStateManager.pushMatrix();
             RenderHelper.disableStandardItemLighting();
