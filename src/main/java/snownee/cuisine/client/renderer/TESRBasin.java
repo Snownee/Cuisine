@@ -6,7 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -70,30 +72,36 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
             int b = color & 0xFF;
             int a = color >> 24 & 0xFF;
 
-            // Test codes
-            float minU = still.getInterpolatedU(0);
-            float maxU = still.getInterpolatedU(0);
-            float minV = still.getInterpolatedV(16);
-            float maxV = still.getInterpolatedV(16);
+            double height = 0.0625 + 0.437 * ((double) fluid.amount / te.tank.getCapacity());
 
-            double height = 0.125 + 0.37 * ((double) fluid.amount / te.tank.getCapacity());
-            
-            // Test codes
-            buffer.pos(0, height, 0).tex(minU, minV).lightmap(lx, ly).color(r, g, b, a).endVertex();
-            buffer.pos(0, height, 1).tex(minU, maxV).lightmap(lx, ly).color(r, g, b, a).endVertex();
-            buffer.pos(1, height, 1).tex(maxU, maxV).lightmap(lx, ly).color(r, g, b, a).endVertex();
-            buffer.pos(1, height, 0).tex(maxU, minV).lightmap(lx, ly).color(r, g, b, a).endVertex();
-            //            buffer.pos(0.1875, height, 0.1875).tex(still.getMinU(), still.getMinV()).lightmap(lx, ly).color(r, g, b, a).endVertex();
-            //            buffer.pos(0.8125, height, 0.1875).tex(still.getMinU(), still.getMaxV()).lightmap(lx, ly).color(r, g, b, a).endVertex();
-            //            buffer.pos(0.8125, height, 0.8125).tex(still.getMaxU(), still.getMaxV()).lightmap(lx, ly).color(r, g, b, a).endVertex();
-            //            buffer.pos(0.1875, height, 0.8125).tex(still.getMaxU(), still.getMinV()).lightmap(lx, ly).color(r, g, b, a).endVertex();
+            buffer.pos(0.0625, height, 0.0625).color(r, g, b, a).tex(still.getMinU(), still.getMinV()).lightmap(lx, ly).endVertex();
+            buffer.pos(0.0625, height, 0.9375).color(r, g, b, a).tex(still.getMinU(), still.getMaxV()).lightmap(lx, ly).endVertex();
+            buffer.pos(0.9375, height, 0.9375).color(r, g, b, a).tex(still.getMaxU(), still.getMaxV()).lightmap(lx, ly).endVertex();
+            buffer.pos(0.9375, height, 0.0625).color(r, g, b, a).tex(still.getMaxU(), still.getMinV()).lightmap(lx, ly).endVertex();
 
             tessellator.draw();
         }
 
-        if (!item.isEmpty())
+        if (!item.isEmpty() && te.hasWorld())
         {
-
+            GL11.glDepthMask(false);
+            GlStateManager.translate(0.5, 0.0625, 0.5);
+            RenderItem renderItem = mc.getRenderItem();
+            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(item, te.getWorld(), mc.player);
+            if (bakedModel.isGui3d())
+            {
+                // Block
+                GlStateManager.scale(0.4, 0.4, 0.4);
+                GlStateManager.translate(0, 0.3, 0);
+            }
+            else
+            {
+                // Item
+                GlStateManager.scale(0.5, 0.5, 0.5);
+                GlStateManager.rotate(90, 1, 0, 0);
+            }
+            renderItem.renderItem(item, bakedModel);
+            GL11.glDepthMask(true);
         }
 
         GlStateManager.disableBlend();
