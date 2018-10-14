@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.blocks.CuisineBlocks;
+import snownee.cuisine.fluids.CuisineFluidBlocks;
 import snownee.cuisine.client.model.ChoppingBoardModel;
 import snownee.cuisine.client.renderer.TESRBarbecueRack;
 import snownee.cuisine.client.renderer.TESRBasin;
@@ -50,14 +50,14 @@ public final class CuisineBlockRendering
 
         ModelLoaderRegistry.registerLoader(ChoppingBoardModel.Loader.INSTANCE);
 
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_MILK); // Work around. Belows are the same.
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.MILK);
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SOY_SAUCE);
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.FRUIT_VINEGAR);
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.RICE_VINEGAR);
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.EDIBLE_OIL);
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SESAME_OIL);
-        ModelUtil.mapFluidModel((BlockFluidBase) CuisineBlocks.SUGARCANE_JUICE);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.SOY_MILK);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.MILK);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.SOY_SAUCE);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.FRUIT_VINEGAR);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.RICE_VINEGAR);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.EDIBLE_OIL);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.SESAME_OIL);
+        ModelUtil.mapFluidModel(CuisineFluidBlocks.SUGARCANE_JUICE);
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileMortar.class, new TESRMortar());
         ClientRegistry.bindTileEntitySpecialRenderer(TileMill.class, new AnimationTESR<>());

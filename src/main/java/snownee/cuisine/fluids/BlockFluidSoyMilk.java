@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.blocks.CuisineBlocks;
 
 public class BlockFluidSoyMilk extends BlockFluid
 {
@@ -48,7 +47,7 @@ public class BlockFluidSoyMilk extends BlockFluid
     public void checkMixing(@Nonnull IBlockState state, World world, BlockPos pos, @Nonnull BlockPos neighbourPos)
     {
         Block block = world.getBlockState(neighbourPos).getBlock();
-        if (isSourceBlock(world, pos) && (block == CuisineBlocks.FRUIT_VINEGAR || block == CuisineBlocks.RICE_VINEGAR))
+        if (isSourceBlock(world, pos) && (block == CuisineFluidBlocks.FRUIT_VINEGAR || block == CuisineFluidBlocks.RICE_VINEGAR))
         {
             world.setBlockState(pos, CuisineRegistry.TOFU_BLOCK.getDefaultState());
         }
