@@ -5,6 +5,8 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.DestFactor;
+import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
@@ -35,7 +37,7 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
 
         RenderHelper.disableStandardItemLighting();
         GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {
@@ -50,8 +52,49 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
 
         Minecraft mc = Minecraft.getMinecraft();
 
+        if (!item.isEmpty() && te.hasWorld())
+        {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0.5, 0.0625, 0.5);
+            RenderItem renderItem = mc.getRenderItem();
+            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(item, te.getWorld(), null);
+            if (bakedModel.isGui3d())
+            {
+                // Block
+                GlStateManager.scale(0.4, 0.4, 0.4);
+                GlStateManager.translate(0.2, 0, 0.2);
+            }
+            else
+            {
+                // Item
+                GlStateManager.scale(0.5, 0.5, 0.5);
+                GlStateManager.rotate(90, 1, 0, 0);
+            }
+            int max = item.getCount() == 1 ? 1 : (item.getCount() - 1) / (bakedModel.isGui3d() ? 16 : 8) + 1;
+            for (int i = 0; i < max; i++)
+            {
+                if (bakedModel.isGui3d())
+                {
+                    // Block
+                    double translation = i % 2 == 0 ? -0.4 : 0.4;
+                    GlStateManager.translate(translation, 0.2, translation);
+                    GlStateManager.rotate(70, 0, 1, 0);
+                }
+                else
+                {
+                    // Item
+                    double translation = i % 2 == 0 ? -0.1 : 0.1;
+                    GlStateManager.translate(translation, translation, -0.1);
+                    GlStateManager.rotate(70, 0, 0, 1);
+                }
+                renderItem.renderItem(item, bakedModel);
+            }
+            GlStateManager.popMatrix();
+        }
+
         if (fluid != null)
         {
+            GlStateManager.pushMatrix();
             mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder buffer = tessellator.getBuffer();
@@ -80,28 +123,7 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
             buffer.pos(0.9375, height, 0.0625).color(r, g, b, a).tex(still.getMaxU(), still.getMinV()).lightmap(lx, ly).endVertex();
 
             tessellator.draw();
-        }
-
-        if (!item.isEmpty() && te.hasWorld())
-        {
-            GL11.glDepthMask(false);
-            GlStateManager.translate(0.5, 0.0625, 0.5);
-            RenderItem renderItem = mc.getRenderItem();
-            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(item, te.getWorld(), null);
-            if (bakedModel.isGui3d())
-            {
-                // Block
-                GlStateManager.scale(0.4, 0.4, 0.4);
-                GlStateManager.translate(0, 0.3, 0);
-            }
-            else
-            {
-                // Item
-                GlStateManager.scale(0.5, 0.5, 0.5);
-                GlStateManager.rotate(90, 1, 0, 0);
-            }
-            renderItem.renderItem(item, bakedModel);
-            GL11.glDepthMask(true);
+            GlStateManager.popMatrix();
         }
 
         GlStateManager.disableBlend();
