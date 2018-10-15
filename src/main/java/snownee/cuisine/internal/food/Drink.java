@@ -12,14 +12,18 @@ import java.util.Optional;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import scala.util.Random;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
@@ -29,10 +33,14 @@ import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
+import snownee.cuisine.api.Material;
+import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.prefab.DefaultConsumedCollector;
+import snownee.cuisine.api.prefab.DefaultTypes;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.internal.effect.EffectPotions;
 import snownee.kiwi.Kiwi;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.util.definition.ItemDefinition;
@@ -346,11 +354,69 @@ public class Drink extends CompositeFood
             seasoning.getSpice().onConsumed(stack, player, worldIn, seasoning, collector);
         }
 
-        collector.apply(this, player);
-
         if (!Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST))
         {
             player.getFoodStats().addStats(1, getSaturationModifier());
+        }
+
+        double vege = 0, fruit = 0, others = 0;
+        for (Ingredient ingredient : getIngredients())
+        {
+            if (getEffects().stream().anyMatch(e -> e instanceof EffectPotions))
+            {
+                continue;
+            }
+            Material material = ingredient.getMaterial();
+            if (material.isUnderCategoryOf(MaterialCategory.VEGETABLES))
+            {
+                vege += ingredient.getSize();
+            }
+            if (material.isUnderCategoryOf(MaterialCategory.FRUIT))
+            {
+                fruit += ingredient.getSize();
+            }
+            if (!material.isUnderCategoryOf(MaterialCategory.VEGETABLES) && !material.isUnderCategoryOf(MaterialCategory.FRUIT))
+            {
+                others += ingredient.getSize();
+            }
+        }
+        if (vege != 0 || fruit != 0)
+        {
+            boolean flag;
+            if (vege == fruit)
+            {
+                flag = new Random().nextBoolean();
+            }
+            else
+            {
+                flag = vege > fruit;
+            }
+            int duration = (int) (Math.log(1.5 + (flag ? vege : fruit) * 1.5 + (flag ? fruit : vege) * 0.6 + others * 0.3) * 1000);
+            if (getIngredients().size() < 2)
+            {
+                duration *= 0.8;
+            }
+            Potion potion = MobEffects.SPEED;
+            if (drinkType == DrinkType.NORMAL || drinkType == DrinkType.GELO)
+            {
+                potion = flag ? MobEffects.JUMP_BOOST : MobEffects.SPEED;
+            }
+            else if (drinkType == DrinkType.SODA)
+            {
+                potion = flag ? CuisineRegistry.COLD_BLOOD : MobEffects.STRENGTH;
+            }
+            else if (drinkType == DrinkType.SMOOTHIE)
+            {
+                potion = flag ? MobEffects.HASTE : MobEffects.ABSORPTION;
+            }
+            collector.addEffect(DefaultTypes.POTION, new PotionEffect(potion, duration, 0, true, true));
+        }
+        collector.apply(this, player);
+        PotionEffect effect = player.getActivePotionEffect(CuisineRegistry.EFFECT_RESISTANCE);
+        if (effect != null)
+        {
+            player.removePotionEffect(CuisineRegistry.EFFECT_RESISTANCE);
+            player.addPotionEffect(new PotionEffect(CuisineRegistry.EFFECT_RESISTANCE, (int) (effect.getDuration() * 0.25), effect.getAmplifier(), effect.getIsAmbient(), effect.doesShowParticles()));
         }
     }
 

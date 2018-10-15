@@ -3,12 +3,14 @@ package snownee.cuisine.events;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.events.SkillPointUpdateEvent;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.library.CuisineFoodStats;
@@ -38,6 +40,15 @@ public class PlayerHandler
             {
                 ((EntityPlayer) event.getEntity()).foodStats = new CuisineFoodStats();
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCriticalHit(CriticalHitEvent event)
+    {
+        if (event.getEntityPlayer().isPotionActive(CuisineRegistry.COLD_BLOOD))
+        {
+            event.setDamageModifier(event.getDamageModifier() * 2);
         }
     }
 }
