@@ -66,6 +66,7 @@ public class TileBasinHeatable extends TileBasin implements ITickable
                 tank.setFluid(output.fluid);
                 StacksUtil.spawnItemStack(world, pos, output.item, true);
                 invLock = false;
+                refresh();
             }
             else
             {

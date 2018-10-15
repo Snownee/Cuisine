@@ -131,6 +131,18 @@ public class TileBasin extends TileInventoryBase
         return compound;
     }
 
+    @Override
+    protected void readPacketData(NBTTagCompound data)
+    {
+        readFromNBT(data);
+    }
+
+    @Override
+    protected NBTTagCompound writePacketData(NBTTagCompound data)
+    {
+        return writeToNBT(data);
+    }
+
     public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input)
     {
         if (input.isEmpty())
@@ -159,6 +171,7 @@ public class TileBasin extends TileInventoryBase
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output.item);
             }
             recipe.consumeInput(input, fluid, world.rand);
+            refresh();
         }
     }
 
