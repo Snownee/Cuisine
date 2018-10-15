@@ -126,6 +126,16 @@ public interface CuisineAPI
     // Query methods
 
     /**
+     * Query the whole registry and return a best-matched {@link Recipe} instance
+     * based on the {@link CompositeFood} instance given.
+     *
+     * @return the matched Recipe instance; if match failed, returns null.
+     *
+     * @deprecated WIP, do not use
+     */
+    @Deprecated default @Nullable Recipe tryMatchRecipe(CompositeFood food) { return null; } // TODO
+
+    /**
      * Query the whole registry and find the desired {@link Material} object
      * based on the unique name supplied.
      *
@@ -164,7 +174,12 @@ public interface CuisineAPI
      * @param item the ItemStack instance
      *
      * @return The Material reference that given item is mapped to; null if not found.
+     *
+     * @deprecated Thought working correctly, this method is not as descriptive as
+     *             that of {@link #findIngredient(ItemStack)}. Use the more precise
+     *             {@link #findIngredient(ItemStack)} instead.
      */
+    @Deprecated
     Material findMaterial(ItemStack item);
 
     /**
@@ -174,7 +189,12 @@ public interface CuisineAPI
      * @param fluid the FluidStack instance
      *
      * @return The Material reference that given item is mapped to; null if not found.
+     *
+     * @deprecated Thought working correctly, this method is not as descriptive as
+     *             that of {@link #findIngredient(FluidStack)}. Use the more precise
+     *             {@link #findIngredient(FluidStack)} instead.
      */
+    @Deprecated
     Material findMaterial(FluidStack fluid);
 
     /**
@@ -240,6 +260,11 @@ public interface CuisineAPI
      */
     boolean isKnownSpice(FluidStack fluid);
 
-    Ingredient findIngredient(ItemStack item);
+    @Nullable Ingredient findIngredient(ItemStack item);
+
+    /**
+     * @deprecated WIP, do not use
+     */
+    @Deprecated default @Nullable Ingredient findIngredient(FluidStack fluid) { return null; } // TODO
 
 }
