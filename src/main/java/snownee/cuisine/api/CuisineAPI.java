@@ -180,7 +180,11 @@ public interface CuisineAPI
      *             {@link #findIngredient(ItemStack)} instead.
      */
     @Deprecated
-    Material findMaterial(ItemStack item);
+    default Material findMaterial(ItemStack item)
+    {
+        Ingredient ingredient = this.findIngredient(item);
+        return ingredient == null ? null : ingredient.getMaterial();
+    }
 
     /**
      * Query the whole registry and find the desired {@link Material} object
@@ -195,7 +199,11 @@ public interface CuisineAPI
      *             {@link #findIngredient(FluidStack)} instead.
      */
     @Deprecated
-    Material findMaterial(FluidStack fluid);
+    default Material findMaterial(FluidStack fluid)
+    {
+        Ingredient ingredient = this.findIngredient(fluid);
+        return ingredient == null ? null : ingredient.getMaterial();
+    }
 
     /**
      * Query the whole registry and find the desired {@link Spice} object
@@ -260,11 +268,10 @@ public interface CuisineAPI
      */
     boolean isKnownSpice(FluidStack fluid);
 
+    // TODO (3TUSK): Documentation
     @Nullable Ingredient findIngredient(ItemStack item);
 
-    /**
-     * @deprecated WIP, do not use
-     */
-    @Deprecated default @Nullable Ingredient findIngredient(FluidStack fluid) { return null; } // TODO
+    // TODO (3TUSK): Documentation
+    @Nullable Ingredient findIngredient(FluidStack fluid);
 
 }

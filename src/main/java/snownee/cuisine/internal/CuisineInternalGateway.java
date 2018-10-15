@@ -254,25 +254,53 @@ public final class CuisineInternalGateway implements CuisineAPI
         return effectRegistry.lookup(uniqueId);
     }
 
-    @Override
-    public Material findMaterial(ItemStack item)
+    public final Map<ItemDefinition, SimpleJuice> simpleJuiceMapping = new HashMap<>();
+
+    private static final class SimpleJuice
     {
-        Material material = this.itemToMaterialMapping.get(ItemDefinition.of(item));
+        public final Material material;
+        final double quantity;
+
+        public SimpleJuice(Material material, double quantity)
+        {
+            this.material = material;
+            this.quantity = quantity;
+        }
+
+        Ingredient makeIngredient()
+        {
+            return new Ingredient(material, Form.JUICE, quantity);
+        }
+    }
+
+    @Override
+    public Ingredient findIngredient(ItemStack item)
+    {
+        ItemDefinition itemDefinition = ItemDefinition.of(item);
+
+        SimpleJuice juice = simpleJuiceMapping.get(itemDefinition);
+        if (juice != null)
+        {
+            return juice.makeIngredient();
+        }
+
+        Material material = this.itemToMaterialMapping.get(itemDefinition);
         if (material != null)
         {
-            return material;
+            return new Ingredient(material, Form.FULL, 1.0);
         }
-
-        List<String> possibleOreEntries = OreUtil.getOreNames(item);
-        for (String entry : possibleOreEntries)
+        else
         {
-            if ((material = this.oreDictToMaterialMapping.get(entry)) != null)
+            List<String> possibleOreEntries = OreUtil.getOreNames(item);
+            for (String entry : possibleOreEntries)
             {
-                return material;
+                if ((material = this.oreDictToMaterialMapping.get(entry)) != null)
+                {
+                    return new Ingredient(material, Form.FULL, 1.0);
+                }
             }
+            return null;
         }
-
-        return null;
     }
 
     @Override
@@ -297,17 +325,22 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public Material findMaterial(FluidStack fluid)
+    public Ingredient findIngredient(FluidStack fluid)
     {
+        Material material;
         if (fluid.getFluid() == CuisineFluids.JUICE)
         {
             if (fluid.tag == null || !fluid.tag.hasKey("material", Constants.NBT.TAG_STRING))
             {
                 return null;
             }
-            return findMaterial(fluid.tag.getString("material"));
+            material = findMaterial(fluid.tag.getString("material"));
         }
-        return fluidToMaterialMapping.get(fluid.getFluid());
+        else
+        {
+            material = fluidToMaterialMapping.get(fluid.getFluid());
+        }
+        return material == null ? null : new Ingredient(material, Form.JUICE, fluid.amount / 500.0);
     }
 
     @Override
@@ -554,29 +587,4 @@ public final class CuisineInternalGateway implements CuisineAPI
 
     }
 
-    public final Map<ItemDefinition, SimpleJuice> simpleJuiceMapping = new HashMap<>();
-
-    public static class SimpleJuice
-    {
-        public final Material material;
-        public final double quantity;
-
-        public SimpleJuice(Material material, double quantity)
-        {
-            this.material = material;
-            this.quantity = quantity;
-        }
-
-        public Ingredient makeIngredient()
-        {
-            return new Ingredient(material, Form.JUICE, quantity);
-        }
-    }
-
-    @Override
-    public Ingredient findIngredient(ItemStack item)
-    {
-        SimpleJuice juice = simpleJuiceMapping.get(ItemDefinition.of(item));
-        return juice == null ? null : juice.makeIngredient();
-    }
 }
