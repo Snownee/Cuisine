@@ -21,7 +21,7 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
         {
             Minecraft mc = Minecraft.getMinecraft();
             RenderItem renderItem = mc.getRenderItem();
-            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), mc.player);
+            IBakedModel bakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), null);
 
             GlStateManager.pushMatrix();
             RenderHelper.disableStandardItemLighting();

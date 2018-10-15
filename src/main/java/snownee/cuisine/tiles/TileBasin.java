@@ -20,10 +20,25 @@ public class TileBasin extends TileInventoryBase
 {
     public FluidTank tank = new FluidTank(8000)
     {
+        @Override
         protected void onContentsChanged()
         {
             TileBasin.this.onContentsChanged(0);
         }
+
+        @Override
+        public boolean canFillFluidType(FluidStack fluid)
+        {
+            if (fluid == null || !canFill() || fluid.getFluid().isGaseous(fluid) || fluid.getFluid().isLighterThanAir())
+            {
+                return false;
+            }
+            if (TileBasin.this.getClass() == TileBasin.class && fluid.getFluid().getTemperature(fluid) >= 500)
+            {
+                return false;
+            }
+            return true;
+        };
     };
     public int tickCheckThrowing = 0;
 
