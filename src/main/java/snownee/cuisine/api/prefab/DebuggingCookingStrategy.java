@@ -41,7 +41,7 @@ public class DebuggingCookingStrategy implements CookingStrategy
     @Override
     public void endCook()
     {
-
+        Cuisine.logger.debug("End of inspection");
     }
 
 }

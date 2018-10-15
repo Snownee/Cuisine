@@ -45,14 +45,14 @@ public class TESRMortar extends TileEntitySpecialRenderer<TileMortar>
         if (!itemStack.isEmpty())
         {
             RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-            IBakedModel iBakedModel = renderItem.getItemModelWithOverrides(itemStack, world, null);
+            IBakedModel model = renderItem.getItemModelWithOverrides(itemStack, world, null);
 
             RenderHelper.enableStandardItemLighting();
             GlStateManager.enableLighting();
 
             GlStateManager.pushMatrix();
 
-            if (iBakedModel.isGui3d())
+            if (model.isGui3d())
             {
                 // Block
                 GlStateManager.translate(0, offsetY, 0);
@@ -69,7 +69,7 @@ public class TESRMortar extends TileEntitySpecialRenderer<TileMortar>
                 offsetY += 0.03;
             }
 
-            Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
+            renderItem.renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
 
             GlStateManager.popMatrix();
         }

@@ -98,9 +98,9 @@ public final class CuisineInternalGateway implements CuisineAPI
      */
     private final IdentifierBasedRegistry<Recipe> recipeRegistry = new IdentifierBasedRegistry<>();
 
-    private Map<String, Class<?>> foodTypes = new HashMap<>();
-    private Map<String, Function<? extends CompositeFood, NBTTagCompound>> serializers = new HashMap<>();
-    private Map<String, Function<NBTTagCompound, ? extends CompositeFood>> deserializers = new HashMap<>();
+    private final Map<String, Class<?>> foodTypes = new HashMap<>();
+    private final Map<String, Function<? extends CompositeFood, NBTTagCompound>> serializers = new HashMap<>();
+    private final Map<String, Function<NBTTagCompound, ? extends CompositeFood>> deserializers = new HashMap<>();
 
     /**
      * Default mapping for Item (metadata-sensitive) to Material conversion, used

@@ -10,7 +10,7 @@ public final class UnlistedPropertyItemStack implements IUnlistedProperty<ItemSt
         return new UnlistedPropertyItemStack(name);
     }
 
-    private String name;
+    private final String name;
 
     private UnlistedPropertyItemStack(final String name)
     {

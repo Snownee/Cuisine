@@ -33,12 +33,8 @@ public class TileBasin extends TileInventoryBase
             {
                 return false;
             }
-            if (TileBasin.this.getClass() == TileBasin.class && fluid.getFluid().getTemperature(fluid) >= 500)
-            {
-                return false;
-            }
-            return true;
-        };
+            return TileBasin.this.getClass() != TileBasin.class || fluid.getFluid().getTemperature(fluid) < 500;
+        }
     };
     public int tickCheckThrowing = 0;
 

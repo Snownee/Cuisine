@@ -281,7 +281,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
                 ItemStack input = inputs.getStackInSlot(i);
                 if (!input.isEmpty())
                 {
-                    type = builder.findDrinkType(input);
+                    type = Drink.Builder.findDrinkType(input);
                     if (type != DrinkType.NORMAL)
                     {
                         // we can't remove this input here because we don't know
