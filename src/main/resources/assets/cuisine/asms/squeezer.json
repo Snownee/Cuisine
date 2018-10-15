@@ -4,20 +4,10 @@
     "progress": [ "-", "#magic" ]
   },
   "clips": {
-    "extended": "cuisine:block/piston_extension@arm_extended",
+    "extended": [ "apply", "cuisine:block/piston_extension@arm_extended", -0.78125 ],
     "extracted": "cuisine:block/piston_extension@arm_extracted",
-    "extending": [
-      "trigger_positive",
-      [ "slerp", "#extracted", "#extended", "#identity", "#progress" ],
-      "#animation_param",
-      "!transition:extended"
-    ],
-    "extracting": [
-      "trigger_positive",
-      [ "slerp", "#extended", "#extracted", "#identity", "#progress" ],
-      "#animation_param",
-      "!transition:extracted"
-    ]
+    "extending": [ "apply", "cuisine:block/piston_extension@arm_extended", "#offset" ],
+    "extracting": [ "apply", "cuisine:block/piston_extension@arm_extended", "#offset" ]
   },
   "states": [
     "extending",
@@ -31,5 +21,5 @@
     "extended": [ "extracting", "extracted" ],
     "extracted": [ "extending", "extended", "extracting" ]
   },
-  "start_state": "extracted"
+  "start_state": "extending"
 }

@@ -10,8 +10,8 @@
           {
             "variable": "offset_y",
             "type": "uniform",
-            "interpolation": "nearest",
-            "samples": [ -0.78125 ]
+            "interpolation": "linear",
+            "samples": [ -0.15625, -0.31250, -0.46875, -0.62500, -0.78125 ]
           }
         ]
       },
