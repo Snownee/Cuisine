@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -24,7 +25,7 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
     {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 
-        FluidStack fluid = te.getCurrentFluidContent();
+        FluidStack fluid = te.getFluidForRendering(partialTicks);
         ItemStack item = te.stacks.getStackInSlot(0);
         if (fluid == null && item.isEmpty())
         {
@@ -32,10 +33,6 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
         }
 
         GlStateManager.pushMatrix();
-
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {
@@ -53,6 +50,7 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
         if (!item.isEmpty() && te.hasWorld())
         {
             GlStateManager.pushMatrix();
+
             GlStateManager.translate(0.5, 0.0625, 0.5);
             RenderItem renderItem = mc.getRenderItem();
             IBakedModel bakedModel = renderItem.getItemModelWithOverrides(item, te.getWorld(), null);
@@ -85,13 +83,17 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
                     GlStateManager.translate(translation, translation, -0.1);
                     GlStateManager.rotate(70, 0, 0, 1);
                 }
-                renderItem.renderItem(item, bakedModel);
+                renderItem.renderItem(item, ItemCameraTransforms.TransformType.NONE);
             }
             GlStateManager.popMatrix();
         }
 
         if (fluid != null)
         {
+
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             GlStateManager.pushMatrix();
             mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             Tessellator tessellator = Tessellator.getInstance();

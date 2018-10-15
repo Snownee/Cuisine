@@ -49,15 +49,11 @@ public class RecipeRegistry
     {
         Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("cropBrownrice", 1)), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE), 4));
         Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("dustCrudesalt", 1)), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT), 10));
-        Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("sugarcane", 1)), new ItemStack(Items.SUGAR), 5));
-        Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("cropBeetroot", 1)), new ItemStack(Items.SUGAR), 5));
 
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropChilipepper"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CHILI_POWDER), null, null));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropSichuanpepper"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SICHUAN_PEPPER_POWDER), null, null));
         Processing.MILLING.add(new Milling(new ItemStack(Items.WHEAT), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.FLOUR)));
         Processing.MILLING.add(new Milling(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.RICE_POWDER)));
-        Processing.MILLING.add(new Milling(new ItemStack(Items.REEDS), new ItemStack(Items.SUGAR)));
-        Processing.MILLING.add(new Milling(new ItemStack(Items.BEETROOT), new ItemStack(Items.SUGAR)));
         Processing.MILLING.add(new Milling(CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT)));
         Processing.MILLING.add(new Milling(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SESAME), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.SESAME_OIL, 20)));
         Processing.MILLING.add(new Milling(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.PEANUT), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 100)));
@@ -85,12 +81,12 @@ public class RecipeRegistry
 
         Processing.BOILING.add(new DistillationBoiling(new FluidStack(FluidRegistry.WATER, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), 0));
         Processing.BOILING.add(new DistillationBoiling(new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
-       
+
         ItemStack sugar = new ItemStack(Items.SUGAR);
         Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
         Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(Items.COAL, 1), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
 
-        Processing.SQUEEZING.add(new SimpleSqueezing(ItemDefinition.of(Blocks.REEDS), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
+        Processing.SQUEEZING.add(new SimpleSqueezing(OreDictDefinition.of("sugarcane"), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
 
         CulinaryHub.API_INSTANCE.getKnownMaterials().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
 

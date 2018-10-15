@@ -35,10 +35,15 @@ public class SimpleThrowing implements BasinInteracting
     }
 
     @Override
-    public Output getOutputAndConsumeInput(ItemStack item, FluidStack fluid, Random rand)
+    public Output getOutput(ItemStack item, FluidStack fluid, Random rand)
     {
-        item.shrink(inputItem.count());
         FluidStack copy = new FluidStack(fluid, fluid.amount - inputFluid.amount);
         return new Output(copy, outputItem.copy());
+    }
+
+    @Override
+    public void consumeInput(ItemStack item, FluidStack fluid, Random rand)
+    {
+        item.shrink(inputItem.count());
     }
 }

@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface Effect
 {
-    void onEaten(ItemStack stack, EntityPlayer player, @Nullable CompositeFood compositeFood, @Nullable Ingredient ingredient, EffectCollector collector);
+    void onEaten(ItemStack stack, EntityPlayer player, CompositeFood compositeFood, @Nullable Ingredient ingredient, EffectCollector collector);
 
     int getPriority();
 

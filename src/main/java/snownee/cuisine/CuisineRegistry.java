@@ -131,4 +131,6 @@ public class CuisineRegistry implements IModule
 
     public static final PotionMod EFFECT_RESISTANCE = new PotionMod("effect_resistance", true, 2, true, 0xccccff, -1, false);
 
+    public static final PotionMod COLD_BLOOD = new PotionMod("cold_blood", true, 3, false, 0x9F79EE, -1, true);
+
 }

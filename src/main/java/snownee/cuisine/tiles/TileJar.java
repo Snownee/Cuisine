@@ -10,6 +10,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -40,6 +41,7 @@ public class TileJar extends TileInventoryBase implements ITickable
     public TileJar()
     {
         super(5);
+        tank.setTileEntity(this);
     }
 
     public FluidTank getTank()
@@ -79,6 +81,11 @@ public class TileJar extends TileInventoryBase implements ITickable
         {
             resetProcessing();
         }
+    }
+
+    public void spillFluids()
+    {
+        FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(tank.getFluid(), world, pos));
     }
 
     public Vessel findCurrentRecipe()

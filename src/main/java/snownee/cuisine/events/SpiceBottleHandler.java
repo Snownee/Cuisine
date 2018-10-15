@@ -1,6 +1,9 @@
 package snownee.cuisine.events;
 
+import java.util.Optional;
+
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -11,8 +14,13 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.api.events.SpiceBottleContentConsumedEvent;
 import snownee.cuisine.fluids.CuisineFluids;
+import snownee.cuisine.internal.food.Drink;
 
 @EventBusSubscriber(modid = Cuisine.MODID)
 public class SpiceBottleHandler
@@ -25,7 +33,7 @@ public class SpiceBottleHandler
         {
             FluidStack stack = (FluidStack) event.getContent();
             String name = stack.getFluid().getName();
-            if (name.equals("milk") || name.equals("soy_milk"))
+            if (name.equals("milk") || name.equals("soy_milk")) // TODO: TaN compat
             {
                 entity.curePotionEffects(new ItemStack(Items.MILK_BUCKET));
                 event.setCanceled(true);
@@ -63,6 +71,22 @@ public class SpiceBottleHandler
             {
                 entity.addPotionEffect(new PotionEffect(MobEffects.INSTANT_HEALTH, 1, 1));
                 event.setCanceled(true);
+            }
+            else if (event.getEntityLiving() instanceof EntityPlayer)
+            {
+                Material material = CulinaryHub.API_INSTANCE.findMaterial(stack);
+                if (material == null || !material.isValidForm(Form.JUICE))
+                {
+                    return;
+                }
+                Drink.Builder builder = Drink.Builder.create();
+                builder.addIngredient(null, new Ingredient(material, Form.JUICE, 0.5), CuisineRegistry.BOTTLE);
+                Optional<Drink> result = builder.build(CuisineRegistry.BOTTLE, null);
+                if (!result.isPresent())
+                {
+                    return;
+                }
+                result.get().onEaten(event.getItemStack(), event.getWorld(), (EntityPlayer) event.getEntityLiving());
             }
         }
         else if (event.getContent().getClass() == ItemStack.class)

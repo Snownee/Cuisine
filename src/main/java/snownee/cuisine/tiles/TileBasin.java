@@ -8,9 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -37,10 +40,12 @@ public class TileBasin extends TileInventoryBase
         }
     };
     public int tickCheckThrowing = 0;
+    private FluidStack liquidForRendering = null;
 
     public TileBasin()
     {
         super(1);
+        tank.setTileEntity(this);
     }
 
     @Override
@@ -61,6 +66,56 @@ public class TileBasin extends TileInventoryBase
     }
 
     @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        if (world.isRemote && tank.getFluid() != null)
+        {
+            liquidForRendering = tank.getFluid().copy();
+        }
+    }
+
+    public void spillFluids()
+    {
+        FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(tank.getFluid(), world, pos));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public FluidStack getFluidForRendering(float partialTicks)
+    {
+        final FluidStack actual = tank.getFluid();
+        int actualAmount = 0;
+        if (actual != null && !actual.equals(liquidForRendering))
+        {
+            liquidForRendering = new FluidStack(actual, 0);
+        }
+        if (liquidForRendering == null)
+        {
+            return null;
+        }
+        actualAmount = actual == null ? 0 : actual.amount;
+        int delta = actualAmount - liquidForRendering.amount;
+        if (Math.abs(delta) <= 40)
+        {
+            liquidForRendering.amount = actualAmount;
+        }
+        else
+        {
+            int i = (int) (delta * partialTicks * 0.1);
+            if (i == 0) // Wow your PC is so powerful!
+            {
+                i = delta > 0 ? 1 : -1;
+            }
+            liquidForRendering.amount += i;
+        }
+        if (liquidForRendering.amount == 0)
+        {
+            liquidForRendering = null;
+        }
+        return liquidForRendering;
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
@@ -76,6 +131,18 @@ public class TileBasin extends TileInventoryBase
         return compound;
     }
 
+    @Override
+    protected void readPacketData(NBTTagCompound data)
+    {
+        readFromNBT(data);
+    }
+
+    @Override
+    protected NBTTagCompound writePacketData(NBTTagCompound data)
+    {
+        return writeToNBT(data);
+    }
+
     public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input)
     {
         if (input.isEmpty())
@@ -86,7 +153,7 @@ public class TileBasin extends TileInventoryBase
         BasinInteracting recipe = recipeManager.findRecipe(input, fluid);
         if (recipe != null)
         {
-            Output output = recipe.getOutputAndConsumeInput(input, fluid, world.rand);
+            Output output = recipe.getOutput(input, fluid, world.rand);
             if (output.fluid != null)
             {
                 if (output.fluid.amount > tank.getCapacity())
@@ -103,6 +170,8 @@ public class TileBasin extends TileInventoryBase
             {
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output.item);
             }
+            recipe.consumeInput(input, fluid, world.rand);
+            refresh();
         }
     }
 

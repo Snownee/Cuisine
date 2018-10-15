@@ -2,11 +2,13 @@ package snownee.cuisine.items;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.resources.I18n;
@@ -14,12 +16,16 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.Constants;
@@ -27,21 +33,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.Effect;
-import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
-import snownee.cuisine.api.prefab.DefaultConsumedCollector;
 import snownee.cuisine.client.model.IngredientMeshDefinition;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.food.IngredientFood;
 import snownee.cuisine.proxy.ClientProxy;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.IModItem;
 import snownee.kiwi.util.Util;
 
-public final class ItemIngredient extends ItemFood implements IModItem
+public final class ItemIngredient extends ItemFood implements IModItem, CookingVessel
 {
     public ItemIngredient()
     {
@@ -81,19 +87,30 @@ public final class ItemIngredient extends ItemFood implements IModItem
         Ingredient ingredient = null;
         if (stack.getTagCompound() != null && entityLiving instanceof EntityPlayer)
         {
-            ingredient = CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound());
-        }
-        ItemStack ret = super.onItemUseFinish(stack, worldIn, entityLiving);
-        if (ingredient != null)
-        {
-            EffectCollector collector = new DefaultConsumedCollector();
-            for (Effect effect : ingredient.getEffects())
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+            this.onFoodEaten(stack, worldIn, player);
+            player.addStat(StatList.getObjectUseStats(this));
+
+            if (player instanceof EntityPlayerMP)
             {
-                effect.onEaten(stack, (EntityPlayer) entityLiving, null, ingredient, collector);
+                CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, stack);
             }
-            collector.apply(null, (EntityPlayer) entityLiving); // FIXME: bad. maybe we should build a ingredient food at first
+
+            ingredient = CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound());
+            if (ingredient != null)
+            {
+                IngredientFood.Builder builder = new IngredientFood.Builder();
+                builder.addIngredient(null, ingredient, this);
+                Optional<IngredientFood> result = builder.build(this, null);
+                if (result.isPresent())
+                {
+                    result.get().onEaten(stack, worldIn, player);
+                }
+            }
         }
-        return ret;
+        stack.shrink(1);
+        return stack;
     }
 
     @Override
