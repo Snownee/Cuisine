@@ -37,7 +37,7 @@ public class TileBasin extends TileInventoryBase
             {
                 return false;
             }
-            return false;
+            return true;
         };
     };
     public int tickCheckThrowing = 0;
