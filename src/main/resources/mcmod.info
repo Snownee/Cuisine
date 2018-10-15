@@ -2,7 +2,7 @@
 {
   "modid": "cuisine",
   "name": "Cuisine",
-  "description": "Realistic culinary art",
+  "description": "Customize your food",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
