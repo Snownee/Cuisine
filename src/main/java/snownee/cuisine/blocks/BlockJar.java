@@ -179,6 +179,7 @@ public class BlockJar extends BlockMod
         if (te instanceof TileJar)
         {
             StacksUtil.dropInventoryItems(worldIn, pos, ((TileJar) te).stacks, true);
+            ((TileJar) te).spillFluids();
         }
 
         super.breakBlock(worldIn, pos, state);

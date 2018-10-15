@@ -24,6 +24,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -73,6 +74,14 @@ public class TileMill extends TileBase implements ITickable
     public TileMill()
     {
         stateMachine = Cuisine.proxy.loadAnimationStateMachine(STATE_MACHINE_JSON, ImmutableMap.of("progress", progressValue));
+        fluidInput.setTileEntity(this);
+        fluidOutput.setTileEntity(this);
+    }
+
+    public void spillFluids()
+    {
+        FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(fluidInput.getFluid(), world, pos));
+        FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(fluidOutput.getFluid(), world, pos));
     }
 
     public void onRightClicked(EntityPlayer playerIn)

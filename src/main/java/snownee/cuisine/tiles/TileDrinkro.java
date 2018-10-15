@@ -50,7 +50,6 @@ public class TileDrinkro extends TileBase implements CookingVessel
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            // TODO (Snownee): fire event
             if (resource == null)
             {
                 return 0;

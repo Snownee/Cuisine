@@ -124,6 +124,7 @@ public class BlockBasin extends BlockMod
         if (te instanceof TileBasin)
         {
             StacksUtil.dropInventoryItems(worldIn, pos, ((TileBasin) te).stacks, true);
+            ((TileBasin) te).spillFluids();
         }
 
         super.breakBlock(worldIn, pos, state);

@@ -187,6 +187,7 @@ public class BlockMill extends BlockModHorizontal
         if (tileentity instanceof TileMill)
         {
             StacksUtil.spawnItemStack(worldIn, pos, ((TileMill) tileentity).getItemContent(), true);
+            ((TileMill) tileentity).spillFluids();
         }
 
         super.breakBlock(worldIn, pos, state);

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -44,6 +45,7 @@ public class TileBasin extends TileInventoryBase
     public TileBasin()
     {
         super(1);
+        tank.setTileEntity(this);
     }
 
     @Override
@@ -73,6 +75,11 @@ public class TileBasin extends TileInventoryBase
         }
     }
 
+    public void spillFluids()
+    {
+        FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(tank.getFluid(), world, pos));
+    }
+
     @SideOnly(Side.CLIENT)
     public FluidStack getFluidForRendering(float partialTicks)
     {
@@ -87,7 +94,7 @@ public class TileBasin extends TileInventoryBase
             return null;
         }
         actualAmount = actual == null ? 0 : actual.amount;
-        int delta = actualAmount - liquidForRendering.amount; // We assume your FPS is not that fast =w=
+        int delta = actualAmount - liquidForRendering.amount;
         if (Math.abs(delta) <= 40)
         {
             liquidForRendering.amount = actualAmount;
