@@ -23,7 +23,7 @@ public class FluidJuice extends VaporizableFluid
     public int getColor(FluidStack stack)
     {
         Material material = CulinaryHub.API_INSTANCE.findMaterial(stack);
-        return material == null ? DEFAULT_COLOR : material.getRawColorCode() & 0x00FFFFFF | 0x33000000;
+        return material == null ? DEFAULT_COLOR : material.getRawColorCode();
     }
 
     @Override

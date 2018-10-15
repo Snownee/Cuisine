@@ -134,7 +134,7 @@ public class TileBasin extends TileInventoryBase
         BasinInteracting recipe = recipeManager.findRecipe(input, fluid);
         if (recipe != null)
         {
-            Output output = recipe.getOutputAndConsumeInput(input, fluid, world.rand);
+            Output output = recipe.getOutput(input, fluid, world.rand);
             if (output.fluid != null)
             {
                 if (output.fluid.amount > tank.getCapacity())
@@ -151,6 +151,7 @@ public class TileBasin extends TileInventoryBase
             {
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output.item);
             }
+            recipe.consumeInput(input, fluid, world.rand);
         }
     }
 

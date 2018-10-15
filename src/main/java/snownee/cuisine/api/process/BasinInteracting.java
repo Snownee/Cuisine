@@ -24,7 +24,12 @@ public interface BasinInteracting extends CuisineProcessingRecipe
 
     boolean matchesItem(ItemStack item);
 
-    Output getOutputAndConsumeInput(ItemStack item, @Nullable FluidStack fluid, Random rand);
+    Output getOutput(ItemStack item, @Nullable FluidStack fluid, Random rand);
+
+    default void consumeInput(ItemStack item, @Nullable FluidStack fluid, Random rand)
+    {
+        item.shrink(1);
+    }
 
     static int descendingCompare(BasinInteracting a, BasinInteracting b)
     {
