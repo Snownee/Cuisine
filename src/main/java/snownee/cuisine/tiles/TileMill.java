@@ -292,7 +292,7 @@ public class TileMill extends TileBase implements ITickable
     @Override
     public boolean hasFastRenderer()
     {
-        return true;
+        return true; // AnimationTESR is FastTESR
     }
 
     private static boolean isItemValid(int slot, ItemStack input)

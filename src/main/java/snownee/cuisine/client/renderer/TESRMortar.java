@@ -11,20 +11,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import snownee.cuisine.tiles.TileMortar;
 
+import java.util.List;
+
 public class TESRMortar extends TileEntitySpecialRenderer<TileMortar>
 {
 
     @Override
     public void render(TileMortar tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        // Render the contents "inside" mortar.
+        List<ItemStack> contents =  tile.stacks.getStacks();
+        if (contents.isEmpty())
+        {
+            return; // Skip rendering when there is nothing to render.
+        }
+
+        // Render the contents "inside" mortar, if any.
         GlStateManager.pushMatrix();
 
         GlStateManager.translate(x + 0.5F, y, z + 0.5F);
 
         double offsetY = 0.125;
         double scale = 1.0;
-        for (ItemStack stack : tile.stacks.getStacks())
+        for (ItemStack stack : contents)
         {
             offsetY = renderItem(stack, tile.getWorld(), offsetY, scale);
         }
@@ -34,18 +42,17 @@ public class TESRMortar extends TileEntitySpecialRenderer<TileMortar>
 
     private double renderItem(ItemStack itemStack, World world, double offsetY, double scale)
     {
-
         if (!itemStack.isEmpty())
         {
             RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-            IBakedModel iBakedModel = renderItem.getItemModelWithOverrides(itemStack, world, null);
+            IBakedModel model = renderItem.getItemModelWithOverrides(itemStack, world, null);
 
             RenderHelper.enableStandardItemLighting();
             GlStateManager.enableLighting();
 
             GlStateManager.pushMatrix();
 
-            if (iBakedModel.isGui3d())
+            if (model.isGui3d())
             {
                 // Block
                 GlStateManager.translate(0, offsetY, 0);
@@ -62,7 +69,7 @@ public class TESRMortar extends TileEntitySpecialRenderer<TileMortar>
                 offsetY += 0.03;
             }
 
-            Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
+            renderItem.renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
 
             GlStateManager.popMatrix();
         }

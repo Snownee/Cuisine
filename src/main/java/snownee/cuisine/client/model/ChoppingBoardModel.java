@@ -87,9 +87,9 @@ public final class ChoppingBoardModel implements IModel
     {
         private static final TRSRTransformation TRANSFORM = TRSRTransformation.blockCenterToCorner(ChoppingBoardOverride.CHOPPING_BOARD_SCALE_DOWN);
 
-        private boolean ambientOcclusion;
-        private boolean gui3D;
-        private TextureAtlasSprite particleTexture;
+        private final boolean ambientOcclusion;
+        private final boolean gui3D;
+        private final TextureAtlasSprite particleTexture;
 
         Baked(boolean ambientOcclusion, boolean gui3D, TextureAtlasSprite particleTexture)
         {

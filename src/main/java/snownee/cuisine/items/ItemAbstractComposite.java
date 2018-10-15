@@ -341,7 +341,7 @@ public abstract class ItemAbstractComposite extends ItemMod
     public boolean hasContainerItem(ItemStack stack)
     {
         return true;
-    };
+    }
 
     @Override
     public ItemStack getContainerItem(ItemStack stack)

@@ -16,11 +16,6 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
     @Override
     public void render(TileWok tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        if (!tile.hasWorld())
-        {
-            return;
-        }
-
         List<ItemStack> list = tile.getWokContents();
 
         if (list.isEmpty())
@@ -28,9 +23,7 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
             return;
         }
 
-        Minecraft mc = Minecraft.getMinecraft();
-
-        RenderItem renderItem = mc.getRenderItem();
+        RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 
         GlStateManager.pushMatrix();
         RenderHelper.disableStandardItemLighting();

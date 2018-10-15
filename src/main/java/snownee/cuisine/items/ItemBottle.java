@@ -138,24 +138,4 @@ public class ItemBottle extends ItemMod implements CookingVessel
         return stack;
     }
 
-    @Override
-    public int getTemperature()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getWaterAmount()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getOilAmount()
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 }

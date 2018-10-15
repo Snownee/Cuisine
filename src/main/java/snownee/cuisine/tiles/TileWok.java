@@ -81,7 +81,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             }
             if (builder != null && this.world.getWorldTime() % 20 == 0)
             {
-                builder.apply(new Heating(), this);
+                builder.apply(new Heating(this), this);
             }
         }
     }
@@ -104,19 +104,16 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         return status;
     }
 
-    @Override
     public int getTemperature()
     {
         return this.temperature;
     }
 
-    @Override
     public int getWaterAmount()
     {
         return this.water;
     }
 
-    @Override
     public int getOilAmount()
     {
         return this.oil;
@@ -382,25 +379,22 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        data.setInteger("temperature", this.temperature);
-        data.setInteger("water", this.water);
-        data.setInteger("oil", this.oil);
         return data;
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        this.temperature = data.getInteger("temperature");
-        this.water = data.getInteger("water");
-        this.oil = data.getInteger("oil");
+        // No-op
     }
 
     static final class Heating implements CookingStrategy
     {
-        Heating()
+        private final TileWok wok;
+
+        Heating(TileWok wok)
         {
-            // No-op, just restricted access
+            this.wok = wok;
         }
 
         // TODO This is just a prototype, we need further refinement
@@ -422,7 +416,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             {
                 return;
             }
-            initialTemp = vessel.getTemperature();
+            initialTemp = this.wok.getTemperature();
             decrement = initialTemp / ingredientSize;
         }
 

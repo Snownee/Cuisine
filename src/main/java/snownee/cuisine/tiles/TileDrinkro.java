@@ -281,7 +281,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
                 ItemStack input = inputs.getStackInSlot(i);
                 if (!input.isEmpty())
                 {
-                    type = builder.findDrinkType(input);
+                    type = Drink.Builder.findDrinkType(input);
                     if (type != DrinkType.NORMAL)
                     {
                         // we can't remove this input here because we don't know
@@ -411,24 +411,6 @@ public class TileDrinkro extends TileBase implements CookingVessel
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
         return oldState.getBlock() != newState.getBlock();
-    }
-
-    @Override
-    public int getTemperature()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getWaterAmount()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getOilAmount()
-    {
-        return 0;
     }
 
 }

@@ -69,7 +69,10 @@ public interface CuisineAPI
      *
      * @param <F> the concrete type of CompositeFood
      */
-    <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator, Class<F> typeToken, Function<F, NBTTagCompound> serializer, Function<NBTTagCompound, F> deserializer);
+    <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator,
+                                                    Class<F> typeToken,
+                                                    Function<F, NBTTagCompound> serializer,
+                                                    Function<NBTTagCompound, F> deserializer);
     // TODO Do we really need that typeToken?
 
     /**

@@ -31,9 +31,6 @@
         }
       }
     },
-    "inventory": [{
-      "model": "cuisine:chopping_board_special",
-      "transform": "identity"
-    }]
+    "inventory": [{}]
   }
 }
