@@ -19,7 +19,7 @@ public class SimpleEffectImpl implements Effect
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, @Nullable CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
     {
         // Do nothing by default
     }

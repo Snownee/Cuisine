@@ -25,12 +25,8 @@ public class EffectExperienced extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, @Nullable CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
     {
-        if (food == null)
-        {
-            return;
-        }
         ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
 
         Set<MaterialCategory> categories = EnumSet.noneOf(MaterialCategory.class);

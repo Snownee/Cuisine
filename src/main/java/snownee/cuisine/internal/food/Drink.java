@@ -350,7 +350,7 @@ public class Drink extends CompositeFood
 
         if (!Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST))
         {
-            player.getFoodStats().addStats(Math.min((int) (getFoodLevel() * 0.5), 2), getSaturationModifier());
+            player.getFoodStats().addStats(1, getSaturationModifier());
         }
     }
 
