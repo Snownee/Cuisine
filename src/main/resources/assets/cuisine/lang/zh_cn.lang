@@ -103,6 +103,17 @@ tile.cuisine.placed_dish.name=盘子
 tile.cuisine.placed_dish.tip=右键锅可盛出其中的菜
 tile.cuisine.bamboo_plant.name=竹子
 tile.cuisine.bamboo.name=竹子
+tile.cuisine.log.0.name=柚木
+tile.cuisine.log.1.name=香橼木
+tile.cuisine.log.2.name=橘子木
+tile.cuisine.log.3.name=西柚木
+tile.cuisine.sapling.0.name=柚树树苗
+tile.cuisine.sapling.1.name=香橼树苗
+tile.cuisine.sapling.2.name=橘子树苗
+tile.cuisine.sapling.3.name=西柚树苗
+tile.cuisine.sapling.4.name=橙子树苗
+tile.cuisine.sapling.5.name=柠檬树苗
+tile.cuisine.sapling.6.name=酸橙树苗
 
 cuisine.effect.teleport.name=瞬移
 cuisine.effect.teleport.tip=随机移动到附近位置
@@ -245,6 +256,7 @@ cuisine.tip.empty_dish=这个盘子空空如也，甚至干净得发亮。
 cuisine.potion.dispersal=驱散
 cuisine.potion.hot=麻辣
 cuisine.potion.effect_resistance=效果抗性
+cuisine.potion.cold_blood=冷酷
 
 cuisine.ingredient.trait.crisp=酥脆
 cuisine.ingredient.trait.aromatic=香浓
