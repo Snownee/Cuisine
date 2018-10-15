@@ -11,6 +11,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -41,6 +43,7 @@ public class TileBasin extends TileInventoryBase
         };
     };
     public int tickCheckThrowing = 0;
+    private FluidStack liquidForRendering = null;
 
     public TileBasin()
     {
@@ -62,6 +65,45 @@ public class TileBasin extends TileInventoryBase
             return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        if (world.isRemote && tank.getFluid() != null)
+        {
+            liquidForRendering = tank.getFluid().copy();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public FluidStack getFluidForRendering(float partialTicks)
+    {
+        final FluidStack actual = tank.getFluid();
+        int actualAmount = 0;
+        if (actual != null && !actual.equals(liquidForRendering))
+        {
+            liquidForRendering = new FluidStack(actual, 0);
+        }
+        if (liquidForRendering == null)
+        {
+            return null;
+        }
+        actualAmount = actual == null ? 0 : actual.amount;
+        if (Math.abs(actualAmount - liquidForRendering.amount) <= 20)
+        {
+            liquidForRendering.amount = actualAmount;
+        }
+        else
+        {
+            liquidForRendering.amount += (actualAmount - liquidForRendering.amount) * 0.05;
+        }
+        if (liquidForRendering.amount == 0)
+        {
+            liquidForRendering = null;
+        }
+        return liquidForRendering;
     }
 
     @Override

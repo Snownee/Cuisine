@@ -26,7 +26,7 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
     {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 
-        FluidStack fluid = te.getCurrentFluidContent();
+        FluidStack fluid = te.getFluidForRendering(partialTicks);
         ItemStack item = te.stacks.getStackInSlot(0);
         if (fluid == null && item.isEmpty())
         {
