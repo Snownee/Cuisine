@@ -87,13 +87,19 @@ public class TileBasin extends TileInventoryBase
             return null;
         }
         actualAmount = actual == null ? 0 : actual.amount;
-        if (Math.abs(actualAmount - liquidForRendering.amount) <= 20)
+        int delta = actualAmount - liquidForRendering.amount; // We assume your FPS is not that fast =w=
+        if (Math.abs(delta) <= 40)
         {
             liquidForRendering.amount = actualAmount;
         }
         else
         {
-            liquidForRendering.amount += (actualAmount - liquidForRendering.amount) * 0.05;
+            int i = (int) (delta * partialTicks * 0.1);
+            if (i == 0) // Wow your PC is so powerful!
+            {
+                i = delta > 0 ? 1 : -1;
+            }
+            liquidForRendering.amount += i;
         }
         if (liquidForRendering.amount == 0)
         {
