@@ -199,7 +199,7 @@ public interface CuisineAPI
      *             {@link #findIngredient(FluidStack)} instead.
      */
     @Deprecated
-    default Material findMaterial(FluidStack fluid)
+    default Material findMaterial(@Nullable FluidStack fluid)
     {
         Ingredient ingredient = this.findIngredient(fluid);
         return ingredient == null ? null : ingredient.getMaterial();
@@ -226,7 +226,7 @@ public interface CuisineAPI
      *
      * @return The Material reference that given fluid is mapped to; null if not found.
      */
-    Spice findSpice(FluidStack fluid);
+    Spice findSpice(@Nullable FluidStack fluid);
 
     /**
      * Query the whole registry and find whether the given item is mapped to
@@ -246,7 +246,7 @@ public interface CuisineAPI
      *
      * @return true if there is an associated Material; false otherwise.
      */
-    boolean isKnownMaterial(FluidStack fluid);
+    boolean isKnownMaterial(@Nullable FluidStack fluid);
 
     /**
      * Query the whole registry and find whether the given item is mapped to
@@ -266,12 +266,12 @@ public interface CuisineAPI
      *
      * @return true if there is an associated Material; false otherwise.
      */
-    boolean isKnownSpice(FluidStack fluid);
+    boolean isKnownSpice(@Nullable FluidStack fluid);
 
     // TODO (3TUSK): Documentation
     @Nullable Ingredient findIngredient(ItemStack item);
 
     // TODO (3TUSK): Documentation
-    @Nullable Ingredient findIngredient(FluidStack fluid);
+    @Nullable Ingredient findIngredient(@Nullable FluidStack fluid);
 
 }

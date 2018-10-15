@@ -53,6 +53,7 @@ import snownee.cuisine.internal.material.MaterialWithEffect;
 import snownee.cuisine.internal.spice.SpiceChiliPowder;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
+import snownee.cuisine.items.ItemIngredient;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 
@@ -276,6 +277,16 @@ public final class CuisineInternalGateway implements CuisineAPI
     @Override
     public Ingredient findIngredient(ItemStack item)
     {
+        if (item.isEmpty())
+        {
+            return null;
+        }
+
+        if (item.getItem() instanceof ItemIngredient)
+        {
+            return Ingredient.make(item, 1F);
+        }
+
         ItemDefinition itemDefinition = ItemDefinition.of(item);
 
         SimpleJuice juice = simpleJuiceMapping.get(itemDefinition);
@@ -325,8 +336,13 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public Ingredient findIngredient(FluidStack fluid)
+    public Ingredient findIngredient(@Nullable FluidStack fluid)
     {
+        if (fluid == null)
+        {
+            return null;
+        }
+
         Material material;
         if (fluid.getFluid() == CuisineFluids.JUICE)
         {
@@ -344,14 +360,23 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public Spice findSpice(FluidStack fluid)
+    public Spice findSpice(@Nullable FluidStack fluid)
     {
+        if (fluid == null)
+        {
+            return null;
+        }
         return fluidToSpiceMapping.get(fluid.getFluid());
     }
 
     @Override
     public boolean isKnownMaterial(ItemStack item)
     {
+        if (item.isEmpty())
+        {
+            return false;
+        }
+
         if (itemToMaterialMapping.containsKey(ItemDefinition.of(item)))
         {
             return true;
@@ -373,6 +398,11 @@ public final class CuisineInternalGateway implements CuisineAPI
     @Override
     public boolean isKnownSpice(ItemStack item)
     {
+        if (item.isEmpty())
+        {
+            return false;
+        }
+
         if (itemToSpiceMapping.containsKey(ItemDefinition.of(item)))
         {
             return true;
@@ -392,8 +422,13 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public boolean isKnownMaterial(FluidStack fluid)
+    public boolean isKnownMaterial(@Nullable FluidStack fluid)
     {
+        if (fluid == null)
+        {
+            return false;
+        }
+
         if (fluid.getFluid() == CuisineFluids.JUICE)
         {
             if (fluid.tag == null || !fluid.tag.hasKey("material", Constants.NBT.TAG_STRING))
@@ -406,8 +441,12 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public boolean isKnownSpice(FluidStack fluid)
+    public boolean isKnownSpice(@Nullable FluidStack fluid)
     {
+        if (fluid == null)
+        {
+            return false;
+        }
         return fluidToSpiceMapping.containsKey(fluid.getFluid());
     }
 
