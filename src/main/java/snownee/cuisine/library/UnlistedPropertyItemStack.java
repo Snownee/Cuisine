@@ -14,7 +14,6 @@ public final class UnlistedPropertyItemStack implements IUnlistedProperty<ItemSt
 
     private UnlistedPropertyItemStack(final String name)
     {
-
         this.name = name;
     }
 

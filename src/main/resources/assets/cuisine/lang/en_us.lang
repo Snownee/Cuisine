@@ -103,6 +103,17 @@ tile.cuisine.placed_dish.name=Plate
 tile.cuisine.placed_dish.tip=Right click wok to get your dish out
 tile.cuisine.bamboo_plant.name=Bamboo
 tile.cuisine.bamboo.name=Bamboo
+tile.cuisine.log.0.name=Pomelo Wood
+tile.cuisine.log.1.name=Cirton Wood
+tile.cuisine.log.2.name=Mandarin Wood
+tile.cuisine.log.3.name=Grapefruit Wood
+tile.cuisine.sapling.0.name=Pomelo Sapling
+tile.cuisine.sapling.1.name=Cirton Sapling
+tile.cuisine.sapling.2.name=Mandarin Sapling
+tile.cuisine.sapling.3.name=Grapefruit Sapling
+tile.cuisine.sapling.4.name=Oragne Sapling
+tile.cuisine.sapling.5.name=Lemon Sapling
+tile.cuisine.sapling.6.name=Lime Sapling
 
 cuisine.effect.teleport.name=Telekinesis
 cuisine.effect.teleport.tip=Tele... porting?
@@ -245,6 +256,7 @@ cuisine.tip.empty_dish=Apparently this dish is empty, and it looks shining.
 cuisine.potion.dispersal=Dispersal
 cuisine.potion.hot=Hot
 cuisine.potion.effect_resistance=Effect Resistance
+cuisine.potion.cold_blood=Cold Blood
 
 cuisine.ingredient.trait.crisp=Crisp
 cuisine.ingredient.trait.aromatic=Aromatic
