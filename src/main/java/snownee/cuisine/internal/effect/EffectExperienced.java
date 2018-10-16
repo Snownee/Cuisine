@@ -21,7 +21,7 @@ public class EffectExperienced extends SimpleEffectImpl
 
     public EffectExperienced()
     {
-        super("experienced");
+        super("experienced", 0);
     }
 
     @Override

@@ -7,19 +7,13 @@ public class EffectHarmony extends SimpleEffectImpl
 
     public EffectHarmony()
     {
-        super("harmony");
+        super("harmony", 0xFFC0CB);
     }
 
     @Override
     public int getPriority()
     {
         return 5;
-    }
-
-    @Override
-    public int getColorForDisplay()
-    {
-        return 0xFFC0CB;
     }
 
 }

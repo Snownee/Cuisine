@@ -21,7 +21,7 @@ public class EffectPotions extends SimpleEffectImpl
 
     public EffectPotions(String name)
     {
-        super(name);
+        super(name, 0);
     }
 
     public EffectPotions addPotionEffect(PotionEffect effect)

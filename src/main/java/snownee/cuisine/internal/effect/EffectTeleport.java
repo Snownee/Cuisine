@@ -19,7 +19,7 @@ public class EffectTeleport extends SimpleEffectImpl
 
     public EffectTeleport()
     {
-        super("teleport");
+        super("teleport", 0);
     }
 
     @Override

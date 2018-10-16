@@ -5,11 +5,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.EffectType;
 
@@ -20,6 +22,7 @@ public class DefaultConsumedCollector implements EffectCollector
     @Override
     public void apply(CompositeFood food, EntityPlayer player)
     {
+        boolean cure_potions = food.contains(CulinaryHub.CommonEffects.CURE_POTIONS);
         boolean resistance = player.isPotionActive(CuisineRegistry.EFFECT_RESISTANCE);
 
         int maxDuration = 0;
@@ -27,6 +30,10 @@ public class DefaultConsumedCollector implements EffectCollector
         {
             if (!resistance || entry.getKey().isBadEffect())
             {
+                if (cure_potions && entry.getKey().getCurativeItems().stream().anyMatch(i -> i.getItem() == Items.MILK_BUCKET))
+                {
+                    continue;
+                }
                 PotionEffectInfo info = entry.getValue();
                 player.addPotionEffect(new PotionEffect(entry.getKey(), info.duration, info.amplifier, false, info.showParticles));
                 if (info.duration > maxDuration)

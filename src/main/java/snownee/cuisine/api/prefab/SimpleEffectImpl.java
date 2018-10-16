@@ -11,11 +11,13 @@ import snownee.cuisine.api.Ingredient;
 
 public class SimpleEffectImpl implements Effect
 {
-    private String name;
+    private final String name;
+    private final int color;
 
-    public SimpleEffectImpl(String name)
+    public SimpleEffectImpl(String name, int color)
     {
         this.name = name;
+        this.color = color;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class SimpleEffectImpl implements Effect
     @Override
     public int getColorForDisplay()
     {
-        return 0xFFFFFF;
+        return color;
     }
 
 }

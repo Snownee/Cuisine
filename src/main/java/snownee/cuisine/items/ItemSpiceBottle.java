@@ -436,9 +436,13 @@ public class ItemSpiceBottle extends ItemMod
             ItemStack stack = new ItemStack(this);
             items.add(stack.copy());
             CuisineInternalGateway.INSTANCE.fluidToSpiceMapping.keySet().forEach(f -> {
-                ItemStack copy = stack.copy();
-                getFluidHandler(copy).fill(new FluidStack(f, Fluid.BUCKET_VOLUME), true);
-                items.add(copy);
+                Fluid fluid = FluidRegistry.getFluid(f);
+                if (fluid != null)
+                {
+                    ItemStack copy = stack.copy();
+                    getFluidHandler(copy).fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
+                    items.add(copy);
+                }
             });
             CuisineInternalGateway.INSTANCE.itemToSpiceMapping.keySet().forEach(id -> {
                 ItemStack copy = stack.copy();

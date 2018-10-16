@@ -65,12 +65,6 @@ public class TileBasin extends TileInventoryBase
         return super.getCapability(capability, facing);
     }
 
-    @Override
-    public void onLoad()
-    {
-        super.onLoad();
-    }
-
     public void spillFluids()
     {
         FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(tank.getFluid(), world, pos));

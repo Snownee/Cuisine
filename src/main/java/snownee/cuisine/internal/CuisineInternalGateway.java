@@ -18,7 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
@@ -120,7 +119,7 @@ public final class CuisineInternalGateway implements CuisineAPI
      */
     public final Map<String, Material> oreDictToMaterialMapping = new HashMap<>();
 
-    public final Map<Fluid, Material> fluidToMaterialMapping = new HashMap<>();
+    public final Map<String, Material> fluidToMaterialMapping = new HashMap<>();
 
     /**
      * 调料瓶默认使用的 Item 到调料的映射表。
@@ -132,7 +131,7 @@ public final class CuisineInternalGateway implements CuisineAPI
     /**
      * 调料瓶默认使用的 Fluid 到调料的映射表。
      */
-    public final Map<Fluid, Spice> fluidToSpiceMapping = new HashMap<>();
+    public final Map<String, Spice> fluidToSpiceMapping = new HashMap<>();
 
     private CuisineInternalGateway()
     {
@@ -362,7 +361,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         }
         else
         {
-            material = fluidToMaterialMapping.get(fluid.getFluid());
+            material = fluidToMaterialMapping.get(fluid.getFluid().getName());
         }
         return material == null ? null : new Ingredient(material, Form.JUICE, fluid.amount / 500.0);
     }
@@ -374,7 +373,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         {
             return null;
         }
-        return fluidToSpiceMapping.get(fluid.getFluid());
+        return fluidToSpiceMapping.get(fluid.getFluid().getName());
     }
 
     @Override
@@ -445,7 +444,7 @@ public final class CuisineInternalGateway implements CuisineAPI
             }
             return findMaterial(fluid.tag.getString("material")) != null;
         }
-        return fluidToMaterialMapping.containsKey(fluid.getFluid());
+        return fluidToMaterialMapping.containsKey(fluid.getFluid().getName());
     }
 
     @Override
@@ -455,7 +454,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         {
             return false;
         }
-        return fluidToSpiceMapping.containsKey(fluid.getFluid());
+        return fluidToSpiceMapping.containsKey(fluid.getFluid().getName());
     }
 
     public static void init()
@@ -472,10 +471,11 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new EffectExperienced());
         api.register(new EffectPotions("golden_apple").addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 1)).addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 2400, 0)));
         api.register(new EffectPotions("golden_apple_enchanted").addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 400, 1)).addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6000, 0)).addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 6000, 0)).addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 2400, 3)));
-        api.register(new SimpleEffectImpl("flavor_enhancer"));
+        api.register(new SimpleEffectImpl("flavor_enhancer", 0xFAFAD2));
+        api.register(new SimpleEffectImpl("cure_potions", 0xC1FFC1));
         api.register(new EffectHarmony());
         api.register(new EffectTeleport());
-        api.register(new SimpleEffectImpl("always_edible"));
+        api.register(new SimpleEffectImpl("always_edible", 0xFFFFEE));
         api.register(new EffectPotions("jump_boost").addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 400, 1)));
         api.register(new EffectPotions("power").addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400, 1)));
         api.register(new EffectPotions("night_vision").addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 400, 0)));
@@ -547,6 +547,9 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new MaterialWithEffect("pickled", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -13784, 0, 1, 1, 1, 0.3F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.copyOf(ALL_FORMS)));
         api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -15893221, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.copyOf(ALL_FORMS)));
         api.register(new SimpleMaterialImpl("cactus", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.VEGETABLES).addValidForms(Form.CUBED, Form.DICED, Form.JUICE));
+        api.register(new SimpleMaterialImpl("water", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.VEGETABLES).addValidForms(Form.JUICE));
+        api.register(new SimpleMaterialImpl("milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.VEGETABLES).addValidForms(Form.JUICE));
+        api.register(new SimpleMaterialImpl("soy_milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.VEGETABLES).addValidForms(Form.JUICE));
 
         CulinaryHub.CommonMaterials.init();
 
@@ -618,12 +621,16 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToMaterialMapping.put("foodMushroom", CulinaryHub.CommonMaterials.MUSHROOM);
         api.oreDictToMaterialMapping.put("blockCactus", CulinaryHub.CommonMaterials.CACTUS);
 
-        api.fluidToSpiceMapping.put(CuisineFluids.EDIBLE_OIL, CulinaryHub.CommonSpices.EDIBLE_OIL);
-        api.fluidToSpiceMapping.put(CuisineFluids.SESAME_OIL, CulinaryHub.CommonSpices.SESAME_OIL);
-        api.fluidToSpiceMapping.put(CuisineFluids.SOY_SAUCE, CulinaryHub.CommonSpices.SOY_SAUCE);
-        api.fluidToSpiceMapping.put(CuisineFluids.RICE_VINEGAR, CulinaryHub.CommonSpices.RICE_VINEGAR);
-        api.fluidToSpiceMapping.put(CuisineFluids.FRUIT_VINEGAR, CulinaryHub.CommonSpices.FRUIT_VINEGAR);
-        api.fluidToSpiceMapping.put(FluidRegistry.WATER, CulinaryHub.CommonSpices.WATER);
+        api.fluidToMaterialMapping.put(FluidRegistry.WATER.getName(), CulinaryHub.CommonMaterials.WATER);
+        api.fluidToMaterialMapping.put(CuisineFluids.MILK.getName(), CulinaryHub.CommonMaterials.MILK);
+        api.fluidToMaterialMapping.put(CuisineFluids.SOY_MILK.getName(), CulinaryHub.CommonMaterials.SOY_MILK);
+
+        api.fluidToSpiceMapping.put(CuisineFluids.EDIBLE_OIL.getName(), CulinaryHub.CommonSpices.EDIBLE_OIL);
+        api.fluidToSpiceMapping.put(CuisineFluids.SESAME_OIL.getName(), CulinaryHub.CommonSpices.SESAME_OIL);
+        api.fluidToSpiceMapping.put(CuisineFluids.SOY_SAUCE.getName(), CulinaryHub.CommonSpices.SOY_SAUCE);
+        api.fluidToSpiceMapping.put(CuisineFluids.RICE_VINEGAR.getName(), CulinaryHub.CommonSpices.RICE_VINEGAR);
+        api.fluidToSpiceMapping.put(CuisineFluids.FRUIT_VINEGAR.getName(), CulinaryHub.CommonSpices.FRUIT_VINEGAR);
+        api.fluidToSpiceMapping.put(FluidRegistry.WATER.getName(), CulinaryHub.CommonSpices.WATER);
 
         api.itemToSpiceMapping.put(ItemDefinition.of(CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CHILI_POWDER)), CulinaryHub.CommonSpices.CHILI_POWDER);
         api.itemToSpiceMapping.put(ItemDefinition.of(CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SICHUAN_PEPPER_POWDER)), CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER);
