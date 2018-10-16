@@ -88,8 +88,8 @@ public class ItemBottle extends ItemMod implements CookingVessel
         }
         EntityPlayer entityplayer = (EntityPlayer) entityLiving;
 
-        stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
-        IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack);
+        ItemStack copy = ItemHandlerHelper.copyStackWithSize(stack, 1);
+        IFluidHandlerItem handler = FluidUtil.getFluidHandler(copy);
         if (handler == null)
         {
             return stack;
@@ -111,7 +111,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
         {
             return stack;
         }
-        result.get().onEaten(stack, worldIn, entityplayer);
+        result.get().onEaten(copy, worldIn, entityplayer);
 
         if (!entityplayer.capabilities.isCreativeMode)
         {

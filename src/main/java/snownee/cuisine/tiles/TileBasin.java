@@ -69,10 +69,6 @@ public class TileBasin extends TileInventoryBase
     public void onLoad()
     {
         super.onLoad();
-        if (world.isRemote && tank.getFluid() != null)
-        {
-            liquidForRendering = tank.getFluid().copy();
-        }
     }
 
     public void spillFluids()
@@ -120,6 +116,10 @@ public class TileBasin extends TileInventoryBase
     {
         super.readFromNBT(compound);
         tank.readFromNBT(compound.getCompoundTag("tank"));
+        if (tank.getFluid() != null)
+        {
+            liquidForRendering = tank.getFluid().copy();
+        }
     }
 
     @Nonnull
@@ -134,12 +134,15 @@ public class TileBasin extends TileInventoryBase
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        readFromNBT(data);
+        super.readPacketData(data);
+        tank.readFromNBT(data.getCompoundTag("tank"));
     }
 
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
+        super.writePacketData(data);
+        data.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
         return writeToNBT(data);
     }
 

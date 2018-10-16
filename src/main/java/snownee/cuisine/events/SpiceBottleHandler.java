@@ -80,13 +80,14 @@ public class SpiceBottleHandler
                     return;
                 }
                 Drink.Builder builder = Drink.Builder.create();
-                builder.addIngredient(null, new Ingredient(material, Form.JUICE, 0.5), CuisineRegistry.BOTTLE);
+                builder.addIngredient(null, new Ingredient(material, Form.JUICE, 2), CuisineRegistry.BOTTLE);
                 Optional<Drink> result = builder.build(CuisineRegistry.BOTTLE, null);
                 if (!result.isPresent())
                 {
                     return;
                 }
                 result.get().onEaten(event.getItemStack(), event.getWorld(), (EntityPlayer) event.getEntityLiving());
+                event.setCanceled(true);
             }
         }
         else if (event.getContent().getClass() == ItemStack.class)
