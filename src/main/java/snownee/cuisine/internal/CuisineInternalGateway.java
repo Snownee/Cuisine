@@ -284,7 +284,15 @@ public final class CuisineInternalGateway implements CuisineAPI
 
         if (item.getItem() instanceof ItemIngredient)
         {
-            return CuisinePersistenceCenter.deserializeIngredient(item.getTagCompound());
+            NBTTagCompound data = item.getTagCompound();
+            if (data == null)
+            {
+                return null;
+            }
+            else
+            {
+                return CuisinePersistenceCenter.deserializeIngredient(data);
+            }
         }
 
         ItemDefinition itemDefinition = ItemDefinition.of(item);
