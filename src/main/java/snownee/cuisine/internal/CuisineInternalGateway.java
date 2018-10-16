@@ -284,7 +284,7 @@ public final class CuisineInternalGateway implements CuisineAPI
 
         if (item.getItem() instanceof ItemIngredient)
         {
-            return Ingredient.make(item, 1F);
+            return CuisinePersistenceCenter.deserializeIngredient(item.getTagCompound());
         }
 
         ItemDefinition itemDefinition = ItemDefinition.of(item);
