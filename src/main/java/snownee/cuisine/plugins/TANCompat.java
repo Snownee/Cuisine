@@ -64,4 +64,19 @@ public class TANCompat implements IModule
             }
         }
     }
+
+    public static boolean enableThirst()
+    {
+        return SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST);
+    }
+
+    public static boolean isPlayerThirsty(EntityPlayer player)
+    {
+        IThirst thirst = player.getCapability(TANCapabilities.THIRST, null);
+        if (thirst == null)
+        {
+            return false;
+        }
+        return thirst.getThirst() < 20;
+    }
 }

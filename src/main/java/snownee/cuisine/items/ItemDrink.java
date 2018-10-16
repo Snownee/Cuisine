@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
@@ -33,11 +34,10 @@ import snownee.cuisine.client.model.DishMeshDefinition;
 import snownee.cuisine.internal.capabilities.DrinkContainer;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
+import snownee.cuisine.plugins.TANCompat;
 import snownee.cuisine.proxy.ClientProxy;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.Kiwi;
-import toughasnails.api.TANCapabilities;
-import toughasnails.api.stat.capability.IThirst;
 
 public class ItemDrink extends ItemAbstractComposite
 {
@@ -131,7 +131,7 @@ public class ItemDrink extends ItemAbstractComposite
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        if (!Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails"))
+        if (!Loader.isModLoaded("toughasnails") || !Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !TANCompat.enableThirst())
         {
             return super.onItemRightClick(worldIn, playerIn, handIn);
         }
@@ -142,12 +142,7 @@ public class ItemDrink extends ItemAbstractComposite
         {
             return new ActionResult<>(EnumActionResult.FAIL, ItemStack.EMPTY);
         }
-        IThirst thirst = playerIn.getCapability(TANCapabilities.THIRST, null);
-        if (thirst == null)
-        {
-            return new ActionResult<>(EnumActionResult.FAIL, stack);
-        }
-        if (drink.alwaysEdible() || thirst.getThirst() < 20)
+        if (drink.alwaysEdible() || TANCompat.isPlayerThirsty(playerIn))
         {
             playerIn.setActiveHand(handIn);
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);

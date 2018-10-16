@@ -23,6 +23,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.Loader;
 import scala.util.Random;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
@@ -41,12 +42,11 @@ import snownee.cuisine.api.prefab.DefaultTypes;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.effect.EffectPotions;
+import snownee.cuisine.plugins.TANCompat;
 import snownee.kiwi.Kiwi;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
-import toughasnails.api.config.GameplayOption;
-import toughasnails.api.config.SyncedConfig;
 
 public class Drink extends CompositeFood
 {
@@ -354,7 +354,7 @@ public class Drink extends CompositeFood
             seasoning.getSpice().onConsumed(stack, player, worldIn, seasoning, collector);
         }
 
-        if (!Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST))
+        if (!Loader.isModLoaded("toughasnails") || !Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !TANCompat.enableThirst())
         {
             player.getFoodStats().addStats(1, getSaturationModifier());
         }

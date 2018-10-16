@@ -1,6 +1,5 @@
 package snownee.cuisine.plugins;
 
-import baubles.api.BaublesApi;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -11,6 +10,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.util.BaublesWrapper;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 
@@ -57,6 +57,6 @@ public class DarkUtilsCompat implements IModule
             }
         }
 
-        return Loader.isModLoaded("baubles") && BaublesApi.isBaubleEquipped(player, item) != -1;
+        return Loader.isModLoaded("baubles") && BaublesWrapper.isBaubleEquipped(player, item) != -1;
     }
 }
