@@ -8,15 +8,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -27,6 +31,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.client.model.DrinkroMeshDefinition;
 import snownee.cuisine.tiles.TileDrinkro;
 import snownee.kiwi.block.BlockModHorizontal;
 import snownee.kiwi.util.PlayerUtil;
@@ -41,6 +46,21 @@ public class BlockDrinkro extends BlockModHorizontal
         super(name, Material.IRON);
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setDefaultState(blockState.getBaseState().withProperty(NORMAL, true).withProperty(WORKING, false));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void mapModel()
+    {
+        Item item = Item.getItemFromBlock(this);
+        ModelLoader.setCustomMeshDefinition(item, DrinkroMeshDefinition.INSTANCE);
+        ModelBakery.registerItemVariants(item, new ResourceLocation(Cuisine.MODID, "drinkro"));
+    }
+
+    @Override
+    public boolean hasItem()
+    {
+        return false;
     }
 
     @Override

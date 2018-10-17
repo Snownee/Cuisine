@@ -7,12 +7,12 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.gui.elements.DrawableBuilder;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 
-@SuppressWarnings("deprecation")
 public class ChoppingBoardRecipeCategory implements IRecipeCategory
 {
     static final String UID = Cuisine.MODID + ".chopping_board";
@@ -25,9 +25,8 @@ public class ChoppingBoardRecipeCategory implements IRecipeCategory
 
     public ChoppingBoardRecipeCategory(IGuiHelper guiHelper)
     {
-        // I am not sure NetEase will support this high version JEI
-        background = guiHelper.createDrawable(VANILLA_RECIPE_GUI, 49, 168, 76, 18, 18, 15, 0, 0);
-        localizedName = I18n.format(CuisineRegistry.ITEM_CHOPPING_BOARD.getTranslationKey() + ".name");
+        background = new DrawableBuilder(VANILLA_RECIPE_GUI, 49, 168, 76, 18).addPadding(18, 15, 0, 0).build();
+        localizedName = I18n.format(CuisineRegistry.CHOPPING_BOARD.getTranslationKey() + ".name");
     }
 
     @Override

@@ -74,12 +74,6 @@ public class BlockChoppingBoard extends BlockMod
     }
 
     @Override
-    public boolean hasItem()
-    {
-        return false;
-    }
-
-    @Override
     protected BlockStateContainer createBlockState()
     {
         return new ExtendedBlockState(this, new IProperty<?>[] { HAS_KITCHEN_KNIFE, BlockHorizontal.FACING }, new IUnlistedProperty<?>[] { COVER_KEY });

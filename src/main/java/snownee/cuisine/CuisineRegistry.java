@@ -23,10 +23,10 @@ import snownee.cuisine.blocks.BlockSqueezer;
 import snownee.cuisine.blocks.BlockTofu;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemBottle;
-import snownee.cuisine.items.ItemChoppingBoard;
 import snownee.cuisine.items.ItemCrops;
 import snownee.cuisine.items.ItemDish;
 import snownee.cuisine.items.ItemDrink;
+import snownee.cuisine.items.ItemDrinkro;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.items.ItemIronSpatula;
 import snownee.cuisine.items.ItemKitchenKnife;
@@ -95,6 +95,7 @@ public class CuisineRegistry implements IModule
     public static final BlockSqueezer SQUEEZER = new BlockSqueezer("squeezer");
 
     public static final BlockDrinkro DRINKRO = new BlockDrinkro("drinkro");
+    public static final ItemDrinkro ITEM_DRINKRO = new ItemDrinkro(DRINKRO);
 
     public static final BlockModLog LOG = new BlockModLog("log");
     public static final BlockModSapling SAPLING = new BlockModSapling("sapling");
@@ -120,8 +121,6 @@ public class CuisineRegistry implements IModule
     public static final Item WOK = new ItemMod("wok").setCreativeTab(Cuisine.CREATIVE_TAB);
 
     public static final ItemManual MANUAL = new ItemManual("manual");
-
-    public static final ItemChoppingBoard ITEM_CHOPPING_BOARD = new ItemChoppingBoard(CHOPPING_BOARD.getName(), CHOPPING_BOARD);
 
     public static final ItemModVariants MATERIAL = (ItemModVariants) new ItemModVariants("material", Cuisine.Materials.INSTANCE).setCreativeTab(Cuisine.CREATIVE_TAB);
 
