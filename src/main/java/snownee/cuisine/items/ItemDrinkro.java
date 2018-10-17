@@ -6,12 +6,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.kiwi.block.IModBlock;
 import snownee.kiwi.item.ItemModBlock;
@@ -39,9 +41,14 @@ public class ItemDrinkro extends ItemModBlock
         if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(this.block, pos, false, facing, (Entity) null))
         {
             IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, 0, player, hand);
-            if (itemstack.getDisplayName().equals("SCP-294"))
+            NBTTagCompound nbttagcompound = itemstack.getSubCompound("display");
+
+            if (nbttagcompound != null)
             {
-                iblockstate1 = iblockstate1.withProperty(BlockDrinkro.NORMAL, false);
+                if (nbttagcompound.hasKey("Name", Constants.NBT.TAG_STRING) && nbttagcompound.getString("Name").equals("SCP-294"))
+                {
+                    iblockstate1 = iblockstate1.withProperty(BlockDrinkro.NORMAL, false);
+                }
             }
 
             if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1))

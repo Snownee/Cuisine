@@ -17,8 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.FluidUtil;
@@ -26,6 +28,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.Cuisine;
@@ -33,6 +36,7 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.client.model.DrinkroMeshDefinition;
 import snownee.cuisine.tiles.TileDrinkro;
+import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockModHorizontal;
 import snownee.kiwi.util.PlayerUtil;
 
@@ -61,6 +65,30 @@ public class BlockDrinkro extends BlockModHorizontal
     public boolean hasItem()
     {
         return false;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
+        if (tileentity instanceof TileDrinkro)
+        {
+            StacksUtil.dropInventoryItems(worldIn, pos, ((TileDrinkro) tileentity).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), true);
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    {
+        ItemStack drop = new ItemStack(this);
+        if (!state.getValue(NORMAL))
+        {
+            drop.setStackDisplayName("SCP-294");
+        }
+        drops.add(drop);
     }
 
     @Override
