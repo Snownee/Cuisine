@@ -54,7 +54,7 @@ public class BlockDrinkro extends BlockModHorizontal
     {
         Item item = Item.getItemFromBlock(this);
         ModelLoader.setCustomMeshDefinition(item, DrinkroMeshDefinition.INSTANCE);
-        ModelBakery.registerItemVariants(item, new ResourceLocation(Cuisine.MODID, "drinkro"));
+        ModelBakery.registerItemVariants(item, new ResourceLocation(Cuisine.MODID, "drinkro"), new ResourceLocation(Cuisine.MODID, "drinkro_special"));
     }
 
     @Override

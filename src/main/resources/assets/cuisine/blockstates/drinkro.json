@@ -1,0 +1,22 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cuisine:drinkro"
+  },
+  "variants": {
+    "facing": {
+      "north": { "y": 0   },
+      "south": { "y": 180 },
+      "west":  { "y": 270 },
+      "east":  { "y": 90  }
+    },
+    "normal": {
+      "true": {},
+      "false": { "model": "cuisine:drinkro_special" }
+    },
+    "working": {
+      "true": {},
+      "false": {}
+    }
+  }
+}

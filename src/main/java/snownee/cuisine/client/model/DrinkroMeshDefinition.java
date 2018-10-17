@@ -12,7 +12,7 @@ public class DrinkroMeshDefinition implements ItemMeshDefinition
     @Override
     public ModelResourceLocation getModelLocation(ItemStack stack)
     {
-        return new ModelResourceLocation(stack.getItem().getRegistryName(), stack.getDisplayName().equals("SCP-294") ? "scp" : "inventory");
+        return new ModelResourceLocation(stack.getItem().getRegistryName() + (stack.getDisplayName().equals("SCP-294") ? "_special" : ""), "inventory");
     }
 
 }
