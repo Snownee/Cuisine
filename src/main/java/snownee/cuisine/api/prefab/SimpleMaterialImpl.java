@@ -101,12 +101,6 @@ public class SimpleMaterialImpl implements Material
         return Collections.unmodifiableSet(categories);
     }
 
-    public SimpleMaterialImpl addValidForms(Form... forms)
-    {
-        this.validForms.addAll(Arrays.asList(forms));
-        return this;
-    }
-
     public SimpleMaterialImpl setValidForms(EnumSet<Form> validForms)
     {
         this.validForms = validForms;

@@ -64,6 +64,14 @@ public final class CulinaryHub
         public static final Material WATER = find("water");
         public static final Material MILK = find("milk");
         public static final Material SOY_MILK = find("soymilk");
+        public static final Material MANDARIN = find("madarin");
+        public static final Material CITRON = find("citron");
+        public static final Material POMELO = find("pomelo");
+        public static final Material ORANGE = find("orange");
+        public static final Material LEMON = find("lemon");
+        public static final Material GRAPEFRUIT = find("grapefruit");
+        public static final Material LIME = find("lime");
+        public static final Material EMPOWERED_CITRON = find("empowered_citron");
 
         private static Material find(final String uniqueName)
         {
@@ -126,6 +134,8 @@ public final class CulinaryHub
         public static final Effect PUFFERFISH_POISON = find("pufferfish_poison");
         public static final Effect WATER_BREATHING = find("water_breathing");
         public static final Effect CURE_POTIONS = find("cure_potions");
+        public static final Effect HEAT_RESISTANCE = find("heat_resistance");
+        public static final Effect COLD_RESISTANCE = find("cold_resistance");
 
         private static Effect find(final String uniqueName)
         {

@@ -2,6 +2,8 @@ package snownee.cuisine.plugins;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,20 +12,26 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.tiles.TileBasinHeatable;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.ItemDefinition;
 import toughasnails.api.TANBlocks;
 import toughasnails.api.TANCapabilities;
+import toughasnails.api.TANPotions;
 import toughasnails.api.config.GameplayOption;
 import toughasnails.api.config.SyncedConfig;
 import toughasnails.api.item.TANItems;
+import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.stat.capability.IThirst;
+import toughasnails.api.temperature.Temperature;
 
 @KiwiModule(modid = Cuisine.MODID, name = "toughasnails", dependency = "toughasnails", optional = true)
 public class TANCompat implements IModule
 {
+    public static Potion heat_resistance = TANPotions.heat_resistance;
+
     @Override
     public void init()
     {
@@ -46,23 +54,37 @@ public class TANCompat implements IModule
     @SubscribeEvent
     public void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
-        if (!SyncedConfig.getBooleanValue(GameplayOption.ENABLE_THIRST))
-        {
-            // Do nothing if Tough As Nail thirsty is disabled
-            return;
-        }
-
-        if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null) && event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+        if (event.getEntityLiving() instanceof EntityPlayer && event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
         {
             FoodContainer container = event.getItem().getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
             CompositeFood food = container.get(); // Null-safety is guaranteed by the hasCapability check
             if (food != null && food.getKeywords().contains("drink"))
             {
-                IThirst handler = event.getEntityLiving().getCapability(TANCapabilities.THIRST, null);
-                handler.setExhaustion(0);
-                handler.addStats(food.getFoodLevel() * 2, food.getSaturationModifier());
+                if (enableThirst() && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null))
+                {
+                    IThirst handler = event.getEntityLiving().getCapability(TANCapabilities.THIRST, null);
+                    handler.setExhaustion(0);
+                    handler.addStats(food.getFoodLevel() * 2, food.getSaturationModifier());
+                }
+                if (enableTemperature() && event.getEntityLiving().hasCapability(TANCapabilities.TEMPERATURE, null))
+                {
+                    if (food.getClass() == Drink.class && ((Drink) food).getDrinkType() == DrinkType.SMOOTHIE)
+                    {
+                        ITemperature handler = event.getEntityLiving().getCapability(TANCapabilities.TEMPERATURE, null);
+                        handler.addTemperature(new Temperature(-4));
+                        if (TANPotions.heat_resistance != null)
+                        {
+                            event.getEntityLiving().addPotionEffect(new PotionEffect(TANPotions.heat_resistance, 300));
+                        }
+                    }
+                }
             }
         }
+    }
+
+    public static boolean enableTemperature()
+    {
+        return SyncedConfig.getBooleanValue(GameplayOption.ENABLE_TEMPERATURE);
     }
 
     public static boolean enableThirst()
