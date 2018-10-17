@@ -58,6 +58,7 @@ public class OreDictHandler
         OreDictionary.registerOre("cropOnion", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.ONION));
         OreDictionary.registerOre("cropEggplant", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.EGGPLANT));
         OreDictionary.registerOre("cropSpinach", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SPINACH));
+        OreDictionary.registerOre("cropBambooshoot", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.BAMBOO_SHOOT));
 
         // SPICE
         OreDictionary.registerOre("dustSalt", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT));
