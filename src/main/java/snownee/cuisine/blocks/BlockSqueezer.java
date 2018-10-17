@@ -80,13 +80,11 @@ public class BlockSqueezer extends BlockMod
         if (pre && !post)
         {
             worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.FALSE));
-            squeezer.onTriggered(false);
         }
         else if (!pre && post)
         {
             worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
             worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.TRUE));
-            squeezer.onTriggered(true);
         }
     }
 

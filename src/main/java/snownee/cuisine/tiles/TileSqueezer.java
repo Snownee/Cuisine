@@ -70,19 +70,49 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     public void update()
     {
-        extensionOffset.setValue(this.world.rand.nextInt(100) / 100F * OFFSET_LIMIT);
-        /*
         switch (state)
         {
             case EXTENDING:
             {
-                //stateMachine.transition(State.EXTENDED.stateName);
+                extensionProgress += 5;
+                extensionOffset.setValue(+ extensionProgress / 100F * OFFSET_LIMIT);
+                if (extensionProgress >= 100)
+                {
+                    extensionProgress = 100;
+                    stateMachine.transition(State.EXTENDED.stateName);
+                    state = State.EXTENDED;
+                }
+                break;
             }
             case EXTRACTING:
             {
-                //stateMachine.transition(State.EXTRACTED.stateName);
+                extensionProgress -= 5;
+                extensionOffset.setValue(- extensionProgress / 100F * OFFSET_LIMIT);
+                if (extensionProgress <= 0)
+                {
+                    extensionProgress = 0;
+                    stateMachine.transition(State.EXTRACTED.stateName);
+                    state = State.EXTRACTED;
+                }
+                break;
             }
-        }*/
+        }
+    }
+
+    public void startExtending()
+    {
+        if (this.state == State.EXTRACTED || this.state == State.EXTRACTING)
+        {
+            this.state = State.EXTENDING;
+        }
+    }
+
+    public void startExtracting()
+    {
+        if (this.state == State.EXTENDED || this.state == State.EXTENDING)
+        {
+            this.state = State.EXTRACTING;
+        }
     }
 
     @Override
@@ -107,16 +137,11 @@ public class TileSqueezer extends TileBase implements ITickable
         this.triggered = this.world.getBlockState(this.pos).getValue(BlockDispenser.TRIGGERED);
         if (triggered)
         {
-            if ("extracted".equals(stateMachine.currentState()))
-            {
-                extensionOffset.setValue(Animation.getWorldTime(this.getWorld()));
-                stateMachine.transition("extending");
-            }
+            this.startExtending();
         }
         else
         {
-            extensionOffset.setValue(Animation.getWorldTime(this.getWorld()));
-            stateMachine.transition("extracting");
+            this.startExtracting();
         }
     }
 
@@ -124,7 +149,7 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        data.setBoolean("triggered", this.triggered);
+        //data.setBoolean("triggered", this.triggered);
         return data;
     }
 

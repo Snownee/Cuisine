@@ -16,10 +16,10 @@
     "extracted"
   ],
   "transitions": {
-    "extending": [ "extended" ],
-    "extracting": [ "extracted" ],
-    "extended": [ "extracting", "extracted" ],
-    "extracted": [ "extending", "extended", "extracting" ]
+    "extending": [ "extended", "extracting" ],
+    "extracting": [ "extracted", "extending" ],
+    "extended": [ "extracting" ],
+    "extracted": [ "extending" ]
   },
   "start_state": "extending"
 }
