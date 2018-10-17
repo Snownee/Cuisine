@@ -65,6 +65,9 @@ public class OreDictHandler
         OreDictionary.registerOre("listAllspice", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT));
         OreDictionary.registerOre("dustCrudesalt", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT));
         OreDictionary.registerOre("listAllspice", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT));
+        OreDictionary.registerOre("dustUnrefinedsugar", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR));
+        OreDictionary.registerOre("listAllspice", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR));
+        OreDictionary.registerOre("listAllsugar", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR));
         OreDictionary.registerOre("listAllsugar", Items.SUGAR);
         OreDictionary.registerOre("listAllspice", Items.SUGAR);
         OreDictionary.registerOre("cropSichuanpepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SICHUAN_PEPPER));
@@ -96,6 +99,13 @@ public class OreDictHandler
         OreDictionary.registerOre("cropLemon", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LEMON));
         OreDictionary.registerOre("cropLime", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LIME));
         OreDictionary.registerOre("cropGrapefruit", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.GRAPEFRUIT));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.MANDARIN));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.CITRON));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.POMELO));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.ORANGE));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LEMON));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LIME));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.GRAPEFRUIT));
 
         // MISC
         OreDictionary.registerOre("foodFirmtofu", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.TOFU));
@@ -109,6 +119,12 @@ public class OreDictHandler
         OreDictionary.registerOre("treeSapling", new ItemStack(CuisineRegistry.SAPLING, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("foodDrink", CuisineRegistry.BOTTLE);
         OreDictionary.registerOre("toolMortarandpestle", CuisineRegistry.ITEM_MORTAR);
+
+        // foodPickles
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_CABBAGE));
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_CUCUMBER));
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_PEPPER));
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_TURNIP));
 
         // The wood handle
         OreDictionary.registerOre("handleWood", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.WOODEN_HANDLE));
