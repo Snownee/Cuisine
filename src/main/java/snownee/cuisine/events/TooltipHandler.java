@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,8 +33,8 @@ import snownee.cuisine.client.CulinaryRenderHelper;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.library.RarityManager;
 
-@EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
-public class TooltipHandler
+@Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
+public final class TooltipHandler
 {
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void makeTooltip(ItemTooltipEvent event)
