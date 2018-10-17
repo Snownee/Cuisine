@@ -31,7 +31,6 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.client.CulinaryRenderHelper;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
-import snownee.cuisine.items.ItemAbstractComposite;
 import snownee.cuisine.library.RarityManager;
 
 @EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
@@ -74,7 +73,7 @@ public class TooltipHandler
             // add categories line
             i = ingredient.getMaterial().getCategories().size() * MathHelper.ceil(ingredient.getSize());
         }
-        else if (stack.getItem() instanceof ItemAbstractComposite)
+        else if (stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
         {
             FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
             CompositeFood composite;

@@ -233,8 +233,6 @@ fluid.beet_juice=甜菜汁
 fluid.sugarcane_juice=甘蔗汁
 fluid.cuisine_juice=果汁
 
-entity.cuisine.falling_flower.name=下落的方块
-
 cuisine.tip.food.hunger_regen=饥饿值恢复：%d
 cuisine.tip.food.saturation=饱和度增加：{0,number,#.##}
 cuisine.tip.properties=属性：
@@ -257,6 +255,25 @@ cuisine.potion.dispersal=驱散
 cuisine.potion.hot=麻辣
 cuisine.potion.effect_resistance=效果抗性
 cuisine.potion.cold_blood=冷血
+cuisine.potion.toughness=不动如山
+cuisine.potion.drunk=醉酒
+
+potion.effect.dispersal=驱散药水
+splash_potion.effect.dispersal=喷溅型驱散药水
+lingering_potion.effect.dispersal=滞留型驱散药水
+tipped_arrow.effect.dispersal=驱散之箭
+potion.effect.hot=麻辣药水
+splash_potion.effect.hot=喷溅型麻辣药水
+lingering_potion.effect.hot=滞留型麻辣药水
+tipped_arrow.effect.hot=麻辣之箭
+potion.effect.cold_blood=冷血药水
+splash_potion.effect.cold_blood=喷溅型冷血药水
+lingering_potion.effect.cold_blood=滞留型冷血药水
+tipped_arrow.effect.cold_blood=冷血之箭
+potion.effect.toughness=屹立药水
+splash_potion.effect.toughness=喷溅型屹立药水
+lingering_potion.effect.toughness=滞留型屹立药水
+tipped_arrow.effect.toughness=屹立之箭
 
 cuisine.ingredient.trait.crisp=酥脆
 cuisine.ingredient.trait.aromatic=香浓
