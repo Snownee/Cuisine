@@ -407,7 +407,7 @@ public class Drink extends CompositeFood
             }
             else if (drinkType == DrinkType.SMOOTHIE)
             {
-                potion = flag ? MobEffects.HASTE : MobEffects.ABSORPTION;
+                potion = flag ? CuisineRegistry.TOUGHNESS : MobEffects.RESISTANCE;
             }
             collector.addEffect(DefaultTypes.POTION, new PotionEffect(potion, duration, 0, true, true));
         }

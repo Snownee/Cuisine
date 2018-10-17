@@ -1,8 +1,11 @@
 package snownee.cuisine.events;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -49,6 +52,26 @@ public class PlayerHandler
         if (event.getEntityPlayer().isPotionActive(CuisineRegistry.COLD_BLOOD))
         {
             event.setDamageModifier(event.getDamageModifier() * 2);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onKnockBack(LivingKnockBackEvent event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        if (entity.onGround && entity.isSneaking() && entity.isPotionActive(CuisineRegistry.TOUGHNESS))
+        {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onProjectileImpact(LivingAttackEvent event)
+    {
+        EntityLivingBase entity = event.getEntityLiving();
+        if (entity.onGround && entity.isSneaking() && event.getSource().isProjectile() && entity.isPotionActive(CuisineRegistry.TOUGHNESS))
+        {
+            event.setCanceled(true);
         }
     }
 }

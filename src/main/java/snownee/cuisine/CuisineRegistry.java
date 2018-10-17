@@ -133,4 +133,6 @@ public class CuisineRegistry implements IModule
 
     public static final PotionMod COLD_BLOOD = new PotionMod("cold_blood", true, 3, false, 0x9F79EE, -1, true);
 
+    public static final PotionMod TOUGHNESS = new PotionMod("toughness", true, 4, false, 0x800000, -1, true);
+
 }
