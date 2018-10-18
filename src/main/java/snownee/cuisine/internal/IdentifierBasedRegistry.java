@@ -30,9 +30,9 @@ final class IdentifierBasedRegistry<E>
         this.registry = underlyingMap;
     }
 
-    public void register(String identifier, E candidate)
+    public E register(String identifier, E candidate)
     {
-        registry.putIfAbsent(Objects.requireNonNull(identifier), candidate);
+        return registry.putIfAbsent(Objects.requireNonNull(identifier), candidate);
     }
 
     @Nullable

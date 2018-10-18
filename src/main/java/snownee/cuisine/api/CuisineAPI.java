@@ -33,28 +33,28 @@ public interface CuisineAPI
      *
      * @param material The material to be registered.
      */
-    void register(Material material);
+    Material register(Material material);
 
     /**
      * Register a {@link Spice} into Cuisine, so that Cuisine will recognize it.
      *
      * @param spice The spice to be registered.
      */
-    void register(Spice spice);
+    Spice register(Spice spice);
 
     /**
      * Register a {@link Effect} into Cuisine, so that Cuisine will recognize it.
      *
      * @param effect The material to be registered.
      */
-    void register(Effect effect);
+    Effect register(Effect effect);
 
     /**
      * Register a {@link Recipe} into Cuisine, so that Cuisine will recognize it.
      *
      * @param recipe The material to be registered.
      */
-    void register(Recipe recipe);
+    Recipe register(Recipe recipe);
 
     // Serialization service
 

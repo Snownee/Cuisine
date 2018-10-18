@@ -10,7 +10,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -141,27 +140,27 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public void register(Material material)
+    public Material register(Material material)
     {
-        materialRegistry.register(material.getID(), material);
+        return materialRegistry.register(material.getID(), material);
     }
 
     @Override
-    public void register(Spice spice)
+    public Spice register(Spice spice)
     {
-        spiceRegistry.register(spice.getID(), spice);
+        return spiceRegistry.register(spice.getID(), spice);
     }
 
     @Override
-    public void register(Effect effect)
+    public Effect register(Effect effect)
     {
-        effectRegistry.register(effect.getID(), effect);
+        return effectRegistry.register(effect.getID(), effect);
     }
 
     @Override
-    public void register(Recipe recipe)
+    public Recipe register(Recipe recipe)
     {
-        recipeRegistry.register(recipe.name(), recipe);
+        return recipeRegistry.register(recipe.name(), recipe);
     }
 
     @Override
