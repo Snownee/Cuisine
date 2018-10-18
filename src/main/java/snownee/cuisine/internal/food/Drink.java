@@ -62,6 +62,7 @@ public class Drink extends CompositeFood
             FEATURE_INPUTS.put(ItemDefinition.of(Blocks.ICE), DrinkType.SMOOTHIE);
             FEATURE_INPUTS.put(ItemDefinition.of(Blocks.PACKED_ICE), DrinkType.SMOOTHIE);
             FEATURE_INPUTS.put(OreDictDefinition.of("slimeball"), DrinkType.GELO);
+            FEATURE_INPUTS.put(OreDictDefinition.of("foodGelatine"), DrinkType.GELO);
             FEATURE_INPUTS.put(OreDictDefinition.of("dustRedstone"), DrinkType.SODA);
         }
 
@@ -412,6 +413,10 @@ public class Drink extends CompositeFood
             collector.addEffect(DefaultTypes.POTION, new PotionEffect(potion, duration, 0, true, true));
         }
         collector.apply(this, player);
+        if (drinkType == DrinkType.SMOOTHIE)
+        {
+            player.extinguish();
+        }
         PotionEffect effect = player.getActivePotionEffect(CuisineRegistry.EFFECT_RESISTANCE);
         if (effect != null)
         {

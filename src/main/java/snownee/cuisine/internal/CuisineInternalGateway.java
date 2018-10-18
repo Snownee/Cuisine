@@ -589,7 +589,6 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.itemToMaterialMapping.put(ItemDefinition.of(Items.GOLDEN_APPLE), CulinaryHub.CommonMaterials.GOLDEN_APPLE);
         api.itemToMaterialMapping.put(ItemDefinition.of(Items.GOLDEN_APPLE, 1), CulinaryHub.CommonMaterials.GOLDEN_APPLE_ENCHANTED);
         api.itemToMaterialMapping.put(ItemDefinition.of(Items.MELON), CulinaryHub.CommonMaterials.MELON);
-        api.itemToMaterialMapping.put(ItemDefinition.of(Blocks.PUMPKIN), CulinaryHub.CommonMaterials.PUMPKIN);
         api.itemToMaterialMapping.put(ItemDefinition.of(Items.CARROT), CulinaryHub.CommonMaterials.CARROT);
         api.itemToMaterialMapping.put(ItemDefinition.of(Items.POTATO), CulinaryHub.CommonMaterials.POTATO);
         api.itemToMaterialMapping.put(ItemDefinition.of(Items.BEETROOT), CulinaryHub.CommonMaterials.BEETROOT);
@@ -637,6 +636,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToMaterialMapping.put("cropBambooshoot", CulinaryHub.CommonMaterials.BAMBOO_SHOOT);
         api.oreDictToMaterialMapping.put("cropBellpepper", CulinaryHub.CommonMaterials.GREEN_PEPPER);
         api.oreDictToMaterialMapping.put("foodMushroom", CulinaryHub.CommonMaterials.MUSHROOM);
+        api.oreDictToMaterialMapping.put("cropPumpkin", CulinaryHub.CommonMaterials.PUMPKIN);
 
         api.fluidToMaterialMapping.put(FluidRegistry.WATER.getName(), CulinaryHub.CommonMaterials.WATER);
         api.fluidToMaterialMapping.put(CuisineFluids.MILK.getName(), CulinaryHub.CommonMaterials.MILK);

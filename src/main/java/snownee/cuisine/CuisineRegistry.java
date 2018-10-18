@@ -134,4 +134,10 @@ public class CuisineRegistry implements IModule
 
     public static final PotionMod TOUGHNESS = new PotionMod("toughness", true, 4, false, 0x943943, -1, true);
 
+    @Override
+    public void init()
+    {
+        WOK.setContainerItem(WOK);
+        Item.getItemFromBlock(PLACED_DISH).setContainerItem(Item.getItemFromBlock(PLACED_DISH));
+    }
 }
