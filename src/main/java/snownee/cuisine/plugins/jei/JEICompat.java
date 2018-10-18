@@ -13,6 +13,7 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
@@ -48,13 +49,13 @@ public class JEICompat implements IModPlugin
 
         List<IRecipeWrapper> recipes = new ArrayList<>();
         CuisineInternalGateway.INSTANCE.itemToMaterialMapping.forEach((k, v) -> {
-            if (!v.getValidForms().isEmpty())
+            if (!v.getValidForms().isEmpty() && !(v.getValidForms().size() == 1 && v.getValidForms().contains(Form.JUICE)))
             {
                 recipes.add(new ChoppingBoardKnifeRecipe(k, v));
             }
         });
         CuisineInternalGateway.INSTANCE.oreDictToMaterialMapping.forEach((k, v) -> {
-            if (!v.getValidForms().isEmpty())
+            if (!v.getValidForms().isEmpty() && !(v.getValidForms().size() == 1 && v.getValidForms().contains(Form.JUICE)) && !OreDictionary.getOres(k, false).isEmpty())
             {
                 recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v));
             }
@@ -75,7 +76,7 @@ public class JEICompat implements IModPlugin
             }
         });
         CuisineInternalGateway.INSTANCE.oreDictToMaterialMapping.forEach((k, v) -> {
-            if (v.isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null)
+            if (v.isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
             {
                 recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v));
             }

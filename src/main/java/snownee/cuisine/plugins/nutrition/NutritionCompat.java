@@ -25,7 +25,6 @@ import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
-import snownee.cuisine.items.ItemAbstractComposite;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 
@@ -90,7 +89,7 @@ public class NutritionCompat implements IModule
             return;
         }
         ItemStack stack = event.getItem();
-        if (stack.getItem() == CuisineRegistry.INGREDIENT || stack.getItem() instanceof ItemAbstractComposite) // TODO (Snownee): code reuse
+        if (stack.getItem() == CuisineRegistry.INGREDIENT || stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null)) // TODO (Snownee): code reuse
         {
             List<Ingredient> ingredients;
             if (stack.getItem() == CuisineRegistry.INGREDIENT)
@@ -105,7 +104,7 @@ public class NutritionCompat implements IModule
             {
                 FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
                 CompositeFood composite;
-                if (container == null || (composite = container.get()) == null)
+                if ((composite = container.get()) == null)
                 {
                     return;
                 }

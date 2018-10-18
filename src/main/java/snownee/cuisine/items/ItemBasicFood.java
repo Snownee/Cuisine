@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineRegistry;
 import snownee.kiwi.client.ModelUtil;
 import snownee.kiwi.item.IModItem;
 import snownee.kiwi.util.VariantsHolder;
@@ -103,14 +104,14 @@ public class ItemBasicFood extends ItemFood implements IModItem
     {
         if (this.isInCreativeTab(tab))
         {
-            getVariants().stream().filter(v -> v.getMeta() != Variants.EMPOWERED_CITRON.getMeta()).forEach(v -> items.add(getItemStack(v)));
+            getVariants().stream().filter(v -> !(this == CuisineRegistry.BASIC_FOOD && v.getMeta() == Variants.EMPOWERED_CITRON.getMeta())).forEach(v -> items.add(getItemStack(v)));
         }
     }
 
     @Override
     public boolean hasEffect(ItemStack stack)
     {
-        return stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta();
+        return this == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta();
     }
 
     public static class Variants extends VariantsHolder<Variants.SubItem>
@@ -133,7 +134,7 @@ public class ItemBasicFood extends ItemFood implements IModItem
         public static final Variant<SubItem> LEMON = INSTANCE.addVariant(new SubItem("lemon"));
         public static final Variant<SubItem> GRAPEFRUIT = INSTANCE.addVariant(new SubItem("grapefruit"));
         public static final Variant<SubItem> LIME = INSTANCE.addVariant(new SubItem("lime"));
-        public static final Variant<SubItem> EMPOWERED_CITRON = INSTANCE.addVariant(new SubItem("empowered_citron"));
+        public static final Variant<SubItem> EMPOWERED_CITRON = INSTANCE.addVariant(new SubItem("empowered_citron", EnumRarity.RARE));
 
         public static class SubItem implements IStringSerializable
         {

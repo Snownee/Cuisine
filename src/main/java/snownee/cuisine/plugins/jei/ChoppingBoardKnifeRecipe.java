@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.items.ItemIngredient;
@@ -34,12 +35,15 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void getIngredients(IIngredients ingredients)
     {
         List<ItemStack> examples = input.examples();
+        examples.removeIf(i -> CulinaryHub.API_INSTANCE.findMaterial(i) != output);
         if (examples.isEmpty())
         {
+            System.out.println("skipping " + output);
             return;
         }
         ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(examples, knifes));

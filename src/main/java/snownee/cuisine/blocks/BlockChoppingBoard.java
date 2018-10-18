@@ -340,6 +340,7 @@ public class BlockChoppingBoard extends BlockMod
         {
             tooltip.add(TileChoppingBoard.DEFAULT_COVER.getDisplayName());
         }
+        super.addInformation(stack, world, tooltip, flagIn);
     }
 
     @SubscribeEvent

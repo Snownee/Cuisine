@@ -119,6 +119,8 @@ public class OreDictHandler
         OreDictionary.registerOre("treeSapling", new ItemStack(CuisineRegistry.SAPLING, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("foodDrink", CuisineRegistry.BOTTLE);
         OreDictionary.registerOre("toolMortarandpestle", CuisineRegistry.ITEM_MORTAR);
+        OreDictionary.registerOre("foodMushroom", Blocks.BROWN_MUSHROOM);
+        OreDictionary.registerOre("foodMushroom", Blocks.RED_MUSHROOM);
 
         // foodPickles
         OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_CABBAGE));

@@ -7,6 +7,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.items.ItemIngredient;
@@ -27,6 +28,7 @@ public class MortarPasteRecipe implements IRecipeWrapper
     public void getIngredients(IIngredients ingredients)
     {
         List<ItemStack> examples = input.examples();
+        examples.removeIf(i -> CulinaryHub.API_INSTANCE.findMaterial(i) != material);
         if (examples.isEmpty())
         {
             return;

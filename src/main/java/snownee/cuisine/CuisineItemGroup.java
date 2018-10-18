@@ -50,6 +50,8 @@ public class CuisineItemGroup extends CreativeTabs
         list.add(new ItemStack(Items.FISH));
         list.add(new ItemStack(Items.FISH, 1, 1));
         list.add(new ItemStack(Items.FISH, 1, 3));
+        list.add(new ItemStack(Blocks.BROWN_MUSHROOM));
+        list.add(new ItemStack(Blocks.RED_MUSHROOM));
         list.add(new ItemStack(Items.EGG));
 
         Stream.of(CuisineFluids.SOY_MILK, CuisineFluids.MILK, CuisineFluids.SOY_SAUCE, CuisineFluids.RICE_VINEGAR, CuisineFluids.FRUIT_VINEGAR, CuisineFluids.SESAME_OIL, CuisineFluids.EDIBLE_OIL, CuisineFluids.SUGARCANE_JUICE).map(fluid -> new FluidStack(fluid, Fluid.BUCKET_VOLUME)).map(FluidUtil::getFilledBucket).forEach(list::add);
