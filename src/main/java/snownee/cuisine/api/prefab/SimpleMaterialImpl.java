@@ -26,7 +26,15 @@ public class SimpleMaterialImpl implements Material
     public SimpleMaterialImpl(String id, int rawColor, int cookedColor, int waterValue, int oilValue, int heatValue, float foodSaturationModifier)
     {
         this.id = id;
+        if (rawColor >> 24 == 0)
+        {
+            rawColor |= 0xFF000000;
+        }
         this.rawColor = rawColor;
+        if (cookedColor >> 24 == 0)
+        {
+            cookedColor |= 0xFF000000;
+        }
         this.cookedColor = cookedColor;
         this.waterValue = waterValue;
         this.oilValue = oilValue;

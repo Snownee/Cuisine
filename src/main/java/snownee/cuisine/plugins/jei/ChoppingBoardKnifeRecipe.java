@@ -43,7 +43,6 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
         examples.removeIf(i -> CulinaryHub.API_INSTANCE.findMaterial(i) != output);
         if (examples.isEmpty())
         {
-            System.out.println("skipping " + output);
             return;
         }
         ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(examples, knifes));

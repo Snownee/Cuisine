@@ -111,7 +111,6 @@ public class OreDictHandler
 
         // MISC
         OreDictionary.registerOre("foodFirmtofu", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.TOFU));
-        OreDictionary.registerOre("foodWhiterice", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE));
         OreDictionary.registerOre("listAllwater", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.WATER));
         OreDictionary.registerOre("portionWaterLarge", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.WATER));
         OreDictionary.registerOre("foodFlour", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.FLOUR));

@@ -516,16 +516,16 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("chinese_cabbage", -1966111, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE)));
         api.register(new SimpleMaterialImpl("lettuce", -14433485, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE, Form.JUICE)));
         api.register(new SimpleMaterialImpl("corn", -3227867, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN).setValidForms(EnumSet.of(Form.MINCED, Form.JUICE)));
-        api.register(new SimpleMaterialImpl("cucumber", -15893221, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("cucumber", 0xDDDCE7BD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("green_pepper", -15107820, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE)));
         api.register(new SimpleMaterialImpl("red_pepper", -8581357, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE)));
         api.register(new SimpleMaterialImpl("leek", -15100888, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.CUBED, Form.MINCED, Form.PASTE)));
         api.register(new SimpleMaterialImpl("onion", -17409, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new SimpleMaterialImpl("eggplant", -11461535, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
+        api.register(new SimpleMaterialImpl("eggplant", 0xDCD295, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
         api.register(new MaterialWithEffect("spinach", CulinaryHub.CommonEffects.POWER, -15831787, 0, 1, 1, 1, 0.1F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE, Form.JUICE)));
         api.register(new MaterialWithEffect("tofu", CulinaryHub.CommonEffects.HARMONY, -2311026, 0, 1, 1, 1, 0.4F, MaterialCategory.PROTEIN, MaterialCategory.GRAIN).setValidForms(EnumSet.of(Form.CUBED, Form.SLICED, Form.DICED, Form.MINCED)));
         api.register(new MaterialChorusFruit("chorus_fruit", -6271615, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new MaterialApple("apple", -1296, 0, 1, 1, 1, 0.1F, MaterialCategory.FRUIT).setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        api.register(new MaterialApple("apple", 0xEEEBE5CB, 0, 1, 1, 1, 0.1F, MaterialCategory.FRUIT).setValidForms(ALL_FORMS_INCLUDING_JUICE));
         api.register(new MaterialWithEffect("golden_apple", CulinaryHub.CommonEffects.GOLDEN_APPLE, -1782472, 0, 1, 1, 1, 0.3F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(ALL_FORMS_INCLUDING_JUICE));
         api.register(new MaterialWithEffect("golden_apple_enchanted", CulinaryHub.CommonEffects.GOLDEN_APPLE_ENCHANTED, -1782472, 0, 1, 1, 1, 0.3F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL)
         {
@@ -550,8 +550,8 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("fish", -10583426, 0, 1, 1, 1, 0F, MaterialCategory.FISH).setValidForms(ALL_FORMS));
         api.register(new MaterialPufferfish("pufferfish", 0xFFFFE1C4, 0, 1, 1, 1, 0.2F, MaterialCategory.FISH).setValidForms(EnumSet.copyOf(ALL_FORMS)));
         api.register(new MaterialWithEffect("pickled", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -13784, 0, 1, 1, 1, 0.3F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
-        api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -15893221, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
-        api.register(new MaterialWithEffect("cactus", CulinaryHub.CommonEffects.HEAT_RESISTANCE, -15831787, 0, 1, 1, 1, -0.1F).setValidForms(EnumSet.of(Form.CUBED, Form.DICED, Form.JUICE)));
+        api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, 0xF9ECDD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
+        api.register(new MaterialWithEffect("cactus", CulinaryHub.CommonEffects.HEAT_RESISTANCE, 0xA9BC98, 0, 1, 1, 1, -0.1F).setValidForms(EnumSet.of(Form.CUBED, Form.DICED, Form.JUICE)));
         api.register(new SimpleMaterialImpl("water", -15831787, 0, 1, 1, 1, -0.1F).setValidForms(JUICE_ONLY));
         api.register(new SimpleMaterialImpl("milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(JUICE_ONLY));
         api.register(new SimpleMaterialImpl("soy_milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(JUICE_ONLY));
@@ -600,7 +600,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToMaterialMapping.put("cropSoybean", CulinaryHub.CommonMaterials.SOYBEAN);
         api.oreDictToMaterialMapping.put("cropTomato", CulinaryHub.CommonMaterials.TOMATO);
         api.oreDictToMaterialMapping.put("cropChilipepper", CulinaryHub.CommonMaterials.CHILI);
-        api.oreDictToMaterialMapping.put("foodWhiterice", CulinaryHub.CommonMaterials.RICE);
+        api.oreDictToMaterialMapping.put("foodRice", CulinaryHub.CommonMaterials.RICE);
         api.oreDictToMaterialMapping.put("cropGarlic", CulinaryHub.CommonMaterials.GARLIC);
         api.oreDictToMaterialMapping.put("cropGinger", CulinaryHub.CommonMaterials.GINGER);
         api.oreDictToMaterialMapping.put("cropSichuanpepper", CulinaryHub.CommonMaterials.SICHUAN_PEPPER);
