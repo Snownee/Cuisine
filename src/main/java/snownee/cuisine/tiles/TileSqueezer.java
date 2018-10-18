@@ -27,20 +27,13 @@ public class TileSqueezer extends TileBase implements ITickable
     {
         EXTRACTED, EXTENDING, EXTENDED, EXTRACTING;
 
-        final String stateName;
-
-        State()
-        {
-            stateName = this.name().toLowerCase(Locale.ENGLISH);
-        }
+        final String stateName = this.name().toLowerCase(Locale.ENGLISH);
     }
 
     /**
-     * The farthest offset that "piston arm" can reach. Negative means it moves
-     * on negative direction, and in this case it is down direction (negative
-     * y-axis).
+     * The absolute value of farthest offset that "piston arm" can reach.
      */
-    private static final float OFFSET_LIMIT = -0.78125F;
+    private static final float OFFSET_LIMIT = 0.78125F;
 
     /**
      * Location of animation state machine definition file used for squeezer.
@@ -53,8 +46,6 @@ public class TileSqueezer extends TileBase implements ITickable
 
     private int extensionProgress;
 
-    private boolean triggered;
-
     private State state = State.EXTRACTED;
 
     public TileSqueezer()
@@ -62,39 +53,40 @@ public class TileSqueezer extends TileBase implements ITickable
         this.stateMachine = Cuisine.proxy.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
     }
 
-    public void onTriggered(boolean triggered)
-    {
-        this.triggered = triggered;
-    }
-
     @Override
     public void update()
     {
-        switch (state)
+        if (!world.isRemote)
         {
-            case EXTENDING:
+            return;
+        }
+
+        if (this.state == State.EXTENDING && State.EXTENDING.stateName.equals(this.stateMachine.currentState()))
+        {
+            extensionProgress += 10;
+            if (extensionProgress >= 100)
             {
-                extensionProgress += 5;
-                extensionOffset.setValue(+ extensionProgress / 100F * OFFSET_LIMIT);
-                if (extensionProgress >= 100)
-                {
-                    extensionProgress = 100;
-                    stateMachine.transition(State.EXTENDED.stateName);
-                    state = State.EXTENDED;
-                }
-                break;
+                //extensionProgress = 100;
+                stateMachine.transition(State.EXTENDED.stateName);
+                state = State.EXTENDED;
             }
-            case EXTRACTING:
+            else
             {
-                extensionProgress -= 5;
-                extensionOffset.setValue(- extensionProgress / 100F * OFFSET_LIMIT);
-                if (extensionProgress <= 0)
-                {
-                    extensionProgress = 0;
-                    stateMachine.transition(State.EXTRACTED.stateName);
-                    state = State.EXTRACTED;
-                }
-                break;
+                extensionOffset.setValue((extensionProgress + Animation.getPartialTickTime()) / 100F * OFFSET_LIMIT);
+            }
+        }
+        else if (this.state == State.EXTRACTING && State.EXTRACTING.stateName.equals(this.stateMachine.currentState()))
+        {
+            extensionProgress -= 10;
+            if (extensionProgress <= 0)
+            {
+                extensionProgress = 0;
+                stateMachine.transition(State.EXTRACTED.stateName);
+                state = State.EXTRACTED;
+            }
+            else
+            {
+                extensionOffset.setValue((extensionProgress + Animation.getPartialTickTime()) / 100F * OFFSET_LIMIT);
             }
         }
     }
@@ -104,6 +96,10 @@ public class TileSqueezer extends TileBase implements ITickable
         if (this.state == State.EXTRACTED || this.state == State.EXTRACTING)
         {
             this.state = State.EXTENDING;
+            if (!State.EXTENDING.stateName.equals(this.stateMachine.currentState()))
+            {
+                this.stateMachine.transition(State.EXTENDING.stateName);
+            }
         }
     }
 
@@ -112,6 +108,10 @@ public class TileSqueezer extends TileBase implements ITickable
         if (this.state == State.EXTENDED || this.state == State.EXTENDING)
         {
             this.state = State.EXTRACTING;
+            if (!State.EXTRACTING.stateName.equals(this.stateMachine.currentState()))
+            {
+                this.stateMachine.transition(State.EXTRACTING.stateName);
+            }
         }
     }
 
@@ -134,7 +134,7 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        this.triggered = this.world.getBlockState(this.pos).getValue(BlockDispenser.TRIGGERED);
+        boolean triggered = this.world.getBlockState(this.pos).getValue(BlockDispenser.TRIGGERED);
         if (triggered)
         {
             this.startExtending();
@@ -149,7 +149,6 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        //data.setBoolean("triggered", this.triggered);
         return data;
     }
 

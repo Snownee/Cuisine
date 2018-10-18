@@ -1,13 +1,10 @@
 {
-  "parameters": {
-    "animation_param": [ "-", [ "compose", [ "+", 1 ], "#magic" ] ],
-    "progress": [ "-", "#magic" ]
-  },
+  "parameters": {},
   "clips": {
-    "extended": [ "apply", "cuisine:block/piston_extension@arm_extended", -0.78125 ],
+    "extended": "cuisine:block/piston_extension@arm_extended",
     "extracted": "cuisine:block/piston_extension@arm_extracted",
-    "extending": [ "apply", "cuisine:block/piston_extension@arm_extended", "#offset" ],
-    "extracting": [ "apply", "cuisine:block/piston_extension@arm_extended", "#offset" ]
+    "extending": [ "apply", "cuisine:block/piston_extension@arm_moving", "#offset" ],
+    "extracting": [ "apply", "cuisine:block/piston_extension@arm_moving", "#offset" ]
   },
   "states": [
     "extending",

@@ -76,7 +76,6 @@ public class BlockSqueezer extends BlockMod
         {
             return;
         }
-        TileSqueezer squeezer = (TileSqueezer) tile;
         if (pre && !post)
         {
             worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.FALSE));
