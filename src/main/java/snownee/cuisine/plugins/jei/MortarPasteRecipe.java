@@ -2,6 +2,7 @@ package snownee.cuisine.plugins.jei;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
@@ -28,7 +29,7 @@ public class MortarPasteRecipe implements IRecipeWrapper
     public void getIngredients(IIngredients ingredients)
     {
         List<ItemStack> examples = input.examples();
-        examples.removeIf(i -> CulinaryHub.API_INSTANCE.findMaterial(i) != material);
+        examples = examples.stream().filter(i -> CulinaryHub.API_INSTANCE.findMaterial(i) == material).collect(Collectors.toList());
         if (examples.isEmpty())
         {
             return;

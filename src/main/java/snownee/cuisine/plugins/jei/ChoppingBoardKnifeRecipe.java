@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
@@ -40,7 +41,7 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
     public void getIngredients(IIngredients ingredients)
     {
         List<ItemStack> examples = input.examples();
-        examples.removeIf(i -> CulinaryHub.API_INSTANCE.findMaterial(i) != output);
+        examples = examples.stream().filter(i -> CulinaryHub.API_INSTANCE.findMaterial(i) == output).collect(Collectors.toList());
         if (examples.isEmpty())
         {
             return;

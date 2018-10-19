@@ -60,8 +60,7 @@ public class JEICompat implements IModPlugin
                 recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v));
             }
         });*/
-        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) ->
-        {
+        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
                 if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)))
@@ -70,8 +69,7 @@ public class JEICompat implements IModPlugin
                 }
             }
         });
-        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
-        {
+        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) -> {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
                 if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)))
@@ -89,28 +87,14 @@ public class JEICompat implements IModPlugin
         recipes.clear();
         registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY), MortarRecipeCategory.UID);
         Processing.GRINDING.preview().forEach(recipe -> recipes.add(new MortarGenericRecipe(recipe)));
-        /*CuisineInternalGateway.INSTANCE.itemToMaterialMapping.forEach((k, v) -> {
-            if (v.isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
-            {
-                recipes.add(new MortarPasteRecipe(k, v));
-            }
-        });
-        CuisineInternalGateway.INSTANCE.oreDictToMaterialMapping.forEach((k, v) -> {
-            if (v.isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
-            {
-                recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v));
-            }
-        });*/
-        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) ->
-        {
-            if (v.getForm() != Form.PASTE && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
+        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
+            if (v.getForm() != Form.PASTE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
             {
                 recipes.add(new MortarPasteRecipe(k, v.getMaterial()));
             }
         });
-        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
-        {
-            if (v.getForm() != Form.PASTE && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
+        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) -> {
+            if (v.getForm() != Form.PASTE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
             {
                 recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v.getMaterial()));
             }
