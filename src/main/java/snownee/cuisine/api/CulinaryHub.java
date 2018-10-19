@@ -2,6 +2,8 @@ package snownee.cuisine.api;
 
 import snownee.cuisine.api.prefab.SimpleCulinarySkillImpl;
 
+import java.util.Objects;
+
 /**
  * The core class of Cuisine API that holds the main API interface reference.
  *
@@ -75,7 +77,8 @@ public final class CulinaryHub
 
         private static Material find(final String uniqueName)
         {
-            return CulinaryHub.API_INSTANCE.findMaterial(uniqueName);
+            return Objects.requireNonNull(CulinaryHub.API_INSTANCE.findMaterial(uniqueName),
+                    "Material '" +  uniqueName + "' is not found in registry. Typo?");
         }
 
         private CommonMaterials()
@@ -104,11 +107,6 @@ public final class CulinaryHub
 
         private CommonSpices()
         {
-        }
-
-        public static void init()
-        {
-            // No-op for now, only triggering classloading
         }
     }
 

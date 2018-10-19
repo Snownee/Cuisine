@@ -635,10 +635,6 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleSpiceImpl("salt", 16383998));
         api.register(new SimpleSpiceImpl("sugar", 16383998));
 
-        CulinaryHub.CommonSpices.init();
-
-        CulinaryHub.CommonSkills.init();
-
         api.fluidToSpiceMapping.put(CuisineFluids.EDIBLE_OIL.getName(), CulinaryHub.CommonSpices.EDIBLE_OIL);
         api.fluidToSpiceMapping.put(CuisineFluids.SESAME_OIL.getName(), CulinaryHub.CommonSpices.SESAME_OIL);
         api.fluidToSpiceMapping.put(CuisineFluids.SOY_SAUCE.getName(), CulinaryHub.CommonSpices.SOY_SAUCE);
@@ -653,6 +649,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToSpiceMapping.put("dustSalt", CulinaryHub.CommonSpices.SALT);
         api.oreDictToSpiceMapping.put("dustCrudesalt", CulinaryHub.CommonSpices.CRUDE_SALT);
 
+        CulinaryHub.CommonSkills.init();
     }
 
 }
