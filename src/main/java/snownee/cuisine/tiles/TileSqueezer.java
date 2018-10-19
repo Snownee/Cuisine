@@ -63,7 +63,7 @@ public class TileSqueezer extends TileBase implements ITickable
 
         if (this.state == State.EXTENDING && State.EXTENDING.stateName.equals(this.stateMachine.currentState()))
         {
-            extensionProgress += 10;
+            extensionProgress += 20;
             if (extensionProgress >= 100)
             {
                 //extensionProgress = 100;
@@ -77,7 +77,7 @@ public class TileSqueezer extends TileBase implements ITickable
         }
         else if (this.state == State.EXTRACTING && State.EXTRACTING.stateName.equals(this.stateMachine.currentState()))
         {
-            extensionProgress -= 10;
+            extensionProgress -= 20;
             if (extensionProgress <= 0)
             {
                 extensionProgress = 0;
