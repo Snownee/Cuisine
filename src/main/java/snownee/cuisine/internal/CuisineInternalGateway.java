@@ -356,7 +356,6 @@ public final class CuisineInternalGateway implements CuisineAPI
             return null;
         }
 
-
         if (fluid.getFluid() == CuisineFluids.JUICE) // Special-casing Cuisine "juice" fluid
         {
             if (fluid.tag == null || !fluid.tag.hasKey("material", Constants.NBT.TAG_STRING))
@@ -646,6 +645,30 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToSpiceMapping.put("dustCrudesalt", CulinaryHub.CommonSpices.CRUDE_SALT);
 
         CulinaryHub.CommonSkills.init();
+    }
+
+    @Override
+    public void registerMapping(ItemDefinition item, Ingredient ingredient)
+    {
+        itemIngredients.put(item, ingredient);
+    }
+
+    @Override
+    public void registerMapping(String ore, Ingredient ingredient)
+    {
+        oreDictIngredients.put(ore, ingredient);
+    }
+
+    @Override
+    public void registerMapping(ItemDefinition item, Spice spice)
+    {
+        itemToSpiceMapping.put(item, spice);
+    }
+
+    @Override
+    public void registerMapping(String ore, Spice spice)
+    {
+        oreDictToSpiceMapping.put(ore, spice);
     }
 
 }

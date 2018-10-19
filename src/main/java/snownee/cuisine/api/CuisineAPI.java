@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.kiwi.util.definition.ItemDefinition;
 
 /**
  * Main interface that one can use to interact with Cuisine's internal.
@@ -89,11 +90,26 @@ public interface CuisineAPI
      *
      * @param <F> the concrete type of CompositeFood
      */
-    <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator,
-                                                    Class<F> typeToken,
-                                                    Function<F, NBTTagCompound> serializer,
-                                                    Function<NBTTagCompound, F> deserializer);
+    <F extends CompositeFood> void registerFoodType(ResourceLocation uniqueLocator, Class<F> typeToken, Function<F, NBTTagCompound> serializer, Function<NBTTagCompound, F> deserializer);
     // TODO Do we really need that typeToken?
+
+    default void registerMapping(ItemDefinition item, Material material)
+    {
+        registerMapping(item, new Ingredient(material));
+    }
+
+    default void registerMapping(String ore, Material material)
+    {
+        registerMapping(ore, new Ingredient(material));
+    }
+
+    void registerMapping(ItemDefinition item, Ingredient ingredient);
+
+    void registerMapping(String ore, Ingredient ingredient);
+
+    void registerMapping(ItemDefinition item, Spice spice);
+
+    void registerMapping(String ore, Spice spice);
 
     /**
      *
@@ -153,7 +169,11 @@ public interface CuisineAPI
      *
      * @deprecated WIP, do not use
      */
-    @Deprecated default @Nullable Recipe tryMatchRecipe(CompositeFood food) { return null; } // TODO
+    @Deprecated
+    default @Nullable Recipe tryMatchRecipe(CompositeFood food)
+    {
+        return null;
+    } // TODO
 
     /**
      * Query the whole registry and find the desired {@link Material} object
@@ -289,9 +309,11 @@ public interface CuisineAPI
     boolean isKnownSpice(@Nullable FluidStack fluid);
 
     // TODO (3TUSK): Documentation
-    @Nullable Ingredient findIngredient(ItemStack item);
+    @Nullable
+    Ingredient findIngredient(ItemStack item);
 
     // TODO (3TUSK): Documentation
-    @Nullable Ingredient findIngredient(@Nullable FluidStack fluid);
+    @Nullable
+    Ingredient findIngredient(@Nullable FluidStack fluid);
 
 }
