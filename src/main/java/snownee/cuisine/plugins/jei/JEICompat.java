@@ -64,14 +64,20 @@ public class JEICompat implements IModPlugin
         {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
-                recipes.add(new ChoppingBoardKnifeRecipe(k, v.getMaterial()));
+                if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)))
+                {
+                    recipes.add(new ChoppingBoardKnifeRecipe(k, v.getMaterial()));
+                }
             }
         });
         CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
         {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
-                recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v.getMaterial()));
+                if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)))
+                {
+                    recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v.getMaterial()));
+                }
             }
         });
         if (CuisineConfig.PROGRESSION.axeChopping)
@@ -104,7 +110,7 @@ public class JEICompat implements IModPlugin
         });
         CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
         {
-            if (v.getForm() != Form.PASTE && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null)
+            if (v.getForm() != Form.PASTE && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
             {
                 recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v.getMaterial()));
             }
