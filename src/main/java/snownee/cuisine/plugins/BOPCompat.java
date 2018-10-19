@@ -34,9 +34,9 @@ public class BOPCompat implements IModule
         Item itemKelp = Item.getByNameOrId("biomesoplenty:seaweed");
         if (itemKelp != null)
         {
-            OreDictionary.registerOre("cropKelp", new ItemStack(itemKelp));
-            Material kelp = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("kelp", 0x99909648, 0, 0, 0, 0, 0, MaterialCategory.SEAFOOD).setValidForms(Form.JUICE_ONLY));
-            CulinaryHub.API_INSTANCE.registerMapping("cropKelp", kelp);
+            OreDictionary.registerOre("cropSeaweed", new ItemStack(itemKelp));
+            Material seaweed = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("seaweed", 0x99909648, 0, 0, 0, 0, 0, MaterialCategory.SEAFOOD).setValidForms(Form.JUICE_ONLY));
+            CulinaryHub.API_INSTANCE.registerMapping("cropSeaweed", seaweed);
         }
         Item itemBambooshoot = Item.getByNameOrId("biomesoplenty:sapling_0");
         if (itemBambooshoot != null)

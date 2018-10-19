@@ -2,6 +2,7 @@ package snownee.cuisine.plugins;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.MinecraftForge;
@@ -10,7 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
+import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.tiles.TileBasinHeatable;
@@ -49,6 +53,19 @@ public class TANCompat implements IModule
         @SuppressWarnings("deprecation")
         IBlockState state = TANBlocks.temperature_coil.getStateFromMeta(9);
         TileBasinHeatable.STATE_HEAT_SOURCES.put(state, 4);
+
+        Item juice = Item.getByNameOrId("toughasnails:fruit_juice");
+        if (juice != null)
+        {
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 0), new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 1), new Ingredient(CulinaryHub.CommonMaterials.BEETROOT, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 2), new Ingredient(CulinaryHub.CommonMaterials.CACTUS, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 3), new Ingredient(CulinaryHub.CommonMaterials.CARROT, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 4), new Ingredient(CulinaryHub.CommonMaterials.CHORUS_FRUIT, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 6), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_APPLE, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 8), new Ingredient(CulinaryHub.CommonMaterials.MELON, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 9), new Ingredient(CulinaryHub.CommonMaterials.PUMPKIN, Form.JUICE, 0.5));
+        }
     }
 
     @SubscribeEvent

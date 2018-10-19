@@ -1,7 +1,10 @@
 package snownee.cuisine.plugins;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.Item;
 import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.kiwi.util.definition.ItemDefinition;
 
@@ -11,17 +14,36 @@ public final class Helper
     {
     }
 
-    public static void registerMaterial(Material material, String uid)
+    @Nullable
+    public static Material registerMaterial(Material material, String uid)
     {
-        registerMaterial(material, uid, 0);
+        return registerMaterial(material, uid, 0);
     }
 
-    public static void registerMaterial(Material material, String uid, int meta)
+    @Nullable
+    public static Material registerMaterial(Material material, String uid, int meta)
     {
         Item item = Item.getByNameOrId(uid);
-        if (uid != null)
+        if (material != null && item != null)
         {
-            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(item), material);
+            material = CulinaryHub.API_INSTANCE.register(material);
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(item, meta), material);
+            return material;
+        }
+        return null;
+    }
+
+    public static void registerMapping(Ingredient ingredient, String uid)
+    {
+        registerMapping(ingredient, uid, 0);
+    }
+
+    public static void registerMapping(Ingredient ingredient, String uid, int meta)
+    {
+        Item item = Item.getByNameOrId(uid);
+        if (ingredient != null && item != null)
+        {
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(item, meta), ingredient);
         }
     }
 }
