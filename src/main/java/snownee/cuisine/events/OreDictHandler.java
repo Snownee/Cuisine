@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
@@ -141,6 +142,7 @@ public class OreDictHandler
         public static Consumer<Variant> create(ItemBasicFood item)
         {
             return v -> {
+                boolean loaded = Loader.isModLoaded("vanillafoodpantry");
                 ItemStack stack = item.getItemStack(v);
                 Material material = CulinaryHub.API_INSTANCE.findMaterial(stack);
                 if (material == null)
@@ -152,13 +154,16 @@ public class OreDictHandler
                     if (category.getOreName() != null && material.isUnderCategoryOf(category))
                     {
                         OreDictionary.registerOre("listAll" + category.getOreName(), stack);
-                        if (category == MaterialCategory.VEGETABLES)
+                        if (loaded)
                         {
-                            OreDictionary.registerOre("ingredientKebabFill", stack);
-                        }
-                        if (category == MaterialCategory.GRAIN)
-                        {
-                            OreDictionary.registerOre("ingredientCereal", stack);
+                            if (category == MaterialCategory.VEGETABLES)
+                            {
+                                OreDictionary.registerOre("ingredientKebabFill", stack);
+                            }
+                            if (category == MaterialCategory.GRAIN)
+                            {
+                                OreDictionary.registerOre("ingredientCereal", stack);
+                            }
                         }
                     }
                 }

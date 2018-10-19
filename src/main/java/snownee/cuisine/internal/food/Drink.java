@@ -63,6 +63,7 @@ public class Drink extends CompositeFood
             FEATURE_INPUTS.put(ItemDefinition.of(Blocks.PACKED_ICE), DrinkType.SMOOTHIE);
             FEATURE_INPUTS.put(OreDictDefinition.of("slimeball"), DrinkType.GELO);
             FEATURE_INPUTS.put(OreDictDefinition.of("foodGelatine"), DrinkType.GELO);
+            FEATURE_INPUTS.put(OreDictDefinition.of("ingotGelatin"), DrinkType.GELO);
             FEATURE_INPUTS.put(OreDictDefinition.of("dustRedstone"), DrinkType.SODA);
         }
 
