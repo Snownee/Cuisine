@@ -88,13 +88,13 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY), MortarRecipeCategory.UID);
         Processing.GRINDING.preview().forEach(recipe -> recipes.add(new MortarGenericRecipe(recipe)));
         CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
-            if (v.getForm() != Form.PASTE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
+            if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
             {
                 recipes.add(new MortarPasteRecipe(k, v.getMaterial()));
             }
         });
         CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) -> {
-            if (v.getForm() != Form.PASTE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
+            if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
             {
                 recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v.getMaterial()));
             }

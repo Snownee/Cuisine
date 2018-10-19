@@ -10,7 +10,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.CulinarySkillPoint;
 import snownee.cuisine.api.Form;
-import snownee.cuisine.api.Material;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.util.SkillUtil;
@@ -61,10 +61,10 @@ public class TileMortar extends TileInventoryBase
             {
                 processTime = 0;
                 ItemStack input = this.stacks.getStackInSlot(0);
-                Material material = CulinaryHub.API_INSTANCE.findMaterial(stacks.getStackInSlot(0));
-                if (material != null && material.isValidForm(Form.PASTE))
+                Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stacks.getStackInSlot(0));
+                if (ingredient != null && ingredient.getForm() != Form.PASTE && ingredient.getForm() != Form.JUICE && ingredient.getMaterial().isValidForm(Form.PASTE))
                 {
-                    ItemStack output = ItemIngredient.make(material, Form.PASTE, RarityManager.getRarity(input) == EnumRarity.COMMON ? 0.8F : 1.2F);
+                    ItemStack output = ItemIngredient.make(ingredient.getMaterial(), Form.PASTE, RarityManager.getRarity(input) == EnumRarity.COMMON ? 0.8F : 1.2F);
                     StacksUtil.spawnItemStack(world, getPos(), output, true);
                     this.recipe = null; // Stop things from happening
                     input.shrink(1);
@@ -78,8 +78,8 @@ public class TileMortar extends TileInventoryBase
             recipe = Processing.GRINDING.findRecipe(stacks.getStacks().toArray(new Object[5]));
             if (recipe == null)
             {
-                Material material = CulinaryHub.API_INSTANCE.findMaterial(stacks.getStackInSlot(0));
-                if (material != null && material.isValidForm(Form.PASTE))
+                Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stacks.getStackInSlot(0));
+                if (ingredient != null && ingredient.getForm() != Form.PASTE && ingredient.getForm() != Form.JUICE && ingredient.getMaterial().isValidForm(Form.PASTE))
                 {
                     makingPaste = true;
                 }
