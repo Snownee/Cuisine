@@ -33,6 +33,11 @@ public final class Milling implements CuisineProcessingRecipe
         this(input, output, null, null);
     }
 
+    public Milling(ProcessingInput input, ItemStack output)
+    {
+        this(input, output, null, null);
+    }
+
     @Nonnull
     public ProcessingInput getInput()
     {

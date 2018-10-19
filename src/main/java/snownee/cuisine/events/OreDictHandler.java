@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
@@ -28,10 +27,9 @@ public class OreDictHandler
         OreDictionary.registerOre("cropWheat", Items.WHEAT);
         OreDictionary.registerOre("listAllgrain", Items.WHEAT);
         OreDictionary.registerOre("cropSesame", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SESAME));
-        OreDictionary.registerOre("cropBrownrice", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.RICE));
+        OreDictionary.registerOre("cropRice", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.RICE));
         OreDictionary.registerOre("cropSoybean", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SOYBEAN));
         OreDictionary.registerOre("cropCorn", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.CORN));
-        OreDictionary.registerOre("cropRice", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE));
         OreDictionary.registerOre("foodRice", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE));
 
         // VEGGIE
