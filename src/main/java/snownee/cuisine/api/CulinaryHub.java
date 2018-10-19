@@ -65,7 +65,7 @@ public final class CulinaryHub
         public static final Material CACTUS = find("cactus");
         public static final Material WATER = find("water");
         public static final Material MILK = find("milk");
-        public static final Material SOY_MILK = find("soymilk");
+        public static final Material SOY_MILK = find("soy_milk");
         public static final Material MANDARIN = find("mandarin");
         public static final Material CITRON = find("citron");
         public static final Material POMELO = find("pomelo");
