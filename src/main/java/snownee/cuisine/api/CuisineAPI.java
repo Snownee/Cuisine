@@ -30,29 +30,49 @@ public interface CuisineAPI
 
     /**
      * Register a {@link Material} into Cuisine, so that Cuisine will recognize it.
+     * The registration process follows "first come, first serve" basis; that said,
+     * if two {@link Material} instances with the same {@link Material#getID()
+     * identifier} are registered, only the first one registered will be recognized.
      *
      * @param material The material to be registered.
+     *
+     * @return The currently recognized Material object with the same identifier.
      */
     Material register(Material material);
 
     /**
      * Register a {@link Spice} into Cuisine, so that Cuisine will recognize it.
+     * The registration process follows "first come, first serve" basis; that said,
+     * if two {@link Spice} instances with the same {@link Spice#getID()
+     * identifier} are registered, only the first one registered will be recognized.
      *
      * @param spice The spice to be registered.
+     *
+     * @return The currently recognized Spice object with the same identifier.
      */
     Spice register(Spice spice);
 
     /**
      * Register a {@link Effect} into Cuisine, so that Cuisine will recognize it.
+     * The registration process follows "first come, first serve" basis; that said,
+     * if two {@link Effect} instances with the same {@link Effect#getID()
+     * identifier} are registered, only the first one registered will be recognized.
      *
-     * @param effect The material to be registered.
+     * @param effect The effect to be registered.
+     *
+     * @return The currently recognized Effect object with the same identifier.
      */
     Effect register(Effect effect);
 
     /**
      * Register a {@link Recipe} into Cuisine, so that Cuisine will recognize it.
+     * The registration process follows "first come, first serve" basis; that said,
+     * if two {@link Recipe} instances with the same {@link Recipe#name()
+     * identifier} are registered, only the first one registered will be recognized.
      *
-     * @param recipe The material to be registered.
+     * @param recipe The recipe to be registered.
+     *
+     * @return The currently recognized Recipe object with the same identifier.
      */
     Recipe register(Recipe recipe);
 

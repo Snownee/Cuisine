@@ -52,7 +52,15 @@ public final class Ingredient
         material.onCrafted(this);
     }
 
-    // TODO (3TUSK): abstraction
+    /**
+     * @deprecated Until it migrates to {@link CuisineAPI#findIngredient(ItemStack)}.
+     *             Also consider about moving to a separate class, maybe...
+     *
+     * @param stack item
+     * @param baseSize initial size of returned ingredient
+     * @return Ingredient instance, with adjusted size
+     */
+    @Deprecated
     public static Ingredient make(ItemStack stack, float baseSize)
     {
         Material m = CulinaryHub.API_INSTANCE.findMaterial(stack);
@@ -183,6 +191,15 @@ public final class Ingredient
     public boolean equalsIgnoreSize(@Nonnull Ingredient other)
     {
         return getMaterial().equals(other.getMaterial()) && getForm().equals(other.getForm()) && this.traits.equals(other.traits);
+    }
+
+    public final Ingredient copy()
+    {
+        Ingredient theCopy = new Ingredient(this.material, this.form, this.quantity, this.traits.clone());
+        theCopy.water = this.water;
+        theCopy.oil = this.oil;
+        theCopy.heat = this.heat;
+        return theCopy;
     }
 
     @SideOnly(Side.CLIENT)

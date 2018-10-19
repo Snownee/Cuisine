@@ -48,7 +48,7 @@ public class JEICompat implements IModPlugin
         BlockChoppingBoard.getSuitableCovers().stream().map(CuisineRegistry.CHOPPING_BOARD::getItemStack).forEach(stack -> registry.addRecipeCatalyst(stack, ChoppingBoardRecipeCategory.UID));
 
         List<IRecipeWrapper> recipes = new ArrayList<>();
-        CuisineInternalGateway.INSTANCE.itemToMaterialMapping.forEach((k, v) -> {
+        /*CuisineInternalGateway.INSTANCE.itemToMaterialMapping.forEach((k, v) -> {
             if (!v.getValidForms().isEmpty() && !(v.getValidForms().size() == 1 && v.getValidForms().contains(Form.JUICE)))
             {
                 recipes.add(new ChoppingBoardKnifeRecipe(k, v));
@@ -58,6 +58,20 @@ public class JEICompat implements IModPlugin
             if (!v.getValidForms().isEmpty() && !(v.getValidForms().size() == 1 && v.getValidForms().contains(Form.JUICE)) && !OreDictionary.getOres(k, false).isEmpty())
             {
                 recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v));
+            }
+        });*/
+        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) ->
+        {
+            if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
+            {
+                recipes.add(new ChoppingBoardKnifeRecipe(k, v.getMaterial()));
+            }
+        });
+        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
+        {
+            if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
+            {
+                recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v.getMaterial()));
             }
         });
         if (CuisineConfig.PROGRESSION.axeChopping)
@@ -69,7 +83,7 @@ public class JEICompat implements IModPlugin
         recipes.clear();
         registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY), MortarRecipeCategory.UID);
         Processing.GRINDING.preview().forEach(recipe -> recipes.add(new MortarGenericRecipe(recipe)));
-        CuisineInternalGateway.INSTANCE.itemToMaterialMapping.forEach((k, v) -> {
+        /*CuisineInternalGateway.INSTANCE.itemToMaterialMapping.forEach((k, v) -> {
             if (v.isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
             {
                 recipes.add(new MortarPasteRecipe(k, v));
@@ -79,6 +93,20 @@ public class JEICompat implements IModPlugin
             if (v.isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
             {
                 recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v));
+            }
+        });*/
+        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) ->
+        {
+            if (v.getForm() != Form.PASTE && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
+            {
+                recipes.add(new MortarPasteRecipe(k, v.getMaterial()));
+            }
+        });
+        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
+        {
+            if (v.getForm() != Form.PASTE && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null)
+            {
+                recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v.getMaterial()));
             }
         });
         registry.addRecipes(recipes, MortarRecipeCategory.UID);

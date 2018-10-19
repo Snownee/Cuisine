@@ -81,11 +81,6 @@ public final class CulinaryHub
         private CommonMaterials()
         {
         }
-
-        public static void init()
-        {
-            // NO-OP
-        }
     }
 
     public static final class CommonSpices
