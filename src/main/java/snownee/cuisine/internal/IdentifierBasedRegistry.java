@@ -32,7 +32,8 @@ final class IdentifierBasedRegistry<E>
 
     public E register(String identifier, E candidate)
     {
-        return registry.putIfAbsent(Objects.requireNonNull(identifier), candidate);
+        E ret = registry.putIfAbsent(Objects.requireNonNull(identifier), candidate);
+        return ret == null ? candidate : ret;
     }
 
     @Nullable

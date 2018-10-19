@@ -1,5 +1,6 @@
 package snownee.cuisine.api;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -18,6 +19,10 @@ public enum Form implements IStringSerializable
     MINCED, //碎
     PASTE, //酱
     JUICE; //汁
+
+    public static final EnumSet<Form> ALL_FORMS = EnumSet.complementOf(EnumSet.of(Form.FULL, Form.JUICE));
+    public static final EnumSet<Form> ALL_FORMS_INCLUDING_JUICE = EnumSet.complementOf(EnumSet.of(Form.FULL));
+    public static final EnumSet<Form> JUICE_ONLY = EnumSet.of(Form.JUICE);
 
     // Remember to adjust the initial size when there are new forms
     private static final Map<String, Form> LOOKUP_TABLE = new HashMap<>(8);

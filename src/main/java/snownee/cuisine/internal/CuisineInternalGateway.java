@@ -287,7 +287,7 @@ public final class CuisineInternalGateway implements CuisineAPI
             return null;
         }
 
-        if (item.getItem() instanceof ItemIngredient)
+        if (item.getItem().getClass() == ItemIngredient.class)
         {
             NBTTagCompound data = item.getTagCompound();
             if (data == null)
@@ -490,11 +490,6 @@ public final class CuisineInternalGateway implements CuisineAPI
         // As mentioned above, Material registration will trigger class loading of the class
         // CulinaryHub.CommonEffects, so we don't have to explicitly trigger it here.
 
-        // We are EnumSet, so we use the blazing fast way to get everything except Form.FULL
-        final EnumSet<Form> ALL_FORMS = EnumSet.complementOf(EnumSet.of(Form.FULL, Form.JUICE));
-        final EnumSet<Form> ALL_FORMS_INCLUDING_JUICE = EnumSet.complementOf(EnumSet.of(Form.FULL));
-        final EnumSet<Form> JUICE_ONLY = EnumSet.of(Form.JUICE);
-
         // TODO (3TUSK): Assign each material a base heal amount and a base saturation
         // modifier.
         // 注：1 点饥饿相当于半个鸡腿！玩家的饥饿值上限是 20。
@@ -506,27 +501,27 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("sesame", -15000805, 0, 1, 1, 1, 0F, MaterialCategory.GRAIN));
         api.register(new SimpleMaterialImpl("soybean", -2048665, 0, 1, 1, 1, 0F, MaterialCategory.GRAIN));
         api.register(new MaterialRice("rice", -4671304, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN));
-        api.register(new SimpleMaterialImpl("tomato", -2681308, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("tomato", -2681308, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new MaterialChili("chili", -2878173, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.CUBED, Form.SHREDDED, Form.MINCED)));
         api.register(new MaterialWithEffect("garlic", CulinaryHub.CommonEffects.DISPERSAL, -32, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.DICED, Form.MINCED, Form.PASTE)));
-        api.register(new SimpleMaterialImpl("ginger", -1828, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("ginger", -1828, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("sichuan_pepper", -8511203, 0, 1, 1, 1, 0F, MaterialCategory.UNKNOWN));
         api.register(new SimpleMaterialImpl("scallion", -12609717, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE)));
-        api.register(new SimpleMaterialImpl("turnip", -3557457, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("turnip", -3557457, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("chinese_cabbage", -1966111, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE)));
         api.register(new SimpleMaterialImpl("lettuce", -14433485, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE, Form.JUICE)));
         api.register(new SimpleMaterialImpl("corn", -3227867, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN).setValidForms(EnumSet.of(Form.MINCED, Form.JUICE)));
-        api.register(new SimpleMaterialImpl("cucumber", 0xDDDCE7BD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("cucumber", 0xDDDCE7BD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("green_pepper", -15107820, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE)));
         api.register(new SimpleMaterialImpl("red_pepper", -8581357, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE)));
         api.register(new SimpleMaterialImpl("leek", -15100888, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.CUBED, Form.MINCED, Form.PASTE)));
-        api.register(new SimpleMaterialImpl("onion", -17409, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new SimpleMaterialImpl("eggplant", 0xDCD295, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
+        api.register(new SimpleMaterialImpl("onion", -17409, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("eggplant", 0xDCD295, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new MaterialWithEffect("spinach", CulinaryHub.CommonEffects.POWER, -15831787, 0, 1, 1, 1, 0.1F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE, Form.JUICE)));
         api.register(new MaterialWithEffect("tofu", CulinaryHub.CommonEffects.HARMONY, -2311026, 0, 1, 1, 1, 0.4F, MaterialCategory.PROTEIN, MaterialCategory.GRAIN).setValidForms(EnumSet.of(Form.CUBED, Form.SLICED, Form.DICED, Form.MINCED)));
-        api.register(new MaterialChorusFruit("chorus_fruit", -6271615, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new MaterialApple("apple", 0xEEEBE5CB, 0, 1, 1, 1, 0.1F, MaterialCategory.FRUIT).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new MaterialWithEffect("golden_apple", CulinaryHub.CommonEffects.GOLDEN_APPLE, -1782472, 0, 1, 1, 1, 0.3F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        api.register(new MaterialChorusFruit("chorus_fruit", -6271615, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new MaterialApple("apple", 0xEEEBE5CB, 0, 1, 1, 1, 0.1F, MaterialCategory.FRUIT).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new MaterialWithEffect("golden_apple", CulinaryHub.CommonEffects.GOLDEN_APPLE, -1782472, 0, 1, 1, 1, 0.3F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new MaterialWithEffect("golden_apple_enchanted", CulinaryHub.CommonEffects.GOLDEN_APPLE_ENCHANTED, -1782472, 0, 1, 1, 1, 0.3F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL)
         {
             @Override
@@ -534,35 +529,35 @@ public final class CuisineInternalGateway implements CuisineAPI
             {
                 return true;
             }
-        }.setValidForms(ALL_FORMS_INCLUDING_JUICE));
+        }.setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("melon", -769226, 0, 1, 1, 1, 0F, MaterialCategory.FRUIT).setValidForms(EnumSet.of(Form.CUBED, Form.SLICED, Form.DICED, Form.MINCED, Form.PASTE, Form.JUICE)));
-        api.register(new SimpleMaterialImpl("pumpkin", -663885, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new MaterialWithEffect("carrot", CulinaryHub.CommonEffects.NIGHT_VISION, -1538531, 0, 1, 1, 1, 0.1F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new SimpleMaterialImpl("potato", -3764682, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN).setValidForms(ALL_FORMS));
-        api.register(new SimpleMaterialImpl("beetroot", -8442327, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS_INCLUDING_JUICE));
-        api.register(new SimpleMaterialImpl("mushroom", -10006976, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
+        api.register(new SimpleMaterialImpl("pumpkin", -663885, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new MaterialWithEffect("carrot", CulinaryHub.CommonEffects.NIGHT_VISION, -1538531, 0, 1, 1, 1, 0.1F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("potato", -3764682, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN).setValidForms(Form.ALL_FORMS));
+        api.register(new SimpleMaterialImpl("beetroot", -8442327, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new SimpleMaterialImpl("mushroom", -10006976, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new SimpleMaterialImpl("egg", -3491187, 0, 1, 1, 1, 0.2F, MaterialCategory.PROTEIN));
-        api.register(new SimpleMaterialImpl("chicken", -929599, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(ALL_FORMS));
-        api.register(new SimpleMaterialImpl("beef", -3392460, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(ALL_FORMS));
-        api.register(new SimpleMaterialImpl("pork", -2133904, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(ALL_FORMS));
-        api.register(new SimpleMaterialImpl("mutton", -3917262, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(ALL_FORMS));
-        api.register(new MaterialWithEffect("rabbit", CulinaryHub.CommonEffects.JUMP_BOOST, -4882580, 0, 1, 1, 1, 0.1F, MaterialCategory.MEAT).setValidForms(ALL_FORMS));
-        api.register(new SimpleMaterialImpl("fish", -10583426, 0, 1, 1, 1, 0F, MaterialCategory.FISH).setValidForms(ALL_FORMS));
-        api.register(new MaterialPufferfish("pufferfish", 0xFFFFE1C4, 0, 1, 1, 1, 0.2F, MaterialCategory.FISH).setValidForms(EnumSet.copyOf(ALL_FORMS)));
-        api.register(new MaterialWithEffect("pickled", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -13784, 0, 1, 1, 1, 0.3F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
-        api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, 0xF9ECDD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(ALL_FORMS));
+        api.register(new SimpleMaterialImpl("chicken", -929599, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(Form.ALL_FORMS));
+        api.register(new SimpleMaterialImpl("beef", -3392460, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(Form.ALL_FORMS));
+        api.register(new SimpleMaterialImpl("pork", -2133904, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(Form.ALL_FORMS));
+        api.register(new SimpleMaterialImpl("mutton", -3917262, 0, 1, 1, 1, 0F, MaterialCategory.MEAT).setValidForms(Form.ALL_FORMS));
+        api.register(new MaterialWithEffect("rabbit", CulinaryHub.CommonEffects.JUMP_BOOST, -4882580, 0, 1, 1, 1, 0.1F, MaterialCategory.MEAT).setValidForms(Form.ALL_FORMS));
+        api.register(new SimpleMaterialImpl("fish", -10583426, 0, 1, 1, 1, 0F, MaterialCategory.FISH).setValidForms(Form.ALL_FORMS));
+        api.register(new MaterialPufferfish("pufferfish", 0xFFFFE1C4, 0, 1, 1, 1, 0.2F, MaterialCategory.FISH).setValidForms(Form.ALL_FORMS));
+        api.register(new MaterialWithEffect("pickled", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -13784, 0, 1, 1, 1, 0.3F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
+        api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, 0xF9ECDD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new MaterialWithEffect("cactus", CulinaryHub.CommonEffects.HEAT_RESISTANCE, 0xA9BC98, 0, 1, 1, 1, -0.1F).setValidForms(EnumSet.of(Form.CUBED, Form.DICED, Form.JUICE)));
-        api.register(new SimpleMaterialImpl("water", -15831787, 0, 1, 1, 1, -0.1F).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("soy_milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("mandarin", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("citron", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("pomelo", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("orange", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("lemon", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("grapefruit", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("lime", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("empowered_citron", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("water", -15831787, 0, 1, 1, 1, -0.1F).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("soy_milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("mandarin", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("citron", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("pomelo", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("orange", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("lemon", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("grapefruit", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("lime", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("empowered_citron", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(Form.JUICE_ONLY));
 
         api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variants.RED_PEPPER.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.RED_PEPPER, Form.FULL, 1));
         api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.EMPOWERED_CITRON, Form.FULL, 1));
@@ -617,6 +612,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictIngredients.put("cropBambooshoot", new Ingredient(CulinaryHub.CommonMaterials.BAMBOO_SHOOT, Form.FULL, 1));
         api.oreDictIngredients.put("cropBellpepper", new Ingredient(CulinaryHub.CommonMaterials.GREEN_PEPPER, Form.FULL, 1));
         api.oreDictIngredients.put("foodMushroom", new Ingredient(CulinaryHub.CommonMaterials.MUSHROOM, Form.FULL, 1));
+        api.oreDictIngredients.put("cropMushroom", new Ingredient(CulinaryHub.CommonMaterials.MUSHROOM, Form.FULL, 1));
         api.oreDictIngredients.put("cropPumpkin", new Ingredient(CulinaryHub.CommonMaterials.PUMPKIN, Form.FULL, 1));
 
         api.fluidIngredients.put(FluidRegistry.WATER.getName(), new Ingredient(CulinaryHub.CommonMaterials.WATER, Form.JUICE, 1));
