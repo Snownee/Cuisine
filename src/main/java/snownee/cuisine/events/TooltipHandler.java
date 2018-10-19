@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -62,6 +63,10 @@ public final class TooltipHandler
                 if (material.isValidForm(Form.FULL))
                 {
                     ingredient = new Ingredient(material);
+                    if (event.getFlags().isAdvanced())
+                    {
+                        event.getToolTip().add(I18n.format(ingredient.getMaterial().getTranslationKey()));
+                    }
                 }
             }
 
