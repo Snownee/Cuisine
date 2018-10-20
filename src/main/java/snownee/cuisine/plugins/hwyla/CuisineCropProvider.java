@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
-public class CuisineCropProvider implements IWailaDataProvider
+final class CuisineCropProvider implements IWailaDataProvider
 {
 
     @Nonnull

@@ -22,7 +22,7 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.tiles.TileBasinHeatable;
 
 @SuppressWarnings("deprecation")
-public class CuisineBasinProvider implements IWailaDataProvider
+final class CuisineBasinProvider implements IWailaDataProvider
 {
     @Nonnull
     @Override
