@@ -62,12 +62,12 @@ public class TileDrinkro extends TileBase implements CookingVessel
             }
             int amountAdded = (int) Math.min(resource.amount, (tile.builder.getMaxSize() - tile.builder.getCurrentSize()) * 500);
 
-            Material material = CulinaryHub.API_INSTANCE.findMaterial(resource);
-            if (material == null)
+            Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(resource);
+            if (ingredient == null || ingredient.getForm() != Form.JUICE)
             {
                 return 0;
             }
-            Ingredient ingredient = new Ingredient(material, Form.JUICE, amountAdded / 500D);
+            ingredient.setSize(amountAdded / 500D);
             if (!tile.builder.canAddIntoThis(null, ingredient, tile))
             {
                 return 0;

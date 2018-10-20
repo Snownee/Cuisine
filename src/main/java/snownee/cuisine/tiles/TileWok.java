@@ -126,7 +126,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         case IDLE:
         {
             ItemStack heldThing = playerIn.getHeldItem(hand);
-            if (heldThing.getItem() instanceof ItemIngredient || heldThing.getItem() instanceof ItemSpiceBottle || (CulinaryHub.API_INSTANCE.isKnownMaterial(heldThing) && CulinaryHub.API_INSTANCE.findMaterial(heldThing).isValidForm(Form.FULL)))
+            if (CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null || heldThing.getItem() instanceof ItemSpiceBottle)
             {
                 this.builder = Dish.Builder.create();
                 this.temperature = 0;

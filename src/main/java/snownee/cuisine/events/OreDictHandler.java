@@ -10,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.items.ItemBasicFood;
@@ -144,25 +145,24 @@ public class OreDictHandler
             return v -> {
                 boolean loaded = Loader.isModLoaded("vanillafoodpantry");
                 ItemStack stack = item.getItemStack(v);
-                Material material = CulinaryHub.API_INSTANCE.findMaterial(stack);
-                if (material == null)
+                Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+                if (ingredient != null)
                 {
-                    return;
-                }
-                for (MaterialCategory category : MaterialCategory.values())
-                {
-                    if (category.getOreName() != null && material.isUnderCategoryOf(category))
+                    for (MaterialCategory category : MaterialCategory.values())
                     {
-                        OreDictionary.registerOre("listAll" + category.getOreName(), stack);
-                        if (loaded)
+                        if (category.getOreName() != null && ingredient.getMaterial().isUnderCategoryOf(category))
                         {
-                            if (category == MaterialCategory.VEGETABLES)
+                            OreDictionary.registerOre("listAll" + category.getOreName(), stack);
+                            if (loaded)
                             {
-                                OreDictionary.registerOre("ingredientKebabFill", stack);
-                            }
-                            if (category == MaterialCategory.GRAIN)
-                            {
-                                OreDictionary.registerOre("ingredientCereal", stack);
+                                if (category == MaterialCategory.VEGETABLES)
+                                {
+                                    OreDictionary.registerOre("ingredientKebabFill", stack);
+                                }
+                                if (category == MaterialCategory.GRAIN)
+                                {
+                                    OreDictionary.registerOre("ingredientCereal", stack);
+                                }
                             }
                         }
                     }
