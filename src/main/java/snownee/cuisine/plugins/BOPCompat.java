@@ -9,6 +9,8 @@ import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.prefab.SimpleMaterialImpl;
+import snownee.cuisine.api.process.Chopping;
+import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.ItemDefinition;
@@ -42,6 +44,40 @@ public class BOPCompat implements IModule
         if (itemBambooshoot != null)
         {
             OreDictionary.registerOre("cropBambooshoot", new ItemStack(itemBambooshoot, 1, 2));
+        }
+
+        Item log = Item.getByNameOrId("biomesoplenty:log_0");
+        Item planks = Item.getByNameOrId("biomesoplenty:planks_0");
+        if (log != null && planks != null)
+        {
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 0)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 5), new ItemStack(planks, 6, 1)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 6), new ItemStack(planks, 6, 2)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 7), new ItemStack(planks, 6, 3)));
+        }
+        log = Item.getByNameOrId("biomesoplenty:log_1");
+        if (log != null && planks != null)
+        {
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 4)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 5), new ItemStack(planks, 6, 5)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 6), new ItemStack(planks, 6, 6)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 7), new ItemStack(planks, 6, 7)));
+        }
+        log = Item.getByNameOrId("biomesoplenty:log_2");
+        if (log != null && planks != null)
+        {
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 8)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 5), new ItemStack(planks, 6, 9)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 6), new ItemStack(planks, 6, 10)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 7), new ItemStack(planks, 6, 11)));
+        }
+        log = Item.getByNameOrId("biomesoplenty:log_3");
+        if (log != null && planks != null)
+        {
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 12)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 5), new ItemStack(planks, 6, 13)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 6), new ItemStack(planks, 6, 14)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 7), new ItemStack(planks, 6, 15)));
         }
     }
 }
