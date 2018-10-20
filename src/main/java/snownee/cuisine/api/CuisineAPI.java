@@ -169,11 +169,7 @@ public interface CuisineAPI
      *
      * @deprecated WIP, do not use
      */
-    @Deprecated
-    default @Nullable Recipe tryMatchRecipe(CompositeFood food)
-    {
-        return null;
-    } // TODO
+    @Deprecated default @Nullable Recipe tryMatchRecipe(CompositeFood food) { return null; } // TODO
 
     /**
      * Query the whole registry and find the desired {@link Material} object

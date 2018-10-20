@@ -28,7 +28,6 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
-import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.client.CulinaryRenderHelper;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
@@ -96,8 +95,6 @@ public final class TooltipHandler
                 }
             }
             i = map.values().stream().mapToInt(MathHelper::ceil).sum();
-
-            //            event.getToolTip().add(1, "   " + composite.getFoodLevel() + "   " + String.format("%.1f", composite.getFoodLevel() * composite.getSaturationModifier()));
         }
         else
         {
@@ -209,8 +206,6 @@ public final class TooltipHandler
                 }
                 CulinaryRenderHelper.renderMaterialCategoryIcons(map, 0, 0, 0.4F + ingredient.getMaterial().getSaturationModifier(ingredient), event.getWidth() * 2 - 5);
                 GlStateManager.popMatrix();
-
-                //                y += 10;
             }
 
             GlStateManager.popMatrix();
@@ -239,11 +234,8 @@ public final class TooltipHandler
                 GlStateManager.color(1F, 1F, 1F);
                 GlStateManager.translate(x, y, 0);
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
-
                 CulinaryRenderHelper.renderMaterialCategoryIcons(map, 0, 0, composite.getSaturationModifier(), event.getWidth() * 2 - 5);
                 GlStateManager.popMatrix();
-
-                //                y += 10;
             }
         }
     }
