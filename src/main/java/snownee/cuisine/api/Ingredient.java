@@ -53,26 +53,23 @@ public final class Ingredient
     }
 
     /**
-     * @deprecated Until it migrates to {@link CuisineAPI#findIngredient(ItemStack)}.
-     *             Also consider about moving to a separate class, maybe...
      *
      * @param stack item
      * @param baseSize initial size of returned ingredient
      * @return Ingredient instance, with adjusted size
      */
-    @Deprecated
-    public static Ingredient make(ItemStack stack, float baseSize)
+    public static Ingredient make(ItemStack stack, double baseSize)
     {
-        Material m = CulinaryHub.API_INSTANCE.findMaterial(stack);
-        if (m != null && m.isValidForm(Form.FULL))
+        Ingredient i = CulinaryHub.API_INSTANCE.findIngredient(stack);
+        if (i != null)
         {
             if (RarityManager.getRarity(stack) != EnumRarity.COMMON)
             {
-                baseSize *= 1.5F;
+                baseSize *= 1.5;
             }
-            return new Ingredient(m, baseSize);
+            i.setSize(baseSize);
         }
-        return null;
+        return i;
     }
 
     public double getSize()
@@ -83,6 +80,11 @@ public final class Ingredient
     public double getFoodLevel()
     {
         return getSize() * getMaterial().getCategories().size();
+    }
+
+    public void setSize(double newSize)
+    {
+        this.quantity = newSize;
     }
 
     public void increaseSizeBy(double increment)
@@ -153,7 +155,6 @@ public final class Ingredient
         return Collections.unmodifiableSet(this.effects);
     }
 
-    // Auto-generated accessors & mutators begin
     // TODO (3TUSK): evaluate these methods: name choices, immutable, etc..
 
     public int getWater()
@@ -185,8 +186,6 @@ public final class Ingredient
     {
         this.heat = heat;
     }
-
-    // Auto-generated accessors & mutators end
 
     public boolean equalsIgnoreSize(@Nonnull Ingredient other)
     {
