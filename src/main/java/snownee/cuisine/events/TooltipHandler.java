@@ -59,13 +59,13 @@ public final class TooltipHandler
             }
             else
             {
-                Material material = CulinaryHub.API_INSTANCE.findMaterial(stack);
-                if (material.isValidForm(Form.FULL))
+                ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+                if (ingredient != null)
                 {
-                    ingredient = new Ingredient(material);
                     if (event.getFlags().isAdvanced())
                     {
-                        event.getToolTip().add(I18n.format(ingredient.getMaterial().getTranslationKey()));
+                        // TODO (3TUSK): Proper localization
+                        event.getToolTip().add("Cuisine Ingredient: " + I18n.format(ingredient.getTranslation()));
                     }
                 }
             }
@@ -162,6 +162,7 @@ public final class TooltipHandler
 
         int x = event.getX();
 
+        // TODO (3TUSK): Isn't CulinaryHub.API_INSTANCE.findIngredient(stack) doing all of these?
         if (stack.getItem() == CuisineRegistry.INGREDIENT || CulinaryHub.API_INSTANCE.isKnownMaterial(stack))
         {
             if (event.getLines().size() == 0)
@@ -177,15 +178,18 @@ public final class TooltipHandler
                     return;
                 }
                 ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
+                if (ingredient == null)
+                {
+                    return; // Safety measure
+                }
             }
             else
             {
-                Material material = CulinaryHub.API_INSTANCE.findMaterial(stack);
-                if (!material.isValidForm(Form.FULL))
+                ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+                if (ingredient == null || ingredient.getForm() != Form.FULL)
                 {
                     return;
                 }
-                ingredient = new Ingredient(material);
             }
 
             GlStateManager.pushMatrix();
