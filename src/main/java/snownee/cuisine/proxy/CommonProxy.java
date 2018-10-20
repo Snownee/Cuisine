@@ -48,6 +48,7 @@ public class CommonProxy
     @OverridingMethodsMustInvokeSuper
     public void init(FMLInitializationEvent event)
     {
+        CuisineInternalGateway.deferredInit();
         NetworkRegistry.INSTANCE.registerGuiHandler(Cuisine.getInstance(), new CuisineGuiHandler());
 
         // MinecraftForge.EVENT_BUS.register(new DropHandler());
