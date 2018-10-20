@@ -57,13 +57,13 @@ item.cuisine.food.pickled_cabbage.name=Pickled Cabbage
 item.cuisine.food.pickled_turnip.name=Pickled Turnip
 item.cuisine.food.pickled_cucumber.name=Pickled Cucumber
 item.cuisine.food.mandarin.name=Mandarin
-item.cuisine.food.citron.name=Cirton
+item.cuisine.food.citron.name=Citron
 item.cuisine.food.pomelo.name=Pomelo
 item.cuisine.food.orange.name=Orange
 item.cuisine.food.lemon.name=Lemon
 item.cuisine.food.grapefruit.name=Grapefruit
 item.cuisine.food.lime.name=Lime
-item.cuisine.food.empowered_citron.name=Empowered Cirton
+item.cuisine.food.empowered_citron.name=Empowered Citron
 
 tile.cuisine.mortar.name=Mortar
 tile.cuisine.fire_pit.0.name=Fire Pit
