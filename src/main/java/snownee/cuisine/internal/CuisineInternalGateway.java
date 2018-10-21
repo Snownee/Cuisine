@@ -357,11 +357,11 @@ public final class CuisineInternalGateway implements CuisineAPI
 
         if (fluid.getFluid() == CuisineFluids.JUICE) // Special-casing Cuisine "juice" fluid
         {
-            if (fluid.tag == null || !fluid.tag.hasKey("material", Constants.NBT.TAG_STRING))
+            if (fluid.tag == null || !fluid.tag.hasKey(CuisineSharedSecrets.KEY_MATERIAL, Constants.NBT.TAG_STRING))
             {
                 return null;
             }
-            Material material = findMaterial(fluid.tag.getString("material"));
+            Material material = findMaterial(fluid.tag.getString(CuisineSharedSecrets.KEY_MATERIAL));
             return material == null ? null : new Ingredient(material, Form.JUICE, fluid.amount / 500.0);
         }
         else // And then fallback to regular lookup
