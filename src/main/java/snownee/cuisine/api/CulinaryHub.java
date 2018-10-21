@@ -49,6 +49,7 @@ public final class CulinaryHub
         public static final Material MELON = find("melon");
         public static final Material PUMPKIN = find("pumpkin");
         public static final Material CARROT = find("carrot");
+        public static final Material GOLDEN_CARROT = find("golden_carrot");
         public static final Material POTATO = find("potato");
         public static final Material BEETROOT = find("beetroot");
         public static final Material MUSHROOM = find("mushroom");
@@ -121,6 +122,7 @@ public final class CulinaryHub
         public static final Effect JUMP_BOOST = find("jump_boost");
         public static final Effect POWER = find("power");
         public static final Effect NIGHT_VISION = find("night_vision");
+        public static final Effect LONGER_NIGHT_VISION = find("longer_night_vision");
         public static final Effect HOT = find("hot");
         public static final Effect DISPERSAL = find("dispersal");
         public static final Effect TELEPORT = find("teleport");

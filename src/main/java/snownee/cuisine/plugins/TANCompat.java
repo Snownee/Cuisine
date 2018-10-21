@@ -65,6 +65,7 @@ public class TANCompat implements IModule
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 3), new Ingredient(CulinaryHub.CommonMaterials.CARROT, Form.JUICE, 0.5));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 4), new Ingredient(CulinaryHub.CommonMaterials.CHORUS_FRUIT, Form.JUICE, 0.5));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 6), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_APPLE, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 7), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_CARROT, Form.JUICE, 0.5));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 8), new Ingredient(CulinaryHub.CommonMaterials.MELON, Form.JUICE, 0.5));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 9), new Ingredient(CulinaryHub.CommonMaterials.PUMPKIN, Form.JUICE, 0.5));
         }

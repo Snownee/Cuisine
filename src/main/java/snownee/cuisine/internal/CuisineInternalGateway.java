@@ -448,6 +448,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new EffectPotions("jump_boost").addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 400, 1)));
         api.register(new EffectPotions("power").addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 400, 1)));
         api.register(new EffectPotions("night_vision").addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 400, 0)));
+        api.register(new EffectPotions("longer_night_vision").addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 1200, 0)));
         api.register(new EffectPotions("hot").addPotionEffect(new PotionEffect(CuisineRegistry.HOT, 1200, 0)));
         api.register(new EffectPotions("dispersal").addPotionEffect(new PotionEffect(CuisineRegistry.DISPERSAL, 400, 1)));
         api.register(new EffectPotions("pufferfish_poison").addPotionEffect(new PotionEffect(MobEffects.POISON, 1200, 3)).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 300, 2)).addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 300, 1)));
@@ -501,6 +502,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("melon", -769226, 0, 1, 1, 1, 0F, MaterialCategory.FRUIT).setValidForms(EnumSet.of(Form.CUBED, Form.SLICED, Form.DICED, Form.MINCED, Form.PASTE, Form.JUICE)));
         api.register(new SimpleMaterialImpl("pumpkin", -663885, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new MaterialWithEffect("carrot", CulinaryHub.CommonEffects.NIGHT_VISION, -1538531, 0, 1, 1, 1, 0.1F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new MaterialWithEffect("golden_carrot", CulinaryHub.CommonEffects.LONGER_NIGHT_VISION, 0xDBA213, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES, MaterialCategory.SUPERNATURAL).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("potato", -3764682, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN).setValidForms(Form.ALL_FORMS));
         api.register(new SimpleMaterialImpl("beetroot", -8442327, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("mushroom", -10006976, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
@@ -556,6 +558,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.itemIngredients.put(ItemDefinition.of(Items.GOLDEN_APPLE, 1), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_APPLE_ENCHANTED, Form.FULL, 1));
         api.itemIngredients.put(ItemDefinition.of(Items.MELON), new Ingredient(CulinaryHub.CommonMaterials.MELON, Form.FULL, 1));
         api.itemIngredients.put(ItemDefinition.of(Items.CARROT), new Ingredient(CulinaryHub.CommonMaterials.CARROT, Form.FULL, 1));
+        api.itemIngredients.put(ItemDefinition.of(Items.GOLDEN_CARROT), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_CARROT, Form.FULL, 1));
         api.itemIngredients.put(ItemDefinition.of(Items.POTATO), new Ingredient(CulinaryHub.CommonMaterials.POTATO, Form.FULL, 1));
         api.itemIngredients.put(ItemDefinition.of(Items.BEETROOT), new Ingredient(CulinaryHub.CommonMaterials.BEETROOT, Form.FULL, 1));
         api.itemIngredients.put(ItemDefinition.of(Items.FISH), new Ingredient(CulinaryHub.CommonMaterials.FISH, Form.FULL, 1));
