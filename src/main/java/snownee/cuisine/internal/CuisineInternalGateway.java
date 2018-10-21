@@ -381,26 +381,7 @@ public final class CuisineInternalGateway implements CuisineAPI
     @Override
     public boolean isKnownMaterial(ItemStack item)
     {
-        if (item.isEmpty())
-        {
-            return false;
-        }
-
-        if (itemIngredients.containsKey(ItemDefinition.of(item)))
-        {
-            return true;
-        }
-        else
-        {
-            for (final String entry : OreUtil.getOreNames(item))
-            {
-                if (oreDictIngredients.containsKey(entry))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        return this.findIngredient(item) != null;
     }
 
     @Override
@@ -432,23 +413,7 @@ public final class CuisineInternalGateway implements CuisineAPI
     @Override
     public boolean isKnownMaterial(@Nullable FluidStack fluid)
     {
-        if (fluid == null)
-        {
-            return false;
-        }
-
-        // Special-casing the Cuisine "juice" fluid
-        if (fluid.getFluid() == CuisineFluids.JUICE)
-        {
-            if (fluid.tag == null || !fluid.tag.hasKey("material", Constants.NBT.TAG_STRING))
-            {
-                return false;
-            }
-            return findMaterial(fluid.tag.getString("material")) != null;
-        }
-
-        // Use regular lookup
-        return fluidIngredients.containsKey(fluid.getFluid().getName());
+        return this.findIngredient(fluid) != null;
     }
 
     @Override
