@@ -37,6 +37,7 @@ public class CuisineItemGroup extends CreativeTabs
         list.add(new ItemStack(Items.GOLDEN_APPLE));
         list.add(new ItemStack(Items.GOLDEN_APPLE, 1, 1));
         list.add(new ItemStack(Items.CARROT));
+        list.add(new ItemStack(Items.GOLDEN_CARROT));
         list.add(new ItemStack(Items.POTATO));
         list.add(new ItemStack(Items.BEETROOT));
         list.add(new ItemStack(Blocks.PUMPKIN));
