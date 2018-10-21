@@ -53,7 +53,6 @@ import snownee.cuisine.internal.material.MaterialWithEffect;
 import snownee.cuisine.internal.spice.SpiceChiliPowder;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
-import snownee.cuisine.items.ItemIngredient;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 
@@ -287,7 +286,7 @@ public final class CuisineInternalGateway implements CuisineAPI
             return null;
         }
 
-        if (item.getItem().getClass() == ItemIngredient.class)
+        if (item.getItem() == CuisineRegistry.INGREDIENT)
         {
             NBTTagCompound data = item.getTagCompound();
             if (data == null)
@@ -379,7 +378,7 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public boolean isKnownMaterial(ItemStack item)
+    public boolean isKnownIngredient(ItemStack item)
     {
         return this.findIngredient(item) != null;
     }
@@ -411,7 +410,7 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    public boolean isKnownMaterial(@Nullable FluidStack fluid)
+    public boolean isKnownIngredient(@Nullable FluidStack fluid)
     {
         return this.findIngredient(fluid) != null;
     }

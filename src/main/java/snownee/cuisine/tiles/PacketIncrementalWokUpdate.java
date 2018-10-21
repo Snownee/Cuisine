@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.kiwi.network.PacketMod;
 
@@ -65,7 +64,7 @@ public class PacketIncrementalWokUpdate implements PacketMod
         }
         if (tile instanceof TileWok) // It is false if: 1. the area is not loaded or 2. target has no tile 3. we somehow got a tile mismatch.
         {
-            if (diff.getItem() == CuisineRegistry.INGREDIENT || CulinaryHub.API_INSTANCE.isKnownMaterial(diff))
+            if (CulinaryHub.API_INSTANCE.isKnownIngredient(diff))
             {
                 ((TileWok) tile).ingredientsForRendering.add(diff);
                 for (int k = 0; k < 4; ++k)

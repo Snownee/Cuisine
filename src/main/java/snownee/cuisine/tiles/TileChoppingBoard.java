@@ -57,7 +57,9 @@ public class TileChoppingBoard extends TileInventoryBase
 
     public ItemStack insertItem(EntityPlayer player, ItemStack stack)
     {
-        if (stacks.getStackInSlot(0).isEmpty() && stack.getCount() >= 2 && (stack.getItem() == CuisineRegistry.INGREDIENT || (CulinaryHub.API_INSTANCE.isKnownMaterial(stack) && !CulinaryHub.API_INSTANCE.findMaterial(stack).getValidForms().isEmpty())) && SkillUtil.hasPlayerLearnedSkill(player, CulinaryHub.CommonSkills.DOUBLE_CHOPPING))
+        Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+
+        if (ingredient != null && ingredient.getForm() != Form.JUICE && !ingredient.getMaterial().getValidForms().isEmpty() && (ingredient.getMaterial().getValidForms().size() > 1 || !ingredient.getMaterial().getValidForms().contains(Form.JUICE)) && stacks.getStackInSlot(0).isEmpty() && stack.getCount() >= 2 && SkillUtil.hasPlayerLearnedSkill(player, CulinaryHub.CommonSkills.DOUBLE_CHOPPING))
         {
             ItemStack copy = stack.copy();
             copy.setCount(2);
@@ -67,14 +69,23 @@ public class TileChoppingBoard extends TileInventoryBase
         }
         ItemStack ret = stacks.insertItem(0, stack, false);
         ItemStack con = stacks.getStackInSlot(0);
-        isAxe = CuisineConfig.PROGRESSION.axeChopping && !con.isEmpty() && !OreUtil.doesItemHaveOreName(stack, "itemFoodCutter") && con.getItem() != CuisineRegistry.INGREDIENT && !CulinaryHub.API_INSTANCE.isKnownMaterial(con) && (Processing.CHOPPING.findRecipe(con) != null);
+        isAxe = CuisineConfig.PROGRESSION.axeChopping && !con.isEmpty() && !OreUtil.doesItemHaveOreName(stack, "itemFoodCutter") && con.getItem() != CuisineRegistry.INGREDIENT && !CulinaryHub.API_INSTANCE.isKnownIngredient(con) && (Processing.CHOPPING.findRecipe(con) != null);
         return ret;
     }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
-        return stack.getItem() == CuisineRegistry.INGREDIENT || OreUtil.doesItemHaveOreName(stack, "itemFoodCutter") || (CulinaryHub.API_INSTANCE.isKnownMaterial(stack) && !CulinaryHub.API_INSTANCE.findMaterial(stack).getValidForms().isEmpty()) || (CuisineConfig.PROGRESSION.axeChopping && Processing.CHOPPING.findRecipe(stack) != null);
+        if (OreUtil.doesItemHaveOreName(stack, "itemFoodCutter"))
+        {
+            return true;
+        }
+        if (CuisineConfig.PROGRESSION.axeChopping && Processing.CHOPPING.findRecipe(stack) != null)
+        {
+            return true;
+        }
+        Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+        return ingredient != null && ingredient.getForm() != Form.JUICE && !ingredient.getMaterial().getValidForms().isEmpty() && (ingredient.getMaterial().getValidForms().size() > 1 || !ingredient.getMaterial().getValidForms().contains(Form.JUICE));
     }
 
     public boolean hasKitchenKnife()
@@ -168,7 +179,6 @@ public class TileChoppingBoard extends TileInventoryBase
 
     public ItemStack getCover()
     {
-        /*return Block.getBlockFromItem(cover.getItem()).getStateFromMeta(cover.getMetadata());*/
         return cover;
     }
 

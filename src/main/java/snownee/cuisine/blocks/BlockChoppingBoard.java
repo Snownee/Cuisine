@@ -42,8 +42,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.library.UnlistedPropertyItemStack;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.tiles.TileChoppingBoard;
@@ -199,18 +199,10 @@ public class BlockChoppingBoard extends BlockMod
             {
                 return 0;
             }
-            if (stack.getItem() != CuisineRegistry.INGREDIENT)
+            Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+            if (ingredient != null)
             {
-                return 1;
-            }
-            NBTTagCompound tag = stack.getTagCompound();
-            if (tag != null)
-            {
-                Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient(tag);
-                if (ingredient != null)
-                {
-                    return ingredient.getForm().ordinal() + 1;
-                }
+                return ingredient.getForm().ordinal() + 1;
             }
         }
         return 0;
@@ -309,9 +301,7 @@ public class BlockChoppingBoard extends BlockMod
 
     public static List<ItemStack> getSuitableCovers()
     {
-        return OreUtil.getItemsFromOre("logWood", 1).stream()
-                .filter(i -> i.getItem() instanceof ItemBlock)
-                .collect(Collectors.toList());
+        return OreUtil.getItemsFromOre("logWood", 1).stream().filter(i -> i.getItem() instanceof ItemBlock).collect(Collectors.toList());
     }
 
     @Override

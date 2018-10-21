@@ -2,6 +2,7 @@ package snownee.cuisine.plugins;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -57,6 +58,7 @@ public class TANCompat implements IModule
         Item juice = Item.getByNameOrId("toughasnails:fruit_juice");
         if (juice != null)
         {
+            juice.setContainerItem(Items.GLASS_BOTTLE);
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 0), new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE, 0.5));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 1), new Ingredient(CulinaryHub.CommonMaterials.BEETROOT, Form.JUICE, 0.5));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 2), new Ingredient(CulinaryHub.CommonMaterials.CACTUS, Form.JUICE, 0.5));

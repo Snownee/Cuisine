@@ -41,12 +41,8 @@ public final class CuisineItemRendering
                         return material.getRawColorCode();
                     }
                 }
-                return -1;
             }
-            else
-            {
-                return -1;
-            }
+            return -1;
         }, CuisineRegistry.INGREDIENT);
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> {

@@ -272,7 +272,7 @@ public interface CuisineAPI
      *
      * @return true if there is an associated Material; false otherwise.
      */
-    boolean isKnownMaterial(ItemStack item);
+    boolean isKnownIngredient(ItemStack item);
 
     /**
      * Query the whole registry and find whether the given fluid is mapped to
@@ -282,7 +282,7 @@ public interface CuisineAPI
      *
      * @return true if there is an associated Material; false otherwise.
      */
-    boolean isKnownMaterial(@Nullable FluidStack fluid);
+    boolean isKnownIngredient(@Nullable FluidStack fluid);
 
     /**
      * Query the whole registry and find whether the given item is mapped to

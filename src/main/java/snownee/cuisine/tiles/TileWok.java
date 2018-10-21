@@ -33,7 +33,6 @@ import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.CulinarySkillPoint;
 import snownee.cuisine.api.FoodContainer;
-import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
@@ -41,9 +40,7 @@ import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.client.gui.CuisineGUI;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.food.Dish;
-import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.util.I18nUtil;
@@ -224,6 +221,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
 
     private boolean cook(EntityPlayerMP player, EnumHand hand, ItemStack heldThing, EnumFacing facing)
     {
+        Ingredient ingredient;
         if (heldThing.getItem() instanceof ItemSpiceBottle)
         {
             Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(heldThing);
@@ -256,27 +254,8 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 return false;
             }
         }
-        else if (heldThing.getItem() == CuisineRegistry.INGREDIENT || CulinaryHub.API_INSTANCE.isKnownMaterial(heldThing))
+        else if ((ingredient = CulinaryHub.API_INSTANCE.findIngredient(heldThing)) != null)
         {
-            Ingredient ingredient = null;
-            if (heldThing.getItem() == CuisineRegistry.INGREDIENT)
-            {
-                NBTTagCompound data = heldThing.getTagCompound();
-                if (data != null)
-                {
-                    ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
-                }
-            }
-            else
-            {
-                ingredient = Ingredient.make(heldThing, 1);
-            }
-
-            if (ingredient == null)
-            {
-                return false;
-            }
-
             if (this.builder.addIngredient(player, ingredient, this))
             {
                 ItemStack newStack = heldThing.splitStack(1);

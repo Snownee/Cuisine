@@ -15,7 +15,6 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.internal.CuisinePersistenceCenter;
 
 public class MaterialSqueezing implements BasinInteracting
 {
@@ -39,20 +38,7 @@ public class MaterialSqueezing implements BasinInteracting
     @Override
     public boolean matchesItem(ItemStack item)
     {
-        Ingredient ingredient;
-        if (item.getItem() == CuisineRegistry.INGREDIENT)
-        {
-            NBTTagCompound data = item.getTagCompound();
-            if (data == null)
-            {
-                return false;
-            }
-            ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
-        }
-        else
-        {
-            ingredient = Ingredient.make(item, 0.5F);
-        }
+        Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(item);
         return ingredient != null && ingredient.getMaterial() == material;
     }
 
@@ -62,12 +48,7 @@ public class MaterialSqueezing implements BasinInteracting
         Ingredient ingredient;
         if (item.getItem() == CuisineRegistry.INGREDIENT)
         {
-            NBTTagCompound data = item.getTagCompound();
-            if (data == null)
-            {
-                return null;
-            }
-            ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
+            ingredient = CulinaryHub.API_INSTANCE.findIngredient(item);
         }
         else
         {

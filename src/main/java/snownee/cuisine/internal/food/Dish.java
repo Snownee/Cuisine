@@ -22,6 +22,7 @@ import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.EffectCollector;
+import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Material;
@@ -235,6 +236,10 @@ public class Dish extends CompositeFood
         @Override
         public boolean canAddIntoThis(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
         {
+            if (ingredient.getForm() == Form.JUICE)
+            {
+                return false;
+            }
             if (SkillUtil.hasPlayerLearnedSkill(cook, CulinaryHub.CommonSkills.BIGGER_SIZE))
             {
                 return this.getCurrentSize() + ingredient.getSize() <= this.getMaxSize() && ingredient.getMaterial().canAddInto(this, ingredient);
