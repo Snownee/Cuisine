@@ -1,6 +1,7 @@
 package snownee.cuisine.client.gui;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,10 +56,10 @@ public class GuiManual extends GuiScreen
     {
         this.fontRenderer = AdvancedFontRenderer.INSTANCE;
         this.buttonList.clear();
-        this.buttonNextPage = this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH - 80 + SKILL_PANEL_WIDTH) / 2, (this.height - 20) / 2 - 20, 80, 20, I18nUtil.translate("gui.openlink")));
-        this.buttonDone = this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80 + SKILL_PANEL_WIDTH) / 2, (this.height - 20) / 2 + 20, 80, 20, I18n.format("gui.close"))); // Use vanilla language key
-        this.buttonSkillNextPage = this.addButton(new GuiButton(2, (this.width - getXSize()) / 2 - 10, (this.height - getYSize()) / 2 + PAGE_HEIGHT - 10, 10, 10, ">"));
-        this.buttonSkillPreviousPage = this.addButton(new GuiButton(3, (this.width - getXSize()) / 2 - SKILL_PANEL_WIDTH, (this.height - getYSize()) / 2 + PAGE_HEIGHT - 10, 10, 10, "<"));
+        this.buttonNextPage = this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH - 80/* + SKILL_PANEL_WIDTH*/) / 2, (this.height - 20) / 2 - 20, 80, 20, I18nUtil.translate("gui.openlink")));
+        this.buttonDone = this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80/* + SKILL_PANEL_WIDTH*/) / 2, (this.height - 20) / 2 + 20, 80, 20, I18n.format("gui.close"))); // Use vanilla language key
+        //this.buttonSkillNextPage = this.addButton(new GuiButton(2, (this.width - getXSize()) / 2 - 10, (this.height - getYSize()) / 2 + PAGE_HEIGHT - 10, 10, 10, ">"));
+        //this.buttonSkillPreviousPage = this.addButton(new GuiButton(3, (this.width - getXSize()) / 2 - SKILL_PANEL_WIDTH, (this.height - getYSize()) / 2 + PAGE_HEIGHT - 10, 10, 10, "<"));
     }
 
     @Override
@@ -93,19 +94,19 @@ public class GuiManual extends GuiScreen
         mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
         int i = (this.width - getXSize()) / 2;
         int j = (this.height - getYSize()) / 2;
-        pageGrid.draw(i + SKILL_PANEL_WIDTH, j, PAGE_WIDTH, PAGE_HEIGHT, false, false);
+        pageGrid.draw(i/* + SKILL_PANEL_WIDTH*/, j, PAGE_WIDTH, PAGE_HEIGHT, false, false);
         if (twoPages)
         {
-            pageGrid.draw(i + PAGE_WIDTH + SKILL_PANEL_WIDTH, j, PAGE_WIDTH, PAGE_HEIGHT, true, false);
+            pageGrid.draw(i + PAGE_WIDTH/* + SKILL_PANEL_WIDTH*/, j, PAGE_WIDTH, PAGE_HEIGHT, true, false);
         }
 
-        mc.getTextureManager().bindTexture(skillPanel);
-        pageGrid.draw(i, j, SKILL_PANEL_WIDTH, PAGE_HEIGHT, false, false);
-        this.drawTexturedModalRect(i, j, 0, 0, SKILL_PANEL_WIDTH, PAGE_HEIGHT);
+        //mc.getTextureManager().bindTexture(skillPanel);
+        //pageGrid.draw(i, j, SKILL_PANEL_WIDTH, PAGE_HEIGHT, false, false);
+        //this.drawTexturedModalRect(i, j, 0, 0, SKILL_PANEL_WIDTH, PAGE_HEIGHT); // Same below
 
-        drawSkillInfo();
+        //drawSkillInfo(); // TODO (3TUSK): DO NOT USE UNLESS YOU ARE PART OF CUISINE DEV TEAM
 
-        int originX = i + PAGE_MARGIN + SKILL_PANEL_WIDTH;
+        int originX = i + PAGE_MARGIN/* + SKILL_PANEL_WIDTH*/; // Same above
         int originY = j + PAGE_MARGIN;
 
         String str = I18nUtil.translateWithEscape("gui.welcome");
@@ -121,7 +122,7 @@ public class GuiManual extends GuiScreen
 
     private int getXSize()
     {
-        return (twoPages ? PAGE_WIDTH + PAGE_WIDTH : PAGE_WIDTH) + SKILL_PANEL_WIDTH;
+        return (twoPages ? PAGE_WIDTH + PAGE_WIDTH : PAGE_WIDTH);// + SKILL_PANEL_WIDTH;
     }
 
     private int getYSize()
@@ -186,7 +187,7 @@ public class GuiManual extends GuiScreen
             {
                 java.awt.Desktop.getDesktop().browse(new URI(chatRoomURL));
             }
-            catch (java.net.URISyntaxException wrongURI)
+            catch (URISyntaxException wrongURI)
             {
                 Cuisine.logger.error("The chat room link '{}' seems to be malformed", chatRoomURL);
                 Cuisine.logger.debug("Exception caught: {}", wrongURI);
