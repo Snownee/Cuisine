@@ -457,6 +457,11 @@ public final class CuisineInternalGateway implements CuisineAPI
         return fluid != null && fluidToSpiceMapping.containsKey(fluid.getFluid().getName());
     }
 
+    /**
+     * Internal hook for initialization of CuisineAPI instance. Not intended for public usage.
+     * Please use {@link CulinaryHub#API_INSTANCE} or {@link #INSTANCE the internal counterpart}
+     * whenever possible.
+     */
     public static void init()
     {
         // API initialization
@@ -573,6 +578,10 @@ public final class CuisineInternalGateway implements CuisineAPI
         CulinaryHub.CommonSkills.init();
     }
 
+    /**
+     * Internal hook for initialization of basic items/fluids -> ingredients/seasoning mapping.
+     * Not intended for public usage.
+     */
     public static void deferredInit()
     {
         CuisineInternalGateway api = CuisineInternalGateway.INSTANCE;
