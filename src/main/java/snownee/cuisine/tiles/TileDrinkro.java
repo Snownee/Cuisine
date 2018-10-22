@@ -23,7 +23,6 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
-import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.blocks.BlockDrinkro;

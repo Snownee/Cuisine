@@ -39,4 +39,18 @@ public class DistillationBoiling implements Boiling
         return new Output(outputFluid, output.copy());
     }
 
+    public FluidStack getInput()
+    {
+        return input;
+    }
+
+    public ItemStack getOutput()
+    {
+        return output;
+    }
+
+    public int getMinimumHeat()
+    {
+        return heatValue;
+    }
 }

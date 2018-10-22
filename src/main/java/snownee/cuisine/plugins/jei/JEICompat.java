@@ -17,9 +17,15 @@ import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
+import snownee.cuisine.api.process.BasinInteracting;
+import snownee.cuisine.api.process.Boiling;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
+import snownee.cuisine.api.process.prefab.DistillationBoiling;
+import snownee.cuisine.api.process.prefab.MaterialSqueezing;
+import snownee.cuisine.api.process.prefab.SimpleSqueezing;
+import snownee.cuisine.api.process.prefab.SimpleThrowing;
 import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
@@ -48,20 +54,7 @@ public class JEICompat implements IModPlugin
         BlockChoppingBoard.getSuitableCovers().stream().map(CuisineRegistry.CHOPPING_BOARD::getItemStack).forEach(stack -> registry.addRecipeCatalyst(stack, ChoppingBoardRecipeCategory.UID));
 
         List<IRecipeWrapper> recipes = new ArrayList<>();
-        /*CuisineInternalGateway.INSTANCE.itemToMaterialMapping.forEach((k, v) -> {
-            if (!v.getValidForms().isEmpty() && !(v.getValidForms().size() == 1 && v.getValidForms().contains(Form.JUICE)))
-            {
-                recipes.add(new ChoppingBoardKnifeRecipe(k, v));
-            }
-        });
-        CuisineInternalGateway.INSTANCE.oreDictToMaterialMapping.forEach((k, v) -> {
-            if (!v.getValidForms().isEmpty() && !(v.getValidForms().size() == 1 && v.getValidForms().contains(Form.JUICE)) && !OreDictionary.getOres(k, false).isEmpty())
-            {
-                recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v));
-            }
-        });*/
-        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) ->
-        {
+        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
                 if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)))
@@ -70,8 +63,7 @@ public class JEICompat implements IModPlugin
                 }
             }
         });
-        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
-        {
+        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) -> {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
                 if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)) && !OreDictionary.getOres(k, false).isEmpty())
@@ -89,21 +81,20 @@ public class JEICompat implements IModPlugin
         recipes.clear();
         registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY), MortarRecipeCategory.UID);
         Processing.GRINDING.preview().forEach(recipe -> recipes.add(new MortarGenericRecipe(recipe)));
-        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) ->
-        {
+        CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
             if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
             {
                 recipes.add(new MortarPasteRecipe(k, v.getMaterial()));
             }
         });
-        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) ->
-        {
-            if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
+        CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) -> {
+            if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && !OreDictionary.getOres(k, false).isEmpty() && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null)
             {
                 recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v.getMaterial()));
             }
         });
         registry.addRecipes(recipes, MortarRecipeCategory.UID);
+        recipes.clear();
 
         registry.addRecipeCatalyst(new ItemStack(CuisineRegistry.MILL), MillRecipeCategory.UID);
         registry.handleRecipes(Milling.class, MillRecipe::new, MillRecipeCategory.UID);
@@ -112,6 +103,47 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCatalyst(new ItemStack(CuisineRegistry.JAR), VesselRecipeCategory.UID);
         registry.handleRecipes(Vessel.class, VesselRecipe::new, VesselRecipeCategory.UID);
         registry.addRecipes(Processing.VESSEL.preview(), VesselRecipeCategory.UID);
+
+        registry.addRecipeCatalyst(new ItemStack(CuisineRegistry.WOODEN_BASIN), BasinSqueezingRecipeCategory.UID, BasinThrowingRecipeCategory.UID);
+        registry.addRecipeCatalyst(new ItemStack(CuisineRegistry.EARTHEN_BASIN), BasinSqueezingRecipeCategory.UID, BasinThrowingRecipeCategory.UID, BoilingRecipeCategory.UID);
+        for (int i = 0; i < CuisineRegistry.EARTHEN_BASIN_COLORED.getItemSubtypeAmount(); i++)
+        {
+            registry.addRecipeCatalyst(new ItemStack(CuisineRegistry.EARTHEN_BASIN_COLORED, 1, i), BasinSqueezingRecipeCategory.UID, BasinThrowingRecipeCategory.UID, BoilingRecipeCategory.UID);
+        }
+        // registry.handleRecipes(BasinInteracting.class, BasinSqueezingRecipe::new, BasinSqueezingRecipeCategory.UID);
+        // registry.handleRecipes(BasinInteracting.class, BasinThrowingRecipe::new, BasinThrowingRecipeCategory.UID);
+        // registry.handleRecipes(Boiling.class, BoilingRecipe::new, BoilingRecipeCategory.UID);
+        for (BasinInteracting recipe : Processing.SQUEEZING.preview())
+        {
+            if (recipe instanceof SimpleSqueezing)
+            {
+                recipes.add(new SimpleSqueezingRecipe((SimpleSqueezing) recipe));
+            }
+            else if (recipe instanceof MaterialSqueezing)
+            {
+                recipes.add(new MaterialSqueezingRecipe((MaterialSqueezing) recipe));
+            }
+        }
+        registry.addRecipes(recipes, BasinSqueezingRecipeCategory.UID);
+        recipes.clear();
+        for (BasinInteracting recipe : Processing.BASIN_THROWING.preview())
+        {
+            if (recipe instanceof SimpleThrowing)
+            {
+                recipes.add(new SimpleThrowingRecipe((SimpleThrowing) recipe));
+            }
+        }
+        registry.addRecipes(recipes, BasinThrowingRecipeCategory.UID);
+        recipes.clear();
+        for (Boiling recipe : Processing.BOILING.preview())
+        {
+            if (recipe instanceof DistillationBoiling)
+            {
+                recipes.add(new DistillationBoilingRecipe((DistillationBoiling) recipe));
+            }
+        }
+        registry.addRecipes(recipes, BoilingRecipeCategory.UID);
+        recipes.clear();
     }
 
     @Override
@@ -121,5 +153,8 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new MortarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new MillRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new VesselRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new BoilingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new BasinSqueezingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        registry.addRecipeCategories(new BasinThrowingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 }

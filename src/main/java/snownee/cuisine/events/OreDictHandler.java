@@ -11,7 +11,6 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
-import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;

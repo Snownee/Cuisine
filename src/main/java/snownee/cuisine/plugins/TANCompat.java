@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,12 +49,16 @@ public class TANCompat implements IModule
         {
             @SuppressWarnings("deprecation")
             IBlockState state = TANBlocks.campfire.getStateFromMeta(i << 1 | 1);
-            TileBasinHeatable.STATE_HEAT_SOURCES.put(state, i / 4 + 2);
+            TileBasinHeatable.STATE_HEAT_SOURCES.put(state, 3);
+            if (i == 0)
+            {
+                TileBasinHeatable.STATE_TO_ITEM.put(state, new ItemStack(TANBlocks.campfire));
+            }
         }
 
         @SuppressWarnings("deprecation")
         IBlockState state = TANBlocks.temperature_coil.getStateFromMeta(9);
-        TileBasinHeatable.STATE_HEAT_SOURCES.put(state, 4);
+        TileBasinHeatable.registerHeatSource(4, state, new ItemStack(TANBlocks.temperature_coil, 1, 1));
 
         Item juice = Item.getByNameOrId("toughasnails:fruit_juice");
         if (juice != null)
