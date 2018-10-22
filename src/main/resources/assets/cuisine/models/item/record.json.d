@@ -1,6 +1,6 @@
 {
-	"parent": "item/generated",
-	"textures": { 
-		"layer0": "cuisine:item/record"
-	}
+  "parent": "item/generated",
+  "textures": { 
+    "layer0": "cuisine:item/record"
+  }
 }

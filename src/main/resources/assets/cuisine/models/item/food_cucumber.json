@@ -1,6 +1,6 @@
 {
-	"parent": "item/handheld",
-	"textures": { 
-		"layer0": "cuisine:item/cucumber"
-	}
+  "parent": "item/handheld",
+  "textures": { 
+    "layer0": "cuisine:item/cucumber"
+  }
 }
