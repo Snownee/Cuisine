@@ -28,7 +28,13 @@ public class MortarPasteRecipe implements IRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInputLists(VanillaTypes.ITEM, Collections.singletonList(input.examples()));
+        List<ItemStack> examples = input.examples();
+        examples = examples.stream().filter(i -> CulinaryHub.API_INSTANCE.findMaterial(i) == material).collect(Collectors.toList());
+        if (examples.isEmpty())
+        {
+            return;
+        }
+        ingredients.setInputLists(VanillaTypes.ITEM, Collections.singletonList(examples));
         ingredients.setOutput(VanillaTypes.ITEM, ItemIngredient.make(material, Form.PASTE));
     }
 
