@@ -88,7 +88,7 @@ public class JEICompat implements IModPlugin
             }
         });
         CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) -> {
-            if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null && !OreDictionary.getOres(k, false).isEmpty())
+            if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && !OreDictionary.getOres(k, false).isEmpty() && Processing.GRINDING.findRecipe(OreDictDefinition.of(k).getItemStack()) == null)
             {
                 recipes.add(new MortarPasteRecipe(OreDictDefinition.of(k), v.getMaterial()));
             }
