@@ -29,7 +29,7 @@ public class MortarPasteRecipe implements IRecipeWrapper
     public void getIngredients(IIngredients ingredients)
     {
         List<ItemStack> examples = input.examples();
-        examples = examples.stream().filter(i -> CulinaryHub.API_INSTANCE.findMaterial(i) == material).collect(Collectors.toList());
+        examples = examples.stream().filter(i -> CulinaryHub.API_INSTANCE.findIngredient(i).getMaterial() == material).collect(Collectors.toList());
         if (examples.isEmpty())
         {
             return;

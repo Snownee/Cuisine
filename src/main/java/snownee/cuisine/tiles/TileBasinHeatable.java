@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import snownee.cuisine.CuisineConfig;
@@ -20,19 +22,43 @@ public class TileBasinHeatable extends TileBasin implements ITickable
 {
     public static final Map<Block, Integer> BLOCK_HEAT_SOURCES = new HashMap<>();
     public static final Map<IBlockState, Integer> STATE_HEAT_SOURCES = new HashMap<>();
+    public static final Map<Block, ItemStack> BLOCK_TO_ITEM = new HashMap<>();
+    public static final Map<IBlockState, ItemStack> STATE_TO_ITEM = new HashMap<>();
     private int tickCheckHeating = 0;
     protected boolean invLock = false;
     protected boolean failed = false;
 
     static
     {
-        BLOCK_HEAT_SOURCES.put(Blocks.LIT_PUMPKIN, 1);
-        BLOCK_HEAT_SOURCES.put(Blocks.TORCH, 1);
-        BLOCK_HEAT_SOURCES.put(Blocks.LIT_FURNACE, 2);
-        BLOCK_HEAT_SOURCES.put(Blocks.FIRE, 3);
-        BLOCK_HEAT_SOURCES.put(Blocks.MAGMA, 3);
-        BLOCK_HEAT_SOURCES.put(Blocks.LAVA, 4);
-        BLOCK_HEAT_SOURCES.put(Blocks.FLOWING_LAVA, 4);
+        registerHeatSource(1, Blocks.LIT_PUMPKIN, new ItemStack(Blocks.LIT_PUMPKIN));
+        registerHeatSource(1, Blocks.TORCH, new ItemStack(Blocks.TORCH));
+        registerHeatSource(2, Blocks.LIT_FURNACE, new ItemStack(Blocks.FURNACE));
+        registerHeatSource(3, Blocks.FIRE, new ItemStack(Items.FLINT_AND_STEEL));
+        registerHeatSource(3, Blocks.MAGMA, new ItemStack(Blocks.MAGMA));
+        registerHeatSource(4, Blocks.LAVA, new ItemStack(Items.LAVA_BUCKET));
+        registerHeatSource(4, Blocks.FLOWING_LAVA);
+    }
+
+    public static void registerHeatSource(int heatValue, IBlockState state)
+    {
+        STATE_HEAT_SOURCES.put(state, heatValue);
+    }
+
+    public static void registerHeatSource(int heatValue, IBlockState state, ItemStack stack)
+    {
+        STATE_HEAT_SOURCES.put(state, heatValue);
+        STATE_TO_ITEM.put(state, stack);
+    }
+
+    public static void registerHeatSource(int heatValue, Block block)
+    {
+        BLOCK_HEAT_SOURCES.put(block, heatValue);
+    }
+
+    public static void registerHeatSource(int heatValue, Block block, ItemStack stack)
+    {
+        BLOCK_HEAT_SOURCES.put(block, heatValue);
+        BLOCK_TO_ITEM.put(block, stack);
     }
 
     @Override
