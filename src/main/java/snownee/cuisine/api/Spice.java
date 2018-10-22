@@ -7,8 +7,6 @@ import net.minecraft.world.World;
 public interface Spice
 {
 
-    void addFlavorTo(CompositeFood dish, int quantity);
-
     String getID();
 
     String getTranslationKey();

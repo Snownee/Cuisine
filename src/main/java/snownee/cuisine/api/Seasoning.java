@@ -18,11 +18,6 @@ public final class Seasoning
         this.quantity = quantity;
     }
 
-    public void addFlavorTo(final CompositeFood dish)
-    {
-        spice.addFlavorTo(dish, quantity);
-    }
-
     public boolean matchType(Seasoning another)
     {
         return this.spice == another.spice;

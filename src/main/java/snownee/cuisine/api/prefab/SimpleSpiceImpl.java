@@ -1,7 +1,5 @@
 package snownee.cuisine.api.prefab;
 
-import snownee.cuisine.Cuisine;
-import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.Spice;
 
 public class SimpleSpiceImpl implements Spice
@@ -13,13 +11,6 @@ public class SimpleSpiceImpl implements Spice
     {
         this.id = id;
         this.color = color;
-    }
-
-    @Override
-    public void addFlavorTo(CompositeFood dish, int quantity)
-    {
-        // "Dish 'foo' is added with spice 'bar' of (size) baz
-        Cuisine.logger.debug("Dish '{}' is added with spice '{}' of {}", dish, this, quantity);
     }
 
     @Override
