@@ -70,7 +70,7 @@ public final class IngredientMeshDefinition implements ItemMeshDefinition, ISele
                     .map(Map::values)
                     .flatMap(Collection::stream)
                     .map(path -> new ResourceLocation(Cuisine.MODID, path))
-                    .forEach(path -> ModelBakery.registerItemVariants(CuisineRegistry.INGREDIENT, path));*/
+                    .forEach(path -> ModelLoader.registerItemVariants(CuisineRegistry.INGREDIENT, path));*/
         }
     }
 }

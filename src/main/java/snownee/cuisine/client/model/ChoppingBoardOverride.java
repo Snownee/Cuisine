@@ -49,6 +49,7 @@ public final class ChoppingBoardOverride extends ItemOverrideList
     static
     {
         ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> builder = ImmutableMap.builder();
+        // ForgeBlockStateV1.Transforms is available since Forge 14.23.5.2772.
         Optional<IModelState> defaultBlockTransform = ForgeBlockStateV1.Transforms.get("forge:default-block");
         if (defaultBlockTransform.isPresent())
         {
@@ -111,7 +112,7 @@ public final class ChoppingBoardOverride extends ItemOverrideList
         }
         else
         {
-            // Oak wood, with growth ring facing up. TODO: Something else that you can tell "something goes wrong" immediately?
+            // Oak wood, with growth ring facing up.
             rawModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(Blocks.LOG.getDefaultState());
         }
         return new PerspectiveMapWrapper(rawModel, CHOPPING_BOARD_TRANSFORMS);

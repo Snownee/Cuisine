@@ -37,12 +37,12 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
-public class QuadTransformer extends VertexTransformer
+final class QuadTransformer extends VertexTransformer
 {
     private final Matrix4f transform;
     private final Matrix3f normalTransform;
 
-    public QuadTransformer(TRSRTransformation transform, VertexFormat vertexFormat)
+    QuadTransformer(TRSRTransformation transform, VertexFormat vertexFormat)
     {
         super(new UnpackedBakedQuad.Builder(vertexFormat));
         this.transform = transform.getMatrix();
