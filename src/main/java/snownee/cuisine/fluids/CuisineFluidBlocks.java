@@ -8,6 +8,8 @@ import snownee.cuisine.Cuisine;
 public class CuisineFluidBlocks
 {
 
+    // TODO (3TUSK): Consider de-final these fields? Normal add-ons should NOT touch internal anyway.
+
     @GameRegistry.ObjectHolder("soy_milk")
     public static final BlockFluidBase SOY_MILK;
 
@@ -32,7 +34,7 @@ public class CuisineFluidBlocks
     @GameRegistry.ObjectHolder("sugarcane_juice")
     public static final BlockFluidBase SUGARCANE_JUICE;
 
-    static
+    static // Hack around things to get rid of IDEA warning.
     {
         SOY_MILK = null;
         MILK = null;

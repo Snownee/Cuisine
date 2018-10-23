@@ -5,6 +5,7 @@ import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.animation.AnimationTESR;
 import net.minecraftforge.client.model.obj.OBJLoader;
@@ -21,6 +22,7 @@ import snownee.cuisine.client.renderer.TESRBasin;
 import snownee.cuisine.client.renderer.TESRChoppingBoard;
 import snownee.cuisine.client.renderer.TESRMortar;
 import snownee.cuisine.client.renderer.TESRWok;
+import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.TileBarbecueRack;
 import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileChoppingBoard;
@@ -65,6 +67,13 @@ public final class CuisineBlockRendering
         ClientRegistry.bindTileEntitySpecialRenderer(TileBarbecueRack.class, new TESRBarbecueRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSqueezer.class, new AnimationTESR<>());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBasin.class, new TESRBasin());
+    }
+
+    @SubscribeEvent
+    public static void onTextureStitch(TextureStitchEvent.Pre event)
+    {
+        event.getMap().registerSprite(CuisineFluids.JUICE.getStill());
+        event.getMap().registerSprite(CuisineFluids.JUICE.getFlowing());
     }
 
 }
