@@ -40,6 +40,7 @@ public class BlockModSapling extends BlockBush implements IModBlock
         // setDefaultState in constructor of BlockSapling so we can't extend that.
         this.name = name;
         // setCreativeTab(Cuisine.CREATIVE_TAB);
+        setCreativeTab(null);
         setDefaultState(blockState.getBaseState().withProperty(VARIANT, Type.POMELO).withProperty(BlockSapling.STAGE, 0));
     }
 
