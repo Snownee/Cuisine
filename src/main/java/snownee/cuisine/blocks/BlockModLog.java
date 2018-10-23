@@ -28,6 +28,7 @@ public class BlockModLog extends BlockLog implements IModBlock
     {
         this.name = name;
         // setCreativeTab(Cuisine.CREATIVE_TAB);
+        setCreativeTab(null);
         setDefaultState(blockState.getBaseState().withProperty(VARIANT, Type.POMELO).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
     }
 

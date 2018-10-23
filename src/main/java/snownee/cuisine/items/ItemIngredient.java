@@ -231,6 +231,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
     public static List<ItemStack> getAllValidFormsWithException(Material material, EnumSet<Form> exceptions)
     {
         EnumSet<Form> forms = EnumSet.complementOf(exceptions);
+        forms.remove(Form.JUICE);
         forms.retainAll(material.getValidForms());
         return forms.stream().map(form -> make(material, form)).collect(Collectors.toList());
     }

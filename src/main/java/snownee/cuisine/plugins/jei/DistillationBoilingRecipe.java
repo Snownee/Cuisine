@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.prefab.DistillationBoiling;
@@ -29,6 +30,13 @@ public class DistillationBoilingRecipe implements IRecipeWrapper
         ingredients.setInput(VanillaTypes.FLUID, recipe.getInput());
         ingredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(Collections.emptyList(), getSources(recipe.getMinimumHeat())));
         ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutput());
+    }
+
+    @Override
+    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
+        JEICompat.arrowOut.draw(minecraft, 61, 11);
+        JEICompat.arrowOutOverlay.draw(minecraft, 61, 11);
     }
 
     private static List<ItemStack> getSources(int minHeat)

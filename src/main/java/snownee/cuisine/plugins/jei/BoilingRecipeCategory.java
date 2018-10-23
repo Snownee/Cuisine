@@ -13,22 +13,30 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.config.Constants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 
 public class BoilingRecipeCategory implements IRecipeCategory
 {
     static final String UID = Cuisine.MODID + ".basin_boiling";
-    private static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
 
-    private final IDrawable background;
-    private final String localizedName;
+    protected final IGuiHelper guiHelper;
+    protected final IDrawable background;
+    protected final IDrawable flame;
+    protected final IDrawable container;
+    protected final IDrawable flameOverlay;
+    protected final String localizedName;
 
-    public BoilingRecipeCategory(IGuiHelper guiHelper)
+    public BoilingRecipeCategory(IGuiHelper guiHelper, IDrawable container)
     {
-        background = guiHelper.drawableBuilder(VANILLA_RECIPE_GUI, 49, 168, 76, 18).addPadding(18, 15, 0, 0).build();
+        this.guiHelper = guiHelper;
+        this.container = container;
+        background = guiHelper.createBlankDrawable(95, 32);
+        flame = guiHelper.createDrawable(JEICompat.VANILLA_RECIPE_GUI, 2, 135, 13, 13);
+        flameOverlay = guiHelper.createDrawable(Constants.RECIPE_GUI_VANILLA, 82, 114, 14, 14);
         localizedName = I18n.format("gui.jei.title.basin_boiling");
     }
 
@@ -57,13 +65,22 @@ public class BoilingRecipeCategory implements IRecipeCategory
     }
 
     @Override
+    public void drawExtras(Minecraft minecraft)
+    {
+        flame.draw(minecraft, 32, 1);
+        flameOverlay.draw(minecraft, 31, 0);
+        container.draw(minecraft, 0, 22);
+        container.draw(minecraft, 56, 22);
+    }
+
+    @Override
     public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
         IGuiFluidStackGroup fluids = recipeLayout.getFluidStacks();
-        stacks.init(0, true, 0, 0);
-        stacks.init(1, true, 16, 0);
-        stacks.init(2, false, 32, 0);
+        stacks.init(0, true, 1, 0);
+        stacks.init(1, true, 29, 14);
+        stacks.init(2, false, 77, 0);
         int maxAmount = 0;
         List<List<FluidStack>> lists = Lists.newArrayList(ingredients.getInputs(VanillaTypes.FLUID));
         lists.addAll(ingredients.getOutputs(VanillaTypes.FLUID));
@@ -77,8 +94,17 @@ public class BoilingRecipeCategory implements IRecipeCategory
                 }
             }
         }
-        fluids.init(0, true, 0, 36, 16, 8, 200, false, null);
-        fluids.init(1, false, 36, 36);
+        fluids.init(0, true, 2, 22, 16, 8, maxAmount, false, null);
+        fluids.init(1, false, 58, 22, 16, 8, maxAmount, false, null);
+        if (!ingredients.getInputs(VanillaTypes.ITEM).isEmpty() && !ingredients.getInputs(VanillaTypes.ITEM).get(0).isEmpty())
+        {
+            stacks.setBackground(0, guiHelper.getSlotDrawable());
+        }
+        stacks.setBackground(1, guiHelper.getSlotDrawable());
+        if (!ingredients.getOutputs(VanillaTypes.ITEM).isEmpty() && !ingredients.getOutputs(VanillaTypes.ITEM).get(0).isEmpty())
+        {
+            stacks.setBackground(2, guiHelper.getSlotDrawable());
+        }
         stacks.set(ingredients);
         fluids.set(ingredients);
     }

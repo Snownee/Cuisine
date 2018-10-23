@@ -58,24 +58,19 @@ public class SimpleSqueezing implements BasinInteracting
         item.shrink(input.count());
     }
 
-    // TODO: JEI support @3TUSK
-    //
-    //    @Override
-    //    public List<ItemStack> getInputItems()
-    //    {
-    //        return input.examples();
-    //    }
-    //
-    //    @Override
-    //    public List<FluidStack> getInputFluids()
-    //    {
-    //        return Lists.newArrayList();
-    //    }
-    //
-    //    @Override
-    //    public List<FluidStack> getOutputs()
-    //    {
-    //        return Arrays.asList(output);
-    //    }
+    public ProcessingInput getInputItem()
+    {
+        return input;
+    }
+
+    public FluidStack getOutputFluid()
+    {
+        return outputFluid;
+    }
+
+    public ItemStack getOutputItem()
+    {
+        return outputItem;
+    }
 
 }

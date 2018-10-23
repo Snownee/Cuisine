@@ -8,7 +8,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 
@@ -21,7 +20,7 @@ public class MortarRecipeCategory implements IRecipeCategory
 
     public MortarRecipeCategory(IGuiHelper guiHelper)
     {
-        background = guiHelper.createDrawable(new ResourceLocation(Cuisine.MODID, "textures/gui/jei.png"), 0, 0, 148, 18);
+        background = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 0, 0, 148, 18);
         localizedName = I18n.format(CuisineRegistry.MORTAR.getTranslationKey() + ".name");
     }
 
