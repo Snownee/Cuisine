@@ -259,22 +259,22 @@ public final class CuisineInternalGateway implements CuisineAPI
         return effectRegistry.lookup(uniqueId);
     }
 
-    public final Map<ItemDefinition, SimpleJuice> simpleJuiceMapping = new HashMap<>();
+    public final Map<ItemDefinition, SimpleIngredient> simpleIngredientMapping = new HashMap<>();
 
-    private static final class SimpleJuice
+    private static final class SimpleIngredient
     {
         public final Material material;
-        final double quantity;
+        public final Form form;
 
-        public SimpleJuice(Material material, double quantity)
+        public SimpleIngredient(Material material, Form form)
         {
             this.material = material;
-            this.quantity = quantity;
+            this.form = form;
         }
 
         Ingredient makeIngredient()
         {
-            return new Ingredient(material, Form.JUICE, quantity);
+            return new Ingredient(material, form, 1);
         }
     }
 
@@ -301,7 +301,7 @@ public final class CuisineInternalGateway implements CuisineAPI
 
         ItemDefinition itemDefinition = ItemDefinition.of(item);
 
-        SimpleJuice juice = simpleJuiceMapping.get(itemDefinition);
+        SimpleIngredient juice = simpleIngredientMapping.get(itemDefinition);
         if (juice != null)
         {
             return juice.makeIngredient();
@@ -625,6 +625,12 @@ public final class CuisineInternalGateway implements CuisineAPI
 
         api.oreDictToSpiceMapping.put("dustSalt", CulinaryHub.CommonSpices.SALT);
         api.oreDictToSpiceMapping.put("dustCrudesalt", CulinaryHub.CommonSpices.CRUDE_SALT);
+    }
+
+    public static void postInit()
+    {
+        CuisineInternalGateway api = CuisineInternalGateway.INSTANCE;
+
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
@@ -14,7 +13,7 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.process.BasinInteracting;
-import snownee.cuisine.fluids.CuisineFluids;
+import snownee.cuisine.fluids.FluidJuice;
 
 public class MaterialSqueezing implements BasinInteracting
 {
@@ -58,12 +57,15 @@ public class MaterialSqueezing implements BasinInteracting
         {
             return new Output(fluid, ItemStack.EMPTY);
         }
-        NBTTagCompound data = new NBTTagCompound();
-        data.setString("material", material.getID());
         int amount = fluid == null ? 0 : fluid.amount;
         amount += ingredient.getSize() * 500;
-        FluidStack outputFluid = new FluidStack(CuisineFluids.JUICE, amount, data);
+        FluidStack outputFluid = FluidJuice.make(material, amount);
         return new Output(outputFluid, ItemStack.EMPTY);
+    }
+
+    public Material getMaterial()
+    {
+        return material;
     }
 
 }

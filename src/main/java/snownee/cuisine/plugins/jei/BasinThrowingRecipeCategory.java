@@ -7,20 +7,18 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.Cuisine;
 
 public class BasinThrowingRecipeCategory implements IRecipeCategory
 {
     static final String UID = Cuisine.MODID + ".basin_throwing";
-    private static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
 
     private final IDrawable background;
     private final String localizedName;
 
-    public BasinThrowingRecipeCategory(IGuiHelper guiHelper)
+    public BasinThrowingRecipeCategory(IGuiHelper guiHelper, IDrawable container)
     {
-        background = guiHelper.drawableBuilder(VANILLA_RECIPE_GUI, 49, 168, 76, 18).addPadding(18, 15, 0, 0).build();
+        background = guiHelper.drawableBuilder(JEICompat.VANILLA_RECIPE_GUI, 49, 168, 76, 18).addPadding(18, 15, 0, 0).build();
         localizedName = I18n.format("gui.jei.title.basin_throwing");
     }
 

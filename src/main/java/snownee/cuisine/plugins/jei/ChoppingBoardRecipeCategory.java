@@ -8,7 +8,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 
@@ -16,15 +15,12 @@ public class ChoppingBoardRecipeCategory implements IRecipeCategory
 {
     static final String UID = Cuisine.MODID + ".chopping_board";
 
-    // Keep an eye on this; this may change in the future
-    private static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
-
     private final IDrawable background;
     private final String localizedName;
 
     ChoppingBoardRecipeCategory(IGuiHelper guiHelper)
     {
-        background = guiHelper.drawableBuilder(VANILLA_RECIPE_GUI, 49, 168, 76, 18)
+        background = guiHelper.drawableBuilder(JEICompat.VANILLA_RECIPE_GUI, 49, 168, 76, 18)
                 .addPadding(18, 15, 0, 0)
                 .build();
         localizedName = I18n.format(CuisineRegistry.CHOPPING_BOARD.getTranslationKey() + ".name");

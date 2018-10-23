@@ -6,14 +6,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
@@ -36,11 +41,20 @@ import snownee.kiwi.util.definition.OreDictDefinition;
 @JEIPlugin
 public class JEICompat implements IModPlugin
 {
-    public static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.PROGRESSION.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+    // Keep an eye on this; this may change in the future
+    static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
+    static final ResourceLocation CUISINE_RECIPE_GUI = new ResourceLocation(Cuisine.MODID, "textures/gui/jei.png");
+    static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.PROGRESSION.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+
+    static IDrawable arrowOut;
+    static IDrawable arrowOutOverlay;
 
     @Override
     public void register(IModRegistry registry)
     {
+        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        arrowOut = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 11, 26, 11, 7);
+        arrowOutOverlay = guiHelper.drawableBuilder(JEICompat.CUISINE_RECIPE_GUI, 11, 18, 11, 8).buildAnimated(40, IDrawableAnimated.StartDirection.BOTTOM, false);
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.INGREDIENT));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.DRINK));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.BOTTLE));
@@ -149,12 +163,14 @@ public class JEICompat implements IModPlugin
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
-        registry.addRecipeCategories(new ChoppingBoardRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-        registry.addRecipeCategories(new MortarRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-        registry.addRecipeCategories(new MillRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-        registry.addRecipeCategories(new VesselRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-        registry.addRecipeCategories(new BoilingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-        registry.addRecipeCategories(new BasinSqueezingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
-        registry.addRecipeCategories(new BasinThrowingRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
+        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        IDrawable basin = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 0, 33, 20, 10);
+        registry.addRecipeCategories(new ChoppingBoardRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new MortarRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new MillRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new VesselRecipeCategory(guiHelper));
+        registry.addRecipeCategories(new BoilingRecipeCategory(guiHelper, basin));
+        registry.addRecipeCategories(new BasinSqueezingRecipeCategory(guiHelper, basin));
+        registry.addRecipeCategories(new BasinThrowingRecipeCategory(guiHelper, basin));
     }
 }

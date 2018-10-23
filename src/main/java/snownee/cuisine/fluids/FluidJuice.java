@@ -1,14 +1,14 @@
 package snownee.cuisine.fluids;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public class FluidJuice extends VaporizableFluid
 {
@@ -16,7 +16,14 @@ public class FluidJuice extends VaporizableFluid
 
     public FluidJuice(String name)
     {
-        super(name, new ResourceLocation(Cuisine.MODID, "block/" + name + "_still"), new ResourceLocation(Cuisine.MODID, "block/" + name + "_flow"));
+        super(name);
+    }
+
+    public static FluidStack make(Material material, int amount)
+    {
+        NBTTagCompound data = new NBTTagCompound();
+        data.setString(CuisineSharedSecrets.KEY_MATERIAL, material.getID());
+        return new FluidStack(CuisineFluids.JUICE, amount, data);
     }
 
     @Override
