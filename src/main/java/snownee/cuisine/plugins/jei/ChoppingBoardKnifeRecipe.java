@@ -47,7 +47,7 @@ public class ChoppingBoardKnifeRecipe implements IRecipeWrapper
             return;
         }
         ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(examples, knifes));
-        ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllValidFormsWithException(output, EnumSet.of(Form.FULL))));
+        ingredients.setOutputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllValidFormsWithException(output, EnumSet.of(Form.FULL, Form.JUICE))));
     }
 
 }

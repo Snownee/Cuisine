@@ -228,10 +228,21 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
         return tag.getIntArray(KEY_ACTIONS);
     }
 
+    /**
+     * Return a {@link List} of ItemStacks that represents {@link Material} in all of its valid forms
+     * expect the specified forms.
+     *
+     * 返回一个包含 ItemStack 的 {@link List}，其内容代表了所有除指定{@linkplain Form 形态}外，指定{@linkplain Material
+     * 食材类型}允许存在的所有形态。
+     *
+     * @param material Desired material
+     * @param exceptions All exempted Form
+     *
+     * @return A list of desired ItemStacks, each represents a valid form of given Material
+     */
     public static List<ItemStack> getAllValidFormsWithException(Material material, EnumSet<Form> exceptions)
     {
         EnumSet<Form> forms = EnumSet.complementOf(exceptions);
-        forms.remove(Form.JUICE);
         forms.retainAll(material.getValidForms());
         return forms.stream().map(form -> make(material, form)).collect(Collectors.toList());
     }

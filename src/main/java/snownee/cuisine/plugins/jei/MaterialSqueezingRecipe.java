@@ -23,7 +23,7 @@ public class MaterialSqueezingRecipe implements IRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllValidFormsWithException(recipe.getMaterial(), EnumSet.of(Form.FULL, Form.PASTE))));
+        ingredients.setInputLists(VanillaTypes.ITEM, Collections.singletonList(ItemIngredient.getAllValidFormsWithException(recipe.getMaterial(), EnumSet.of(Form.FULL, Form.PASTE, Form.JUICE))));
         ingredients.setOutput(VanillaTypes.FLUID, FluidJuice.make(recipe.getMaterial(), 250));
     }
 
