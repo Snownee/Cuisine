@@ -627,12 +627,6 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.oreDictToSpiceMapping.put("dustCrudesalt", CulinaryHub.CommonSpices.CRUDE_SALT);
     }
 
-    public static void postInit()
-    {
-        CuisineInternalGateway api = CuisineInternalGateway.INSTANCE;
-
-    }
-
     @Override
     public void registerMapping(ItemDefinition item, Ingredient ingredient)
     {
