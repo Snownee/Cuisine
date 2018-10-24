@@ -12,7 +12,7 @@ import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public class FluidJuice extends VaporizableFluid
 {
-    private static final int DEFAULT_COLOR = 3694022;
+    private static final int DEFAULT_COLOR = 0xF08A19;
 
     public FluidJuice(String name)
     {
