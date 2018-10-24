@@ -66,7 +66,8 @@ public final class TooltipHandler
             i = ingredient.getMaterial().getCategories().size() * MathHelper.ceil(ingredient.getSize());
             if (event.getFlags().isAdvanced())
             {
-                event.getToolTip().add(stack.getItem().getContainerItem(stack).toString());
+                // TODO (3TUSK): What is this originally for?
+                //event.getToolTip().add(stack.getItem().getContainerItem(stack).toString());
             }
         }
         else
