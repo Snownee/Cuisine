@@ -15,9 +15,9 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.util.I18nUtil;
 
 public class BasinSqueezingRecipeCategory implements IRecipeCategory
 {
@@ -37,7 +37,7 @@ public class BasinSqueezingRecipeCategory implements IRecipeCategory
         background = guiHelper.createBlankDrawable(74, 32);
         arrow = guiHelper.createDrawable(JEICompat.VANILLA_RECIPE_GUI, 25, 133, 22, 15);
         arrowOverlay = guiHelper.drawableBuilder(JEICompat.VANILLA_RECIPE_GUI, 82, 128, 24, 17).buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
-        localizedName = I18n.format("gui.jei.title.basin_squeezing");
+        localizedName = I18nUtil.translate("gui.jei.title.basin_squeezing");
     }
 
     @Override

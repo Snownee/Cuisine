@@ -46,4 +46,19 @@ public class SimpleThrowing implements BasinInteracting
     {
         item.shrink(inputItem.count());
     }
+
+    public ProcessingInput getInputItem()
+    {
+        return inputItem;
+    }
+
+    public FluidStack getInputFluid()
+    {
+        return inputFluid;
+    }
+
+    public ItemStack getOutputItem()
+    {
+        return outputItem;
+    }
 }

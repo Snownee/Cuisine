@@ -313,6 +313,9 @@ cuisine.gui.chat_room_link=https://jq.qq.com/?_wv=1027&k=5GXZnpl
 cuisine.gui.name_food=编辑菜品名
 cuisine.gui.wok_size_too_large=这锅菜的分量大到你无法翻炒
 cuisine.gui.cannot_add_more=你不能添加更多食材了
+cuisine.gui.jei.title.basin_squeezing=盆 - 压榨
+cuisine.gui.jei.title.basin_throwing=盆 - 投入物品
+cuisine.gui.jei.title.basin_boiling=盆 - 加热
 
 cuisine.skillpoint.expertise=技巧度
 cuisine.skillpoint.proficiency=熟练度

@@ -15,9 +15,9 @@ import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.config.Constants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.util.I18nUtil;
 
 public class BoilingRecipeCategory implements IRecipeCategory
 {
@@ -37,7 +37,7 @@ public class BoilingRecipeCategory implements IRecipeCategory
         background = guiHelper.createBlankDrawable(95, 32);
         flame = guiHelper.createDrawable(JEICompat.VANILLA_RECIPE_GUI, 2, 135, 13, 13);
         flameOverlay = guiHelper.createDrawable(Constants.RECIPE_GUI_VANILLA, 82, 114, 14, 14);
-        localizedName = I18n.format("gui.jei.title.basin_boiling");
+        localizedName = I18nUtil.translate("gui.jei.title.basin_boiling");
     }
 
     @Override
