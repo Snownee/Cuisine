@@ -229,6 +229,39 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
     }
 
     /**
+     * Return a {@link List} of ItemStacks that represents {@link Material} in the form that is in both
+     * specified range of forms and all possible forms of given {@link Material}. Example:
+     *
+     * <pre>
+     *     // Contains Form.CUBED, Form.SLICED, Form.SHREDDED
+     *     EnumSet&lt;Form&gt; allValidForms = materialFoo.getValidForms();
+     *     // Contains Form.CUBED, Form.JUICE, Form.PASTE
+     *     EnumSet&lt;Form&gt; desiredForms = EnumSet.of(Form.CUBED, Form.JUICE, Form.PASTE);
+     *
+     *     List&lt;ItemStack&gt; result = getAllValidFormsInRange(materialFoo, desiredForms);
+     *
+     *     // The only element would be ItemStack that represents materialFoo with form of
+     *     // Form.CUBED because intersection between allValidForms and desiredForms is a set
+     *     // with one element which is Form.CUBED.
+     *     assert result.size() == 1;
+     * </pre>
+     *
+     * 返回一个包含 ItemStack 的 {@link List}，其内容代表了指定{@linkplain Material 食材类型}在所有存在形态与
+     * 指定形态范围的交集中的所有存在形态。
+     *
+     * @param material Desired material
+     * @param range All exempted Form
+     *
+     * @return A list of desired ItemStacks, each represents a valid form of given Material
+     */
+    public static List<ItemStack> getAllValidFormsInRange(Material material, EnumSet<Form> range)
+    {
+        EnumSet<Form> forms = range.clone();
+        forms.retainAll(material.getValidForms());
+        return forms.stream().map(form -> make(material, form)).collect(Collectors.toList());
+    }
+
+    /**
      * Return a {@link List} of ItemStacks that represents {@link Material} in all of its valid forms
      * expect the specified forms.
      *
@@ -240,6 +273,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
      *
      * @return A list of desired ItemStacks, each represents a valid form of given Material
      */
+    // TODO (3TUSK): In-code explanation. Intersection is way too abstract...
     public static List<ItemStack> getAllValidFormsWithException(Material material, EnumSet<Form> exceptions)
     {
         EnumSet<Form> forms = EnumSet.complementOf(exceptions);
