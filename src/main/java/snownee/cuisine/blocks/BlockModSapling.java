@@ -97,11 +97,13 @@ public class BlockModSapling extends BlockBush implements IModBlock
         return getStateFromMeta(meta * 2);
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(VARIANT, Type.values()[meta / 2]).withProperty(BlockSapling.STAGE, meta % 2);
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(VARIANT).ordinal() * 2 + state.getValue(BlockSapling.STAGE);
@@ -113,6 +115,7 @@ public class BlockModSapling extends BlockBush implements IModBlock
         return state.getValue(VARIANT).ordinal();
     }
 
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, VARIANT, BlockSapling.STAGE);

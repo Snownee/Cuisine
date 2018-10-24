@@ -51,6 +51,7 @@ public class BlockSqueezer extends BlockMod
         return false;
     }
 
+    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         neighborChanged(state, worldIn, pos, Blocks.AIR, pos.down());

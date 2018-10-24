@@ -20,7 +20,6 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.items.ItemBasicFood;
-import snownee.cuisine.items.ItemMortar;
 import snownee.cuisine.library.DummyVanillaRecipe;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)

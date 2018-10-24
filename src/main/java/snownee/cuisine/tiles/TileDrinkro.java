@@ -182,11 +182,13 @@ public class TileDrinkro extends TileBase implements CookingVessel
     public Drink.Builder builder;
     public ItemStackHandler inputs = new ItemStackHandler(4)
     {
+        @Override
         public int getSlotLimit(int slot)
         {
             return 1;
         }
 
+        @Override
         public boolean isItemValid(int slot, ItemStack stack)
         {
             if (Drink.Builder.isFeatureItem(stack))
@@ -197,6 +199,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
             return spice != null && builder.canAddIntoThis(null, new Seasoning(spice), TileDrinkro.this);
         }
 
+        @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
             if (Drink.Builder.isFeatureItem(stack))
@@ -219,16 +222,19 @@ public class TileDrinkro extends TileBase implements CookingVessel
     };
     public ItemStackHandler output = new ItemStackHandler()
     {
+        @Override
         public int getSlotLimit(int slot)
         {
             return 1;
         }
 
+        @Override
         public boolean isItemValid(int slot, ItemStack stack)
         {
             return Drink.Builder.isContainerItem(stack);
         }
 
+        @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
             if (!isItemValid(slot, stack))

@@ -41,11 +41,13 @@ public class EntitySeed extends EntityThrowable
         setItem(stack);
     }
 
+    @Override
     protected void entityInit()
     {
         this.getDataManager().register(ITEM, ItemStack.EMPTY);
     }
 
+    @Override
     protected float getGravityVelocity()
     {
         return 0.05F;
@@ -82,6 +84,7 @@ public class EntitySeed extends EntityThrowable
         fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(EntityPotion.class, "Item"));
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
@@ -97,6 +100,7 @@ public class EntitySeed extends EntityThrowable
         }
     }
 
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);

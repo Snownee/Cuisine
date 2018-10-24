@@ -26,6 +26,7 @@ public class ItemDrinkro extends ItemModBlock
         super(block);
     }
 
+    @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         IBlockState iblockstate = worldIn.getBlockState(pos);

@@ -78,11 +78,13 @@ public class BlockModLog extends BlockLog implements IModBlock
         }
     }
 
+    @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, VARIANT, LOG_AXIS);
     }
 
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, Type.values()[(meta & 3) % 4]);
@@ -105,6 +107,7 @@ public class BlockModLog extends BlockLog implements IModBlock
         return iblockstate;
     }
 
+    @Override
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
@@ -127,6 +130,7 @@ public class BlockModLog extends BlockLog implements IModBlock
         return i;
     }
 
+    @Override
     public int damageDropped(IBlockState state)
     {
         return state.getValue(VARIANT).ordinal();

@@ -64,22 +64,26 @@ public class ItemBottle extends ItemMod implements CookingVessel
         return super.getItemStackDisplayName(stack);
     }
 
+    @Override
     public int getMaxItemUseDuration(ItemStack stack)
     {
         return 32;
     }
 
+    @Override
     public EnumAction getItemUseAction(ItemStack stack)
     {
         return EnumAction.DRINK;
     }
 
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         playerIn.setActiveHand(handIn);
         return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
 
+    @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
         if (!(entityLiving instanceof EntityPlayer))
