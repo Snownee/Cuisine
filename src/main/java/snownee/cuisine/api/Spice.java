@@ -23,6 +23,24 @@ public interface Spice
         // NO-OP
     }
 
+    /**
+     * Callback method that will be invoked when a player directly consumes seasoning object.
+     *
+     * @param spiceContainerItem the ItemStack instance that functions like a container of
+     *                           seasoning object
+     * @param consumer           the player who consumed the seasoning object
+     * @param world              the world where the player is in
+     * @param actualContent      the form in which the seasoning object exists; in Cuisine,
+     *                           the only two known possibilities are ItemStack and FluidStack
+     *
+     * @deprecated Work in progress, do NOT call it even if it is harmless
+     */
+    @Deprecated
+    default void onConsumedDirectly(ItemStack spiceContainerItem, EntityPlayer consumer, World world, Object actualContent)
+    {
+        // Default to no-op
+    }
+
     default void onConsumed(ItemStack stack, EntityPlayer player, World worldIn, Seasoning seasoning, EffectCollector collector)
     {
         // NO-OP
