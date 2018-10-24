@@ -82,7 +82,10 @@ public class GuiNameFood extends GuiContainer
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        super.keyTyped(typedChar, keyCode);
+        if (!mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode))
+        {
+            super.keyTyped(typedChar, keyCode);
+        }
 
         this.textField.textboxKeyTyped(typedChar, keyCode);
 
