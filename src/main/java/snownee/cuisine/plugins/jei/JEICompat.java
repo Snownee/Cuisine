@@ -2,8 +2,11 @@ package snownee.cuisine.plugins.jei;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import mezz.jei.api.IGuiHelper;
@@ -22,6 +25,8 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.Boiling;
 import snownee.cuisine.api.process.Milling;
@@ -66,6 +71,28 @@ public class JEICompat implements IModPlugin
         registry.addRecipes(CuisineInternalGateway.INSTANCE.oreDictToSpiceMapping.keySet().stream().map(OreDictDefinition::of).map(RecipeSpiceBottleFillingWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
 
         BlockChoppingBoard.getSuitableCovers().stream().map(CuisineRegistry.CHOPPING_BOARD::getItemStack).forEach(stack -> registry.addRecipeCatalyst(stack, ChoppingBoardRecipeCategory.UID));
+
+        // TODO (3TUSK): Now I have to clean up the mess that I made long time ago - IngredientDefinition - ItemDefinition, but for Ingredient.
+        // TODO (3TUSK): As you can see, there is no way to distinguish Form. A separate map for form-sensitive mapping?
+        // Why IdentityHashMap? Material vs. Ingredient is akin to Item vs. ItemStack (i.e. flyweight pattern), so
+        // Material instances are shared, and thus are safe to be compared by `==`.
+        // And yes, as you can see, this reverse map excludes juice. So it's not a general purpose reverse map which is
+        // exactly why it is a local variable right now - until we found a way to generalize it, it is local variable.
+        IdentityHashMap<Material, Collection<ItemStack>> reverseMaterialMapWithoutJuice = new IdentityHashMap<>();
+        for (Map.Entry<ItemDefinition, Ingredient> entry : CuisineInternalGateway.INSTANCE.itemIngredients.entrySet())
+        {
+            if (entry.getValue().getForm() != Form.JUICE)
+            {
+                reverseMaterialMapWithoutJuice.computeIfAbsent(entry.getValue().getMaterial(), m -> new ArrayList<>()).addAll(entry.getKey().examples());
+            }
+        }
+        for (Map.Entry<String, Ingredient> entry : CuisineInternalGateway.INSTANCE.oreDictIngredients.entrySet())
+        {
+            if (entry.getValue().getForm() != Form.JUICE)
+            {
+                reverseMaterialMapWithoutJuice.computeIfAbsent(entry.getValue().getMaterial(), m -> new ArrayList<>()).addAll(OreDictionary.getOres(entry.getKey()));
+            }
+        }
 
         List<IRecipeWrapper> recipes = new ArrayList<>();
         CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
@@ -135,7 +162,7 @@ public class JEICompat implements IModPlugin
             }
             else if (recipe instanceof MaterialSqueezing)
             {
-                recipes.add(new MaterialSqueezingRecipe((MaterialSqueezing) recipe));
+                recipes.add(new MaterialSqueezingRecipe((MaterialSqueezing)recipe, reverseMaterialMapWithoutJuice.get(((MaterialSqueezing)recipe).getMaterial())));
             }
         }
         registry.addRecipes(recipes, BasinSqueezingRecipeCategory.UID);
