@@ -296,8 +296,6 @@ fluid.beet_juice=Beet Juice
 fluid.sugarcane_juice=Sugarcane Juice
 fluid.cuisine_juice=Juice
 
-entity.cuisine.falling_flower.name=Falling Block
-
 cuisine.tip.food.hunger_regen=Food points: %.d
 cuisine.tip.food.saturation=Saturation: {0,number,#.##}
 cuisine.tip.properties=Properties:
@@ -320,6 +318,25 @@ cuisine.potion.dispersal=Dispersal
 cuisine.potion.hot=Hot
 cuisine.potion.effect_resistance=Effect Resistance
 cuisine.potion.cold_blood=Cold Blood
+#cuisine.potion.toughness=不动如山
+#cuisine.potion.drunk=醉酒
+
+#potion.effect.cuisine.dispersal=驱散药水
+#splash_potion.effect.cuisine.dispersal=喷溅型驱散药水
+#lingering_potion.effect.cuisine.dispersal=滞留型驱散药水
+#tipped_arrow.effect.cuisine.dispersal=驱散之箭
+#potion.effect.cuisine.hot=麻辣药水
+#splash_potion.effect.cuisine.hot=喷溅型麻辣药水
+#lingering_potion.effect.cuisine.hot=滞留型麻辣药水
+#tipped_arrow.effect.cuisine.hot=麻辣之箭
+#potion.effect.cuisine.cold_blood=冷血药水
+#splash_potion.effect.cuisine.cold_blood=喷溅型冷血药水
+#lingering_potion.effect.cuisine.cold_blood=滞留型冷血药水
+#tipped_arrow.effect.cuisine.cold_blood=冷血之箭
+#potion.effect.cuisine.toughness=屹立药水
+#splash_potion.effect.cuisine.toughness=喷溅型屹立药水
+#lingering_potion.effect.cuisine.toughness=滞留型屹立药水
+#tipped_arrow.effect.cuisine.toughness=屹立之箭
 
 cuisine.ingredient.trait.crisp=Crisp
 cuisine.ingredient.trait.aromatic=Aromatic
@@ -359,6 +376,9 @@ cuisine.gui.chat_room_link=https://discord.gg/KzGQW7a
 cuisine.gui.name_food=Edit food name
 cuisine.gui.wok_size_too_large=This dish is too heavy for you to stiring
 cuisine.gui.cannot_add_more=You can't add more ingredients
+#cuisine.gui.jei.title.basin_squeezing=盆 - 压榨
+#cuisine.gui.jei.title.basin_throwing=盆 - 投入物品
+#cuisine.gui.jei.title.basin_boiling=盆 - 加热
 
 cuisine.skillpoint.expertise=Expertise
 cuisine.skillpoint.proficiency=Proficiency
