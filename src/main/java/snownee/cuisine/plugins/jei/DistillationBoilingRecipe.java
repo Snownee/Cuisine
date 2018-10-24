@@ -1,10 +1,9 @@
 package snownee.cuisine.plugins.jei;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import com.google.common.collect.ImmutableList;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
@@ -28,7 +27,7 @@ public class DistillationBoilingRecipe implements IRecipeWrapper
     public void getIngredients(IIngredients ingredients)
     {
         ingredients.setInput(VanillaTypes.FLUID, recipe.getInput());
-        ingredients.setInputLists(VanillaTypes.ITEM, ImmutableList.of(Collections.emptyList(), getSources(recipe.getMinimumHeat())));
+        ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(Collections.emptyList(), getSources(recipe.getMinimumHeat())));
         ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutput());
     }
 
