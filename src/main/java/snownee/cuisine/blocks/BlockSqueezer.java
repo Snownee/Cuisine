@@ -34,8 +34,8 @@ import snownee.kiwi.block.BlockMod;
 public class BlockSqueezer extends BlockMod
 {
 
-    public static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.9375);
-    public static final AxisAlignedBB AABB_EXTENDED = new AxisAlignedBB(0.0625, -0.5, 0.0625, 0.9375, 0.9375, 0.9375);
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.9375);
+    private static final AxisAlignedBB AABB_EXTENDED = new AxisAlignedBB(0.0625, -0.5, 0.0625, 0.9375, 0.9375, 0.9375);
 
     public BlockSqueezer(String name)
     {
@@ -68,23 +68,6 @@ public class BlockSqueezer extends BlockMod
                 worldIn.setBlockState(pos, Blocks.PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
                 return;
             }
-        }
-
-        boolean pre = state.getValue(BlockDispenser.TRIGGERED);
-        boolean post = worldIn.isBlockPowered(pos);
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (!(tile instanceof TileSqueezer))
-        {
-            return;
-        }
-        if (pre && !post)
-        {
-            worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.FALSE));
-        }
-        else if (!pre && post)
-        {
-            worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
-            worldIn.setBlockState(pos, state.withProperty(BlockDispenser.TRIGGERED, Boolean.TRUE));
         }
     }
 

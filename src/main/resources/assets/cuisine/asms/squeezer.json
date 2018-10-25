@@ -3,20 +3,17 @@
   "clips": {
     "extended": "cuisine:block/piston_extension@arm_extended",
     "extracted": "cuisine:block/piston_extension@arm_extracted",
-    "extending": [ "apply", "cuisine:block/piston_extension@arm_moving", "#offset" ],
-    "extracting": [ "apply", "cuisine:block/piston_extension@arm_moving", "#offset" ]
+    "moving": [ "apply", "cuisine:block/piston_extension@arm_moving", "#offset" ]
   },
   "states": [
-    "extending",
+    "extracted",
     "extended",
-    "extracting",
-    "extracted"
+    "moving"
   ],
   "transitions": {
-    "extending": [ "extended", "extracting" ],
-    "extracting": [ "extracted", "extending" ],
-    "extended": [ "extracting" ],
-    "extracted": [ "extending" ]
+    "moving": [ "extracted", "extended", "moving" ],
+    "extended": [ "moving" ],
+    "extracted": [ "moving" ]
   },
   "start_state": "extracted"
 }
