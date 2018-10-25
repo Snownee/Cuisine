@@ -1,13 +1,10 @@
 package snownee.cuisine.tiles;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.TimeValues;
 import net.minecraftforge.common.capabilities.Capability;
@@ -17,7 +14,6 @@ import snownee.cuisine.Cuisine;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Locale;
 
 public class TileSqueezer extends TileBase implements ITickable
 {
@@ -93,25 +89,34 @@ public class TileSqueezer extends TileBase implements ITickable
     {
         super.readFromNBT(compound);
         this.extensionProgress = compound.getInteger("Extension");
+        this.pushing = compound.getBoolean("Pushing");
+        this.working = compound.getBoolean("Working");
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setInteger("Extension", this.extensionProgress);
+        compound.setBoolean("Pushing", this.pushing);
+        compound.setBoolean("Working", this.working);
         return super.writeToNBT(compound);
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        // No-op
+        this.extensionProgress = data.getInteger("Extension");
+        this.pushing = data.getBoolean("Pushing");
+        this.working = data.getBoolean("Working");
     }
 
     @Nonnull
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
+        data.setInteger("Extension", this.extensionProgress);
+        data.setBoolean("Pushing", this.pushing);
+        data.setBoolean("Working", this.working);
         return data;
     }
 
