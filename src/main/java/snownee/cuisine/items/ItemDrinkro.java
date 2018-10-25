@@ -68,4 +68,13 @@ public class ItemDrinkro extends ItemModBlock
         }
     }
 
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState)
+    {
+        IBlockState newState2 = newState.withProperty(BlockDrinkro.BASE, false);
+        if (!world.setBlockState(pos.up(), newState2, 11))
+            return false;
+        return super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
+    }
+
 }

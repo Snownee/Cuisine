@@ -2,6 +2,8 @@ package snownee.cuisine.blocks;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -15,6 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -34,6 +37,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.client.model.DrinkroMeshDefinition;
 import snownee.cuisine.tiles.TileDrinkro;
@@ -44,13 +48,15 @@ import snownee.kiwi.util.PlayerUtil;
 public class BlockDrinkro extends BlockModHorizontal
 {
     public static final PropertyBool NORMAL = PropertyBool.create("normal");
+    public static final PropertyBool BASE = PropertyBool.create("base");
     public static final PropertyBool WORKING = PropertyBool.create("working");
 
     public BlockDrinkro(String name)
     {
         super(name, Material.IRON);
         setCreativeTab(Cuisine.CREATIVE_TAB);
-        setDefaultState(blockState.getBaseState().withProperty(NORMAL, true).withProperty(WORKING, false));
+        setHardness(2);
+        setDefaultState(blockState.getBaseState().withProperty(NORMAL, true).withProperty(BASE, true).withProperty(WORKING, false));
     }
 
     @Override
@@ -69,13 +75,25 @@ public class BlockDrinkro extends BlockModHorizontal
     }
 
     @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos) && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos.up());
+    }
+
+    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
-
         if (tileentity instanceof TileDrinkro)
         {
             StacksUtil.dropInventoryItems(worldIn, pos, ((TileDrinkro) tileentity).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), true);
+        }
+
+        BlockPos pos2 = state.getValue(BASE) ? pos.up() : pos.down();
+        IBlockState state2 = worldIn.getBlockState(pos2);
+        if (state2.getBlock() == this && state2.getValue(BASE) != state.getValue(BASE))
+        {
+            worldIn.setBlockToAir(pos2);
         }
 
         super.breakBlock(worldIn, pos, state);
@@ -122,20 +140,23 @@ public class BlockDrinkro extends BlockModHorizontal
                 }
             }
 
-            Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(held);
-            if (ingredient != null)
+            if (tileDrinkro.builder != null)
             {
-                tileDrinkro.builder.addIngredient(playerIn, ingredient, tileDrinkro);
-                ItemStack container = held.getItem().getContainerItem(held);
-                held.shrink(1);
-                if (!container.isEmpty())
+                Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(held);
+                if (ingredient != null && ingredient.getForm() == Form.JUICE)
                 {
-                    PlayerUtil.mergeItemStack(container, playerIn, hand);
+                    tileDrinkro.builder.addIngredient(playerIn, ingredient, tileDrinkro);
+                    ItemStack container = held.getItem().getContainerItem(held);
+                    held.shrink(1);
+                    if (!container.isEmpty())
+                    {
+                        PlayerUtil.mergeItemStack(container, playerIn, hand);
+                    }
+                    return true;
                 }
-                return true;
             }
 
-            ItemStackHandler inv = hitY > 0.5 ? tileDrinkro.inputs : tileDrinkro.output;
+            ItemStackHandler inv = tileDrinkro.inventory;
 
             if (held.isEmpty() || ItemHandlerHelper.insertItem(inv, held, true).getCount() == held.getCount())
             {
@@ -173,36 +194,68 @@ public class BlockDrinkro extends BlockModHorizontal
     }
 
     @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        if (state.getValue(BASE))
+        {
+            pos = pos.up();
+        }
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileDrinkro)
+        {
+            TileDrinkro tileDrinkro = (TileDrinkro) tile;
+            state = state.withProperty(WORKING, tileDrinkro.isWorking());
+        }
+        return state;
+    }
+
+    @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        return new TileDrinkro();
+        return new TileDrinkro(state.getValue(BASE));
+    }
+
+    @Nullable
+    public static TileDrinkro getBase(IBlockAccess world, BlockPos pos, IBlockState state)
+    {
+        return null;
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (!state.getValue(WORKING))
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileDrinkro)
         {
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TileDrinkro)
-            {
-                ((TileDrinkro) tile).neighborChanged(state);
-            }
+            ((TileDrinkro) tile).neighborChanged(state);
         }
     }
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (state.getValue(WORKING))
+        if (state.getValue(BASE))
         {
-            worldIn.setBlockState(pos, state.withProperty(WORKING, false));
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TileDrinkro)
+            return;
+        }
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileDrinkro)
+        {
+            TileDrinkro tileDrinkro = (TileDrinkro) tile;
+            if (tileDrinkro.isWorking())
             {
-                ((TileDrinkro) tile).stopProcess();
+                worldIn.setBlockState(pos, state.withProperty(WORKING, Boolean.FALSE));
+                worldIn.setBlockState(pos.down(), worldIn.getBlockState(pos.down()).withProperty(WORKING, Boolean.FALSE));
+                tileDrinkro.stopProcess();
             }
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
@@ -227,19 +280,19 @@ public class BlockDrinkro extends BlockModHorizontal
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return super.getStateFromMeta(meta).withProperty(NORMAL, (meta & 7) < 4).withProperty(WORKING, meta < 8);
+        return super.getStateFromMeta(meta).withProperty(NORMAL, (meta & 7) < 4).withProperty(BASE, meta < 8);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return super.getMetaFromState(state) + (state.getValue(NORMAL) ? 0 : 4) + (state.getValue(WORKING) ? 0 : 8);
+        return super.getMetaFromState(state) + (state.getValue(NORMAL) ? 0 : 4) + (state.getValue(BASE) ? 0 : 8);
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, BlockHorizontal.FACING, NORMAL, WORKING);
+        return new BlockStateContainer(this, BlockHorizontal.FACING, NORMAL, WORKING, BASE);
     }
 
     @Override
