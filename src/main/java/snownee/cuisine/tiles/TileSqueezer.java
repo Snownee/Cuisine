@@ -22,7 +22,14 @@ public class TileSqueezer extends TileBase implements ITickable
      * The absolute value of farthest offset that "piston arm" can reach.
      */
     private static final float OFFSET_LIMIT = 0.78125F;
-
+    /**
+     * The step length of translation of "piston arm" when extending.
+     */
+    private static final int EXTENDING_UNIT_LENGTH = 25;
+    /**
+     * The step length of translation of "piston arm" when extracting.
+     */
+    private static final int EXTRACTING_UNIT_LENGTH = 10;
     /**
      * Location of animation state machine definition file used for squeezer.
      */
@@ -61,7 +68,7 @@ public class TileSqueezer extends TileBase implements ITickable
         {
             if (this.pushing)
             {
-                extensionProgress += 10;
+                extensionProgress += EXTENDING_UNIT_LENGTH;
                 if (extensionProgress >= 100)
                 {
                     extensionProgress = 100;
@@ -69,7 +76,7 @@ public class TileSqueezer extends TileBase implements ITickable
             }
             else
             {
-                extensionProgress -= 10;
+                extensionProgress -= EXTRACTING_UNIT_LENGTH;
                 if (extensionProgress <= 0)
                 {
                     extensionProgress = 0;
@@ -93,6 +100,7 @@ public class TileSqueezer extends TileBase implements ITickable
         this.working = compound.getBoolean("Working");
     }
 
+    @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
