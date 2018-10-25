@@ -58,15 +58,14 @@ public class BlockSqueezer extends BlockMod
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (pos.down().equals(fromPos))
         {
-            IBlockState fromState = worldIn.getBlockState(fromPos);
+            IBlockState fromState = world.getBlockState(fromPos);
             if (!(fromState.getBlock() instanceof BlockBasin))
             {
-                worldIn.setBlockState(pos, Blocks.PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
-                return;
+                world.setBlockState(pos, Blocks.PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
             }
         }
     }

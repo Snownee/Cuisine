@@ -51,16 +51,11 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     public void update()
     {
-        if (!world.isRemote)
-        {
-            return;
-        }
-
         boolean triggered = this.world.isBlockPowered(this.pos);
         if (triggered && !working)
         {
             working = true;
-            this.stateMachine.transition("moving");
+            this.animationTransition("moving");
         }
         this.pushing = triggered;
 
@@ -80,15 +75,23 @@ public class TileSqueezer extends TileBase implements ITickable
                 if (extensionProgress <= 0)
                 {
                     extensionProgress = 0;
-                    if (!"extracted".equals(this.stateMachine.currentState()))
+                    if (world.isRemote && !"extracted".equals(this.stateMachine.currentState()))
                     {
-                        this.stateMachine.transition("extracted");
+                        this.animationTransition("extracted");
                     }
                     this.working = false;
                 }
             }
         }
         extensionOffset.setValue((extensionProgress + Animation.getPartialTickTime()) / 100F * OFFSET_LIMIT);
+    }
+
+    private void animationTransition(String newStateName)
+    {
+        if (this.world.isRemote)
+        {
+            this.stateMachine.transition(newStateName);
+        }
     }
 
     @Override
