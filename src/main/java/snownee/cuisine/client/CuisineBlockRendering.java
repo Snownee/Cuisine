@@ -15,17 +15,19 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.fluids.CuisineFluidBlocks;
 import snownee.cuisine.client.model.ChoppingBoardModel;
 import snownee.cuisine.client.renderer.TESRBarbecueRack;
 import snownee.cuisine.client.renderer.TESRBasin;
 import snownee.cuisine.client.renderer.TESRChoppingBoard;
+import snownee.cuisine.client.renderer.TESRDrinkro;
 import snownee.cuisine.client.renderer.TESRMortar;
 import snownee.cuisine.client.renderer.TESRWok;
+import snownee.cuisine.fluids.CuisineFluidBlocks;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.TileBarbecueRack;
 import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileChoppingBoard;
+import snownee.cuisine.tiles.TileDrinkro;
 import snownee.cuisine.tiles.TileMill;
 import snownee.cuisine.tiles.TileMortar;
 import snownee.cuisine.tiles.TileSqueezer;
@@ -39,9 +41,9 @@ public final class CuisineBlockRendering
     public static void onBlockColorsInit(ColorHandlerEvent.Block event)
     {
         BlockColors blockColors = event.getBlockColors();
-        blockColors.registerBlockColorHandler((state, blockAccess, pos, tintIndex) ->
-                blockAccess != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(blockAccess, pos) : ColorizerFoliage.getFoliageColorBasic(),
-                CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO);
+        blockColors.registerBlockColorHandler((
+                state, blockAccess, pos, tintIndex
+        ) -> blockAccess != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(blockAccess, pos) : ColorizerFoliage.getFoliageColorBasic(), CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO);
     }
 
     @SubscribeEvent
@@ -67,6 +69,7 @@ public final class CuisineBlockRendering
         ClientRegistry.bindTileEntitySpecialRenderer(TileBarbecueRack.class, new TESRBarbecueRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSqueezer.class, new AnimationTESR<>());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBasin.class, new TESRBasin());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileDrinkro.class, new TESRDrinkro());
     }
 
     @SubscribeEvent

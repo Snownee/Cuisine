@@ -54,6 +54,12 @@ public class BasinThrowingRecipeCategory implements IRecipeCategory
     }
 
     @Override
+    public IDrawable getIcon()
+    {
+        return JEICompat.arrowInOverlay;
+    }
+
+    @Override
     public IDrawable getBackground()
     {
         return background;

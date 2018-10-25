@@ -17,6 +17,10 @@
     "working": {
       "true": {},
       "false": {}
+    },
+    "base": {
+      "true": {},
+      "false": { "model": "cuisine:void", "textures": { "particle": "cuisine:block/log_citron" } }
     }
   }
 }
