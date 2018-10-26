@@ -3,6 +3,8 @@ package snownee.cuisine.plugins;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
@@ -23,7 +25,7 @@ public final class Helper
     @Nullable
     public static Material registerMaterial(Material material, String uid, int meta)
     {
-        Item item = Item.getByNameOrId(uid);
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(uid));
         if (material != null && item != null)
         {
             material = CulinaryHub.API_INSTANCE.register(material);
@@ -40,7 +42,7 @@ public final class Helper
 
     public static void registerMapping(Ingredient ingredient, String uid, int meta)
     {
-        Item item = Item.getByNameOrId(uid);
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(uid));
         if (ingredient != null && item != null)
         {
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(item, meta), ingredient);
