@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
@@ -33,12 +35,17 @@ public final class CTSupport implements IModule
 
     public static RegularItemStackInput fromItemStack(IItemStack ctDefinition)
     {
-        return RegularItemStackInput.of(fromCT(ctDefinition));
+        return RegularItemStackInput.of(toNative(ctDefinition));
     }
 
-    public static ItemStack fromCT(IItemStack ctDefinition)
+    public static ItemStack toNative(IItemStack ctDefinition)
     {
         return CraftTweakerMC.getItemStack(ctDefinition);
+    }
+
+    public static FluidStack toNative(ILiquidStack ctDefinition)
+    {
+        return CraftTweakerMC.getLiquidStack(ctDefinition);
     }
 
 }

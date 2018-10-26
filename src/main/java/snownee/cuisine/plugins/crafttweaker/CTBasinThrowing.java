@@ -4,7 +4,6 @@ import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,8 +27,8 @@ public final class CTBasinThrowing
     public static void add(IItemStack input, ILiquidStack inputFluid, IItemStack output)
     {
         ProcessingInput actualInput = CTSupport.fromItemStack(input);
-        FluidStack actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid);
-        ItemStack actualOutput = CTSupport.fromCT(output);
+        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
+        ItemStack actualOutput = CTSupport.toNative(output);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualOutput));
     }
 
@@ -37,8 +36,8 @@ public final class CTBasinThrowing
     public static void add(IOreDictEntry input, ILiquidStack inputFluid, IItemStack output)
     {
         ProcessingInput actualInput = CTSupport.fromOreEntry(input);
-        FluidStack actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid);
-        ItemStack actualOutput = CTSupport.fromCT(output);
+        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
+        ItemStack actualOutput = CTSupport.toNative(output);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualOutput));
     }
 

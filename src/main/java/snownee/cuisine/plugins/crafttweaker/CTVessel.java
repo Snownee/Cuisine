@@ -4,7 +4,6 @@ import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,21 +23,21 @@ public class CTVessel
     @ZenMethod
     public static void add(IItemStack input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid, IItemStack extra)
     {
-        ItemDefinition actualInput = ItemDefinition.of(CraftTweakerMC.getItemStack(input));
-        ItemDefinition actualOutput = ItemDefinition.of(CraftTweakerMC.getItemStack(output));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
-        ItemDefinition actualExtra = ItemDefinition.of(CraftTweakerMC.getItemStack(extra));
+        ItemDefinition actualInput = ItemDefinition.of(CTSupport.toNative(input));
+        ItemDefinition actualOutput = ItemDefinition.of(CTSupport.toNative(output));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
+        ItemDefinition actualExtra = ItemDefinition.of(CTSupport.toNative(extra));
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualExtra, actualOutput, actualOutputFluid));
     }
 
     @ZenMethod
     public static void add(IItemStack input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid, IOreDictEntry extra)
     {
-        ItemDefinition actualInput = ItemDefinition.of(CraftTweakerMC.getItemStack(input));
-        ItemDefinition actualOutput = ItemDefinition.of(CraftTweakerMC.getItemStack(output));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
+        ItemDefinition actualInput = ItemDefinition.of(CTSupport.toNative(input));
+        ItemDefinition actualOutput = ItemDefinition.of(CTSupport.toNative(output));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
         OreDictDefinition actualExtra = CTSupport.fromOreEntry(extra);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualExtra, actualOutput, actualOutputFluid));
     }
@@ -47,10 +46,10 @@ public class CTVessel
     public static void add(IOreDictEntry input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid, IItemStack extra)
     {
         OreDictDefinition actualInput = CTSupport.fromOreEntry(input);
-        ItemDefinition actualOutput = ItemDefinition.of(CraftTweakerMC.getItemStack(output));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
-        ItemDefinition actualExtra = ItemDefinition.of(CraftTweakerMC.getItemStack(extra));
+        ItemDefinition actualOutput = ItemDefinition.of(CTSupport.toNative(output));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
+        ItemDefinition actualExtra = ItemDefinition.of(CTSupport.toNative(extra));
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualExtra, actualOutput, actualOutputFluid));
     }
 
@@ -58,9 +57,9 @@ public class CTVessel
     public static void add(IOreDictEntry input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid, IOreDictEntry extra)
     {
         OreDictDefinition actualInput = CTSupport.fromOreEntry(input);
-        ItemDefinition actualOutput = ItemDefinition.of(CraftTweakerMC.getItemStack(output));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
+        ItemDefinition actualOutput = ItemDefinition.of(CTSupport.toNative(output));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
         OreDictDefinition actualExtra = CTSupport.fromOreEntry(extra);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualExtra, actualOutput, actualOutputFluid));
     }
@@ -68,10 +67,10 @@ public class CTVessel
     @ZenMethod
     public static void add(IItemStack input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
-        ItemDefinition actualInput = ItemDefinition.of(CraftTweakerMC.getItemStack(input));
-        ItemDefinition actualOutput = ItemDefinition.of(CraftTweakerMC.getItemStack(output));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
+        ItemDefinition actualInput = ItemDefinition.of(CTSupport.toNative(input));
+        ItemDefinition actualOutput = ItemDefinition.of(CTSupport.toNative(output));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, ItemDefinition.EMPTY, actualOutput, actualOutputFluid));
     }
 
@@ -79,26 +78,26 @@ public class CTVessel
     public static void add(IOreDictEntry input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
         OreDictDefinition actualInput = CTSupport.fromOreEntry(input);
-        ItemDefinition actualOutput = ItemDefinition.of(CraftTweakerMC.getItemStack(output));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
+        ItemDefinition actualOutput = ItemDefinition.of(CTSupport.toNative(output));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, ItemDefinition.EMPTY, actualOutput, actualOutputFluid));
     }
 
     @ZenMethod
     public static void remove(IItemStack input, ILiquidStack inputFluid, IItemStack extra)
     {
-        ItemDefinition actualInput = ItemDefinition.of(CraftTweakerMC.getItemStack(input));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        ItemDefinition actualExtra = ItemDefinition.of(CraftTweakerMC.getItemStack(extra));
+        ItemDefinition actualInput = ItemDefinition.of(CTSupport.toNative(input));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        ItemDefinition actualExtra = ItemDefinition.of(CTSupport.toNative(extra));
         CTSupport.DELAYED_ACTIONS.add(new Removal(actualInput, actualInputFluid, actualExtra));
     }
 
     @ZenMethod
     public static void remove(IItemStack input, ILiquidStack inputFluid, IOreDictEntry extra)
     {
-        ItemDefinition actualInput = ItemDefinition.of(CraftTweakerMC.getItemStack(input));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
+        ItemDefinition actualInput = ItemDefinition.of(CTSupport.toNative(input));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
         OreDictDefinition actualExtra = CTSupport.fromOreEntry(extra);
         CTSupport.DELAYED_ACTIONS.add(new Removal(actualInput, actualInputFluid, actualExtra));
     }
@@ -107,8 +106,8 @@ public class CTVessel
     public static void remove(IOreDictEntry input, ILiquidStack inputFluid, IItemStack extra)
     {
         OreDictDefinition actualInput = CTSupport.fromOreEntry(input);
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
-        ItemDefinition actualExtra = ItemDefinition.of(CraftTweakerMC.getItemStack(extra));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
+        ItemDefinition actualExtra = ItemDefinition.of(CTSupport.toNative(extra));
         CTSupport.DELAYED_ACTIONS.add(new Removal(actualInput, actualInputFluid, actualExtra));
     }
 
@@ -116,7 +115,7 @@ public class CTVessel
     public static void remove(IOreDictEntry input, ILiquidStack inputFluid, IOreDictEntry extra)
     {
         OreDictDefinition actualInput = CTSupport.fromOreEntry(input);
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
         OreDictDefinition actualExtra = CTSupport.fromOreEntry(extra);
         CTSupport.DELAYED_ACTIONS.add(new Removal(actualInput, actualInputFluid, actualExtra));
     }
@@ -124,8 +123,8 @@ public class CTVessel
     @ZenMethod
     public static void remove(IItemStack input, ILiquidStack inputFluid)
     {
-        ItemDefinition actualInput = ItemDefinition.of(CraftTweakerMC.getItemStack(input));
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
+        ItemDefinition actualInput = ItemDefinition.of(CTSupport.toNative(input));
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
         CTSupport.DELAYED_ACTIONS.add(new Removal(actualInput, actualInputFluid, ItemDefinition.EMPTY));
     }
 
@@ -133,7 +132,7 @@ public class CTVessel
     public static void remove(IOreDictEntry input, ILiquidStack inputFluid)
     {
         OreDictDefinition actualInput = CTSupport.fromOreEntry(input);
-        Fluid actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid).getFluid();
+        Fluid actualInputFluid = CTSupport.toNative(inputFluid).getFluid();
         CTSupport.DELAYED_ACTIONS.add(new Removal(actualInput, actualInputFluid, ItemDefinition.EMPTY));
     }
 

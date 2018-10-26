@@ -4,7 +4,6 @@ import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.Processing;
@@ -25,8 +24,8 @@ public final class CTBasinHeating
     @ZenMethod
     public static void addDistillation(ILiquidStack input, IItemStack output)
     {
-        FluidStack actualInput = CraftTweakerMC.getLiquidStack(input);
-        ItemStack actualOutput = CraftTweakerMC.getItemStack(output);
+        FluidStack actualInput = CTSupport.toNative(input);
+        ItemStack actualOutput = CTSupport.toNative(output);
         CTSupport.DELAYED_ACTIONS.add(new AdditionDistillation(actualInput, actualOutput));
     }
 

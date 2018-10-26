@@ -4,7 +4,6 @@ import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,8 +39,8 @@ public final class CTBasinSqueezing
     public static void add(IItemStack input, ILiquidStack output, IItemStack extraOutput)
     {
         ProcessingInput actualInput = CTSupport.fromItemStack(input);
-        FluidStack actualOutput = CraftTweakerMC.getLiquidStack(output);
-        ItemStack extra = CraftTweakerMC.getItemStack(extraOutput);
+        FluidStack actualOutput = CTSupport.toNative(output);
+        ItemStack extra = CTSupport.toNative(extraOutput);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualOutput, extra));
     }
 
@@ -49,8 +48,8 @@ public final class CTBasinSqueezing
     public static void add(IOreDictEntry input, ILiquidStack output, IItemStack extraOutput)
     {
         ProcessingInput actualInput = CTSupport.fromOreEntry(input);
-        FluidStack actualOutput = CraftTweakerMC.getLiquidStack(output);
-        ItemStack extra = CraftTweakerMC.getItemStack(extraOutput);
+        FluidStack actualOutput = CTSupport.toNative(output);
+        ItemStack extra = CTSupport.toNative(extraOutput);
         CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualOutput, extra));
     }
 

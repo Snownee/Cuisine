@@ -19,8 +19,8 @@ public class CTAxeChopping
     @ZenMethod
     public static void add(IItemStack input, IItemStack output)
     {
-        ItemStack actualInput = CTSupport.fromCT(input);
-        ItemStack actualOutput = CTSupport.fromCT(output);
+        ItemStack actualInput = CTSupport.toNative(input);
+        ItemStack actualOutput = CTSupport.toNative(output);
         CTSupport.DELAYED_ACTIONS.add(new ItemBasedAddition(actualInput, actualOutput));
     }
 
@@ -28,14 +28,14 @@ public class CTAxeChopping
     public static void add(IOreDictEntry input, IItemStack output)
     {
         OreDictDefinition actualInput = CTSupport.fromOreEntry(input);
-        ItemStack actualOutput = CTSupport.fromCT(output);
+        ItemStack actualOutput = CTSupport.toNative(output);
         CTSupport.DELAYED_ACTIONS.add(new OreDictBasedAddition(actualInput, actualOutput));
     }
 
     @ZenMethod
     public static void remove(IItemStack input)
     {
-        ItemStack actualInput = CTSupport.fromCT(input);
+        ItemStack actualInput = CTSupport.toNative(input);
         CTSupport.DELAYED_ACTIONS.add(new ItemBasedRemoval(actualInput));
     }
 

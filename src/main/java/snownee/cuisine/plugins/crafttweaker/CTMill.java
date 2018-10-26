@@ -4,7 +4,6 @@ import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,10 +21,10 @@ public class CTMill
     @ZenMethod
     public static void add(IItemStack input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
-        ItemStack actualInput = CraftTweakerMC.getItemStack(input);
-        ItemStack actualOutput = CraftTweakerMC.getItemStack(output);
-        FluidStack actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid);
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
+        ItemStack actualInput = CTSupport.toNative(input);
+        ItemStack actualOutput = CTSupport.toNative(output);
+        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
         CTSupport.DELAYED_ACTIONS.add(new ItemBasedAddition(actualInput, actualInputFluid, actualOutput, actualOutputFluid));
     }
 
@@ -33,17 +32,17 @@ public class CTMill
     public static void add(IOreDictEntry input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
         OreDictDefinition actualInput = OreDictDefinition.of(input.getName(), input.getAmount());
-        ItemStack actualOutput = CraftTweakerMC.getItemStack(output);
-        FluidStack actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid);
-        FluidStack actualOutputFluid = CraftTweakerMC.getLiquidStack(outputFluid);
+        ItemStack actualOutput = CTSupport.toNative(output);
+        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
+        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
         CTSupport.DELAYED_ACTIONS.add(new OreDictBasedAddition(actualInput, actualInputFluid, actualOutput, actualOutputFluid));
     }
 
     @ZenMethod
     public static void remove(IItemStack input, ILiquidStack inputFluid)
     {
-        ItemStack actualInput = CraftTweakerMC.getItemStack(input);
-        FluidStack actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid);
+        ItemStack actualInput = CTSupport.toNative(input);
+        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         CTSupport.DELAYED_ACTIONS.add(new ItemBasedRemoval(actualInput, actualInputFluid));
     }
 
@@ -51,7 +50,7 @@ public class CTMill
     public static void remove(IOreDictEntry input, ILiquidStack inputFluid)
     {
         OreDictDefinition actualInput = OreDictDefinition.of(input.getName(), input.getAmount());
-        FluidStack actualInputFluid = CraftTweakerMC.getLiquidStack(inputFluid);
+        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         CTSupport.DELAYED_ACTIONS.add(new OreDictBasedRemoval(actualInput, actualInputFluid));
     }
 
