@@ -406,12 +406,14 @@ public class TileDrinkro extends TileBase implements CookingVessel
     protected void readPacketData(NBTTagCompound data)
     {
         this.inventory.deserializeNBT(data.getCompoundTag("Items"));
+        this.working = data.getBoolean("working");
     }
 
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
         data.setTag("Items", this.inventory.serializeNBT());
+        data.setBoolean("working", this.working);
         return data;
     }
 
