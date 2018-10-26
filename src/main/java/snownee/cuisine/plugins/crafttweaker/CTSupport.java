@@ -28,22 +28,22 @@ public final class CTSupport implements IModule
         DELAYED_ACTIONS.clear();
     }
 
-    public static OreDictDefinition fromOreEntry(IOreDictEntry entry)
+    static OreDictDefinition fromOreEntry(IOreDictEntry entry)
     {
         return entry == null ? OreDictDefinition.EMPTY : OreDictDefinition.of(entry.getName(), entry.getAmount());
     }
 
-    public static RegularItemStackInput fromItemStack(IItemStack ctDefinition)
+    static RegularItemStackInput fromItemStack(IItemStack ctDefinition)
     {
         return RegularItemStackInput.of(toNative(ctDefinition));
     }
 
-    public static ItemStack toNative(IItemStack ctDefinition)
+    static ItemStack toNative(IItemStack ctDefinition)
     {
         return CraftTweakerMC.getItemStack(ctDefinition);
     }
 
-    public static FluidStack toNative(ILiquidStack ctDefinition)
+    static FluidStack toNative(ILiquidStack ctDefinition)
     {
         return CraftTweakerMC.getLiquidStack(ctDefinition);
     }
