@@ -50,7 +50,7 @@ public class TileSqueezer extends TileBase implements ITickable
 
     private int extensionProgress;
 
-    private State state;
+    private State state = State.EXTRACTED;
 
     private boolean isInWorkCycle = false;
 
