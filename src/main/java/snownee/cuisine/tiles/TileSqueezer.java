@@ -1,22 +1,31 @@
 package snownee.cuisine.tiles;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.TimeValues;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.api.process.Processing;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TileSqueezer extends TileBase implements ITickable
 {
+
+    private enum State
+    {
+        EXTRACTED, EXTENDING, EXTENDED, EXTRACTING
+    }
 
     /**
      * The absolute value of farthest offset that "piston arm" can reach.
@@ -41,7 +50,9 @@ public class TileSqueezer extends TileBase implements ITickable
 
     private int extensionProgress;
 
-    private boolean working = false, pushing = false;
+    private State state;
+
+    private boolean isInWorkCycle = false;
 
     public TileSqueezer()
     {
@@ -52,37 +63,72 @@ public class TileSqueezer extends TileBase implements ITickable
     public void update()
     {
         boolean triggered = this.world.isBlockPowered(this.pos);
-        if (triggered && !working)
+        if (triggered)
         {
-            working = true;
-            this.animationTransition("moving");
-        }
-        this.pushing = triggered;
-
-        if (working)
-        {
-            if (this.pushing)
+            if (state == State.EXTRACTED || state == State.EXTRACTING)
             {
-                extensionProgress += EXTENDING_UNIT_LENGTH;
-                if (extensionProgress >= 100)
+                this.state = State.EXTENDING;
+                this.animationTransition("moving");
+            }
+        }
+        else
+        {
+            if (state == State.EXTENDED || state == State.EXTENDING)
+            {
+                this.state = State.EXTRACTING;
+                this.animationTransition("moving");
+            }
+        }
+
+        if (this.state == State.EXTENDING)
+        {
+            extensionProgress += EXTENDING_UNIT_LENGTH;
+            if (extensionProgress >= 100)
+            {
+                extensionProgress = 100;
+                this.state = State.EXTENDED;
+                this.isInWorkCycle = true;
+                if (!world.isRemote)
                 {
-                    extensionProgress = 100;
+                    world.playSound(null, pos, SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() / 4 + .6F);
                 }
             }
-            else
+        }
+        else if (this.state == State.EXTRACTING)
+        {
+            extensionProgress -= EXTRACTING_UNIT_LENGTH;
+            if (extensionProgress <= 0)
             {
-                extensionProgress -= EXTRACTING_UNIT_LENGTH;
-                if (extensionProgress <= 0)
+                extensionProgress = 0;
+                if (world.isRemote)
                 {
-                    extensionProgress = 0;
-                    if (world.isRemote && !"extracted".equals(this.stateMachine.currentState()))
+                    if (!"extracted".equals(this.stateMachine.currentState()))
                     {
                         this.animationTransition("extracted");
                     }
-                    this.working = false;
+                }
+                else
+                {
+                    world.playSound(null, pos, SoundEvents.BLOCK_PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() / 4 + 0.6F);
+                }
+                this.state = State.EXTRACTED;
+            }
+        }
+
+        if (isInWorkCycle)
+        {
+            this.isInWorkCycle = false;
+            if (!world.isRemote)
+            {
+                TileEntity tile = this.world.getTileEntity(this.pos.down());
+                if (tile instanceof TileBasin)
+                {
+                    TileBasin basin = (TileBasin) tile;
+                    basin.process(Processing.SQUEEZING, basin.stacks.getStackInSlot(0));
                 }
             }
         }
+
         extensionOffset.setValue((extensionProgress + Animation.getPartialTickTime()) / 100F * OFFSET_LIMIT);
     }
 
@@ -99,8 +145,7 @@ public class TileSqueezer extends TileBase implements ITickable
     {
         super.readFromNBT(compound);
         this.extensionProgress = compound.getInteger("Extension");
-        this.pushing = compound.getBoolean("Pushing");
-        this.working = compound.getBoolean("Working");
+        this.state = State.values()[compound.getInteger("State")];
     }
 
     @Nonnull
@@ -108,8 +153,7 @@ public class TileSqueezer extends TileBase implements ITickable
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         compound.setInteger("Extension", this.extensionProgress);
-        compound.setBoolean("Pushing", this.pushing);
-        compound.setBoolean("Working", this.working);
+        compound.setInteger("State", this.state.ordinal());
         return super.writeToNBT(compound);
     }
 
@@ -117,8 +161,7 @@ public class TileSqueezer extends TileBase implements ITickable
     protected void readPacketData(NBTTagCompound data)
     {
         this.extensionProgress = data.getInteger("Extension");
-        this.pushing = data.getBoolean("Pushing");
-        this.working = data.getBoolean("Working");
+        this.state = State.values()[data.getInteger("State")];
     }
 
     @Nonnull
@@ -126,8 +169,7 @@ public class TileSqueezer extends TileBase implements ITickable
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
         data.setInteger("Extension", this.extensionProgress);
-        data.setBoolean("Pushing", this.pushing);
-        data.setBoolean("Working", this.working);
+        data.setInteger("State", this.state.ordinal());
         return data;
     }
 

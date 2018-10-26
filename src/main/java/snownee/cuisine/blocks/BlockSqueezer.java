@@ -13,12 +13,10 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -69,29 +67,6 @@ public class BlockSqueezer extends BlockMod
             {
                 world.setBlockState(pos, Blocks.PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
             }
-        }
-
-        if (!world.isRemote)
-        {
-            if (world.isBlockPowered(pos))
-            {
-                world.playSound(null, pos, SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() / 4 + .6F);
-            }
-            else
-            {
-                world.playSound(null, pos, SoundEvents.BLOCK_PISTON_CONTRACT, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() / 4 + 0.6F);
-            }
-        }
-    }
-
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        TileEntity tile = worldIn.getTileEntity(pos.down());
-        if (tile instanceof TileBasin)
-        {
-            TileBasin tileBasin = (TileBasin) tile;
-            tileBasin.process(Processing.SQUEEZING, tileBasin.stacks.getStackInSlot(0));
         }
     }
 
