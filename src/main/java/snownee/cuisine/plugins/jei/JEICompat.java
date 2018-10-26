@@ -15,13 +15,11 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
-import mezz.jei.api.gui.ITickTimer;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -58,39 +56,6 @@ public class JEICompat implements IModPlugin
     static IDrawable arrowIn;
     static IDrawable arrowInOverlay;
 
-    public static class CombinedTimer implements ITickTimer
-    {
-        private final int msPerCycle;
-        private final int startValue;
-        private final int width;
-        private final int maxValue;
-        private long startTime;
-
-        public CombinedTimer(int ticksPerCycle, int startValue, int width, int maxValue)
-        {
-            this.msPerCycle = ticksPerCycle * 50;
-            this.startValue = startValue;
-            this.width = width;
-            this.maxValue = maxValue;
-            this.startTime = System.currentTimeMillis();
-        }
-
-        @Override
-        public int getValue()
-        {
-            long msPassed = (System.currentTimeMillis() - startTime) % msPerCycle;
-            int value = (int) Math.floorDiv(msPassed * (maxValue + 1), msPerCycle) - startValue;
-            return width - MathHelper.clamp(value, 0, width);
-        }
-
-        @Override
-        public int getMaxValue()
-        {
-            return width;
-        }
-
-    }
-
     @Override
     public void register(IModRegistry registry)
     {
@@ -120,7 +85,7 @@ public class JEICompat implements IModPlugin
         // Material instances are shared, and thus are safe to be compared by `==`.
         // And yes, as you can see, this reverse map excludes juice. So it's not a general purpose reverse map which is
         // exactly why it is a local variable right now - until we found a way to generalize it, it is local variable.
-        IdentityHashMap<Material, Collection<ItemStack>> reverseMaterialMapWithoutJuice = new IdentityHashMap<>();
+        IdentityHashMap<Material, List<ItemStack>> reverseMaterialMapWithoutJuice = new IdentityHashMap<>();
         for (Map.Entry<ItemDefinition, Ingredient> entry : CuisineInternalGateway.INSTANCE.itemIngredients.entrySet())
         {
             if (entry.getValue().getForm() != Form.JUICE)
@@ -140,7 +105,7 @@ public class JEICompat implements IModPlugin
         CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
-                if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)))
+                if (!v.getMaterial().getValidForms().equals(Form.JUICE_ONLY))
                 {
                     recipes.add(new ChoppingBoardKnifeRecipe(k, v.getMaterial()));
                 }
@@ -149,7 +114,7 @@ public class JEICompat implements IModPlugin
         CuisineInternalGateway.INSTANCE.oreDictIngredients.forEach((k, v) -> {
             if (v.getForm() == Form.FULL && !v.getMaterial().getValidForms().isEmpty())
             {
-                if (!(v.getMaterial().getValidForms().size() == 1 && v.getMaterial().getValidForms().contains(Form.JUICE)) && !OreDictionary.getOres(k, false).isEmpty())
+                if (!v.getMaterial().getValidForms().equals(Form.JUICE_ONLY) && !OreDictionary.getOres(k, false).isEmpty())
                 {
                     recipes.add(new ChoppingBoardKnifeRecipe(OreDictDefinition.of(k), v.getMaterial()));
                 }
