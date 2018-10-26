@@ -23,6 +23,7 @@ import snownee.cuisine.api.process.prefab.MaterialSqueezing;
 import snownee.cuisine.api.process.prefab.SimpleSqueezing;
 import snownee.cuisine.api.process.prefab.SimpleThrowing;
 import snownee.cuisine.fluids.CuisineFluids;
+import snownee.cuisine.fluids.FluidJuice;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
@@ -80,10 +81,13 @@ public class RecipeRegistry
 
         Processing.BOILING.add(new DistillationBoiling(new FluidStack(FluidRegistry.WATER, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), 0));
         Processing.BOILING.add(new DistillationBoiling(new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
+        Processing.BOILING.add(new DistillationBoiling(FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
 
         ItemStack sugar = new ItemStack(Items.SUGAR);
         Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
         Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(Items.COAL, 1), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
+        Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
+        Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(Items.COAL, 1), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
 
         Processing.SQUEEZING.add(new SimpleSqueezing(OreDictDefinition.of("sugarcane"), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
 
