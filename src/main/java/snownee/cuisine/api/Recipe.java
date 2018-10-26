@@ -78,9 +78,11 @@ public interface Recipe
      *
      * @return A read-only collection that contains all required criteria
      */
-    // Before you ask: yes, criteria is the plural form of criterion, and no, this is
-    // Greek, not Latin, even though it still follows second declension in Latin (i.e.
-    // the Greek type).
+    /*
+     * Before you ask: yes, criteria is the plural form of criterion, and no, this is
+     * Greek, not Latin, even though it still follows second declension in Latin (i.e.
+     * the Greek type).
+     */
     Collection<Criterion> getRequiredCriteria();
 
     /**

@@ -86,7 +86,7 @@ public class BlockDrinkro extends BlockModHorizontal
         TileEntity tileentity = worldIn.getTileEntity(pos);
         if (tileentity instanceof TileDrinkro)
         {
-            StacksUtil.dropInventoryItems(worldIn, pos, ((TileDrinkro) tileentity).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), true);
+            StacksUtil.dropInventoryItems(worldIn, pos, tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), true);
         }
 
         BlockPos pos2 = state.getValue(BASE) ? pos.up() : pos.down();
