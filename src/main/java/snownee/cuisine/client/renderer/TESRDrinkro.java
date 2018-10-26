@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.tiles.TileDrinkro;
@@ -68,14 +68,13 @@ public class TESRDrinkro extends TileEntitySpecialRenderer<TileDrinkro>
         GlStateManager.rotate(rot, 0, 1, 0);
         float scale = te.isBase ? 0.5F : 0.25F;
         GlStateManager.scale(scale, scale, scale);
-        Minecraft mc = Minecraft.getMinecraft();
-        RenderItem renderItem = mc.getRenderItem();
+        RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 
         if (te.isBase)
         {
             GlStateManager.translate(0, -0.25, 0);
             ItemStack stack = te.inventory.getStackInSlot(0);
-            renderItem.renderItem(stack, TransformType.NONE);
+            renderItem.renderItem(stack, ItemCameraTransforms.TransformType.NONE);
         }
         else
         {
@@ -90,7 +89,7 @@ public class TESRDrinkro extends TileEntitySpecialRenderer<TileDrinkro>
                 {
                     GlStateManager.pushMatrix();
                     GlStateManager.rotate((float) angle, 0, 1, 0);
-                    renderItem.renderItem(stack, TransformType.NONE);
+                    renderItem.renderItem(stack, ItemCameraTransforms.TransformType.NONE);
                     GlStateManager.popMatrix();
                     GlStateManager.translate(-1, renderCount % 2 == 0 ? -0.5 : 0.5, 0);
                     if (++renderCount > itemCount)
