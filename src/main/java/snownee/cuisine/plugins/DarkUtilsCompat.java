@@ -4,10 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.util.BaublesWrapper;
@@ -22,7 +24,7 @@ public class DarkUtilsCompat implements IModule
     @Override
     public void init()
     {
-        if ((itemGluttonyCharm = Item.getByNameOrId("darkutils:charm_gluttony")) != null)
+        if ((itemGluttonyCharm = ForgeRegistries.ITEMS.getValue(new ResourceLocation("darkutils", "charm_gluttony"))) != null)
         {
             MinecraftForge.EVENT_BUS.register(this);
         }

@@ -7,9 +7,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
@@ -60,7 +62,7 @@ public class TANCompat implements IModule
         IBlockState state = TANBlocks.temperature_coil.getStateFromMeta(9);
         TileBasinHeatable.registerHeatSource(4, state, new ItemStack(TANBlocks.temperature_coil, 1, 1));
 
-        Item juice = Item.getByNameOrId("toughasnails:fruit_juice");
+        Item juice = ForgeRegistries.ITEMS.getValue(new ResourceLocation("toughasnails", "fruit_juice"));
         if (juice != null)
         {
             juice.setContainerItem(Items.GLASS_BOTTLE);

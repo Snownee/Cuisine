@@ -55,8 +55,8 @@ public class BlockBamboo extends BlockMod
     public static final PropertyBool SE = PropertyBool.create("se");
     public static final PropertyBool SW = PropertyBool.create("sw");
 
-    public static final AxisAlignedBB PLATE_AABB = new AxisAlignedBB(0.3125D, 0.625D, 0.3125D, 1, 1, 1);
-    public static final AxisAlignedBB SIDE_AABB = new AxisAlignedBB(0.375D, 0.625D, 0.375D, 1, 0.875D, 0.625D);
+    private static final AxisAlignedBB PLATE_AABB = new AxisAlignedBB(0.3125D, 0.625D, 0.3125D, 1, 1, 1);
+    private static final AxisAlignedBB SIDE_AABB = new AxisAlignedBB(0.375D, 0.625D, 0.375D, 1, 0.875D, 0.625D);
 
     public BlockBamboo(String name)
     {

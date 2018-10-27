@@ -62,7 +62,7 @@ public class TileInventoryBase extends TileBase
         }
     }
 
-    public StackHandler stacks;
+    public final StackHandler stacks;
 
     @SuppressWarnings("deprecation")
     public TileInventoryBase(int slot)

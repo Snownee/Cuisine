@@ -24,12 +24,14 @@ import snownee.kiwi.util.InventoryUtil;
 
 public class TileJar extends TileInventoryBase implements ITickable
 {
+
+    private static final int TOTAL_TICK = 1200;
+
     private int processTime = 0;
     private boolean isWorking = false;
-    private static final int TOTAL_TICK = 1200;
     private boolean invLock = false;
 
-    private FluidTank tank = new FluidTank(10000)
+    private final FluidTank tank = new FluidTank(10000)
     {
         @Override
         protected void onContentsChanged()

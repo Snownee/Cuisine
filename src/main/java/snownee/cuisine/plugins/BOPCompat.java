@@ -2,6 +2,8 @@ package snownee.cuisine.plugins;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
@@ -27,27 +29,27 @@ public class BOPCompat implements IModule
         CulinaryHub.API_INSTANCE.registerMapping("cropPeach", peach);
         Material persimmon = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("persimmon", 0xFF9528, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         CulinaryHub.API_INSTANCE.registerMapping("cropPersimmon", persimmon);
-        Item itemBerry = Item.getByNameOrId("biomesoplenty:berries");
+        Item itemBerry = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "berries"));
         if (itemBerry != null)
         {
             Material wildberry = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("wildberry", 0x4D1F23, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(itemBerry), wildberry);
         }
-        Item itemKelp = Item.getByNameOrId("biomesoplenty:seaweed");
+        Item itemKelp = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "seaweed"));
         if (itemKelp != null)
         {
             OreDictionary.registerOre("cropSeaweed", new ItemStack(itemKelp));
             Material seaweed = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("seaweed", 0x99909648, 0, 0, 0, 0, 0, MaterialCategory.SEAFOOD).setValidForms(Form.JUICE_ONLY));
             CulinaryHub.API_INSTANCE.registerMapping("cropSeaweed", seaweed);
         }
-        Item itemBambooshoot = Item.getByNameOrId("biomesoplenty:sapling_0");
+        Item itemBambooshoot = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "sapling_0"));
         if (itemBambooshoot != null)
         {
             OreDictionary.registerOre("cropBambooshoot", new ItemStack(itemBambooshoot, 1, 2));
         }
 
-        Item log = Item.getByNameOrId("biomesoplenty:log_0");
-        Item planks = Item.getByNameOrId("biomesoplenty:planks_0");
+        Item log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "log_0"));
+        Item planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "planks_0"));
         if (log != null && planks != null)
         {
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 0)));
@@ -55,7 +57,7 @@ public class BOPCompat implements IModule
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 6), new ItemStack(planks, 6, 2)));
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 7), new ItemStack(planks, 6, 3)));
         }
-        log = Item.getByNameOrId("biomesoplenty:log_1");
+        log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "log_1"));
         if (log != null && planks != null)
         {
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 4)));
@@ -63,7 +65,7 @@ public class BOPCompat implements IModule
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 6), new ItemStack(planks, 6, 6)));
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 7), new ItemStack(planks, 6, 7)));
         }
-        log = Item.getByNameOrId("biomesoplenty:log_2");
+        log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "log_2"));
         if (log != null && planks != null)
         {
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 8)));
@@ -71,7 +73,7 @@ public class BOPCompat implements IModule
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 6), new ItemStack(planks, 6, 10)));
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 7), new ItemStack(planks, 6, 11)));
         }
-        log = Item.getByNameOrId("biomesoplenty:log_3");
+        log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("biomesoplenty", "log_3"));
         if (log != null && planks != null)
         {
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 4), new ItemStack(planks, 6, 12)));

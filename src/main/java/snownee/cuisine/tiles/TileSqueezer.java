@@ -44,9 +44,9 @@ public class TileSqueezer extends TileBase implements ITickable
      */
     private static final ResourceLocation STATE_MACHINE = new ResourceLocation(Cuisine.MODID, "asms/squeezer.json");
 
-    private IAnimationStateMachine stateMachine;
+    private final IAnimationStateMachine stateMachine;
 
-    private TimeValues.VariableValue extensionOffset = new TimeValues.VariableValue(0F);
+    private final TimeValues.VariableValue extensionOffset = new TimeValues.VariableValue(0F);
 
     private int extensionProgress;
 
@@ -67,6 +67,7 @@ public class TileSqueezer extends TileBase implements ITickable
         {
             if (state == State.EXTRACTED || state == State.EXTRACTING)
             {
+                this.isInWorkCycle = this.state == State.EXTRACTED;
                 this.state = State.EXTENDING;
                 this.animationTransition("moving");
             }
@@ -87,7 +88,6 @@ public class TileSqueezer extends TileBase implements ITickable
             {
                 extensionProgress = 100;
                 this.state = State.EXTENDED;
-                this.isInWorkCycle = true;
                 if (!world.isRemote)
                 {
                     world.playSound(null, pos, SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() / 4 + .6F);
@@ -115,7 +115,7 @@ public class TileSqueezer extends TileBase implements ITickable
             }
         }
 
-        if (isInWorkCycle)
+        if (this.state == State.EXTENDED && this.isInWorkCycle)
         {
             this.isInWorkCycle = false;
             if (!world.isRemote)
@@ -129,7 +129,7 @@ public class TileSqueezer extends TileBase implements ITickable
             }
         }
 
-        extensionOffset.setValue((extensionProgress + Animation.getPartialTickTime()) / 100F * OFFSET_LIMIT);
+        this.updateOffset();
     }
 
     private void animationTransition(String newStateName)
@@ -140,12 +140,40 @@ public class TileSqueezer extends TileBase implements ITickable
         }
     }
 
+    private void updateOffset()
+    {
+        if (this.world.isRemote)
+        {
+            this.extensionOffset.setValue((extensionProgress + Animation.getPartialTickTime()) / 100F * OFFSET_LIMIT);
+        }
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
         this.extensionProgress = compound.getInteger("Extension");
         this.state = State.values()[compound.getInteger("State")];
+        this.isInWorkCycle = compound.getBoolean("WorkCycle");
+        /*
+         * You might want to ask why we don't do this in onLoad. The cruel fact is that,
+         * TileEntity.handleUpdateTag is called after TileEntity.onLoad, where we get
+         * the correct data used for animation. When onLoad is called, the data on
+         * client is still incorrect (i.e. not the data received from server after chunk
+         * loaded and the chunk data are synced over).
+         * See TileMill.readFromNBT for a similar example.
+         */
+        if (this.world != null && this.world.isRemote)
+        {
+            if (this.state != State.EXTRACTED)
+            {
+                this.updateOffset();
+                if (!"moving".equals(this.stateMachine.currentState()))
+                {
+                    this.stateMachine.transition("moving");
+                }
+            }
+        }
     }
 
     @Nonnull
@@ -154,6 +182,7 @@ public class TileSqueezer extends TileBase implements ITickable
     {
         compound.setInteger("Extension", this.extensionProgress);
         compound.setInteger("State", this.state.ordinal());
+        compound.setBoolean("WorkCycle", this.isInWorkCycle);
         return super.writeToNBT(compound);
     }
 

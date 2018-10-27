@@ -285,7 +285,7 @@ public class TileChoppingBoard extends TileInventoryBase
         }
     }
 
-    public static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, boolean fewerLosses, Random rand)
+    private static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, boolean fewerLosses, Random rand)
     {
         Form form = Form.byActions(actions[0], actions[1]);
         if (ingredient.getMaterial().isValidForm(form))

@@ -2,6 +2,8 @@ package snownee.cuisine.plugins;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
@@ -14,10 +16,13 @@ import snownee.kiwi.util.definition.ItemDefinition;
 @KiwiModule(modid = Cuisine.MODID, name = "vanillafoodpantry", dependency = "vanillafoodpantry", optional = true)
 public class VFPCompat implements IModule
 {
+
+    private static final ResourceLocation VFP_JUICE_ID = new ResourceLocation("vanillafoodpantry", "juice");
+
     @Override
     public void init()
     {
-        Item juice = Item.getByNameOrId("vanillafoodpantry:juice");
+        Item juice = ForgeRegistries.ITEMS.getValue(VFP_JUICE_ID);
         if (juice != null)
         {
             juice.setContainerItem(Items.GLASS_BOTTLE);
@@ -31,7 +36,7 @@ public class VFPCompat implements IModule
     @Override
     public void postInit()
     {
-        Item juice = Item.getByNameOrId("vanillafoodpantry:juice");
+        Item juice = ForgeRegistries.ITEMS.getValue(VFP_JUICE_ID);
         if (juice != null)
         {
             // Sad truth: we cannot ensure grape material are registered before VFPCompat#init
