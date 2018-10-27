@@ -14,6 +14,8 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
+import mezz.jei.api.gui.IDrawableBuilder;
+import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
@@ -54,6 +56,7 @@ public class JEICompat implements IModPlugin
     static IDrawable arrowOutOverlay;
     static IDrawable arrowIn;
     static IDrawable arrowInOverlay;
+    static IDrawableStatic arrowInOverlayStatic;
 
     @Override
     public void register(IModRegistry registry)
@@ -62,7 +65,9 @@ public class JEICompat implements IModPlugin
         arrowOut = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 11, 26, 11, 7);
         arrowOutOverlay = guiHelper.drawableBuilder(JEICompat.CUISINE_RECIPE_GUI, 11, 18, 11, 8).buildAnimated(new CombinedTimer(80, 11, 11, 22), IDrawableAnimated.StartDirection.LEFT);
         arrowIn = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 0, 26, 11, 7);
-        arrowInOverlay = guiHelper.drawableBuilder(JEICompat.CUISINE_RECIPE_GUI, 0, 18, 11, 8).buildAnimated(new CombinedTimer(80, 0, 11, 22), IDrawableAnimated.StartDirection.LEFT);
+        IDrawableBuilder builder = guiHelper.drawableBuilder(JEICompat.CUISINE_RECIPE_GUI, 0, 18, 11, 8);
+        arrowInOverlayStatic = builder.build();
+        arrowInOverlay = builder.buildAnimated(new CombinedTimer(80, 0, 11, 22), IDrawableAnimated.StartDirection.LEFT);
 
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.INGREDIENT));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.DRINK));

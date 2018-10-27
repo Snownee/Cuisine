@@ -29,13 +29,13 @@ import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 
-public class TileDrinkro extends TileBase implements CookingVessel
+public class TileDrinkroTank extends TileBase implements CookingVessel
 {
     protected static class DrinkroFluidWrapper implements IFluidHandler
     {
-        private final TileDrinkro tile;
+        private final TileDrinkroTank tile;
 
-        public DrinkroFluidWrapper(TileDrinkro tile)
+        public DrinkroFluidWrapper(TileDrinkroTank tile)
         {
             this.tile = tile;
         }
@@ -49,7 +49,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource == null)
+            if (resource == null || tile.isWorking())
             {
                 return 0;
             }
@@ -96,156 +96,98 @@ public class TileDrinkro extends TileBase implements CookingVessel
     protected boolean working = false;
     public Drink.Builder builder;
     public ItemStackHandler inventory;
-    public final boolean isBase;
 
-    public TileDrinkro(boolean isBase)
+    public TileDrinkroTank()
     {
-        this.isBase = isBase;
-        if (isBase)
+        super();
+        builder = Drink.Builder.create();
+        inventory = new ItemStackHandler(4)
         {
-            inventory = new ItemStackHandler()
+            @Override
+            public int getSlotLimit(int slot)
             {
-                @Override
-                public int getSlotLimit(int slot)
-                {
-                    return 1;
-                }
+                return 1;
+            }
 
-                @Override
-                public boolean isItemValid(int slot, ItemStack stack)
-                {
-                    return Drink.Builder.isContainerItem(stack);
-                }
-
-                @Override
-                public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
-                {
-                    if (!isItemValid(slot, stack))
-                    {
-                        return stack;
-                    }
-                    return super.insertItem(slot, stack, simulate);
-                }
-
-                @Override
-                protected void onContentsChanged(int slot)
-                {
-                    refresh();
-                }
-            };
-        }
-        else
-        {
-            builder = Drink.Builder.create();
-            inventory = new ItemStackHandler(4)
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack)
             {
-
-                @Override
-                public int getSlotLimit(int slot)
+                if (Drink.Builder.isFeatureItem(stack))
                 {
-                    return 1;
+                    return true;
                 }
+                Spice spice = CulinaryHub.API_INSTANCE.findSpice(stack);
+                return spice != null && builder != null && builder.canAddIntoThis(null, new Seasoning(spice), TileDrinkroTank.this);
+            }
 
-                @Override
-                public boolean isItemValid(int slot, ItemStack stack)
+            @Override
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+            {
+                if (isWorking() || !isItemValid(slot, stack))
                 {
-                    if (Drink.Builder.isFeatureItem(stack))
-                    {
-                        return true;
-                    }
-                    Spice spice = CulinaryHub.API_INSTANCE.findSpice(stack);
-                    return spice != null && builder != null && builder.canAddIntoThis(null, new Seasoning(spice), TileDrinkro.this);
+                    return stack;
                 }
-
-                @Override
-                public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+                if (Drink.Builder.isFeatureItem(stack))
                 {
-                    if (Drink.Builder.isFeatureItem(stack))
+                    // One drink can't have two or more feature items
+                    for (ItemStack stack2 : stacks)
                     {
-                        // One drink can't have two or more feature items
-                        for (ItemStack stack2 : stacks)
+                        if (Drink.Builder.isFeatureItem(stack2))
                         {
-                            if (Drink.Builder.isFeatureItem(stack2))
-                            {
-                                return stack;
-                            }
+                            return stack;
                         }
                     }
-                    else if (!isItemValid(slot, stack))
-                    {
-                        return stack;
-                    }
-                    return super.insertItem(slot, stack, simulate);
                 }
+                return super.insertItem(slot, stack, simulate);
+            }
 
-                @Override
-                protected void onContentsChanged(int slot)
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate)
+            {
+                if (isWorking())
                 {
-                    refresh();
+                    return ItemStack.EMPTY;
                 }
+                return super.extractItem(slot, amount, simulate);
+            }
 
-            };
-        }
+            @Override
+            protected void onContentsChanged(int slot)
+            {
+                refresh();
+            }
+
+        };
+
     }
 
     public void neighborChanged(IBlockState state)
     {
-        if (isBase)
+        boolean poweredIn = world.isBlockPowered(pos);
+        if (!poweredIn)
         {
-            TileDrinkro tile = getUpper();
-            if (tile != null)
-            {
-                tile.neighborChanged(state.withProperty(BlockDrinkro.BASE, false));
-            }
+            poweredIn = world.isBlockPowered(pos.down());
         }
-        else
+        if (poweredIn && !this.powered && !isWorking())
         {
-            boolean poweredIn = world.isBlockPowered(pos);
-            if (!poweredIn)
-            {
-                poweredIn = world.isBlockPowered(pos.down());
-            }
-            if (poweredIn && !this.powered)
-            {
-                working = true;
-                // world.notifyBlockUpdate(pos, state, state, 3);
-                world.setBlockState(pos, state.withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
-                world.setBlockState(pos.down(), world.getBlockState(pos.down()).withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
-                world.scheduleUpdate(pos, state.getBlock(), 100);
-            }
-            this.powered = poweredIn;
+            working = true;
+            world.addBlockEvent(pos, getBlockType(), 1, 0);
+            // world.notifyBlockUpdate(pos, state, state, 3);
+            world.setBlockState(pos, state.withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
+            world.setBlockState(pos.down(), world.getBlockState(pos.down()).withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
+            world.scheduleUpdate(pos, state.getBlock(), 100);
         }
+        this.powered = poweredIn;
     }
 
-    protected TileDrinkro getUpper()
+    protected TileDrinkroBase getBase()
     {
-        if (!isBase)
-        {
-            return this;
-        }
-        if (hasWorld())
-        {
-            TileEntity tile = world.getTileEntity(pos.up());
-            if (tile instanceof TileDrinkro)
-            {
-                return (TileDrinkro) tile;
-            }
-        }
-        return null;
-    }
-
-    protected TileDrinkro getLower()
-    {
-        if (isBase)
-        {
-            return this;
-        }
         if (hasWorld())
         {
             TileEntity tile = world.getTileEntity(pos.down());
-            if (tile instanceof TileDrinkro)
+            if (tile instanceof TileDrinkroBase)
             {
-                return (TileDrinkro) tile;
+                return (TileDrinkroBase) tile;
             }
         }
         return null;
@@ -253,12 +195,9 @@ public class TileDrinkro extends TileBase implements CookingVessel
 
     public void stopProcess()
     {
-        if (isBase)
-        {
-            return;
-        }
-        TileDrinkro tileLower = getLower();
-        if (tileLower == null)
+        working = false;
+        TileDrinkroBase tileBase = getBase();
+        if (tileBase == null)
         {
             return;
         }
@@ -296,7 +235,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
             }
         }
         // check if container match the feature
-        if (!type.getContainerPre().matches(tileLower.inventory.getStackInSlot(0)))
+        if (!type.getContainerPre().matches(tileBase.inventory.getStackInSlot(0)))
         {
             // TODO: way to modify player what error is,
             // as it is redstone-powered, so we may need a `lastError` variable
@@ -342,7 +281,9 @@ public class TileDrinkro extends TileBase implements CookingVessel
         {
             throw new NullPointerException("Null FoodContainer");
         }
-        tileLower.inventory.setStackInSlot(0, itemDrink);
+        tileBase.inventory.setStackInSlot(0, itemDrink);
+        world.addBlockEvent(pos, getBlockType(), 0, builder.getColor());
+
         for (int i = 0; i < inputs.getSlots(); i++)
         {
             ItemStack stack = inputs.getStackInSlot(i);
@@ -357,7 +298,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getUpper() != null) || super.hasCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
@@ -365,8 +306,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
-            TileDrinkro tile = getUpper();
-            return tile == null ? null : CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new DrinkroFluidWrapper(tile));
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new DrinkroFluidWrapper(this));
         }
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
@@ -381,11 +321,8 @@ public class TileDrinkro extends TileBase implements CookingVessel
         super.readFromNBT(data);
         powered = data.getBoolean("powered");
         inventory.deserializeNBT(data.getCompoundTag("inventory"));
-        if (!isBase)
-        {
-            working = data.getBoolean("working");
-            builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
-        }
+        working = data.getBoolean("working");
+        builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
     }
 
     @Override
@@ -394,25 +331,24 @@ public class TileDrinkro extends TileBase implements CookingVessel
         super.writeToNBT(data);
         data.setBoolean("powered", powered);
         data.setTag("inventory", inventory.serializeNBT());
-        if (!isBase)
-        {
-            data.setBoolean("working", working);
-            data.setTag("builder", Drink.Builder.toNBT(builder));
-        }
+        data.setBoolean("working", working);
+        data.setTag("builder", Drink.Builder.toNBT(builder));
         return data;
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        this.inventory.deserializeNBT(data.getCompoundTag("Items"));
+        this.inventory.deserializeNBT(data.getCompoundTag("inventory"));
+        this.builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
         this.working = data.getBoolean("working");
     }
 
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        data.setTag("Items", this.inventory.serializeNBT());
+        data.setTag("inventory", this.inventory.serializeNBT());
+        data.setTag("builder", Drink.Builder.toNBT(builder));
         data.setBoolean("working", this.working);
         return data;
     }
@@ -425,7 +361,7 @@ public class TileDrinkro extends TileBase implements CookingVessel
 
     public boolean isWorking()
     {
-        return !isBase && working;
+        return working;
     }
 
     void refresh()

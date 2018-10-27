@@ -32,7 +32,8 @@ public final class TileRegistry
         GameRegistry.registerTileEntity(TileDish.class, new ResourceLocation(Cuisine.MODID, "placed_dish"));
         GameRegistry.registerTileEntity(TileBasin.class, new ResourceLocation(Cuisine.MODID, "basin"));
         GameRegistry.registerTileEntity(TileBasinHeatable.class, new ResourceLocation(Cuisine.MODID, "basin_heatable"));
-        GameRegistry.registerTileEntity(TileDrinkro.class, new ResourceLocation(Cuisine.MODID, "drinkro"));
+        GameRegistry.registerTileEntity(TileDrinkroBase.class, new ResourceLocation(Cuisine.MODID, "drinkro_base"));
+        GameRegistry.registerTileEntity(TileDrinkroTank.class, new ResourceLocation(Cuisine.MODID, "drinkro_tank"));
         GameRegistry.registerTileEntity(TileSqueezer.class, new ResourceLocation(Cuisine.MODID, "squeezer"));
     }
 }

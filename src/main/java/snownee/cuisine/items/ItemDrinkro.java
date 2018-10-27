@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
@@ -23,6 +24,12 @@ public class ItemDrinkro extends ItemModBlock
     public ItemDrinkro(IModBlock block)
     {
         super(block);
+    }
+
+    @Override
+    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack)
+    {
+        return EntityEquipmentSlot.HEAD;
     }
 
     @Override

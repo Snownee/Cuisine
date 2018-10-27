@@ -538,8 +538,9 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SpiceChiliPowder("chili_powder", 11546150));
         api.register(new SimpleSpiceImpl("sichuan_pepper_powder", 8606770));
         api.register(new SimpleSpiceImpl("crude_salt", 4673362));
-        api.register(new SimpleSpiceImpl("salt", 16383998));
+        api.register(new SimpleSpiceImpl("salt", 0xE3E3E3));
         api.register(new SimpleSpiceImpl("sugar", 16383998));
+        api.register(new SimpleSpiceImpl("unrefined_sugar", 0xB35400));
 
         CulinaryHub.CommonSkills.init();
     }
@@ -619,9 +620,10 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.fluidToSpiceMapping.put(CuisineFluids.FRUIT_VINEGAR.getName(), CulinaryHub.CommonSpices.FRUIT_VINEGAR);
         api.fluidToSpiceMapping.put(FluidRegistry.WATER.getName(), CulinaryHub.CommonSpices.WATER);
 
-        api.itemToSpiceMapping.put(ItemDefinition.of(CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CHILI_POWDER)), CulinaryHub.CommonSpices.CHILI_POWDER);
-        api.itemToSpiceMapping.put(ItemDefinition.of(CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SICHUAN_PEPPER_POWDER)), CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER);
+        api.itemToSpiceMapping.put(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.CHILI_POWDER.getMeta()), CulinaryHub.CommonSpices.CHILI_POWDER);
+        api.itemToSpiceMapping.put(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.SICHUAN_PEPPER_POWDER.getMeta()), CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER);
         api.itemToSpiceMapping.put(ItemDefinition.of(Items.SUGAR), CulinaryHub.CommonSpices.SUGAR);
+        api.itemToSpiceMapping.put(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.UNREFINED_SUGAR.getMeta()), CulinaryHub.CommonSpices.UNREFINED_SUGAR);
 
         api.oreDictToSpiceMapping.put("dustSalt", CulinaryHub.CommonSpices.SALT);
         api.oreDictToSpiceMapping.put("dustCrudesalt", CulinaryHub.CommonSpices.CRUDE_SALT);
