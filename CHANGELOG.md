@@ -1,5 +1,74 @@
 # 更新日志
 
+## 0.3.0
+
+ - Add Drink.
+   - It is just a specialized dish.
+   - Yes, you drink it, not eat it.
+   - Being similar to dish, drink also supports arbitrary ingredients and "seasonings".
+   - Notice that it is not soup.
+ - Some materials can exist in form of "juice" now.
+ - Add "Drinkro™"
+   - Uh. It makes drinks. That's it.
+   - Highly WIP. Report bugs if you encounter one.
+ - Add Basins.
+   - Basins are processing devices.
+   - They come with two variants: wooden and earthen. Earthen basin are made from clay.
+   - Earthen variants may be dyed.
+   - May be used for distillation. For example, salt now requires basin to make. See JEI for details.
+     - Old way of making salt are removed.
+   - May be used for throwing things into it to get new things. See JEI for details.
+   - Has a basic CraftTweaker support.
+ - Add Squeezer.
+   - It is essentially a miniature vanilla piston.
+   - It has animation!
+   - You should use it together with basin.
+   - Does not exist in item form; you may get it by putting a vanilla piston on top of a basin.
+   - Use redstone to control it, just like a vanilla piston.
+   - Used for squeezing stuff in basin. See JEI for details.
+   - Has a basic CraftTweaker support.
+ - Add several fruits that belongs to Citrus genus.
+   - Namely: Pomelo, Citron, Mandarin, Grapefruit, Orange, Lemon and Lime.
+   - Their plants are trees. So there are corresponding wood logs, saplings and leaves.
+   - Of course you can use those wood logs to make chopping boards.
+ - Chopping Board now has a better model.
+   - The word "better" here is referring the technical details.
+     - Its visual appearance does not change at all.
+     - The item form of chopping board is no longer a `TileEntityItemStackRenderer`.
+     - The block form of chopping board is no longer using `TileEntitySpecialRenderer` for the board base part and the knife part.
+     - The TESR is kept for rendering the item being put on board.
+   - May improve both performance and compatibility. According to reports, they work fine with OptiFine now.
+   - Many thanks to @tterrag1098, @bs2609, @Shadow-of-Fire and @gigaherz for their help on this one!
+ - Bamboo now has a better model.
+ - Bamboo may be used as a blowpipe now. This can be disabled in config.
+ - Add a vast catalog of inter-mod compatibilities.
+   - You may use JEI to look up all three types of basin processing recipes.
+   - You may use CraftTweaker to add more basin processing recipes. Recipe removal will be here soon™.
+   - Add HWYLA support. Modelled after the existed TheOneProbe support.
+   - Add Farming for Blockheads support. You may get Cuisine's bamboo shoots from that.
+   - Add ToughAsNail support. Drinks may restore thirst value if TAN is present.
+   - Certain raw food and liquids from the following are now valid ingredients or seasonings in Cuisine:
+     - Biomes O' Plenty
+     - Pam's HarvestCraft
+     - PizzaCraft
+     - Rustic
+     - Vanilla Food Pantry
+ - Address GH-12: there is now a config option to not giving new player a Culinary Manual.
+ - Fix GH-15: crash on dedicated server due to accidentally referring client-only class.
+ - API overhaul.
+   - There are now methods to allow other mods to map their items to certain Cuisine ingredients.
+   - `isKnownMaterial` -> `isKnownIngredient`
+   - Introduce `CompositeFood.Builder`. It represents a "WIP" dish.
+   - `CompositeFood` is now fully abstract. You may extend this to have a brand new type of compound food.
+     - As an example, the new drink system is built on this.
+   - `IngredientCharacteristics` -> `IngredientTrait`
+   - New enum: `Taste`. Has 5 values: `SOUR`, `SWEET`, `BITTER`, `SALTY` and `SAVOR`. Not used so far.
+   - `CookingStrategy` gets overhauled.
+   - Many other breaking changes - after all, we are still on `0.x.x` stage. Everything is in flux.
+ - Fix many bugs. We don't even remember what they are, or those bugs only ever existed in dev environment.
+   - May introduce more bugs. You have been warned.
+ - Many internal code cleanup. Under 90% circumstances they do NOT improve performance; they are mainly for code style and easier development.
+
 ## 0.2.4
 
  - Add item of blocks that make from fire pit
