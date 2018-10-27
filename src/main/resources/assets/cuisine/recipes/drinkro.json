@@ -1,0 +1,24 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:drinkro"
+  },
+  "pattern": [
+    "iii",
+    "idi",
+    "ibi"
+  ],
+  "key": {
+    "i": {
+      "ore" : "ingotIron",
+      "type": "forge:ore_dict"
+    },
+    "d": {
+      "ore" : "dustRedstone",
+      "type": "forge:ore_dict"
+    },
+    "b": {
+      "item": "minecraft:glass_bottle"
+    }
+  }
+}

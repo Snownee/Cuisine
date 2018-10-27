@@ -54,6 +54,7 @@ public class Drink extends CompositeFood
     {
         public Drink completed;
         public DrinkType drinkType;
+        private int color = -1;
         public static final Map<ProcessingInput, DrinkType> FEATURE_INPUTS = new HashMap<>(4);
 
         static
@@ -109,6 +110,50 @@ public class Drink extends CompositeFood
         }
 
         @Override
+        public boolean addIngredient(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
+        {
+            boolean flag = super.addIngredient(cook, ingredient, vessel);
+            calculateColor();
+            return flag;
+        }
+
+        @Override
+        public boolean removeIngredient(Ingredient ingredient)
+        {
+            boolean flag = super.removeIngredient(ingredient);
+            calculateColor();
+            return flag;
+        }
+
+        protected void calculateColor()
+        {
+            double size = 0;
+            float r = 0;
+            float g = 0;
+            float b = 0;
+            for (Ingredient ingredient : getIngredients())
+            {
+                int color = ingredient.getMaterial().getRawColorCode();
+                r += ingredient.getSize() * (color >> 16 & 255) / 255.0F;
+                g += ingredient.getSize() * (color >> 8 & 255) / 255.0F;
+                b += ingredient.getSize() * (color & 255) / 255.0F;
+                size += ingredient.getSize();
+            }
+            if (size > 0)
+            {
+                r = (float) (r / size * 255.0F);
+                g = (float) (g / size * 255.0F);
+                b = (float) (b / size * 255.0F);
+                color = (int) r << 16 | (int) g << 8 | (int) b;
+            }
+        }
+
+        public int getColor()
+        {
+            return color | 0xFF000000;
+        }
+
+        @Override
         public Class<Drink> getType()
         {
             return Drink.class;
@@ -141,7 +186,7 @@ public class Drink extends CompositeFood
             this.apply(counter, vessel);
             float saturationModifier = counter.getSaturation();
             int foodLevel = counter.getHungerRegen();
-            completed = new Drink(getIngredients(), getSeasonings(), getEffects(), foodLevel, saturationModifier, drinkType);
+            completed = new Drink(getIngredients(), getSeasonings(), getEffects(), foodLevel, saturationModifier, drinkType, color);
             return Optional.of(completed);
         }
 
@@ -170,6 +215,7 @@ public class Drink extends CompositeFood
             data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
 
             data.setString("type", builder.drinkType.getName());
+            data.setInteger("color", builder.getColor());
 
             return data;
         }
@@ -212,6 +258,7 @@ public class Drink extends CompositeFood
             {
                 builder.drinkType = DrinkType.NORMAL;
             }
+            builder.color = data.getInteger("color");
 
             return builder;
         }
@@ -275,32 +322,13 @@ public class Drink extends CompositeFood
     public static final ResourceLocation DRINK_ID = new ResourceLocation(Cuisine.MODID, "drink");
 
     private DrinkType drinkType;
-    private int color = -1;
+    private final int color;
 
-    protected Drink(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int foodLevel, float saturation, DrinkType drinkType)
+    protected Drink(List<Ingredient> ingredients, List<Seasoning> seasonings, List<Effect> effects, int foodLevel, float saturation, DrinkType drinkType, int color)
     {
         super(ingredients, seasonings, effects, foodLevel, saturation, 2);
         this.drinkType = drinkType;
-
-        double size = 0;
-        float r = 0;
-        float g = 0;
-        float b = 0;
-        for (Ingredient ingredient : getIngredients())
-        {
-            int color = ingredient.getMaterial().getRawColorCode();
-            r += ingredient.getSize() * (color >> 16 & 255) / 255.0F;
-            g += ingredient.getSize() * (color >> 8 & 255) / 255.0F;
-            b += ingredient.getSize() * (color & 255) / 255.0F;
-            size += ingredient.getSize();
-        }
-        if (size > 0)
-        {
-            r = (float) (r / size * 255.0F);
-            g = (float) (g / size * 255.0F);
-            b = (float) (b / size * 255.0F);
-            color = (int) r << 16 | (int) g << 8 | (int) b;
-        }
+        this.color = color;
     }
 
     @Override
@@ -452,6 +480,7 @@ public class Drink extends CompositeFood
         data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
 
         data.setString("type", drink.getDrinkType().getName());
+        data.setInteger("color", drink.getColor());
         data.setInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL, drink.getFoodLevel());
         data.setFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, drink.getSaturationModifier());
         data.setInteger(CuisineSharedSecrets.KEY_SERVES, drink.getServes());
@@ -525,7 +554,13 @@ public class Drink extends CompositeFood
             drinkType = DrinkType.NORMAL;
         }
 
-        Drink drink = new Drink(ingredients, seasonings, effects, foodLevel, saturation, drinkType);
+        int color = -1;
+        if (data.hasKey("color", Constants.NBT.TAG_INT))
+        {
+            color = data.getInteger("color");
+        }
+
+        Drink drink = new Drink(ingredients, seasonings, effects, foodLevel, saturation, drinkType, color);
         drink.setServes(serves);
         drink.setUseDurationModifier(duration);
 

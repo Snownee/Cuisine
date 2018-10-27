@@ -12,6 +12,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,6 +20,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -62,6 +64,14 @@ public class BlockBasin extends BlockMod
             if (fallDistance >= 1 && entityIn instanceof EntityLivingBase)
             {
                 ItemStack input = tileBasin.stacks.getStackInSlot(0);
+                if (!input.isEmpty() || tileBasin.tank.getFluidAmount() > 0)
+                {
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_SLIME_STEP, SoundCategory.BLOCKS, 0.5F, worldIn.rand.nextFloat() / 4 + .6F);
+                }
+                if (input.isEmpty())
+                {
+                    return;
+                }
                 if (input.getItem() == Item.getItemFromBlock(Blocks.CACTUS))
                 {
                     entityIn.attackEntityFrom(DamageSource.CACTUS, 1);

@@ -587,7 +587,7 @@ public abstract class CompositeFood
          *
          * @return true if the ingredient given is added or merged; false otherwise.
          */
-        public final boolean addIngredient(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
+        public boolean addIngredient(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
         {
             if (this.canAddIntoThis(cook, ingredient, vessel))
             {
@@ -631,7 +631,7 @@ public abstract class CompositeFood
          *
          * @return true if the seasoning given is added or merged; false otherwise.
          */
-        public final boolean addSeasoning(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
+        public boolean addSeasoning(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
         {
             if (this.canAddIntoThis(cook, seasoning, vessel))
             {
@@ -668,7 +668,7 @@ public abstract class CompositeFood
             this.effects.add(e);
         }
 
-        public final boolean removeIngredient(Ingredient ingredient)
+        public boolean removeIngredient(Ingredient ingredient)
         {
             boolean changed = false;
             for (Iterator<Ingredient> itr = this.ingredients.iterator(); itr.hasNext();)
@@ -689,7 +689,7 @@ public abstract class CompositeFood
             return changed;
         }
 
-        public final boolean removeSeasoning(Seasoning seasoning)
+        public boolean removeSeasoning(Seasoning seasoning)
         {
             boolean changed = false;
             for (Iterator<Seasoning> itr = this.seasonings.iterator(); itr.hasNext();)

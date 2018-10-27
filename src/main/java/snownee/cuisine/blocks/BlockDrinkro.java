@@ -2,12 +2,11 @@ package snownee.cuisine.blocks;
 
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -17,9 +16,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +41,8 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.client.model.DrinkroMeshDefinition;
-import snownee.cuisine.tiles.TileDrinkro;
+import snownee.cuisine.tiles.TileDrinkroBase;
+import snownee.cuisine.tiles.TileDrinkroTank;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockModHorizontal;
 import snownee.kiwi.util.PlayerUtil;
@@ -84,7 +86,7 @@ public class BlockDrinkro extends BlockModHorizontal
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        if (tileentity instanceof TileDrinkro)
+        if (tileentity != null)
         {
             StacksUtil.dropInventoryItems(worldIn, pos, tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), true);
         }
@@ -125,21 +127,32 @@ public class BlockDrinkro extends BlockModHorizontal
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileDrinkro)
+        if (tile == null)
         {
-            TileDrinkro tileDrinkro = (TileDrinkro) tile;
-            ItemStack held = playerIn.getHeldItem(hand);
+            return true;
+        }
+        ItemStack held = playerIn.getHeldItem(hand);
 
-            if (held.getItem() != Items.GLASS_BOTTLE)
+        if (held.getItem() != Items.GLASS_BOTTLE)
+        {
+            IFluidHandlerItem handler = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(held, 1));
+            if (handler != null)
             {
-                IFluidHandlerItem handler = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(held, 1));
-                if (handler != null)
-                {
-                    FluidUtil.interactWithFluidHandler(playerIn, hand, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing));
-                    return true;
-                }
+                FluidUtil.interactWithFluidHandler(playerIn, hand, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing));
+                return true;
             }
+        }
 
+        ItemStackHandler inv = null;
+        if (tile instanceof TileDrinkroBase)
+        {
+            TileDrinkroBase tileDrinkro = (TileDrinkroBase) tile;
+
+            inv = tileDrinkro.inventory;
+        }
+        else if (tile instanceof TileDrinkroTank)
+        {
+            TileDrinkroTank tileDrinkro = (TileDrinkroTank) tile;
             if (tileDrinkro.builder != null)
             {
                 Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(held);
@@ -156,8 +169,11 @@ public class BlockDrinkro extends BlockModHorizontal
                 }
             }
 
-            ItemStackHandler inv = tileDrinkro.inventory;
+            inv = tileDrinkro.inventory;
+        }
 
+        if (inv != null)
+        {
             if (held.isEmpty() || ItemHandlerHelper.insertItem(inv, held, true).getCount() == held.getCount())
             {
                 for (int i = inv.getSlots() - 1; i >= 0; i--)
@@ -185,6 +201,7 @@ public class BlockDrinkro extends BlockModHorizontal
             return true;
         }
         return false;
+
     }
 
     @Override
@@ -196,38 +213,68 @@ public class BlockDrinkro extends BlockModHorizontal
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        if (state.getValue(BASE))
+        if (!state.getValue(BASE))
         {
-            pos = pos.up();
-        }
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileDrinkro)
-        {
-            TileDrinkro tileDrinkro = (TileDrinkro) tile;
-            state = state.withProperty(WORKING, tileDrinkro.isWorking());
+            TileEntity tile = worldIn.getTileEntity(pos);
+            if (tile instanceof TileDrinkroTank)
+            {
+                TileDrinkroTank tileDrinkro = (TileDrinkroTank) tile;
+                state = state.withProperty(WORKING, tileDrinkro.isWorking());
+            }
         }
         return state;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
+    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int color)
     {
-        return new TileDrinkro(state.getValue(BASE));
+        if (id == 0)
+        {
+            pos = pos.down();
+            double r = (color >> 16 & 255) / 255D;
+            double g = (color >> 8 & 255) / 255D;
+            double b = (color & 255) / 255D;
+
+            for (int j = 0; j < 30; ++j)
+            {
+                worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), pos.getX() + RANDOM.nextDouble(), pos.getY() + RANDOM.nextDouble(), pos.getZ() + RANDOM.nextDouble(), r, g, b);
+            }
+            return true;
+        }
+        else if (id == 1)
+        {
+            spawnWorkingParticles(worldIn, pos);
+            return true;
+        }
+        return false;
     }
 
-    @Nullable
-    public static TileDrinkro getBase(IBlockAccess world, BlockPos pos, IBlockState state)
+    private static void spawnWorkingParticles(World world, BlockPos pos)
     {
-        return null;
+        for (int j = 0; j < 10; ++j)
+        {
+            world.spawnAlwaysVisibleParticle(EnumParticleTypes.CRIT.getParticleID(), pos.getX() + RANDOM.nextDouble() * 0.4 + 0.3, pos.getY() + RANDOM.nextDouble() * 0.4 + 0.3, pos.getZ() + RANDOM.nextDouble() * 0.4 + 0.3, RANDOM.nextDouble() * 2 - 1, RANDOM.nextDouble() * 2 - 1, RANDOM.nextDouble() * 2 - 1);
+        }
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return state.getValue(BASE) ? new TileDrinkroBase() : new TileDrinkroTank();
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileDrinkro)
+        if (state.getValue(BASE))
         {
-            ((TileDrinkro) tile).neighborChanged(state);
+            pos = pos.up();
+            state = worldIn.getBlockState(pos);
+        }
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (tile instanceof TileDrinkroTank)
+        {
+            ((TileDrinkroTank) tile).neighborChanged(state);
         }
     }
 
@@ -239,9 +286,9 @@ public class BlockDrinkro extends BlockModHorizontal
             return;
         }
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileDrinkro)
+        if (tile instanceof TileDrinkroTank)
         {
-            TileDrinkro tileDrinkro = (TileDrinkro) tile;
+            TileDrinkroTank tileDrinkro = (TileDrinkroTank) tile;
             if (tileDrinkro.isWorking())
             {
                 worldIn.setBlockState(pos, state.withProperty(WORKING, Boolean.FALSE));
@@ -253,22 +300,26 @@ public class BlockDrinkro extends BlockModHorizontal
 
     @Override
     @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getRenderLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return EnumBlockRenderType.INVISIBLE;
+        return state.getValue(BASE) ? EnumBlockRenderType.MODEL : EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        //        if (stateIn.getValue(WORKING))
-        //        {
-        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL.getParticleID(), pos.getX() + 0.5, pos.getY() + 1, pos.getZ(), 0xFF, 0, 0, 0xFFFF00FF);
-        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_MOB.getParticleID(), pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 0xFF, 0, 0, 0xFFFF00FF);
-        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SPELL_INSTANT.getParticleID(), pos.getX(), pos.getY() + 1, pos.getZ() + 0.5, 0xFF, 0, 0, 0xFFFF00FF);
-        //            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.WATER_SPLASH.getParticleID(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1, 0xFF, 0, 0, 0xFFFF00FF);
-        //        }
+        if (stateIn.getValue(WORKING) && !stateIn.getValue(BASE))
+        {
+            spawnWorkingParticles(worldIn, pos);
+        }
     }
 
     @Override
@@ -299,6 +350,18 @@ public class BlockDrinkro extends BlockModHorizontal
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state)
+    {
+        return !state.getValue(BASE);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return state.getValue(BASE) && state.getValue(BlockHorizontal.FACING) == face ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
     }
 
 }
