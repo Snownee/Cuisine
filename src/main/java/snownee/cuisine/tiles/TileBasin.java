@@ -74,7 +74,7 @@ public class TileBasin extends TileInventoryBase
     public FluidStack getFluidForRendering(float partialTicks)
     {
         final FluidStack actual = tank.getFluid();
-        int actualAmount = 0;
+        int actualAmount;
         if (actual != null && !actual.equals(liquidForRendering))
         {
             liquidForRendering = new FluidStack(actual, 0);

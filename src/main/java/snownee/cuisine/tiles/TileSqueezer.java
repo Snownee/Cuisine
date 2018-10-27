@@ -44,9 +44,9 @@ public class TileSqueezer extends TileBase implements ITickable
      */
     private static final ResourceLocation STATE_MACHINE = new ResourceLocation(Cuisine.MODID, "asms/squeezer.json");
 
-    private IAnimationStateMachine stateMachine;
+    private final IAnimationStateMachine stateMachine;
 
-    private TimeValues.VariableValue extensionOffset = new TimeValues.VariableValue(0F);
+    private final TimeValues.VariableValue extensionOffset = new TimeValues.VariableValue(0F);
 
     private int extensionProgress;
 

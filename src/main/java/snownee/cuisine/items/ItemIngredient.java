@@ -84,7 +84,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
-        Ingredient ingredient = null;
+        Ingredient ingredient;
         if (stack.getTagCompound() != null && entityLiving instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) entityLiving;
