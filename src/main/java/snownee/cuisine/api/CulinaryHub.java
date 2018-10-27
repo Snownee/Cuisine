@@ -100,6 +100,7 @@ public final class CulinaryHub
         public static final Spice CRUDE_SALT = find("crude_salt");
         public static final Spice SALT = find("salt");
         public static final Spice SUGAR = find("sugar");
+        public static final Spice UNREFINED_SUGAR = find("unrefined_sugar");
 
         private static Spice find(final String uniqueName)
         {

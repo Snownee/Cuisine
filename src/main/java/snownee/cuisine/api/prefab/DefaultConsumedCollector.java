@@ -18,6 +18,17 @@ import snownee.cuisine.api.EffectType;
 public class DefaultConsumedCollector implements EffectCollector
 {
     private final Map<Potion, PotionEffectInfo> mapPotions = new HashMap<>();
+    private final float durationModifier;
+
+    public DefaultConsumedCollector()
+    {
+        this(1);
+    }
+
+    public DefaultConsumedCollector(float durationModifier)
+    {
+        this.durationModifier = Math.max(durationModifier, 0);
+    }
 
     @Override
     public void apply(CompositeFood food, EntityPlayer player)
@@ -35,7 +46,7 @@ public class DefaultConsumedCollector implements EffectCollector
                     continue;
                 }
                 PotionEffectInfo info = entry.getValue();
-                player.addPotionEffect(new PotionEffect(entry.getKey(), info.duration, info.amplifier, false, info.showParticles));
+                player.addPotionEffect(new PotionEffect(entry.getKey(), (int) (info.duration * durationModifier), info.amplifier, false, info.showParticles));
                 if (info.duration > maxDuration)
                 {
                     maxDuration = info.duration;
@@ -44,7 +55,7 @@ public class DefaultConsumedCollector implements EffectCollector
         }
         if (maxDuration > 0)
         {
-            player.addPotionEffect(new PotionEffect(CuisineRegistry.EFFECT_RESISTANCE, maxDuration * 2, 0, true, false));
+            player.addPotionEffect(new PotionEffect(CuisineRegistry.EFFECT_RESISTANCE, (int) (maxDuration * durationModifier * 2), 0, true, false));
         }
 
     }

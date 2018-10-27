@@ -370,7 +370,32 @@ public class Drink extends CompositeFood
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
         Collection<IngredientBinding> bindings = getEffectBindings();
-        EffectCollector collector = new DefaultConsumedCollector();
+        float modifier = 1;
+        for (Seasoning seasoning : seasonings)
+        {
+            if (seasoning.getSpice() == CulinaryHub.CommonSpices.UNREFINED_SUGAR)
+            {
+                modifier += seasoning.getSize() * 0.1;
+            }
+            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.SUGAR)
+            {
+                modifier += seasoning.getSize() * 0.2;
+            }
+            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.SALT)
+            {
+                modifier -= seasoning.getSize() * 0.1;
+            }
+            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.CRUDE_SALT)
+            {
+                modifier -= seasoning.getSize() * 0.2;
+            }
+            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.SOY_SAUCE || seasoning.getSpice() == CulinaryHub.CommonSpices.CHILI_POWDER || seasoning.getSpice() == CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER)
+            {
+                modifier = 0;
+                break;
+            }
+        }
+        EffectCollector collector = new DefaultConsumedCollector(modifier);
 
         // And then apply them
         for (IngredientBinding binding : bindings)
@@ -441,7 +466,14 @@ public class Drink extends CompositeFood
             }
             collector.addEffect(DefaultTypes.POTION, new PotionEffect(potion, duration, 0, true, true));
         }
-        collector.apply(this, player);
+        if (modifier <= 0.1F)
+        {
+            player.addPotionEffect(new PotionEffect(worldIn.rand.nextBoolean() ? MobEffects.SLOWNESS : MobEffects.MINING_FATIGUE, 1200));
+        }
+        else if (modifier > 0.25F)
+        {
+            collector.apply(this, player);
+        }
         if (drinkType == DrinkType.SMOOTHIE)
         {
             player.extinguish();
