@@ -2,6 +2,7 @@
 
 ## 0.3.0
 
+ - Now **requires Forge 14.23.5.2772** to run due to technical reasons.
  - Add Drink.
    - It is just a specialized dish.
    - Yes, you drink it, not eat it.
@@ -10,12 +11,14 @@
  - Some materials can exist in form of "juice" now.
  - Add "Drinkro™"
    - Uh. It makes drinks. That's it.
+   - Right click it with valid ingredients to put them in.
    - Highly WIP. Report bugs if you encounter one.
  - Add Basins.
    - Basins are processing devices.
    - They come with two variants: wooden and earthen. Earthen basin are made from clay.
    - Earthen variants may be dyed.
    - May be used for distillation. For example, salt now requires basin to make. See JEI for details.
+     - Distillation requires heat source. Sunlight may work if enabled in config. Typical heat source include lava and torches.
      - Old way of making salt are removed.
    - May be used for throwing things into it to get new things. See JEI for details.
    - Has a basic CraftTweaker support.
@@ -53,8 +56,8 @@
      - PizzaCraft
      - Rustic
      - Vanilla Food Pantry
- - Address GH-12: there is now a config option to not giving new player a Culinary Manual.
- - Fix GH-15: crash on dedicated server due to accidentally referring client-only class.
+ - Address [GH-12](https://github.com/Snownee/Cuisine/issues/12): there is now a config option to not giving new player a Culinary Manual.
+ - Fix [GH-15](https://github.com/Snownee/Cuisine/issues/15): crash on dedicated server due to accidentally referring client-only class.
  - API overhaul.
    - There are now methods to allow other mods to map their items to certain Cuisine ingredients.
    - `isKnownMaterial` -> `isKnownIngredient`
