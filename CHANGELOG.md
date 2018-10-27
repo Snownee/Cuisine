@@ -34,6 +34,8 @@
    - Namely: Pomelo, Citron, Mandarin, Grapefruit, Orange, Lemon and Lime.
    - Their plants are trees. So there are corresponding wood logs, saplings and leaves.
    - Of course you can use those wood logs to make chopping boards.
+   - However, do notice that those saplings are still WIP, and they cannot grow right now.
+   - Saplings and logs are currently unobtainable (unless using JEI or some other sorts).
  - Chopping Board now has a better model.
    - The word "better" here is referring the technical details.
      - Its visual appearance does not change at all.
