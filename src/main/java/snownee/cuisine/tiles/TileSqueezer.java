@@ -67,6 +67,7 @@ public class TileSqueezer extends TileBase implements ITickable
         {
             if (state == State.EXTRACTED || state == State.EXTRACTING)
             {
+                this.isInWorkCycle = this.state == State.EXTRACTED;
                 this.state = State.EXTENDING;
                 this.animationTransition("moving");
             }
@@ -87,7 +88,6 @@ public class TileSqueezer extends TileBase implements ITickable
             {
                 extensionProgress = 100;
                 this.state = State.EXTENDED;
-                this.isInWorkCycle = true;
                 if (!world.isRemote)
                 {
                     world.playSound(null, pos, SoundEvents.BLOCK_PISTON_EXTEND, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() / 4 + .6F);
@@ -115,7 +115,7 @@ public class TileSqueezer extends TileBase implements ITickable
             }
         }
 
-        if (isInWorkCycle)
+        if (this.state == State.EXTENDED && this.isInWorkCycle)
         {
             this.isInWorkCycle = false;
             if (!world.isRemote)
@@ -154,6 +154,7 @@ public class TileSqueezer extends TileBase implements ITickable
         super.readFromNBT(compound);
         this.extensionProgress = compound.getInteger("Extension");
         this.state = State.values()[compound.getInteger("State")];
+        this.isInWorkCycle = compound.getBoolean("WorkCycle");
         /*
          * You might want to ask why we don't do this in onLoad. The cruel fact is that,
          * TileEntity.handleUpdateTag is called after TileEntity.onLoad, where we get
@@ -181,6 +182,7 @@ public class TileSqueezer extends TileBase implements ITickable
     {
         compound.setInteger("Extension", this.extensionProgress);
         compound.setInteger("State", this.state.ordinal());
+        compound.setBoolean("WorkCycle", this.isInWorkCycle);
         return super.writeToNBT(compound);
     }
 
