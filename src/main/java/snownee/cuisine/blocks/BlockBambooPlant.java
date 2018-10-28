@@ -160,10 +160,9 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
         {
             worldIn.setBlockState(pos, state.withProperty(TYPE, Type.A_1), 4);
         }
-        else
+        else if (generateBamboo(worldIn, pos, state, rand))
         {
             worldIn.playEvent(2001, pos, Block.getStateId(state));
-            generateBamboo(worldIn, pos, state, rand);
         }
     }
 
