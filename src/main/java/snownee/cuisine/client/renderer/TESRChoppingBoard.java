@@ -16,10 +16,14 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
     @Override
     public void render(TileChoppingBoard tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (y > mc.player.eyeHeight)
+        {
+            return;
+        }
         ItemStack itemStack = tile.stacks.getStackInSlot(0);
         if (!itemStack.isEmpty() && !tile.hasKitchenKnife())
         {
-            Minecraft mc = Minecraft.getMinecraft();
             RenderItem renderItem = mc.getRenderItem();
             IBakedModel bakedModel = renderItem.getItemModelWithOverrides(itemStack, tile.getWorld(), null);
 

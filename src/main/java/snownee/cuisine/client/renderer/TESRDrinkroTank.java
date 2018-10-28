@@ -24,6 +24,44 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
     {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 
+        int meta = 0;
+        if (te.hasWorld())
+        {
+            meta = te.getBlockMetadata() & 3;
+        }
+        int rot = 0;
+        if (meta == 0)
+        {
+            if (z > 0)
+            {
+                return;
+            }
+            rot = 180;
+        }
+        else if (meta == 1)
+        {
+            if (x < -1)
+            {
+                return;
+            }
+            rot = 90;
+        }
+        else if (meta == 2)
+        {
+            if (z < -1)
+            {
+                return;
+            }
+        }
+        else if (meta == 3)
+        {
+            if (x > 0)
+            {
+                return;
+            }
+            rot = -90;
+        }
+
         if (te.builder == null)
         {
             return;
@@ -60,25 +98,6 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 
         Minecraft mc = Minecraft.getMinecraft();
-
-        int meta = 0;
-        if (te.hasWorld())
-        {
-            meta = te.getBlockMetadata() & 3;
-        }
-        int rot = 0;
-        if (meta == 1)
-        {
-            rot = 90;
-        }
-        else if (meta == 0)
-        {
-            rot = 180;
-        }
-        else if (meta == 3)
-        {
-            rot = -90;
-        }
 
         GlStateManager.rotate(rot, 0, 1, 0);
 

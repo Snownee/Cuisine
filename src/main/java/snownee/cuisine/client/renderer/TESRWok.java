@@ -16,6 +16,13 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
     @Override
     public void render(TileWok tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
+        super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
+        Minecraft mc = Minecraft.getMinecraft();
+        if (y > mc.player.eyeHeight)
+        {
+            return;
+        }
+
         List<ItemStack> list = tile.getWokContents();
 
         if (list.isEmpty())
@@ -23,7 +30,7 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
             return;
         }
 
-        RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+        RenderItem renderItem = mc.getRenderItem();
 
         GlStateManager.pushMatrix();
         RenderHelper.disableStandardItemLighting();
