@@ -25,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
@@ -72,8 +73,8 @@ public class JEICompat implements IModPlugin
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.INGREDIENT));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.DRINK));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.BOTTLE));
-        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.LOG));
-        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.SAPLING));
+        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.LOG, OreDictionary.WILDCARD_VALUE));
+        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.SAPLING, OreDictionary.WILDCARD_VALUE));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.EMPOWERED_CITRON));
 
         registry.addRecipes(BlockChoppingBoard.getSuitableCovers().stream().map(RecipeChoppingBoardWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
@@ -173,7 +174,10 @@ public class JEICompat implements IModPlugin
             }
             else if (recipe instanceof MaterialSqueezing)
             {
-                recipes.add(new MaterialSqueezingRecipe((MaterialSqueezing) recipe, reverseMaterialMapWithoutJuice.get(((MaterialSqueezing) recipe).getMaterial())));
+                if (((MaterialSqueezing) recipe).getMaterial() != CulinaryHub.CommonMaterials.EMPOWERED_CITRON)
+                {
+                    recipes.add(new MaterialSqueezingRecipe((MaterialSqueezing) recipe, reverseMaterialMapWithoutJuice.get(((MaterialSqueezing) recipe).getMaterial())));
+                }
             }
         }
         registry.addRecipes(recipes, BasinSqueezingRecipeCategory.UID);

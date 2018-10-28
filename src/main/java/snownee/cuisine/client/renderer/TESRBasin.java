@@ -25,6 +25,12 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
     {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 
+        Minecraft mc = Minecraft.getMinecraft();
+        if (y > mc.player.eyeHeight)
+        {
+            return;
+        }
+
         FluidStack fluid = te.getFluidForRendering(partialTicks);
         ItemStack item = te.stacks.getStackInSlot(0);
         if (fluid == null && item.isEmpty())
@@ -44,8 +50,6 @@ public class TESRBasin extends TileEntitySpecialRenderer<TileBasin>
         }
 
         GlStateManager.translate(x, y, z);
-
-        Minecraft mc = Minecraft.getMinecraft();
 
         if (!item.isEmpty() && te.hasWorld())
         {

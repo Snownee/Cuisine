@@ -19,7 +19,14 @@ public class TESRMortar extends TileEntitySpecialRenderer<TileMortar>
     @Override
     public void render(TileMortar tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        List<ItemStack> contents =  tile.stacks.getStacks();
+        super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
+        Minecraft mc = Minecraft.getMinecraft();
+        if (y > mc.player.eyeHeight)
+        {
+            return;
+        }
+
+        List<ItemStack> contents = tile.stacks.getStacks();
         if (contents.isEmpty())
         {
             return; // Skip rendering when there is nothing to render.

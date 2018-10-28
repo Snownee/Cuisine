@@ -16,6 +16,50 @@ public class TESRDrinkroBase extends TileEntitySpecialRenderer<TileDrinkroBase>
     public void render(TileDrinkroBase te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
+        Minecraft mc = Minecraft.getMinecraft();
+        if (y > mc.player.eyeHeight)
+        {
+            return;
+        }
+
+        int meta = 0;
+        if (te.hasWorld())
+        {
+            meta = te.getBlockMetadata() & 3;
+        }
+
+        int rot = 0;
+        if (meta == 0)
+        {
+            if (z > 0)
+            {
+                return;
+            }
+            rot = 180;
+        }
+        else if (meta == 1)
+        {
+            if (x < -1)
+            {
+                return;
+            }
+            rot = 90;
+        }
+        else if (meta == 2)
+        {
+            if (z < -1)
+            {
+                return;
+            }
+        }
+        else if (meta == 3)
+        {
+            if (x > 0)
+            {
+                return;
+            }
+            rot = -90;
+        }
 
         if (te.inventory == null)
         {
@@ -39,25 +83,6 @@ public class TESRDrinkroBase extends TileEntitySpecialRenderer<TileDrinkroBase>
         }
 
         GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-
-        int meta = 0;
-        if (te.hasWorld())
-        {
-            meta = te.getBlockMetadata() & 3;
-        }
-        int rot = 0;
-        if (meta == 1)
-        {
-            rot = 90;
-        }
-        else if (meta == 0)
-        {
-            rot = 180;
-        }
-        else if (meta == 3)
-        {
-            rot = -90;
-        }
 
         GlStateManager.rotate(rot, 0, 1, 0);
         float scale = 0.5F;

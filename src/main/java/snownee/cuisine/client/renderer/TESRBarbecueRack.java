@@ -19,6 +19,7 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
     @Override
     public void render(TileBarbecueRack tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
+        super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
         Minecraft mc = Minecraft.getMinecraft();
         RenderItem renderItem = mc.getRenderItem();
 
