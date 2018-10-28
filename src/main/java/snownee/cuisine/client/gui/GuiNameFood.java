@@ -10,11 +10,12 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.inventory.ContainerNameFood;
 import snownee.cuisine.network.PacketNameFood;
-import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.network.NetworkChannel;
 
@@ -26,9 +27,9 @@ public class GuiNameFood extends GuiContainer
     private GuiTextField textField;
     private boolean synced = false;
 
-    public GuiNameFood(TileWok tile)
+    public GuiNameFood(CookingVessel vessel, World world)
     {
-        super(new ContainerNameFood(tile));
+        super(new ContainerNameFood(vessel, world));
     }
 
     @Override

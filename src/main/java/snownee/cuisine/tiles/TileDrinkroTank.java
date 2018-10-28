@@ -373,4 +373,23 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         }
     }
 
+    @Override
+    public Optional<ItemStack> serve()
+    {
+        if (!isWorking())
+        {
+            TileDrinkroBase base = getBase();
+            if (base != null)
+            {
+                ItemStack stack = base.inventory.getStackInSlot(0);
+                if (stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+                {
+                    base.inventory.setStackInSlot(0, ItemStack.EMPTY);
+                    return Optional.of(stack);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
 }

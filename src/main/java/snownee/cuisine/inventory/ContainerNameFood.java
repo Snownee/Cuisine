@@ -1,15 +1,18 @@
 package snownee.cuisine.inventory;
 
+import java.util.Optional;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import snownee.cuisine.tiles.TileWok;
+import snownee.cuisine.api.CookingVessel;
 
 public class ContainerNameFood extends Container
 {
@@ -60,12 +63,18 @@ public class ContainerNameFood extends Container
 
     private final InventoryFood inventory = new InventoryFood();
 
-    public ContainerNameFood(TileWok tile)
+    public ContainerNameFood(CookingVessel vessel, World world)
     {
         addSlotToContainer(new SlotFood(inventory, 0));
-        if (!tile.getWorld().isRemote)
+        if (!world.isRemote)
         {
-            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> inventory.setInventorySlotContents(0, tile.serveDishAndReset()));
+            FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
+                Optional<ItemStack> result = vessel.serve();
+                if (result.isPresent())
+                {
+                    inventory.setInventorySlotContents(0, result.get());
+                }
+            });
         }
     }
 

@@ -180,6 +180,12 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
         // No-op to avoid bad things from happening
     }
 
+    @Override
+    public Optional<ItemStack> serve()
+    {
+        return Optional.empty();
+    }
+
     public static ItemStack make(Material material, Form form)
     {
         return ItemIngredient.make(material, form, 1);

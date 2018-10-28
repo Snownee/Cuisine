@@ -142,4 +142,10 @@ public class ItemBottle extends ItemMod implements CookingVessel
         return stack;
     }
 
+    @Override
+    public Optional<ItemStack> serve()
+    {
+        return Optional.empty();
+    }
+
 }
