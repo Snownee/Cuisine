@@ -19,7 +19,6 @@ import snownee.cuisine.world.feature.WorldFeatureBamboo;
 public class WorldGenBamboo
 {
 
-    @SuppressWarnings("deprecation")
     @SubscribeEvent(priority = EventPriority.LOW)
     public void decorateEvent(DecorateBiomeEvent.Decorate event)
     {
@@ -27,7 +26,7 @@ public class WorldGenBamboo
         if (worldIn.provider.getDimension() == 0 && event.getType() == Decorate.EventType.TREE)
         {
             Random rand = event.getRand();
-            BlockPos position = event.getPos().add(rand.nextInt(16) + 1, 128, rand.nextInt(16) + 1);
+            BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 9, 128, rand.nextInt(16) + 9);
 
             Biome biome = worldIn.getBiome(position);
 

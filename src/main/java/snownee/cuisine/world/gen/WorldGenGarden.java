@@ -19,7 +19,6 @@ import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockCuisineCrops;
 
-@SuppressWarnings("deprecation")
 public class WorldGenGarden
 {
     public static final Block[] PLANT_POOL = new Block[] {
@@ -38,7 +37,7 @@ public class WorldGenGarden
         if (worldIn.provider.getDimension() == 0 && event.getType() == Decorate.EventType.PUMPKIN)
         {
             Random rand = event.getRand();
-            BlockPos position = event.getPos().add(rand.nextInt(16) + 1, 128, rand.nextInt(16) + 1);
+            BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 8, 128, rand.nextInt(16) + 8);
 
             Biome biome = worldIn.getBiome(position);
 
