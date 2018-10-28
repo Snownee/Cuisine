@@ -353,6 +353,19 @@ public class BlockDrinkro extends BlockModHorizontal
     }
 
     @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isTranslucent(IBlockState state)
+    {
+        return state.getValue(BASE);
+    }
+
+    @Override
     public boolean isNormalCube(IBlockState state)
     {
         return !state.getValue(BASE);
