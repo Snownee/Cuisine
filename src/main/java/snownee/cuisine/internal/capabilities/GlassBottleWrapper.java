@@ -1,7 +1,5 @@
 package snownee.cuisine.internal.capabilities;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemGlassBottle;
@@ -34,13 +32,9 @@ public class GlassBottleWrapper extends FluidHandlerItemStackSimple
     }
 
     @Override
-    protected void setFluid(@Nullable FluidStack fluid)
+    protected void setFluid(FluidStack fluid)
     {
-        if (fluid == null)
-        {
-            container = new ItemStack(Items.GLASS_BOTTLE);
-        }
-        else if (fluid.getFluid() == FluidRegistry.WATER)
+        if (fluid.getFluid() == FluidRegistry.WATER)
         {
             container = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER);
         }
@@ -49,6 +43,13 @@ public class GlassBottleWrapper extends FluidHandlerItemStackSimple
             container = new ItemStack(CuisineRegistry.BOTTLE);
             super.setFluid(fluid);
         }
+    }
+
+    @Override
+    protected void setContainerToEmpty()
+    {
+        super.setContainerToEmpty();
+        this.container = new ItemStack(Items.GLASS_BOTTLE);
     }
 
     @SubscribeEvent
