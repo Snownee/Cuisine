@@ -2,6 +2,8 @@
 
 ## 0.3.1
 
+ - Drink is now nameable
+ - Optimize renderers
  - Fix emptying juice bottle returning malformed item
  - Fix basic juice not curing thirst
  - Fix cascading worldgen
