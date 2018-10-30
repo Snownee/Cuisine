@@ -32,7 +32,7 @@ import snownee.kiwi.KiwiModule;
 public class NutritionCompat implements IModule
 {
     private static Capability<INutrientManager> NUTRITION_CAPABILITY;
-    private static final Map<MaterialCategory, Nutrient> materialCategoryToNutrient = new HashMap<>();
+    public static final Map<MaterialCategory, Nutrient> materialCategoryToNutrient = new HashMap<>();
 
     static void injectCap(Capability<INutrientManager> capability)
     {
