@@ -1,9 +1,9 @@
-package snownee.cuisine.world.gen;
+package snownee.cuisine.world.feature;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 
-public class WorldGenCitrusGenusTree extends WorldGenTrees
+public class WorldFeatureCitrusGenusTree extends WorldGenTrees
 {
     /**
      *
@@ -11,7 +11,7 @@ public class WorldGenCitrusGenusTree extends WorldGenTrees
      * @param woodType The actual block state of block used for "tree body"
      * @param leaveType The actual block state of block used for "tree leaves"
      */
-    public WorldGenCitrusGenusTree(boolean notifyUpdate, IBlockState woodType, IBlockState leaveType)
+    public WorldFeatureCitrusGenusTree(boolean notifyUpdate, IBlockState woodType, IBlockState leaveType)
     {
         super(notifyUpdate, 5, woodType, leaveType, false);
     }

@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.world.gen.WorldGenCitrusGenusTree;
+import snownee.cuisine.world.feature.WorldFeatureCitrusGenusTree;
 import snownee.kiwi.block.IModBlock;
 
 public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
@@ -208,7 +208,7 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
 
             // And if the tree generation fails, we need to roll back to the sapling block.
-            if (!new WorldGenCitrusGenusTree(true, wood, leave).generate(world, rand, pos))
+            if (!new WorldFeatureCitrusGenusTree(true, wood, leave).generate(world, rand, pos))
             {
                 world.setBlockState(pos, state, 4);
             }
