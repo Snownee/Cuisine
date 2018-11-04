@@ -1,3 +1,9 @@
 {
-  "parent": "minecraft:block/dispenser"
+  "parent": "cuisine:block/drinkro",
+	"textures": {
+		"1": "cuisine:block/drinkro_special_upper",
+		"2": "cuisine:block/drinkro_special_full",
+		"3": "cuisine:block/drinkro_special_door",
+		"particle": "cuisine:block/drinkro_special_upper"
+	}
 }
