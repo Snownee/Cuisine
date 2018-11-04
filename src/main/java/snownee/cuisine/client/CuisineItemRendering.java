@@ -54,6 +54,18 @@ public final class CuisineItemRendering
                     return spice.getColorCode();
                 }
             }
+            else if (tintIndex == 1 && CuisineRegistry.SPICE_BOTTLE.hasFluid(stack))
+            {
+                IFluidHandlerItem handler = CuisineRegistry.SPICE_BOTTLE.getFluidHandler(stack);
+                if (handler != null)
+                {
+                    FluidStack fluid = handler.drain(Integer.MAX_VALUE, false);
+                    if (fluid != null)
+                    {
+                        return fluid.getFluid().getColor(fluid);
+                    }
+                }
+            }
             return -1;
         }, CuisineRegistry.SPICE_BOTTLE);
 
