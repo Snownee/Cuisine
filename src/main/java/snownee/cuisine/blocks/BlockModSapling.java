@@ -101,10 +101,11 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
-        return getStateFromMeta(meta * 2);
+        return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(VARIANT, Type.values()[meta / 2]).withProperty(BlockSapling.STAGE, meta % 2);
@@ -129,6 +130,7 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return SAPLING_AABB;
@@ -144,8 +146,7 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
             {
                 if (world.getLightFromNeighbors(pos.up()) > 8 && rand.nextInt(8) == 0)
                 {
-                    int growthStage = state.getValue(BlockSapling.STAGE);
-                    if (growthStage == 0)
+                    if (state.getValue(BlockSapling.STAGE) == 0)
                     {
                         // Nothing to re-render, so we pass 4 to avoid unnecessary cost from re-rendering.
                         world.setBlockState(pos, state.cycleProperty(BlockSapling.STAGE), 4);
@@ -168,29 +169,29 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
 
             switch (state.getValue(VARIANT))
             {
-            case POMELO:
-            case LIME:
-            {
-                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.POMELO);
-                break;
-            }
-            case CITRON:
-            case LEMON:
-            {
-                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.CITRON);
-                break;
-            }
-            case MANDARIN:
-            case ORANGE:
-            {
-                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.MANDARIN);
-                break;
-            }
-            case GRAPEFRUIT:
-            {
-                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.GRAPEFRUIT);
-                break;
-            }
+                case POMELO:
+                case LIME:
+                {
+                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.POMELO);
+                    break;
+                }
+                case CITRON:
+                case LEMON:
+                {
+                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.CITRON);
+                    break;
+                }
+                case MANDARIN:
+                case ORANGE:
+                {
+                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.MANDARIN);
+                    break;
+                }
+                case GRAPEFRUIT:
+                {
+                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.GRAPEFRUIT);
+                    break;
+                }
             }
 
             // TODO (3TUSK): determine the leaf type. Where is my leaf block? Use oak leaves for now.
