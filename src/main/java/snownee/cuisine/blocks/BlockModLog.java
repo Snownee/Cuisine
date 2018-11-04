@@ -16,6 +16,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import snownee.cuisine.Cuisine;
 import snownee.kiwi.block.IModBlock;
 
 public class BlockModLog extends BlockLog implements IModBlock
@@ -27,8 +28,7 @@ public class BlockModLog extends BlockLog implements IModBlock
     public BlockModLog(String name)
     {
         this.name = name;
-        // setCreativeTab(Cuisine.CREATIVE_TAB);
-        setCreativeTab(null);
+        this.setCreativeTab(Cuisine.CREATIVE_TAB);
         setDefaultState(blockState.getBaseState().withProperty(VARIANT, Type.POMELO).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
     }
 
