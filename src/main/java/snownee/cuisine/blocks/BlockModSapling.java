@@ -168,26 +168,29 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
 
             switch (state.getValue(VARIANT))
             {
-                case POMELO:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.POMELO);
-                    break;
-                }
-                case CITRON:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.CITRON);
-                    break;
-                }
-                case MANDARIN:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.MANDARIN);
-                    break;
-                }
-                case GRAPEFRUIT:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.GRAPEFRUIT);
-                    break;
-                }
+            case POMELO:
+            case LIME:
+            {
+                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.POMELO);
+                break;
+            }
+            case CITRON:
+            case LEMON:
+            {
+                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.CITRON);
+                break;
+            }
+            case MANDARIN:
+            case ORANGE:
+            {
+                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.MANDARIN);
+                break;
+            }
+            case GRAPEFRUIT:
+            {
+                wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.GRAPEFRUIT);
+                break;
+            }
             }
 
             // TODO (3TUSK): determine the leaf type. Where is my leaf block? Use oak leaves for now.
