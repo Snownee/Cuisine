@@ -3,6 +3,7 @@
     "dump_food_container": "snownee.cuisine.crafting.RecipeFoodEmpty$Factory",
     "chopping_board": "snownee.cuisine.crafting.RecipeChoppingBoard$Factory",
     "spice_bottle_fill": "snownee.cuisine.crafting.RecipeSpiceBottleFilling$Factory",
-    "spice_bottle_empty": "snownee.cuisine.crafting.RecipeSpiceBottleEmpty$Factory"
+    "spice_bottle_empty": "snownee.cuisine.crafting.RecipeSpiceBottleEmpty$Factory",
+    "no_containers": "snownee.cuisine.crafting.RecipeNoContainers$Factory"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "type": "forge:ore_shaped",
+  "type": "cuisine:no_containers",
   "result": {
     "item": "cuisine:fire_pit",
     "data": 1
