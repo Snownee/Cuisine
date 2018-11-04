@@ -11,11 +11,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
 
-public class TileDrinkroBase extends TileBase implements CookingVessel
+public class TileDrinkroBase extends TileBase
 {
     private boolean powered = false;
     public ItemStackHandler inventory;

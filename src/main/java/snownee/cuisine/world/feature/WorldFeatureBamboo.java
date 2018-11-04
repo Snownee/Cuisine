@@ -38,6 +38,13 @@ public class WorldFeatureBamboo extends WorldGenAbstractTree
             {
                 return false;
             }
+            for (EnumFacing facing : EnumFacing.HORIZONTALS)
+            {
+                if (!worldIn.isAirBlock(pos2.offset(facing)))
+                {
+                    return false;
+                }
+            }
         }
         IBlockState newState = CuisineRegistry.BAMBOO_PLANT.getDefaultState().withProperty(BlockBambooPlant.TYPE, Type.A_2);
         for (int i = 0; i < 4; i++)

@@ -28,6 +28,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -37,9 +38,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.client.gui.CuisineGUI;
 import snownee.cuisine.client.model.DrinkroMeshDefinition;
 import snownee.cuisine.tiles.TileDrinkroBase;
 import snownee.cuisine.tiles.TileDrinkroTank;
@@ -179,6 +182,11 @@ public class BlockDrinkro extends BlockModHorizontal
                 for (int i = inv.getSlots() - 1; i >= 0; i--)
                 {
                     ItemStack stack = inv.getStackInSlot(i);
+                    if (!(playerIn instanceof FakePlayer) && stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+                    {
+                        playerIn.openGui(Cuisine.getInstance(), CuisineGUI.NAME_FOOD, worldIn, pos.getX(), pos.getY() + 1, pos.getZ());
+                        break;
+                    }
                     if (!stack.isEmpty())
                     {
                         ItemHandlerHelper.giveItemToPlayer(playerIn, stack);
@@ -350,6 +358,19 @@ public class BlockDrinkro extends BlockModHorizontal
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isTranslucent(IBlockState state)
+    {
+        return state.getValue(BASE);
     }
 
     @Override

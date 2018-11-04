@@ -10,9 +10,13 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
@@ -81,7 +85,11 @@ public class TANCompat implements IModule
     @SubscribeEvent
     public void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
-        if (event.getEntityLiving() instanceof EntityPlayer && event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+        if (!(event.getEntityLiving() instanceof EntityPlayer))
+        {
+            return;
+        }
+        if (event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
         {
             FoodContainer container = event.getItem().getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
             CompositeFood food = container.get(); // Null-safety is guaranteed by the hasCapability check
@@ -91,7 +99,7 @@ public class TANCompat implements IModule
                 {
                     IThirst handler = event.getEntityLiving().getCapability(TANCapabilities.THIRST, null);
                     handler.setExhaustion(0);
-                    handler.addStats(food.getFoodLevel() * 2, food.getSaturationModifier());
+                    handler.addStats(food.getFoodLevel() * 4, food.getSaturationModifier());
                 }
                 if (enableTemperature() && event.getEntityLiving().hasCapability(TANCapabilities.TEMPERATURE, null))
                 {
@@ -104,6 +112,21 @@ public class TANCompat implements IModule
                             event.getEntityLiving().addPotionEffect(new PotionEffect(TANPotions.heat_resistance, 300));
                         }
                     }
+                }
+            }
+        }
+        else if (event.getItem().getItem() == CuisineRegistry.BOTTLE && enableThirst() && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null))
+        {
+            IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(event.getItem());
+            if (fluidHandlerItem != null)
+            {
+                FluidStack fluid = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
+                Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(fluid);
+                if (ingredient != null)
+                {
+                    IThirst handler = event.getEntityLiving().getCapability(TANCapabilities.THIRST, null);
+                    handler.setExhaustion(0);
+                    handler.addStats((int) (ingredient.getFoodLevel() * 4), 0.4F + ingredient.getSaturationModifier());
                 }
             }
         }

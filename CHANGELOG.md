@@ -1,5 +1,16 @@
 # 更新日志
 
+## 0.3.1
+
+ - Drink is now nameable
+ - Optimize renderers
+ - Fix emptying juice bottle returning malformed item
+ - Fix basic juice not curing thirst
+ - Fix cascading worldgen
+ - Fix bamboo destroying solid block while growing
+ - Hopefully fix Drinkro™ looking strange with Optifine
+ - Add Forestry compat
+
 ## 0.3.0
 
  - Now **requires Forge 14.23.5.2772** to run due to technical reasons.

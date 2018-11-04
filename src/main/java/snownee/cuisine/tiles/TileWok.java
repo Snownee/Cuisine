@@ -192,33 +192,6 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         }
     }
 
-    public ItemStack serveDishAndReset()
-    {
-        if (status == Status.IDLE || builder == null)
-        {
-            return ItemStack.EMPTY;
-        }
-
-        ItemStack stack = new ItemStack(CuisineRegistry.DISH);
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
-        {
-            container.set(this.completedDish); // TODO AGAIN, THIS IS HACK
-        }
-        else
-        {
-            throw new NullPointerException("Null FoodContainer");
-        }
-        this.builder = null;
-        this.completedDish = null;
-        this.status = Status.IDLE;
-        this.ingredientsForRendering.clear();
-        this.spicesForRendering.clear();
-        NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), ItemStack.EMPTY));
-
-        return stack;
-    }
-
     private boolean cook(EntityPlayerMP player, EnumHand hand, ItemStack heldThing, EnumFacing facing)
     {
         Ingredient ingredient;
@@ -430,5 +403,33 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
 
         }
 
+    }
+
+    @Override
+    public Optional<ItemStack> serve()
+    {
+        if (status == Status.IDLE || builder == null)
+        {
+            return Optional.empty();
+        }
+
+        ItemStack stack = new ItemStack(CuisineRegistry.DISH);
+        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+        if (container != null)
+        {
+            container.set(this.completedDish); // TODO AGAIN, THIS IS HACK
+        }
+        else
+        {
+            throw new NullPointerException("Null FoodContainer");
+        }
+        this.builder = null;
+        this.completedDish = null;
+        this.status = Status.IDLE;
+        this.ingredientsForRendering.clear();
+        this.spicesForRendering.clear();
+        NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), ItemStack.EMPTY));
+
+        return Optional.of(stack);
     }
 }
