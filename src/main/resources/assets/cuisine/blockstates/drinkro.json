@@ -20,7 +20,7 @@
     },
     "base": {
       "true": {},
-      "false": { "model": "cuisine:void", "textures": { "particle": "cuisine:block/full" } }
+      "false": { "model": "cuisine:void", "textures": { "particle": "cuisine:block/drinkro_full" } }
     }
   }
 }

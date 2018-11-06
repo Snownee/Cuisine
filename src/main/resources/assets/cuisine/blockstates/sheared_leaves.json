@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "flower": {
+      "true": { "submodel": "cuisine:flowers" },
+      "false": {}
+    },
+    "variant": {
+      "citron": { "model": "cuisine:leaves_citron", "textures": { "0": "cuisine:block/flowers_citron" } },
+      "pomelo": { "model": "cuisine:leaves_pomelo", "textures": { "0": "cuisine:block/flowers_pomelo" } },
+      "lemon": { "model": "cuisine:leaves_lemon", "textures": { "0": "cuisine:block/flowers_lemon" } },
+      "lime": { "model": "cuisine:leaves_lime", "textures": { "0": "cuisine:block/flowers_lime" } },
+      "mandarin": { "model": "cuisine:leaves_mandarin", "textures": { "0": "cuisine:block/flowers_mandarin" } },
+      "orange": { "model": "cuisine:leaves_orange", "textures": { "0": "cuisine:block/flowers_orange" } },
+      "grapefruit": { "model": "cuisine:leaves_grapefruit", "textures": { "0": "cuisine:block/flowers_grapefruit" } }
+    }
+  }
+}

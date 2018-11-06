@@ -111,12 +111,17 @@ public class OreDictHandler
         // MISC
         OreDictionary.registerOre("foodFirmtofu", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.TOFU));
         OreDictionary.registerOre("listAllwater", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.WATER));
+        OreDictionary.registerOre("listAllwater", Items.WATER_BUCKET);
         OreDictionary.registerOre("portionWaterLarge", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.WATER));
         OreDictionary.registerOre("foodFlour", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.FLOUR));
         OreDictionary.registerOre("foodDough", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.DOUGH));
         OreDictionary.registerOre("itemFoodCutter", CuisineRegistry.KITCHEN_KNIFE);
-        OreDictionary.registerOre("logWood", new ItemStack(CuisineRegistry.LOG, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("logWood", CuisineRegistry.LOG);
+        OreDictionary.registerOre("plankWood", CuisineRegistry.PLANKS);
+        OreDictionary.registerOre("stickWood", CuisineRegistry.BAMBOO);
+        OreDictionary.registerOre("doorWood", CuisineRegistry.ITEM_DOOR);
         OreDictionary.registerOre("treeSapling", new ItemStack(CuisineRegistry.SAPLING, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("treeLeaves", new ItemStack(CuisineRegistry.SHEARED_LEAVES, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("foodDrink", CuisineRegistry.BOTTLE);
         OreDictionary.registerOre("toolMortarandpestle", CuisineRegistry.ITEM_MORTAR);
         OreDictionary.registerOre("toolSkillet", CuisineRegistry.WOK);
@@ -130,7 +135,6 @@ public class OreDictHandler
 
         // The wood handle
         OreDictionary.registerOre("handleWood", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.WOODEN_HANDLE));
-        OreDictionary.registerOre("stickWood", CuisineRegistry.BAMBOO);
 
         CuisineRegistry.BASIC_FOOD.getVariants().forEach(ActionFactory.create(CuisineRegistry.BASIC_FOOD));
         CuisineRegistry.CROPS.getVariants().forEach(ActionFactory.create(CuisineRegistry.CROPS));

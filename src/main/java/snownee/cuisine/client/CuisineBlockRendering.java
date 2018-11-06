@@ -45,7 +45,7 @@ public final class CuisineBlockRendering
         BlockColors blockColors = event.getBlockColors();
         blockColors.registerBlockColorHandler((
                 state, blockAccess, pos, tintIndex
-        ) -> blockAccess != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(blockAccess, pos) : ColorizerFoliage.getFoliageColorBasic(), CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO);
+        ) -> blockAccess != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(blockAccess, pos) : ColorizerFoliage.getFoliageColorBasic(), CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO, CuisineRegistry.LEAVES_CITRON, CuisineRegistry.LEAVES_GRAPEFRUIT, CuisineRegistry.LEAVES_LEMON, CuisineRegistry.LEAVES_LIME, CuisineRegistry.LEAVES_MANDARIN, CuisineRegistry.LEAVES_MANDARIN, CuisineRegistry.LEAVES_ORANGE, CuisineRegistry.LEAVES_POMELO, CuisineRegistry.SHEARED_LEAVES);
     }
 
     @SubscribeEvent

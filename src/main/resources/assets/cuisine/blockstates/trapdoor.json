@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "trapdoor_bottom",
+    "textures": {
+      "texture": "cuisine:block/trapdoor"
+    }
+  },
+  "variants": {
+    "half": {
+      "top": { "model": "trapdoor_top" },
+      "bottom": {}
+    },
+    "open": {
+      "true": { "model": "trapdoor_open" },
+      "false": {}
+    },
+    "facing": {
+      "north": {},
+      "south": { "y": 180 },
+      "east": { "y": 90 },
+      "west": { "y": 270 }
+    },
+    "inventory": [{}]
+  }
+}

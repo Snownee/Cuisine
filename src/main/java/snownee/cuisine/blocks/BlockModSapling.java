@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -49,6 +50,7 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
         this.setCreativeTab(Cuisine.CREATIVE_TAB);
         this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, Type.POMELO).withProperty(BlockSapling.STAGE, 0));
         this.setTickRandomly(true);
+        setSoundType(SoundType.PLANT);
     }
 
     @Override
@@ -167,35 +169,31 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
             // Determine the wood type
             IBlockState wood = CuisineRegistry.LOG.getDefaultState();
 
+            IBlockState leaves;
             switch (state.getValue(VARIANT))
             {
-                case POMELO:
-                case LIME:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.POMELO);
-                    break;
-                }
-                case CITRON:
-                case LEMON:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.CITRON);
-                    break;
-                }
-                case MANDARIN:
-                case ORANGE:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.MANDARIN);
-                    break;
-                }
-                case GRAPEFRUIT:
-                {
-                    wood = wood.withProperty(BlockModLog.VARIANT, BlockModLog.Type.GRAPEFRUIT);
-                    break;
-                }
+            case CITRON:
+                leaves = CuisineRegistry.LEAVES_CITRON.getDefaultState();
+                break;
+            case GRAPEFRUIT:
+                leaves = CuisineRegistry.LEAVES_GRAPEFRUIT.getDefaultState();
+                break;
+            case LEMON:
+                leaves = CuisineRegistry.LEAVES_LEMON.getDefaultState();
+                break;
+            case LIME:
+                leaves = CuisineRegistry.LEAVES_LIME.getDefaultState();
+                break;
+            case MANDARIN:
+                leaves = CuisineRegistry.LEAVES_MANDARIN.getDefaultState();
+                break;
+            case ORANGE:
+                leaves = CuisineRegistry.LEAVES_ORANGE.getDefaultState();
+                break;
+            default:
+                leaves = CuisineRegistry.LEAVES_POMELO.getDefaultState();
+                break;
             }
-
-            // TODO (3TUSK): determine the leaf type. Where is my leaf block? Use oak leaves for now.
-            IBlockState leave = Blocks.LEAVES.getDefaultState();
 
             /*
              * Set the tree sapling block to air, so that the tree generator can properly set
@@ -212,7 +210,7 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
 
             // And if the tree generation fails, we need to roll back to the sapling block.
-            if (!new WorldFeatureCitrusGenusTree(true, wood, leave).generate(world, rand, pos))
+            if (!new WorldFeatureCitrusGenusTree(true, wood, leaves).generate(world, rand, pos))
             {
                 world.setBlockState(pos, state, 4);
             }
@@ -234,7 +232,14 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
     {
-        this.growIntoTree(worldIn, rand, pos, state);
+        if (state.getValue(BlockSapling.STAGE) == 0)
+        {
+            worldIn.setBlockState(pos, state.withProperty(BlockSapling.STAGE, 1));
+        }
+        else
+        {
+            this.growIntoTree(worldIn, rand, pos, state);
+        }
     }
 
     public enum Type implements IStringSerializable

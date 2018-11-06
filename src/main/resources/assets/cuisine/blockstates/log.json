@@ -1,20 +1,20 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube_column"
+    "model": "cube_column",
+    "textures": {
+      "end": "cuisine:block/log_top",
+      "side": "cuisine:block/log",
+      "all": "cuisine:block/log"
+    }
   },
   "variants": {
-    "variant": {
-      "pomelo":     { "textures": { "end": "cuisine:block/log_pomelo_top",     "side": "cuisine:block/log_pomelo",     "all": "cuisine:block/log_pomelo" }},
-      "citron":     { "textures": { "end": "cuisine:block/log_citron_top",     "side": "cuisine:block/log_citron",     "all": "cuisine:block/log_citron" }},
-      "mandarin":  { "textures": { "end": "cuisine:block/log_mandarin_top",   "side": "cuisine:block/log_mandarin",   "all": "cuisine:block/log_mandarin" }},
-      "grapefruit": { "textures": { "end": "cuisine:block/log_grapefruit_top", "side": "cuisine:block/log_grapefruit", "all": "cuisine:block/log_grapefruit" }}
-    },
     "axis": {
       "y":    {},
       "z":    { "x": 90 },
       "x":    { "x": 90, "y": 90 },
       "none": { "model": "cube_all" }
-    }
+    },
+    "inventory": [{}]
   }
 }

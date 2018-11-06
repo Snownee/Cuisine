@@ -2,6 +2,7 @@ package snownee.cuisine.client;
 
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.ColorizerFoliage;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -98,5 +99,9 @@ public final class CuisineItemRendering
             }
             return -1;
         }, CuisineRegistry.DRINK);
+
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
+            return tintIndex == 0 ? ColorizerFoliage.getFoliageColorBasic() : -1;
+        }, CuisineRegistry.SHEARED_LEAVES);
     }
 }

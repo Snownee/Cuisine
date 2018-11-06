@@ -1,0 +1,14 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cuisine:leaves_pomelo"
+  },
+  "variants": {
+    "age": {
+      "0": {},
+      "1": {},
+      "2": { "submodel": "cuisine:flowers", "textures": { "0": "cuisine:block/flowers_pomelo" } },
+      "3": {}
+    }
+  }
+}
