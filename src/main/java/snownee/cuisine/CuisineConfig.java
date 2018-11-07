@@ -44,7 +44,18 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean spawnBook = true;
 
-        @Config.Comment("Generation rate of bamboo; larger value means lower generation rate; set to 0 to completely disable.")
+        @Config.LangKey("cuisine.config.general.fruit_growing_speed")
+        @Config.Name("FruitGrowingSpeed")
+        @Config.RangeInt(min = 0, max = 100)
+        public int fruitGrowingSpeed = 20;
+
+        @Config.LangKey("cuisine.config.general.fruit_drops")
+        @Config.Name("FruitDrops")
+        public boolean fruitDrops = true;
+
+        @Config.Comment(
+            "Generation rate of bamboo; larger value means lower generation rate; set to 0 to completely disable."
+        )
         @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
         @Config.Name("BamboosGenRate")
         @Config.RangeInt(min = 0)
@@ -57,7 +68,9 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean bambooBlowpipe = false;
 
-        @Config.Comment("Generation rate of wild crops; larger value means lower generation rate; set to 0 to completely disable.")
+        @Config.Comment(
+            "Generation rate of wild crops; larger value means lower generation rate; set to 0 to completely disable."
+        )
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
         @Config.Name("CropsGenRate")
         @Config.RangeInt(min = 0)

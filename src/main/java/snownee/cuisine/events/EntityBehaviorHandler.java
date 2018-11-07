@@ -29,7 +29,7 @@ public final class EntityBehaviorHandler
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinWorldEvent event)
     {
-        if (event.getWorld().isRemote || event.isCanceled())
+        if (event.getWorld().isRemote)
         {
             return;
         }
@@ -69,10 +69,6 @@ public final class EntityBehaviorHandler
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onLivingDamage(LivingDamageEvent event)
     {
-        if (event.isCanceled())
-        {
-            return;
-        }
         DamageSource source = event.getSource();
         Entity entity = source.getTrueSource();
         if (!source.isProjectile() && !source.isMagicDamage() && entity instanceof EntityLivingBase)

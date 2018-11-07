@@ -13,6 +13,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,12 +30,14 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockModSapling.Type;
 import snownee.cuisine.items.ItemBasicFood;
@@ -42,6 +45,7 @@ import snownee.cuisine.items.ItemBasicFood.Variants.SubItem;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.util.VariantsHolder.Variant;
 
+@EventBusSubscriber(modid = Cuisine.MODID)
 public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
 {
 
@@ -136,6 +140,10 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
+        if (!CuisineConfig.GENERAL.fruitDrops && state.getValue(AGE) == 3)
+        {
+            return false;
+        }
         return state.getValue(AGE) > 0;
     }
 
@@ -422,7 +430,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                     worldIn.setBlockToAir(pos);
                 }
             }
-            else if (canGrow(worldIn, pos, state, false))
+            else if (canGrow(worldIn, pos, state, false) && worldIn.isAreaLoaded(pos, 1) && worldIn.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(100) > 99 - CuisineConfig.GENERAL.fruitGrowingSpeed)
             {
                 grow(worldIn, rand, pos, state);
             }
@@ -443,7 +451,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
     {
         super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
-        if (fallDistance >= 1)
+        if (fallDistance >= 1 && entityIn instanceof EntityLivingBase)
         {
             for (BlockPos pos2 : BlockPos.getAllInBoxMutable(pos.getX() - 1, Math.max(0, pos.getY() - 2), pos.getZ() - 1, pos.getX() + 1, pos.getY(), pos.getZ() + 1))
             {
