@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:fence_gate"
+  },
+  "pattern": [
+    "|*|",
+    "|*|"
+  ],
+  "key": {
+    "*": {
+      "item": "cuisine:planks"
+    },
+    "|": {
+      "ore" : "stickWood",
+      "type": "forge:ore_dict"
+    }
+  }
+}

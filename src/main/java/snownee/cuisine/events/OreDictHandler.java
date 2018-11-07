@@ -120,6 +120,8 @@ public class OreDictHandler
         OreDictionary.registerOre("plankWood", CuisineRegistry.PLANKS);
         OreDictionary.registerOre("stickWood", CuisineRegistry.BAMBOO);
         OreDictionary.registerOre("doorWood", CuisineRegistry.ITEM_DOOR);
+        OreDictionary.registerOre("fenceWood", CuisineRegistry.FENCE);
+        OreDictionary.registerOre("fenceGateWood", CuisineRegistry.FENCE_GATE);
         OreDictionary.registerOre("treeSapling", new ItemStack(CuisineRegistry.SAPLING, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("treeLeaves", new ItemStack(CuisineRegistry.SHEARED_LEAVES, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("foodDrink", CuisineRegistry.BOTTLE);

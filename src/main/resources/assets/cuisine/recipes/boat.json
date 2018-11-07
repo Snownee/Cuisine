@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:boat"
+  },
+  "pattern": [
+    "* *",
+    "***"
+  ],
+  "key": {
+    "*": {
+      "item": "cuisine:planks"
+    }
+  }
+}

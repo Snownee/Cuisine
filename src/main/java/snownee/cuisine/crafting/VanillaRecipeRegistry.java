@@ -76,7 +76,7 @@ public final class VanillaRecipeRegistry
         }
         else if (stack.getItem() == CuisineRegistry.MATERIAL && stack.getItemDamage() == Cuisine.Materials.WOODEN_HANDLE.getMeta())
         {
-            event.setBurnTime(200);
+            event.setBurnTime(100);
         }
         else if (stack.getItem() == CuisineRegistry.MATERIAL && stack.getItemDamage() == Cuisine.Materials.BAMBOO_CHARCOAL.getMeta())
         {

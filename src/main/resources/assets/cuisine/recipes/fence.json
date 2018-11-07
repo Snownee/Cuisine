@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:fence",
+    "count": 3
+  },
+  "pattern": [
+    "*|*",
+    "*|*"
+  ],
+  "key": {
+    "*": {
+      "item": "cuisine:planks"
+    },
+    "|": {
+      "ore" : "stickWood",
+      "type": "forge:ore_dict"
+    }
+  }
+}

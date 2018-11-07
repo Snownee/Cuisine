@@ -41,6 +41,7 @@ public class RecipeRegistry
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG, 3), new ItemStack(Blocks.PLANKS, 6, 3)));
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG2), new ItemStack(Blocks.PLANKS, 6, 4)));
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG2, 1), new ItemStack(Blocks.PLANKS, 6, 5)));
+            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(CuisineRegistry.LOG), new ItemStack(CuisineRegistry.PLANKS, 6)));
         }
     }
 
