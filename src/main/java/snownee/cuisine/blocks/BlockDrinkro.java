@@ -60,7 +60,6 @@ public class BlockDrinkro extends BlockModHorizontal
     {
         super(name, Material.IRON);
         setCreativeTab(Cuisine.CREATIVE_TAB);
-        setHardness(2);
         setDefaultState(blockState.getBaseState().withProperty(NORMAL, true).withProperty(BASE, true).withProperty(WORKING, false));
     }
 

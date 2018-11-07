@@ -40,7 +40,6 @@ public class BlockPlacedDish extends BlockMod
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setResistance(5.0F);
         setDefaultState(this.blockState.getBaseState().withProperty(MODEL, ModelType.EMPTY));
-        setHardness(0.5F);
     }
 
     @Override

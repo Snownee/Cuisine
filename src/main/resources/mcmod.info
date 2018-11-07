@@ -12,7 +12,7 @@
   "logoFile": "",
   "screenshots": [],
   "useDependencyInformation": true,
-  "requiredMods": ["kiwi@[0.2.3,)", "forge@[14.23.5.2772,)"],
-  "dependencies": ["forge@[14.23.5.2772,)", "jei@[4.12,)", "kiwi@[0.2.3,)"]
+  "requiredMods": ["kiwi@[0.3, 0.4)", "forge@[14.23.5.2772,)"],
+  "dependencies": ["forge@[14.23.5.2772,)", "jei@[4.12,)", "kiwi@[0.3, 0.4)"]
 }
 ]

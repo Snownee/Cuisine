@@ -65,7 +65,6 @@ public class BlockCuisineCrops extends BlockMod implements IGrowable, IPlantable
         this.setDefaultState(this.blockState.getBaseState().withProperty(getAgeProperty(), 0));
         this.setCreativeTab(Cuisine.CREATIVE_TAB);
         this.setTickRandomly(true);
-        this.setHardness(0.0F);
         this.disableStats();
         this.plantType = plantType;
         this.crop = crop;

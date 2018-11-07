@@ -48,7 +48,6 @@ public class BlockBasin extends BlockMod
     public BlockBasin(String name, Material materialIn)
     {
         super(name, materialIn);
-        setHardness(2.0F);
         setCreativeTab(Cuisine.CREATIVE_TAB);
     }
 

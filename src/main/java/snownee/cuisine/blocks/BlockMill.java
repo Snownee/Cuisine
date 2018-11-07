@@ -35,8 +35,6 @@ public class BlockMill extends BlockModHorizontal
     {
         super(name, Material.ROCK);
         setCreativeTab(Cuisine.CREATIVE_TAB);
-        setHardness(2.0F);
-        setResistance(10.0F);
     }
 
     @Override

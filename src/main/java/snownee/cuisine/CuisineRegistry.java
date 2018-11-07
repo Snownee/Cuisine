@@ -168,7 +168,7 @@ public class CuisineRegistry implements IModule
     {
         Item.getItemFromBlock(PLACED_DISH).setContainerItem(Item.getItemFromBlock(PLACED_DISH));
         WOK.setCreativeTab(Cuisine.CREATIVE_TAB).setContainerItem(WOK);
-        PLANKS.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(2.0F).setResistance(5.0F);
+        PLANKS.setCreativeTab(Cuisine.CREATIVE_TAB);
         TRAPDOOR.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(3.0F);
         FENCE.setCreativeTab(Cuisine.CREATIVE_TAB);
         FENCE_GATE.setCreativeTab(Cuisine.CREATIVE_TAB);

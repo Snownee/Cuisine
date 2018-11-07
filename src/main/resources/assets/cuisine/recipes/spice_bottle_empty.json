@@ -1,3 +1,16 @@
 {
-  "type": "cuisine:spice_bottle_empty"
+  "type": "kiwi:no_containers",
+  "result": {
+    "item": "cuisine:spice_bottle",
+    "data": 0
+  },
+  "pattern": [
+    "*"
+  ],
+  "key": {
+    "*": {
+      "item": "cuisine:spice_bottle",
+      "data": 32767
+    }
+  }
 }

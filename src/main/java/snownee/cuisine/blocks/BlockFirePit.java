@@ -65,8 +65,6 @@ public class BlockFirePit extends BlockModHorizontal
         super(name, Material.ROCK);
         setDefaultState(this.blockState.getBaseState().withProperty(BlockHorizontal.FACING, EnumFacing.NORTH).withProperty(COMPONENT, Component.NONE));
         setCreativeTab(Cuisine.CREATIVE_TAB);
-        setHardness(5.0F);
-        setResistance(10.0F);
         setLightLevel(0.9375F);
     }
 

@@ -67,7 +67,6 @@ public class BlockChoppingBoard extends BlockMod
     {
         super(name, Material.WOOD);
         setCreativeTab(Cuisine.CREATIVE_TAB);
-        setHardness(1.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(HAS_KITCHEN_KNIFE, Boolean.FALSE).withProperty(BlockHorizontal.FACING, EnumFacing.NORTH));
     }
 
