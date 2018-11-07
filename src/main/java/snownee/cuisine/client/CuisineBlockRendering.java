@@ -1,5 +1,6 @@
 package snownee.cuisine.client;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.biome.BiomeColorHelper;
@@ -43,9 +44,45 @@ public final class CuisineBlockRendering
     public static void onBlockColorsInit(ColorHandlerEvent.Block event)
     {
         BlockColors blockColors = event.getBlockColors();
-        blockColors.registerBlockColorHandler((
-                state, blockAccess, pos, tintIndex
-        ) -> blockAccess != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(blockAccess, pos) : ColorizerFoliage.getFoliageColorBasic(), CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO, CuisineRegistry.LEAVES_CITRON, CuisineRegistry.LEAVES_GRAPEFRUIT, CuisineRegistry.LEAVES_LEMON, CuisineRegistry.LEAVES_LIME, CuisineRegistry.LEAVES_MANDARIN, CuisineRegistry.LEAVES_MANDARIN, CuisineRegistry.LEAVES_ORANGE, CuisineRegistry.LEAVES_POMELO, CuisineRegistry.SHEARED_LEAVES);
+        blockColors.registerBlockColorHandler((state, blockAccess, pos, tintIndex) -> {
+            if (tintIndex == 0)
+            {
+                return blockAccess != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(blockAccess, pos) : ColorizerFoliage.getFoliageColorBasic();
+            }
+            if (tintIndex == 1)
+            {
+                Block block = state.getBlock();
+                if (block == CuisineRegistry.LEAVES_CITRON)
+                {
+                    return 0xDDCC58;
+                }
+                if (block == CuisineRegistry.LEAVES_GRAPEFRUIT)
+                {
+                    return 0xF4502B;
+                }
+                if (block == CuisineRegistry.LEAVES_LEMON)
+                {
+                    return 0xEBCA4B;
+                }
+                if (block == CuisineRegistry.LEAVES_LIME)
+                {
+                    return 0xCADA76;
+                }
+                if (block == CuisineRegistry.LEAVES_MANDARIN)
+                {
+                    return 0xF08A19;
+                }
+                if (block == CuisineRegistry.LEAVES_ORANGE)
+                {
+                    return 0xF08A19;
+                }
+                if (block == CuisineRegistry.LEAVES_POMELO)
+                {
+                    return 0xF7F67E;
+                }
+            }
+            return -1;
+        }, CuisineRegistry.BAMBOO_PLANT, CuisineRegistry.BAMBOO, CuisineRegistry.LEAVES_CITRON, CuisineRegistry.LEAVES_GRAPEFRUIT, CuisineRegistry.LEAVES_LEMON, CuisineRegistry.LEAVES_LIME, CuisineRegistry.LEAVES_MANDARIN, CuisineRegistry.LEAVES_MANDARIN, CuisineRegistry.LEAVES_ORANGE, CuisineRegistry.LEAVES_POMELO, CuisineRegistry.SHEARED_LEAVES);
     }
 
     @SubscribeEvent

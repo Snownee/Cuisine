@@ -3,6 +3,7 @@ package snownee.cuisine.blocks;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -24,7 +26,7 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.kiwi.block.BlockMod;
 
-public class BlockShearedLeaves extends BlockMod implements IShearable
+public class BlockShearedLeaves extends BlockMod implements IShearable, IGrowable
 {
     public static final PropertyBool FLOWER = PropertyBool.create("flower");
 
@@ -84,6 +86,20 @@ public class BlockShearedLeaves extends BlockMod implements IShearable
     public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT_MIPPED;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    {
+        if (worldIn.isRainingAt(pos.up()) && !worldIn.getBlockState(pos.down()).isTopSolid() && rand.nextInt(15) == 1)
+        {
+            double d0 = pos.getX() + rand.nextFloat();
+            double d1 = pos.getY() - 0.05D;
+            double d2 = pos.getZ() + rand.nextFloat();
+            worldIn.spawnParticle(EnumParticleTypes.DRIP_WATER, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+        }
     }
 
     @Override
@@ -148,5 +164,29 @@ public class BlockShearedLeaves extends BlockMod implements IShearable
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
         return true;
+    }
+
+    @Override
+    public boolean causesSuffocation(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
+    {
+        return !state.getValue(FLOWER);
+    }
+
+    @Override
+    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state)
+    {
+        worldIn.setBlockState(pos, state.withProperty(FLOWER, true));
     }
 }

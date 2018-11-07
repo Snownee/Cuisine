@@ -8,7 +8,7 @@
       "0": {},
       "1": {},
       "2": { "submodel": "cuisine:flowers", "textures": { "0": "cuisine:block/flowers_orange" } },
-      "3": {}
+      "3": { "submodel": "cuisine:fruit_md" }
     }
   }
 }

@@ -1,0 +1,32 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "cuisine:block/fruit"
+	},
+	"elements": [
+		{
+			"from": [10, 6, 9],
+			"to": [14, 10, 13],
+			"faces": {
+				"north": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"east": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"south": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"west": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"up": {"uv": [12, 0, 16, 4], "texture": "#0", "tintindex": 1},
+				"down": {"uv": [12, 5, 16, 9], "texture": "#0", "tintindex": 1}
+			}
+		},
+		{
+			"from": [3, 3, 3],
+			"to": [7, 7, 7],
+			"faces": {
+				"north": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"east": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"south": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"west": {"uv": [12, 10, 16, 14], "texture": "#0", "tintindex": 1},
+				"up": {"uv": [12, 0, 16, 4], "texture": "#0", "tintindex": 1},
+				"down": {"uv": [12, 5, 16, 9], "texture": "#0", "tintindex": 1}
+			}
+		}
+	]
+}
