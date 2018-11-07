@@ -1,7 +1,6 @@
 package snownee.cuisine.blocks;
 
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
@@ -36,7 +35,6 @@ public class BlockMill extends BlockModHorizontal
     {
         super(name, Material.ROCK);
         setCreativeTab(Cuisine.CREATIVE_TAB);
-        setSoundType(SoundType.STONE);
         setHardness(2.0F);
         setResistance(10.0F);
     }

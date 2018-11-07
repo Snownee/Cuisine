@@ -3,7 +3,6 @@ package snownee.cuisine.blocks;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -35,7 +34,6 @@ public class BlockShearedLeaves extends BlockMod implements IShearable
         this.setCreativeTab(Cuisine.CREATIVE_TAB);
         this.setHardness(0.2F);
         this.setLightOpacity(1);
-        this.setSoundType(SoundType.PLANT);
         setDefaultState(blockState.getBaseState().withProperty(FLOWER, false).withProperty(BlockModSapling.VARIANT, BlockModSapling.Type.POMELO));
     }
 

@@ -5,7 +5,6 @@ import java.util.Random;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
@@ -47,7 +46,6 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         this.setCreativeTab(Cuisine.CREATIVE_TAB);
         this.setHardness(0.2F);
         this.setLightOpacity(1);
-        this.setSoundType(SoundType.PLANT);
         setDefaultState(blockState.getBaseState().withProperty(CORE, false).withProperty(AGE, 1).withProperty(BlockLeaves.DECAYABLE, false));
         this.fruit = fruit;
     }

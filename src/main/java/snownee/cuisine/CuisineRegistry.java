@@ -42,6 +42,8 @@ import snownee.cuisine.potions.PotionDispersal;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.block.BlockMod;
+import snownee.kiwi.block.BlockModFence;
+import snownee.kiwi.block.BlockModFenceGate;
 import snownee.kiwi.item.ItemMod;
 import snownee.kiwi.item.ItemModVariants;
 import snownee.kiwi.potion.PotionMod;
@@ -123,6 +125,9 @@ public class CuisineRegistry implements IModule
     public static final BlockModDoor DOOR = new BlockModDoor("door", Material.WOOD);
     public static final ItemModDoor ITEM_DOOR = new ItemModDoor(DOOR);
 
+    public static final BlockModFence FENCE = new BlockModFence("fence", PLANKS.getDefaultState());
+    public static final BlockModFenceGate FENCE_GATE = new BlockModFenceGate("fence_gate", PLANKS.getDefaultState());
+
     public static final ItemIronSpatula IRON_SPATULA = new ItemIronSpatula("iron_spatula");
 
     public static final ItemDish DISH = new ItemDish("dish");
@@ -160,7 +165,9 @@ public class CuisineRegistry implements IModule
     {
         WOK.setContainerItem(WOK);
         Item.getItemFromBlock(PLACED_DISH).setContainerItem(Item.getItemFromBlock(PLACED_DISH));
-        PLANKS.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(2.0F).setResistance(5.0F); //TODO: Sound???
+        PLANKS.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(2.0F).setResistance(5.0F);
         TRAPDOOR.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(3.0F);
+        FENCE.setCreativeTab(Cuisine.CREATIVE_TAB);
+        FENCE_GATE.setCreativeTab(Cuisine.CREATIVE_TAB);
     }
 }

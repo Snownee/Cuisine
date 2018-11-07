@@ -22,12 +22,11 @@ public class BlockTofu extends BlockMod
 
     public BlockTofu(String name)
     {
-        super(name, Material.CLAY);
+        super(name, Material.CLAY, SoundType.SLIME);
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setDefaultSlipperiness(0.5F);
         setHardness(0.2F);
         disableStats();
-        setSoundType(SoundType.SLIME);
     }
 
     @Override

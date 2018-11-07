@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Lists;
 
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
@@ -69,7 +68,6 @@ public class BlockFirePit extends BlockModHorizontal
         setHardness(5.0F);
         setResistance(10.0F);
         setLightLevel(0.9375F);
-        setSoundType(SoundType.STONE);
     }
 
     @Override

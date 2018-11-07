@@ -5,7 +5,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
@@ -44,7 +43,6 @@ public class BlockMortar extends BlockModHorizontal
         super(name, Material.ROCK);
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHardness(1.0F);
-        setSoundType(SoundType.STONE);
         setDefaultState(super.getDefaultState().withProperty(PESTLE_DOWN, Boolean.FALSE));
     }
 
