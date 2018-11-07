@@ -232,4 +232,10 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         return true;
     }
 
+    @Override
+    protected ItemStack getSilkTouchDrop(IBlockState state)
+    {
+        return getItemInternal(state);
+    }
+
 }

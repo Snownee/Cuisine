@@ -19,5 +19,6 @@ public class EntityRegistry
         {
             event.getRegistry().register(EntityEntryBuilder.create().entity(EntitySeed.class).id(new ResourceLocation(Cuisine.MODID, "seed"), 0).name(Cuisine.MODID + ".seed").tracker(160, 20, true).build());
         }
+        event.getRegistry().register(EntityEntryBuilder.create().entity(EntityModBoat.class).id(new ResourceLocation(Cuisine.MODID, "boat"), 1).name(Cuisine.MODID + ".boat").tracker(80, 3, true).build());
     }
 }

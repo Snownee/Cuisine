@@ -35,6 +35,7 @@ import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.items.ItemIronSpatula;
 import snownee.cuisine.items.ItemKitchenKnife;
 import snownee.cuisine.items.ItemManual;
+import snownee.cuisine.items.ItemModBoat;
 import snownee.cuisine.items.ItemModDoor;
 import snownee.cuisine.items.ItemMortar;
 import snownee.cuisine.items.ItemSpiceBottle;
@@ -144,9 +145,11 @@ public class CuisineRegistry implements IModule
 
     public static final ItemSpiceBottle SPICE_BOTTLE = new ItemSpiceBottle("spice_bottle");
 
-    public static final Item WOK = new ItemMod("wok").setCreativeTab(Cuisine.CREATIVE_TAB);
+    public static final ItemMod WOK = new ItemMod("wok");
 
     public static final ItemManual MANUAL = new ItemManual("manual");
+
+    public static final ItemModBoat BOAT = new ItemModBoat("boat");
 
     public static final ItemModVariants MATERIAL = (ItemModVariants) new ItemModVariants("material", Cuisine.Materials.INSTANCE).setCreativeTab(Cuisine.CREATIVE_TAB);
 
@@ -163,8 +166,8 @@ public class CuisineRegistry implements IModule
     @Override
     public void init()
     {
-        WOK.setContainerItem(WOK);
         Item.getItemFromBlock(PLACED_DISH).setContainerItem(Item.getItemFromBlock(PLACED_DISH));
+        WOK.setCreativeTab(Cuisine.CREATIVE_TAB).setContainerItem(WOK);
         PLANKS.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(2.0F).setResistance(5.0F);
         TRAPDOOR.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(3.0F);
         FENCE.setCreativeTab(Cuisine.CREATIVE_TAB);
