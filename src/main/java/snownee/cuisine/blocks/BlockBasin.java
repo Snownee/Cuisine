@@ -272,4 +272,10 @@ public class BlockBasin extends BlockMod
     {
         return side == EnumFacing.DOWN;
     }
+
+    @Override
+    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face)
+    {
+        return false;
+    }
 }

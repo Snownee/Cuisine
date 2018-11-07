@@ -4,6 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import snownee.cuisine.Cuisine;
 import snownee.kiwi.block.IModBlock;
 
@@ -53,6 +56,12 @@ public class BlockModLog extends BlockLog implements IModBlock
     public int getMetaFromState(IBlockState state)
     {
         return state.getValue(LOG_AXIS).ordinal();
+    }
+
+    @Override
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
+    {
+        return 5;
     }
 
 }

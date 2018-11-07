@@ -370,4 +370,10 @@ public class BlockCuisineCrops extends BlockMod implements IGrowable, IPlantable
     {
         return getSeed().getItemStack();
     }
+
+    @Override
+    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face)
+    {
+        return false;
+    }
 }
