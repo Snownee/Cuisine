@@ -14,8 +14,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -459,6 +461,50 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                 if (state.getBlock() instanceof BlockModLeaves && state.getValue(AGE) == 3)
                 {
                     ((BlockModLeaves) state.getBlock()).grow(worldIn, worldIn.rand, pos2, state);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+        if (!worldIn.isRemote && state.getBlock() == CuisineRegistry.LEAVES_CITRON && blockIn == Blocks.AIR && fromPos.equals(pos.up()) && worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE)
+        {
+            boolean flag = false;
+            for (Entity entity : worldIn.weatherEffects)
+            {
+                if (entity instanceof EntityLightningBolt && entity.getPosition().equals(fromPos))
+                {
+                    flag = true;
+                }
+            }
+            if (!flag)
+            {
+                return;
+            }
+            for (BlockPos pos2 : BlockPos.getAllInBoxMutable(pos.getX() - 3, pos.getY() - 3, pos.getZ() - 3, pos.getX() + 3, pos.getY() + 3, pos.getZ() + 3))
+            {
+                IBlockState state2 = worldIn.getBlockState(pos2);
+                if (state2.getBlock() == this && state2.getValue(AGE) == 3)
+                {
+                    worldIn.setBlockState(pos2, state2.withProperty(AGE, 1));
+                    if (worldIn.getGameRules().getBoolean("doTileDrops") && !worldIn.restoringBlockSnapshots) // do not drop items while restoring blockstates, prevents item dupe
+                    {
+                        ItemStack stack = CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.EMPOWERED_CITRON);
+                        if (captureDrops.get())
+                        {
+                            capturedDrops.get().add(stack);
+                            continue;
+                        }
+                        double d0 = worldIn.rand.nextFloat() * 0.5F + 0.25D;
+                        double d1 = worldIn.rand.nextFloat() * 0.5F + 0.25D;
+                        double d2 = worldIn.rand.nextFloat() * 0.5F + 0.25D;
+                        EntityItem entityitem = new EntityItem(worldIn, pos2.getX() + d0, pos2.getY() + d1, pos2.getZ() + d2, stack);
+                        entityitem.setDefaultPickupDelay();
+                        entityitem.setEntityInvulnerable(true);
+                        worldIn.spawnEntity(entityitem);
+                    }
                 }
             }
         }
