@@ -13,6 +13,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.BlockCuisineCrops;
+import snownee.cuisine.blocks.BlockModLeaves;
 
 @SuppressWarnings("deprecation")
 public class CuisineCropProvider implements IProbeInfoProvider
@@ -42,6 +43,13 @@ public class CuisineCropProvider implements IProbeInfoProvider
                 {
                     probeInfo.text(TextStyleClass.LABEL + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.grown", TextStyleClass.WARNING + "" + (age * 100) / maxAge));
                 }
+            }
+        }
+        else if (blockState.getBlock() instanceof BlockModLeaves)
+        {
+            if (Tools.show(mode, Config.getRealConfig().getShowCropPercentage()))
+            {
+                probeInfo.text(I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.leaves." + blockState.getValue(BlockModLeaves.AGE)));
             }
         }
     }

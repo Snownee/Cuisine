@@ -383,6 +383,10 @@ cuisine.config.progression.axe_chopping.tooltip=启用后，砧板可用于处�
 
 cuisine.gui.fully_grown=成熟
 cuisine.gui.grown=生长进度：%d%%
+cuisine.gui.leaves.0=无法生长
+cuisine.gui.leaves.1=初长
+cuisine.gui.leaves.2=开花
+cuisine.gui.leaves.3=结果
 cuisine.gui.temperature=温度：%d
 cuisine.gui.water_amount=水含量：%d
 cuisine.gui.oil_amount=油含量：%d
