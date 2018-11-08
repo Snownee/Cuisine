@@ -23,6 +23,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -36,6 +37,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.process.Processing;
+import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.tiles.TileBasin;
 import snownee.cuisine.tiles.TileBasinHeatable;
 import snownee.cuisine.util.StacksUtil;
@@ -74,6 +76,10 @@ public class BlockBasin extends BlockMod
                 if (input.getItem() == Item.getItemFromBlock(Blocks.CACTUS))
                 {
                     entityIn.attackEntityFrom(DamageSource.CACTUS, 1);
+                }
+                else if (worldIn.isRemote && input.getItem() == CuisineRegistry.BASIC_FOOD && input.getMetadata() == ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta() && entityIn instanceof EntityPlayer && tileBasin.tank.getFluidAmount() == 0)
+                {
+                    entityIn.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.squeeze_0"));
                 }
                 tileBasin.process(Processing.SQUEEZING, input);
                 if (entityIn instanceof EntityIronGolem)

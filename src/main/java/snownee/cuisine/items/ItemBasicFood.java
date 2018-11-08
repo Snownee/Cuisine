@@ -5,12 +5,15 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextComponentTranslation;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.kiwi.client.ModelUtil;
@@ -25,7 +28,7 @@ public class ItemBasicFood extends ItemFood implements IModItem
 
     public ItemBasicFood(String name)
     {
-        super(1, false); // TODO: new wolf food class
+        super(1, false);
         this.name = name;
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHasSubtypes(true);
@@ -112,6 +115,40 @@ public class ItemBasicFood extends ItemFood implements IModItem
     public boolean hasEffect(ItemStack stack)
     {
         return this == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta();
+    }
+
+    @Override
+    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+    {
+        if (this == CuisineRegistry.BASIC_FOOD && item.getMetadata() == Variants.EMPOWERED_CITRON.getMeta())
+        {
+            if (player.world.rand.nextInt(4) == 0)
+            {
+                player.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.drop_0"));
+            }
+            else
+            {
+                if (player.world.rand.nextBoolean())
+                {
+                    player.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.drop_1"));
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
+    {
+        if (this == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta())
+        {
+            if (attacker.world.rand.nextInt(5) == 0)
+            {
+                attacker.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.hit"));
+            }
+        }
+        return false;
     }
 
     public static class Variants extends VariantsHolder<Variants.SubItem>
