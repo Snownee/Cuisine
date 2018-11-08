@@ -1,7 +1,5 @@
 package snownee.cuisine.crafting;
 
-import java.util.Map;
-
 import org.apache.commons.lang3.Validate;
 
 import net.minecraft.init.Items;
@@ -25,9 +23,6 @@ import snownee.cuisine.library.DummyVanillaRecipe;
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
 public final class VanillaRecipeRegistry
 {
-    private static Map<ItemStack, ItemStack> smeltingList = null;
-    private static Map<ItemStack, Float> experienceList;
-
     // Yes, we understand that this is a huge hack, but there is no way around unless we can also kill advancements.
     @SubscribeEvent
     public static void onVanillaRecipeRegistry(final RegistryEvent.Register<IRecipe> event)
@@ -83,11 +78,5 @@ public final class VanillaRecipeRegistry
         {
             event.setBurnTime(1200);
         }
-    }
-
-    public static void removeFurnaceRecipe(ItemStack input)
-    {
-        smeltingList.remove(input);
-        experienceList.remove(input);
     }
 }
