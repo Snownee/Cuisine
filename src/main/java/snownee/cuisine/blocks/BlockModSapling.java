@@ -166,35 +166,6 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
     {
         if (TerrainGen.saplingGrowTree(world, rand, pos))
         {
-            // Determine the wood type
-            IBlockState wood = CuisineRegistry.LOG.getDefaultState();
-
-            IBlockState leaves;
-            switch (state.getValue(VARIANT))
-            {
-            case CITRON:
-                leaves = CuisineRegistry.LEAVES_CITRON.getDefaultState();
-                break;
-            case GRAPEFRUIT:
-                leaves = CuisineRegistry.LEAVES_GRAPEFRUIT.getDefaultState();
-                break;
-            case LEMON:
-                leaves = CuisineRegistry.LEAVES_LEMON.getDefaultState();
-                break;
-            case LIME:
-                leaves = CuisineRegistry.LEAVES_LIME.getDefaultState();
-                break;
-            case MANDARIN:
-                leaves = CuisineRegistry.LEAVES_MANDARIN.getDefaultState();
-                break;
-            case ORANGE:
-                leaves = CuisineRegistry.LEAVES_ORANGE.getDefaultState();
-                break;
-            default:
-                leaves = CuisineRegistry.LEAVES_POMELO.getDefaultState();
-                break;
-            }
-
             /*
              * Set the tree sapling block to air, so that the tree generator can properly set
              * that spot to wood log.
@@ -210,7 +181,7 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
 
             // And if the tree generation fails, we need to roll back to the sapling block.
-            if (!new WorldFeatureCitrusGenusTree(true, wood, leaves).generate(world, rand, pos))
+            if (!new WorldFeatureCitrusGenusTree(true, state.getValue(VARIANT)).generate(world, rand, pos))
             {
                 world.setBlockState(pos, state, 4);
             }
