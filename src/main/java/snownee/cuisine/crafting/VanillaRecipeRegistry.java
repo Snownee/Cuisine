@@ -64,6 +64,7 @@ public final class VanillaRecipeRegistry
         GameRegistry.addSmelting(CuisineRegistry.KITCHEN_KNIFE, new ItemStack(Items.IRON_INGOT), 0.1F);
         GameRegistry.addSmelting(CuisineRegistry.WOK, new ItemStack(Items.IRON_INGOT, 3), 0.1F);
         GameRegistry.addSmelting(CuisineRegistry.BAMBOO, CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.BAMBOO_CHARCOAL), 0.1F);
+        GameRegistry.addSmelting(CuisineRegistry.LOG, new ItemStack(Items.COAL, 1, 1), 0.15F);
     }
 
     @SubscribeEvent
