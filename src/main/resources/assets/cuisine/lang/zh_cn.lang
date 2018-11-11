@@ -405,6 +405,9 @@ cuisine.gui.jei.title.basin_squeezing=盆 - 压榨
 cuisine.gui.jei.title.basin_throwing=盆 - 投入物品
 cuisine.gui.jei.title.basin_boiling=盆 - 加热
 
+cuisine.manual.name=烹饪指南
+cuisine.manual.subtitle=成为大厨的全面指南书
+
 cuisine.skillpoint.expertise=技巧度
 cuisine.skillpoint.proficiency=熟练度
 cuisine.toast.skill.upgrade=烹饪等级提升！

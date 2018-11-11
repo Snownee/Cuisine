@@ -1,0 +1,11 @@
+{
+  "name": "Preface",
+  "icon": "minecraft:knowledge_book",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Cuisine is a Minecraft Mod about cuisine, and to a certain extent, gastronomy. In this mod, you can cook food in a realistic-esque manner. Think about how would you prepare food in your kitchen - this is what this Mod provides."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Wok",
+  "icon": "cuisine:wok",
+  "category": "utensil",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Wok is a universal, versatile cookware. With help of iron spatula, one can conduct many cooking techniques within a wok."
+    }
+  ]
+}

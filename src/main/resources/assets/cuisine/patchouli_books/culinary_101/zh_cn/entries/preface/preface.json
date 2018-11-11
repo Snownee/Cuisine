@@ -1,0 +1,11 @@
+{
+  "name": "序",
+  "icon": "minecraft:knowledge_book",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Cuisine 是一个关于烹饪及（在某种意义上）美食学的 Minecraft Mod。这个 Mod 实现了一套相对写实的烹饪玩法。想想看平时你在厨房是怎么做菜的——这就是这个 Mod 提供的内容了。"
+    }
+  ]
+}

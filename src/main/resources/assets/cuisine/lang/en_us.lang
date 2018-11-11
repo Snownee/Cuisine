@@ -405,6 +405,9 @@ cuisine.gui.jei.title.basin_squeezing=Basin - Squeezing
 cuisine.gui.jei.title.basin_throwing=Basin - Throwing
 cuisine.gui.jei.title.basin_boiling=Basin - Heating
 
+cuisine.manual.name=Culinary 101
+cuisine.manual.subtitle=The Comprehensive Guide to Mastering Culinary Art
+
 cuisine.skillpoint.expertise=Expertise
 cuisine.skillpoint.proficiency=Proficiency
 cuisine.toast.skill.upgrade=Culinary Level Up!
