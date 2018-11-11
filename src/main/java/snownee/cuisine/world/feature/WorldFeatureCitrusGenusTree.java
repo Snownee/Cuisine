@@ -1,7 +1,5 @@
 package snownee.cuisine.world.feature;
 
-import java.util.Random;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -13,6 +11,8 @@ import snownee.cuisine.blocks.BlockModLeaves;
 import snownee.cuisine.blocks.BlockModSapling;
 import snownee.cuisine.tiles.TileFruitTree;
 
+import java.util.Random;
+
 public class WorldFeatureCitrusGenusTree extends WorldGenAbstractTree
 {
     private final BlockModSapling.Type type;
@@ -20,9 +20,7 @@ public class WorldFeatureCitrusGenusTree extends WorldGenAbstractTree
     /**
      *
      * @param notifyUpdate true if setting new block will cause block update
-     * @param type 
-     * @param woodType The actual block state of block used for "tree body"
-     * @param leaveType The actual block state of block used for "tree leaves"
+     * @param type the leaf type token
      */
     public WorldFeatureCitrusGenusTree(boolean notifyUpdate, BlockModSapling.Type type)
     {
@@ -148,20 +146,20 @@ public class WorldFeatureCitrusGenusTree extends WorldGenAbstractTree
     {
         switch (type)
         {
-        case CITRON:
-            return CuisineRegistry.LEAVES_CITRON.getDefaultState();
-        case GRAPEFRUIT:
-            return CuisineRegistry.LEAVES_GRAPEFRUIT.getDefaultState();
-        case LEMON:
-            return CuisineRegistry.LEAVES_LEMON.getDefaultState();
-        case LIME:
-            return CuisineRegistry.LEAVES_LIME.getDefaultState();
-        case MANDARIN:
-            return CuisineRegistry.LEAVES_MANDARIN.getDefaultState();
-        case ORANGE:
-            return CuisineRegistry.LEAVES_ORANGE.getDefaultState();
-        default:
-            return CuisineRegistry.LEAVES_POMELO.getDefaultState();
+            case CITRON:
+                return CuisineRegistry.LEAVES_CITRON.getDefaultState();
+            case GRAPEFRUIT:
+                return CuisineRegistry.LEAVES_GRAPEFRUIT.getDefaultState();
+            case LEMON:
+                return CuisineRegistry.LEAVES_LEMON.getDefaultState();
+            case LIME:
+                return CuisineRegistry.LEAVES_LIME.getDefaultState();
+            case MANDARIN:
+                return CuisineRegistry.LEAVES_MANDARIN.getDefaultState();
+            case ORANGE:
+                return CuisineRegistry.LEAVES_ORANGE.getDefaultState();
+            default:
+                return CuisineRegistry.LEAVES_POMELO.getDefaultState();
         }
     }
 }
