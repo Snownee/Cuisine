@@ -11,6 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
 
@@ -121,7 +122,14 @@ public class TileDrinkroBase extends TileBase
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
-        return oldState.getBlock() != newState.getBlock() || oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        if (oldState.getBlock() != CuisineRegistry.DRINKRO || newState.getBlock() != CuisineRegistry.DRINKRO)
+        {
+            return true;
+        }
+        else
+        {
+            return oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        }
     }
 
     void refresh()

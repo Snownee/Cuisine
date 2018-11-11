@@ -356,7 +356,14 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
-        return oldState.getBlock() != newState.getBlock() || oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        if (oldState.getBlock() != CuisineRegistry.DRINKRO || newState.getBlock() != CuisineRegistry.DRINKRO)
+        {
+            return true;
+        }
+        else
+        {
+            return oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        }
     }
 
     public boolean isWorking()
