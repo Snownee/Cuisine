@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -48,7 +49,10 @@ public final class CulinarySkillCapability
         {
             if (event.getObject() instanceof EntityPlayer)
             {
-                event.addCapability(new ResourceLocation(Cuisine.MODID, "culinary_skill"), new DefaultProvider());
+                if (!(event.getObject() instanceof FakePlayer)) // Filter FakePlayer
+                {
+                    event.addCapability(new ResourceLocation(Cuisine.MODID, "culinary_skill"), new DefaultProvider());
+                }
             }
         }
 
