@@ -45,7 +45,7 @@ public final class CuisineFakePlayer
     private static WeakReference<FakePlayer> fakePlayerHolder = null;
 
     @Nonnull
-    public static FakePlayer instance(WorldServer world)
+    public static FakePlayer getInstance(WorldServer world)
     {
         FakePlayer instance;
         if (fakePlayerHolder == null || (instance = fakePlayerHolder.get()) == null)

@@ -37,7 +37,7 @@ public class BehaviorWokInteraction extends BehaviorDefaultDispenseItem
         IBlockState target = currentWorld.getBlockState(destination);
         if (currentWorld.getTileEntity(destination) instanceof TileWok)
         {
-            FakePlayer player = CuisineFakePlayer.instance((WorldServer) source.getWorld());
+            FakePlayer player = CuisineFakePlayer.getInstance((WorldServer) source.getWorld());
             player.setPosition(source.getX(), source.getY(), source.getZ());
             player.setHeldItem(EnumHand.MAIN_HAND, stack);
             PlayerInteractEvent.RightClickBlock evt = new PlayerInteractEvent.RightClickBlock(player, EnumHand.MAIN_HAND, destination, facing.getOpposite(), new Vec3d(destination.getX() + 0.5F, destination.getY() + 0.5F, destination.getZ() + 0.5F));

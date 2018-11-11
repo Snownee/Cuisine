@@ -38,7 +38,7 @@ public class BehaviourArmDispense extends BehaviorDefaultDispenseItem
             return stack;
         }
 
-        FakePlayer player = CuisineFakePlayer.instance((WorldServer) source.getWorld());
+        FakePlayer player = CuisineFakePlayer.getInstance((WorldServer) source.getWorld());
         player.setPosition(source.getX(), source.getY(), source.getZ());
         IBlockState target = currentWorld.getBlockState(destination);
         if (currentWorld.getTileEntity(destination) instanceof ILootContainer)
