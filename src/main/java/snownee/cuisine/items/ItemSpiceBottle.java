@@ -153,7 +153,7 @@ public class ItemSpiceBottle extends ItemMod
     }
 
     @Nullable
-    public SpiceItemHandler getItemHandler(ItemStack stack)
+    public static SpiceItemHandler getItemHandler(ItemStack stack)
     {
         if (!hasFluid(stack))
         {
@@ -163,7 +163,7 @@ public class ItemSpiceBottle extends ItemMod
     }
 
     @Nullable
-    public IFluidHandlerItem getFluidHandler(ItemStack stack)
+    public static IFluidHandlerItem getFluidHandler(ItemStack stack)
     {
         return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
     }
@@ -195,7 +195,7 @@ public class ItemSpiceBottle extends ItemMod
         return !hasFluid(stack) && !hasItem(stack);
     }
 
-    public boolean hasFluid(ItemStack stack)
+    public static boolean hasFluid(ItemStack stack)
     {
         if (!stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
         {
@@ -204,7 +204,7 @@ public class ItemSpiceBottle extends ItemMod
         return getFluidHandler(stack).drain(Integer.MAX_VALUE, false) != null;
     }
 
-    public boolean hasItem(ItemStack stack)
+    public static boolean hasItem(ItemStack stack)
     {
         return stack.getMetadata() == 1;
     }
@@ -229,6 +229,8 @@ public class ItemSpiceBottle extends ItemMod
                 int volume = ItemNBTUtil.getInt(stack, TAG_VOLUME, 0);
                 if (volume >= amount)
                 {
+                    // TODO (3TUSK): There is no need to do this.
+                    // TODO (3TUSK): change the impl of getDurabilityForDisplay and showDurabilityBar, so it strictly follows the quantity of seasonings
                     setDurability(stack, volume - amount);
                     return true;
                 }

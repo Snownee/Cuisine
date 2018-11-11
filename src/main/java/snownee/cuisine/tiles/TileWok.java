@@ -1,14 +1,7 @@
 package snownee.cuisine.tiles;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -46,6 +40,13 @@ import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.network.NetworkChannel;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 public class TileWok extends TileBase implements CookingVessel, ITickable
 {
 
@@ -72,15 +73,20 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     {
         if (!world.isRemote && status == Status.WORKING)
         {
-            if (temperature < 300 && this.world.rand.nextInt(5) == 0)
+            if (temperature < 300 && this.world.rand.nextInt(20) == 0)
             {
-                this.temperature += this.world.rand.nextInt(10);
+                this.temperature += this.world.rand.nextInt(5);
             }
             if (builder != null && this.world.getWorldTime() % 20 == 0)
             {
                 builder.apply(new Heating(this), this);
             }
         }
+
+        double pX = this.pos.getX() + 0.5 + (this.world.rand.nextDouble() - 1.0/2);
+        double pY = this.pos.getY() + 1.0 + (this.world.rand.nextDouble() - 1.0/2);
+        double pZ = this.pos.getZ() + 0.5 + (this.world.rand.nextDouble() - 1.0/2);
+        this.world.spawnParticle(EnumParticleTypes.FLAME, pX, pY, pZ, 0, 0, 0);
     }
 
     @Override
@@ -120,79 +126,87 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     {
         switch (status)
         {
-        case IDLE:
-        {
-            ItemStack heldThing = playerIn.getHeldItem(hand);
-            if (CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null || heldThing.getItem() instanceof ItemSpiceBottle)
+            case IDLE:
             {
-                this.builder = Dish.Builder.create();
-                this.temperature = 0;
-                boolean result = cook(playerIn, hand, heldThing, facing);
-                if (result)
+                ItemStack heldThing = playerIn.getHeldItem(hand);
+                if (CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null || heldThing.getItem() instanceof ItemSpiceBottle)
                 {
-                    this.status = Status.WORKING;
+                    this.builder = Dish.Builder.create();
+                    boolean result = addIngredientsOrSpices(playerIn, hand, heldThing, facing);
+                    if (result)
+                    {
+                        this.status = Status.WORKING;
+                    }
+                    else
+                    {
+                        builder = null;
+                    }
+                }
+                break;
+            }
+            case WORKING:
+                ItemStack heldThing = playerIn.getHeldItem(hand);
+                if (addIngredientsOrSpices(playerIn, hand, heldThing, facing))
+                {
+                    break;
+                }
+                else if (heldThing.getItem() == Item.getItemFromBlock(CuisineRegistry.PLACED_DISH) && !builder.getIngredients().isEmpty())
+                {
+                    Optional<Dish> result = builder.build(this, playerIn);
+                    if (!result.isPresent())
+                    {
+                        return;
+                    }
+
+                    this.completedDish = result.get(); // TODO THIS IS HACK, NO OBJECTION
+
+                    SkillUtil.increasePoint(playerIn, CulinarySkillPoint.EXPERTISE, (int) (completedDish.getFoodLevel() * completedDish.getSaturationModifier()));
+                    SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
+
+                    heldThing.shrink(1);
+                    playerIn.openGui(Cuisine.getInstance(), CuisineGUI.NAME_FOOD, world, pos.getX(), pos.getY(), pos.getZ());
+
+                    this.temperature = 0;
+                    break;
                 }
                 else
                 {
-                    builder = null;
+                    tryCook(playerIn, heldThing);
                 }
-            }
-            break;
-        }
-        case WORKING:
-            ItemStack heldThing = playerIn.getHeldItem(hand);
-            if (cook(playerIn, hand, heldThing, facing))
-            {
                 break;
-            }
-            else if (heldThing.getItem() == Item.getItemFromBlock(CuisineRegistry.PLACED_DISH) && !builder.getIngredients().isEmpty())
-            {
-                Optional<Dish> result = builder.build(this, playerIn); // TODO THIS IS HACK, NO OBJECTION
-                if (!result.isPresent())
-                {
-                    return;
-                }
-
-                this.completedDish = result.get();
-
-                SkillUtil.increasePoint(playerIn, CulinarySkillPoint.EXPERTISE, (int) (completedDish.getFoodLevel() * completedDish.getSaturationModifier()));
-                SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
-
-                heldThing.shrink(1);
-                playerIn.openGui(Cuisine.getInstance(), CuisineGUI.NAME_FOOD, world, pos.getX(), pos.getY(), pos.getZ());
-
-                break;
-            }
-            else
-            {
-                CookingStrategy strategy = determineCookingStrategy(heldThing);
-                if (strategy == null)
-                {
-                    return;
-                }
-                double limit = builder.getMaxSize();
-                if (!SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.BIGGER_SIZE))
-                {
-                    limit *= 0.75;
-                }
-                if (builder.getCurrentSize() > limit)
-                {
-                    playerIn.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.wok_size_too_large")), true);
-                    return;
-                }
-
-                builder.apply(strategy, this);
-                if (getWorld().rand.nextInt(5) == 0)
-                {
-                    SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
-                }
-                NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(3, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()), this.getWorld().provider.getDimension());
-            }
-            break;
         }
     }
 
-    private boolean cook(EntityPlayerMP player, EnumHand hand, ItemStack heldThing, EnumFacing facing)
+    public void tryCook(EntityPlayer cook, ItemStack heldThing)
+    {
+        CookingStrategy strategy = this.determineCookingStrategy(heldThing);
+        if (strategy == null)
+        {
+            return;
+        }
+
+        double limit = builder.getMaxSize();
+        if (!SkillUtil.hasPlayerLearnedSkill(cook, CulinaryHub.CommonSkills.BIGGER_SIZE))
+        {
+            limit *= 0.75;
+        }
+
+        if (builder.getCurrentSize() > limit)
+        {
+            // FakePlayer won't see this message anyway. See FakePlayer#sendStatusMessage for details
+            cook.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.wok_size_too_large")), true);
+            return;
+        }
+
+        builder.apply(strategy, this);
+        if (getWorld().rand.nextInt(5) == 0)
+        {
+            SkillUtil.increasePoint(cook, CulinarySkillPoint.PROFICIENCY, 1);
+        }
+        NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(3, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ()), this.getWorld().provider.getDimension());
+    }
+
+    private boolean addIngredientsOrSpices(EntityPlayerMP player, EnumHand hand, ItemStack heldThing, EnumFacing facing)
     {
         Ingredient ingredient;
         if (heldThing.getItem() instanceof ItemSpiceBottle)
@@ -200,22 +214,9 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(heldThing);
             if (spice != null)
             {
-                if (CuisineRegistry.SPICE_BOTTLE.hasFluid(heldThing))
+                if (ItemSpiceBottle.hasFluid(heldThing))
                 {
-                    FluidStack fluidStack = CuisineRegistry.SPICE_BOTTLE.getFluidHandler(heldThing).drain(1, false);
-                    for (FluidStack content : spicesForRendering)
-                    {
-                        if (content.isFluidEqual(fluidStack))
-                        {
-                            content.amount += fluidStack.amount;
-                            fluidStack = null;
-                            break;
-                        }
-                    }
-                    if (fluidStack != null)
-                    {
-                        spicesForRendering.add(fluidStack);
-                    }
+                    this.trackSpice(ItemSpiceBottle.getFluidHandler(heldThing).drain(1, false));
                 }
                 CuisineRegistry.SPICE_BOTTLE.consume(heldThing, 1);
                 Seasoning seasoning = new Seasoning(spice);
@@ -232,7 +233,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             if (this.builder.addIngredient(player, ingredient, this))
             {
                 ItemStack newStack = heldThing.splitStack(1);
-                this.ingredientsForRendering.add(newStack);
+                this.trackIngredient(newStack);
                 NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), newStack));
                 return true;
             }
@@ -254,6 +255,32 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     public List<ItemStack> getWokContents()
     {
         return Collections.unmodifiableList(this.ingredientsForRendering);
+    }
+
+    private void trackIngredient(ItemStack ingredient)
+    {
+        this.ingredientsForRendering.add(ingredient);
+    }
+
+    private void trackSpice(@Nullable FluidStack spice)
+    {
+        if (spice == null)
+        {
+            return;
+        }
+        for (FluidStack content : this.spicesForRendering)
+        {
+            if (content.isFluidEqual(spice))
+            {
+                content.amount += spice.amount;
+                spice = null;
+                break;
+            }
+        }
+        if (spice != null)
+        {
+            spicesForRendering.add(spice);
+        }
     }
 
     @Nullable
@@ -352,7 +379,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         // TODO This is just a prototype, we need further refinement
 
         private int ingredientSize = 0;
-        private int initialTemp = -1;
+        private int initialTemp = -1, currentHeat = -1;
         private int decrement = 0;
 
         @Override
@@ -368,7 +395,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             {
                 return;
             }
-            initialTemp = this.wok.getTemperature();
+            currentHeat = initialTemp = this.wok.getTemperature();
             decrement = initialTemp / ingredientSize;
         }
 
@@ -380,15 +407,18 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 return;
             }
             int increment = Math.max(0, initialTemp / 4);
-            ingredient.setHeat(ingredient.getHeat() + increment);
-            if (ingredient.getHeat() > 250 && Math.random() < 0.01)
+            ingredient.setHeat(Math.max(ingredient.getHeat() + increment, initialTemp));
+            if (ingredient.getHeat() > 100)
             {
                 // Unconditionally remove the undercooked trait, so that
                 // we won't see both co-exist together
                 ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
-                ingredient.addTrait(IngredientTrait.OVERCOOKED);
+                if (ingredient.getHeat() > 250 && Math.random() < 0.01)
+                {
+                    ingredient.addTrait(IngredientTrait.OVERCOOKED);
+                }
             }
-            initialTemp -= decrement;
+            currentHeat -= decrement;
         }
 
         @Override
