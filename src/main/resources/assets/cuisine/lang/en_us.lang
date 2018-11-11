@@ -385,6 +385,10 @@ cuisine.config.progression.axe_chopping.tooltip=Allow chopping board to chop woo
 
 cuisine.gui.fully_grown=Fully grown
 cuisine.gui.grown=Growth: %d%%
+cuisine.gui.leaves.0=Cannot grow
+cuisine.gui.leaves.1=Mature
+cuisine.gui.leaves.2=Flowering
+cuisine.gui.leaves.3=Fruited
 cuisine.gui.temperature=Temperature: %d
 cuisine.gui.water_amount=Water amount: %d
 cuisine.gui.oil_amount=Oil amount: %d
