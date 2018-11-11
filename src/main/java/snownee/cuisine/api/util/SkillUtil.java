@@ -9,6 +9,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinarySkill;
 import snownee.cuisine.api.CulinarySkillManager;
@@ -82,6 +83,10 @@ public class SkillUtil
 
     public static boolean hasPlayerLearnedSkill(EntityPlayer player, CulinarySkill skill)
     {
+        if (player instanceof FakePlayer)
+        {
+            return false;
+        }
         int pointPlayer = getLevel(player, skill.skillPointRequirement());
         int pointReq = CulinarySkillManager.getLevelRequirement(skill);
         return pointPlayer >= pointReq;
