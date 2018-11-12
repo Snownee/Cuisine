@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.BlockCuisineCrops;
 import snownee.cuisine.blocks.BlockModLeaves;
+import snownee.cuisine.blocks.BlockShearedLeaves;
 
 @SuppressWarnings("deprecation")
 public class CuisineCropProvider implements IProbeInfoProvider
@@ -50,6 +51,13 @@ public class CuisineCropProvider implements IProbeInfoProvider
             if (Tools.show(mode, Config.getRealConfig().getShowCropPercentage()))
             {
                 probeInfo.text(I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.leaves." + blockState.getValue(BlockModLeaves.AGE)));
+            }
+        }
+        else if (blockState.getBlock() instanceof BlockShearedLeaves)
+        {
+            if (Tools.show(mode, Config.getRealConfig().getShowCropPercentage()))
+            {
+                probeInfo.text(I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.leaves.0"));
             }
         }
     }

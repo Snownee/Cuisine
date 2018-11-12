@@ -1,5 +1,9 @@
 package snownee.cuisine.plugins.hwyla;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -9,9 +13,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.BlockCuisineCrops;
-
-import javax.annotation.Nonnull;
-import java.util.List;
+import snownee.cuisine.blocks.BlockModLeaves;
+import snownee.cuisine.blocks.BlockShearedLeaves;
 
 @SuppressWarnings("deprecation")
 final class CuisineCropProvider implements IWailaDataProvider
@@ -37,6 +40,14 @@ final class CuisineCropProvider implements IWailaDataProvider
                 {
                     tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.grown", TextFormatting.YELLOW + "" + (age * 100) / maxAge));
                 }
+            }
+            else if (accessor.getBlock() instanceof BlockModLeaves)
+            {
+                tooltip.add(I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.leaves." + accessor.getBlockState().getValue(BlockModLeaves.AGE)));
+            }
+            else if (accessor.getBlock() instanceof BlockShearedLeaves)
+            {
+                tooltip.add(I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.leaves.0"));
             }
         }
         return tooltip;
