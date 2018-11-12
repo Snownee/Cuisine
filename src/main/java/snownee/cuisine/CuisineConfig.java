@@ -44,6 +44,12 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean spawnBook = true;
 
+        @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
+        @Config.Name("FruitTreesGenRate")
+        @Config.RangeInt(min = 0, max = 100)
+        @Config.RequiresMcRestart
+        public int fruitTreesGenRate = 50;
+
         @Config.LangKey("cuisine.config.general.fruit_growing_speed")
         @Config.Name("FruitGrowingSpeed")
         @Config.RangeInt(min = 0, max = 100)

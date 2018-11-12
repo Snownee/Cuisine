@@ -31,6 +31,7 @@ import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.network.PacketNameFood;
 import snownee.cuisine.network.PacketSkillLevelIncreased;
 import snownee.cuisine.world.gen.WorldGenBamboo;
+import snownee.cuisine.world.gen.WorldGenCitrusTrees;
 import snownee.cuisine.world.gen.WorldGenGarden;
 import snownee.kiwi.network.NetworkChannel;
 
@@ -79,6 +80,10 @@ public class CommonProxy
         if (CuisineConfig.GENERAL.bamboosGenRate > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenBamboo());
+        }
+        if (CuisineConfig.GENERAL.fruitTreesGenRate > 0)
+        {
+            MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenCitrusTrees());
         }
     }
 
