@@ -222,6 +222,12 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     }
 
     @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return true;

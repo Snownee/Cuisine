@@ -181,6 +181,12 @@ public class BlockShearedLeaves extends BlockMod implements IShearable, IGrowabl
     }
 
     @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
     public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return true;
