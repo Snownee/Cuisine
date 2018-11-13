@@ -33,7 +33,7 @@ public class WorldFeatureCitrusGenusTree extends WorldGenAbstractTree
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        final int i = 5;
+        final int i = 5 + rand.nextInt();
         boolean flag = true;
 
         if (position.getY() < 1 || position.getY() + i + 1 > worldIn.getHeight())
