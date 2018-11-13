@@ -1,5 +1,10 @@
 {
   "name": "cuisine.manual.name",
   "landing_text": "cuisine.manual.subtitle",
-  "edition": -1
+  "edition": -1,
+  "creative_tab": "cuisine",
+  "advancement_namespaces": [
+    "cuisine",
+    "minecraft"
+  ]
 }
