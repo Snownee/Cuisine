@@ -4,10 +4,13 @@ import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
 
 public final class Hybridization implements CuisineProcessingRecipe
 {
-    private String id;
+    private ResourceLocation id;
     private final List<IBlockState> statesA;
     private final List<IBlockState> statesB;
     private final IBlockState resultState;
@@ -61,14 +64,23 @@ public final class Hybridization implements CuisineProcessingRecipe
         return resultState;
     }
 
-    @Override
+    /**
+     * @deprecated use {@link #setIdentifier(ResourceLocation)} instead
+     * @param id the identifier, assuming the namespace is <code>cuisine</code>.
+     */
+    @Deprecated
     public void setID(String id)
     {
-        this.id = id;
+        this.id = new ResourceLocation("cuisine", id);
+    }
+
+    public void setIdentifier(ResourceLocation locator)
+    {
+        this.id = locator;
     }
 
     @Override
-    public String getID()
+    public @Nonnull ResourceLocation getIdentifier()
     {
         return id;
     }

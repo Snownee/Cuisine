@@ -4,11 +4,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
 
-public final class Milling implements CuisineProcessingRecipe
+import java.util.Objects;
+
+public final class Milling extends AbstractCuisineProcessingRecipe implements CuisineProcessingRecipe
 {
 
     private final ProcessingInput input;
@@ -22,6 +25,7 @@ public final class Milling implements CuisineProcessingRecipe
 
     public Milling(ProcessingInput input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
     {
+        super(new ResourceLocation("cuisine", Integer.toString(System.identityHashCode(System.in)) + "&" + System.identityHashCode(inputFluid)));
         this.input = input;
         this.output = output;
         this.inputFluid = inputFluid;
