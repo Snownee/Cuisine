@@ -181,7 +181,7 @@ public class BlockModSapling extends BlockBush implements IModBlock, IGrowable
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
 
             // And if the tree generation fails, we need to roll back to the sapling block.
-            if (!new WorldFeatureCitrusGenusTree(true, state.getValue(VARIANT)).generate(world, rand, pos))
+            if (!new WorldFeatureCitrusGenusTree(true, state.getValue(VARIANT), false).generate(world, rand, pos))
             {
                 world.setBlockState(pos, state, 4);
             }

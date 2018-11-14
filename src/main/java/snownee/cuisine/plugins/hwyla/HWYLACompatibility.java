@@ -5,6 +5,8 @@ import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.WailaPlugin;
 import snownee.cuisine.blocks.BlockBasin;
 import snownee.cuisine.blocks.BlockCuisineCrops;
+import snownee.cuisine.blocks.BlockModLeaves;
+import snownee.cuisine.blocks.BlockShearedLeaves;
 import snownee.cuisine.tiles.TileWok;
 
 @WailaPlugin
@@ -15,7 +17,10 @@ public final class HWYLACompatibility implements IWailaPlugin
     @Override
     public void register(IWailaRegistrar registrar)
     {
-        registrar.registerBodyProvider(new CuisineCropProvider(), BlockCuisineCrops.class);
+        CuisineCropProvider cropProvider = new CuisineCropProvider();
+        registrar.registerBodyProvider(cropProvider, BlockCuisineCrops.class);
+        registrar.registerBodyProvider(cropProvider, BlockModLeaves.class);
+        registrar.registerBodyProvider(cropProvider, BlockShearedLeaves.class);
         CuisineWokProvider wokProvider = new CuisineWokProvider();
         registrar.registerBodyProvider(wokProvider, TileWok.class);
         registrar.registerNBTProvider(wokProvider, TileWok.class);

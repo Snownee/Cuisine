@@ -1,5 +1,7 @@
 package snownee.cuisine.world.feature;
 
+import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -11,27 +13,27 @@ import snownee.cuisine.blocks.BlockModLeaves;
 import snownee.cuisine.blocks.BlockModSapling;
 import snownee.cuisine.tiles.TileFruitTree;
 
-import java.util.Random;
-
 public class WorldFeatureCitrusGenusTree extends WorldGenAbstractTree
 {
     private final BlockModSapling.Type type;
+    private final boolean flower;
 
     /**
      *
      * @param notifyUpdate true if setting new block will cause block update
      * @param type the leaf type token
      */
-    public WorldFeatureCitrusGenusTree(boolean notifyUpdate, BlockModSapling.Type type)
+    public WorldFeatureCitrusGenusTree(boolean notifyUpdate, BlockModSapling.Type type, boolean flower)
     {
         super(notifyUpdate);
         this.type = type;
+        this.flower = flower;
     }
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position)
     {
-        final int i = 5;
+        final int i = 5 + rand.nextInt();
         boolean flag = true;
 
         if (position.getY() < 1 || position.getY() + i + 1 > worldIn.getHeight())
@@ -107,7 +109,14 @@ public class WorldFeatureCitrusGenusTree extends WorldGenAbstractTree
 
                                 if (state.getBlock().isAir(state, worldIn, blockpos) || state.getBlock().isLeaves(state, worldIn, blockpos) || state.getMaterial() == Material.VINE)
                                 {
-                                    this.setBlockAndNotifyAdequately(worldIn, blockpos, leaves);
+                                    if (flower && rand.nextInt(5) == 0)
+                                    {
+                                        this.setBlockAndNotifyAdequately(worldIn, blockpos, leaves.withProperty(BlockModLeaves.AGE, 2));
+                                    }
+                                    else
+                                    {
+                                        this.setBlockAndNotifyAdequately(worldIn, blockpos, leaves);
+                                    }
                                 }
                             }
                         }
@@ -146,20 +155,20 @@ public class WorldFeatureCitrusGenusTree extends WorldGenAbstractTree
     {
         switch (type)
         {
-            case CITRON:
-                return CuisineRegistry.LEAVES_CITRON.getDefaultState();
-            case GRAPEFRUIT:
-                return CuisineRegistry.LEAVES_GRAPEFRUIT.getDefaultState();
-            case LEMON:
-                return CuisineRegistry.LEAVES_LEMON.getDefaultState();
-            case LIME:
-                return CuisineRegistry.LEAVES_LIME.getDefaultState();
-            case MANDARIN:
-                return CuisineRegistry.LEAVES_MANDARIN.getDefaultState();
-            case ORANGE:
-                return CuisineRegistry.LEAVES_ORANGE.getDefaultState();
-            default:
-                return CuisineRegistry.LEAVES_POMELO.getDefaultState();
+        case CITRON:
+            return CuisineRegistry.LEAVES_CITRON.getDefaultState();
+        case GRAPEFRUIT:
+            return CuisineRegistry.LEAVES_GRAPEFRUIT.getDefaultState();
+        case LEMON:
+            return CuisineRegistry.LEAVES_LEMON.getDefaultState();
+        case LIME:
+            return CuisineRegistry.LEAVES_LIME.getDefaultState();
+        case MANDARIN:
+            return CuisineRegistry.LEAVES_MANDARIN.getDefaultState();
+        case ORANGE:
+            return CuisineRegistry.LEAVES_ORANGE.getDefaultState();
+        default:
+            return CuisineRegistry.LEAVES_POMELO.getDefaultState();
         }
     }
 }

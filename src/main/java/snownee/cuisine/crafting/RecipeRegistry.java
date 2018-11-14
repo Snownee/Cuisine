@@ -32,6 +32,10 @@ public class RecipeRegistry
 {
     public static void preInit()
     {
+    }
+
+    public static void init()
+    {
         if (CuisineConfig.PROGRESSION.axeChopping)
         {
             Processing.CHOPPING.add(new Chopping(OreDictDefinition.of("plankWood"), new ItemStack(Items.STICK, 4)));
@@ -43,10 +47,7 @@ public class RecipeRegistry
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG2, 1), new ItemStack(Blocks.PLANKS, 6, 5)));
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(CuisineRegistry.LOG), new ItemStack(CuisineRegistry.PLANKS, 6)));
         }
-    }
 
-    public static void init()
-    {
         Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("cropRice", 1)), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE), 4));
         Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("dustCrudesalt", 1)), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT), 10));
 

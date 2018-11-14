@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeOcean;
 import net.minecraft.world.biome.BiomeSwamp;
-import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,13 +19,13 @@ public class WorldGenBamboo
 {
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void decorateEvent(DecorateBiomeEvent.Decorate event)
+    public void decorateEvent(Decorate event)
     {
         World worldIn = event.getWorld();
         if (worldIn.provider.getDimension() == 0 && event.getType() == Decorate.EventType.TREE)
         {
             Random rand = event.getRand();
-            BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 9, 128, rand.nextInt(16) + 9);
+            BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 8, 128, rand.nextInt(16) + 8);
 
             Biome biome = worldIn.getBiome(position);
 
@@ -35,17 +34,13 @@ public class WorldGenBamboo
                 return;
             }
 
-            for (IBlockState iblockstate = worldIn.getBlockState(position); iblockstate.getBlock().isAir(iblockstate, worldIn, position) || iblockstate.getBlock().isLeaves(iblockstate, worldIn, position); iblockstate = worldIn.getBlockState(position))
+            position = WorldGenHelper.findGround(worldIn, position, true);
+            if (position == null)
             {
-                if (position.getY() < 48)
-                {
-                    return;
-                }
-                position = position.down();
+                return;
             }
-            position = position.up();
 
-            int count = 20 + rand.nextInt(10);
+            int count = 15 + rand.nextInt(10);
             WorldFeatureBamboo generator = new WorldFeatureBamboo(false);
             while (--count != 0)
             {

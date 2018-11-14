@@ -14,6 +14,14 @@ public class Chopping implements CuisineProcessingRecipe
     {
         this.input = input;
         this.output = output;
+        if (input.isEmpty())
+        {
+            throw new IllegalArgumentException("Trying to add an invalid chopping recipe with input: " + input);
+        }
+        if (output.isEmpty())
+        {
+            throw new IllegalArgumentException("Trying to add an invalid chopping recipe with output: " + output);
+        }
     }
 
     public static int descendingCompare(Chopping a, Chopping b)
