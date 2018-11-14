@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
-public final class Hybridization implements IdentityBasedProcessingRecipe
+public final class Hybridization implements CuisineProcessingRecipe
 {
     private String id;
     private final List<IBlockState> statesA;
