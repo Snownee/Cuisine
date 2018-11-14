@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import snownee.kiwi.crafting.input.ProcessingInput;
 
+import javax.annotation.Nullable;
+
 public class Chopping implements CuisineProcessingRecipe
 {
     public final ProcessingInput input;
@@ -12,16 +14,21 @@ public class Chopping implements CuisineProcessingRecipe
 
     public Chopping(ProcessingInput input, ItemStack output)
     {
-        this.input = input;
-        this.output = output;
-        if (input.isEmpty())
+        this.input = checkFalseFor(input, input.isEmpty(), "Trying to add an invalid chopping recipe with input: " + input);
+        this.output = checkFalseFor(output, output.isEmpty(), "Trying to add an invalid chopping recipe with output: " + output);
+    }
+
+    private static <T> T checkFalseFor(T target, boolean premise, @Nullable String errorMessage)
+    {
+        if (errorMessage == null)
         {
-            throw new IllegalArgumentException("Trying to add an invalid chopping recipe with input: " + input);
+            errorMessage = "Assertion failed";
         }
-        if (output.isEmpty())
+        if (premise)
         {
-            throw new IllegalArgumentException("Trying to add an invalid chopping recipe with output: " + output);
+            throw new IllegalArgumentException(errorMessage);
         }
+        return target;
     }
 
     public static int descendingCompare(Chopping a, Chopping b)
