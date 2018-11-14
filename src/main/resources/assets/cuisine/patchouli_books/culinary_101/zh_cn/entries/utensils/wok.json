@@ -1,11 +1,16 @@
 {
   "name": "锅",
   "icon": "cuisine:wok",
-  "category": "utensil",
+  "category": "utensils",
   "pages": [
     {
       "type": "text",
       "text": "锅是种灵活的通用厨具。搭配铁铲使用时可在锅中实现多种不同的烹饪方式。"
+    },
+    {
+      "type": "spotlight",
+      "item": "cuisine:wok",
+      "link_recipe": true
     }
   ]
 }
