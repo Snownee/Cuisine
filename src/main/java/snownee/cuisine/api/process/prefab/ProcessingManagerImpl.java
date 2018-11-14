@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,7 +28,7 @@ public final class ProcessingManagerImpl<R extends CuisineProcessingRecipe> impl
     @Override
     public void add(@Nonnull R recipe)
     {
-        this.recipes.add(recipe);
+        this.recipes.add(Objects.requireNonNull(recipe, "Attempt to register a recipe without identifier"));
     }
 
     @Override
