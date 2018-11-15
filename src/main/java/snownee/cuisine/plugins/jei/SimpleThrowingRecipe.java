@@ -4,17 +4,14 @@ import java.util.Collections;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import snownee.cuisine.api.process.prefab.SimpleThrowing;
 
-public class SimpleThrowingRecipe implements IRecipeWrapper
+public class SimpleThrowingRecipe extends GenericRecipeWrapper<SimpleThrowing>
 {
-    final SimpleThrowing recipe;
-
     public SimpleThrowingRecipe(SimpleThrowing recipe)
     {
-        this.recipe = recipe;
+        super(recipe);
     }
 
     @Override

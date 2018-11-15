@@ -5,7 +5,9 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
+import crafttweaker.mc1120.CraftTweaker;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.prefab.SimpleSqueezing;
@@ -24,44 +26,45 @@ public final class CTBasinSqueezing
     }
 
     @ZenMethod
-    public static void add(IItemStack input, ILiquidStack output)
+    public static void add(String identifier, IItemStack input, ILiquidStack output)
     {
-        add(input, output, null);
+        add(identifier, input, output, null);
     }
 
     @ZenMethod
-    public static void add(IOreDictEntry input, ILiquidStack output)
+    public static void add(String identifier, IOreDictEntry input, ILiquidStack output)
     {
-        add(input, output, null);
+        add(identifier, input, output, null);
     }
 
     @ZenMethod
-    public static void add(IItemStack input, ILiquidStack output, IItemStack extraOutput)
+    public static void add(String identifier, IItemStack input, ILiquidStack output, IItemStack extraOutput)
     {
         ProcessingInput actualInput = CTSupport.fromItemStack(input);
         FluidStack actualOutput = CTSupport.toNative(output);
         ItemStack extra = CTSupport.toNative(extraOutput);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualOutput, extra));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(identifier, actualInput, actualOutput, extra));
     }
 
     @ZenMethod
-    public static void add(IOreDictEntry input, ILiquidStack output, IItemStack extraOutput)
+    public static void add(String identifier, IOreDictEntry input, ILiquidStack output, IItemStack extraOutput)
     {
         ProcessingInput actualInput = CTSupport.fromOreEntry(input);
         FluidStack actualOutput = CTSupport.toNative(output);
         ItemStack extra = CTSupport.toNative(extraOutput);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualOutput, extra));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(identifier, actualInput, actualOutput, extra));
     }
 
     private static final class Addition implements IAction
     {
-
+        private final String identifier;
         private final ProcessingInput input;
         private final FluidStack output;
         private final ItemStack extraOutput;
 
-        private Addition(ProcessingInput input, FluidStack output, ItemStack extraOutput)
+        private Addition(String identifier, ProcessingInput input, FluidStack output, ItemStack extraOutput)
         {
+            this.identifier = identifier;
             this.input = input;
             this.extraOutput = extraOutput;
             this.output = output;
@@ -70,7 +73,7 @@ public final class CTBasinSqueezing
         @Override
         public void apply()
         {
-            Processing.SQUEEZING.add(new SimpleSqueezing(input, output, extraOutput));
+            Processing.SQUEEZING.add(new SimpleSqueezing(new ResourceLocation(CraftTweaker.MODID, identifier), input, output, extraOutput));
         }
 
         @Override
