@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.TileDrinkroTank;
 
@@ -32,7 +33,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         int rot = 0;
         if (meta == 0)
         {
-            if (z > 0)
+            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z > 0)
             {
                 return;
             }
@@ -40,7 +41,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         }
         else if (meta == 1)
         {
-            if (x < -1)
+            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x < -1)
             {
                 return;
             }
@@ -48,14 +49,14 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         }
         else if (meta == 2)
         {
-            if (z < -1)
+            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z < -1)
             {
                 return;
             }
         }
         else if (meta == 3)
         {
-            if (x > 0)
+            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x > 0)
             {
                 return;
             }

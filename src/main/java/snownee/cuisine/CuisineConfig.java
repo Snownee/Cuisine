@@ -94,6 +94,10 @@ public final class CuisineConfig
         @Config.Name("BasinHeatingInDaylight")
         @Config.RequiresMcRestart
         public boolean basinHeatingInDaylight = true;
+
+        @Config.LangKey("cuisine.config.general.always_render_drinkro")
+        @Config.Name("AlwaysRenderDrinkro")
+        public boolean alwaysRenderDrinkro = false;
     }
 
     @Config.Comment("Progression features of Cuisine.")
