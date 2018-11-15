@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
@@ -18,6 +19,7 @@ import snownee.cuisine.fluids.FluidJuice;
 public class MaterialSqueezing implements BasinInteracting
 {
     private final Material material;
+    private final ResourceLocation identifier;
 
     public MaterialSqueezing(Material material)
     {
@@ -26,6 +28,7 @@ public class MaterialSqueezing implements BasinInteracting
             throw new IllegalArgumentException(String.format("material '%s' cannot make juice", material));
         }
         this.material = material;
+        identifier = new ResourceLocation("cuisine", material.getID() + "_squeezing");
     }
 
     @Override
@@ -66,6 +69,12 @@ public class MaterialSqueezing implements BasinInteracting
     public Material getMaterial()
     {
         return material;
+    }
+
+    @Override
+    public ResourceLocation getIdentifier()
+    {
+        return identifier;
     }
 
 }
