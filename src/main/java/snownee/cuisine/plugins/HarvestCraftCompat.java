@@ -141,5 +141,5 @@ public class HarvestCraftCompat implements IModule
         CulinaryHub.API_INSTANCE.registerMapping("foodPersimmonjuice", new Ingredient(persimmon, Form.JUICE, 1));
         CulinaryHub.API_INSTANCE.registerMapping("foodLemonaide", new Ingredient(CulinaryHub.CommonMaterials.LEMON, Form.JUICE, 1));
     }
-    
+
 }
