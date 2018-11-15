@@ -11,7 +11,7 @@ import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 
 @KiwiModule(modid = Cuisine.MODID, name = "harvestcraft", dependency = "harvestcraft", optional = true)
-public class PamsCompat implements IModule
+public class HarvestCraftCompat implements IModule
 {
     @Override
     public void init()
@@ -141,40 +141,5 @@ public class PamsCompat implements IModule
         CulinaryHub.API_INSTANCE.registerMapping("foodPersimmonjuice", new Ingredient(persimmon, Form.JUICE, 1));
         CulinaryHub.API_INSTANCE.registerMapping("foodLemonaide", new Ingredient(CulinaryHub.CommonMaterials.LEMON, Form.JUICE, 1));
     }
-
-    //    @Override
-    //    @SideOnly(Side.CLIENT)
-    //    public void postInit()
-    //    {
-    //        for (ItemStack stack : OreDictionary.getOres("listAllfruit", false))
-    //        {
-    //            if (stack.getItem().getCreatorModId(stack).equals("harvestcraft"))
-    //            {
-    //                String name = stack.getDisplayName().toLowerCase().replace(' ', '_');
-    //                String string = String.format("cuisine.material.%s=%s", name, stack.getDisplayName());
-    //                System.out.println(string);
-    //            }
-    //        }
-    //        for (ItemStack stack : OreDictionary.getOres("listAllveggie", false))
-    //        {
-    //            if (stack.getItem().getCreatorModId(stack).equals("harvestcraft"))
-    //            {
-    //                String name = stack.getDisplayName().toLowerCase().replace(' ', '_');
-    //                String string = String.format("cuisine.material.%s=%s", name, stack.getDisplayName());
-    //                System.out.println(string);
-    //            }
-    //        }
-    //        for (ItemStack stack : OreDictionary.getOres("listAllveggie", false))
-    //        {
-    //            if (stack.getItem().getCreatorModId(stack).equals("harvestcraft"))
-    //            {
-    //                String name = stack.getDisplayName().toLowerCase().replace(' ', '_');
-    //                int color = ColorGetter.getColors(stack, 1).get(0).getRGB() & 0x00FFFFFF;
-    //                String string = String.format("Material %s = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl(\"%s\", 0x%06x, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));", name, name, color);
-    //                System.out.println(string);
-    //                string = String.format("CulinaryHub.API_INSTANCE.registerMapping(\"%s\", %s);", "crop" + name.substring(0, 1).toUpperCase() + name.substring(1).replace("_", ""), name);
-    //                System.out.println(string);
-    //            }
-    //        }
-    //    }
+    
 }
