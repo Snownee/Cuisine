@@ -7,7 +7,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.api.process.CuisineProcessingRecipe;
 import snownee.cuisine.api.process.CuisineSortableProcessingRecipeManager;
 
@@ -24,9 +26,21 @@ public final class SortableProcessingManagerImpl<R extends CuisineProcessingReci
         this.comparator = comparator;
     }
 
-    @Nonnull
     @Override
-    public Collection<R> findAllPossibleRecipes(Object... inputs)
+    public @Nullable R findRecipe(ResourceLocation locator)
+    {
+        for (R recipe : this.recipes)
+        {
+            if (locator.equals(recipe.getIdentifier()))
+            {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public @Nonnull Collection<R> findAllPossibleRecipes(Object... inputs)
     {
         List<R> list = new ArrayList<>();
         for (R recipe : this.recipes)

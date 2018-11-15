@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.api.process.CuisineProcessingRecipe;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 
@@ -45,6 +46,19 @@ public final class ProcessingManagerImpl<R extends CuisineProcessingRecipe> impl
     public void removeAll()
     {
         recipes.clear();
+    }
+
+    @Override
+    public @Nullable R findRecipe(ResourceLocation locator)
+    {
+        for (R r: recipes)
+        {
+            if (locator.equals(r.getIdentifier()))
+            {
+                return r;
+            }
+        }
+        return null;
     }
 
     @Nullable

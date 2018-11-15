@@ -2,26 +2,35 @@ package snownee.cuisine.api.process;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
 import snownee.kiwi.crafting.input.ProcessingInput;
 
-public class Chopping implements CuisineProcessingRecipe
+import javax.annotation.Nullable;
+
+public class Chopping extends AbstractCuisineProcessingRecipe implements CuisineProcessingRecipe
 {
     public final ProcessingInput input;
     private final ItemStack output;
 
     public Chopping(ProcessingInput input, ItemStack output)
     {
-        this.input = input;
-        this.output = output;
-        if (input.isEmpty())
+        super(new ResourceLocation("cuisine", Integer.toString(System.identityHashCode(input))));
+        this.input = checkFalseFor(input, input.isEmpty(), "Trying to add an invalid chopping recipe with input: " + input);
+        this.output = checkFalseFor(output, output.isEmpty(), "Trying to add an invalid chopping recipe with output: " + output);
+    }
+
+    private static <T> T checkFalseFor(T target, boolean premise, @Nullable String errorMessage)
+    {
+        if (errorMessage == null)
         {
-            throw new IllegalArgumentException("Trying to add an invalid chopping recipe with input: " + input);
+            errorMessage = "Assertion failed";
         }
-        if (output.isEmpty())
+        if (premise)
         {
-            throw new IllegalArgumentException("Trying to add an invalid chopping recipe with output: " + output);
+            throw new IllegalArgumentException(errorMessage);
         }
+        return target;
     }
 
     public static int descendingCompare(Chopping a, Chopping b)
