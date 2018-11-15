@@ -19,10 +19,10 @@ import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import mezz.jei.util.Translator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -216,10 +216,27 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new BasinThrowingRecipeCategory(guiHelper, basin));
     }
 
+    /**
+     * @deprecated use {@link #identifierTooltip(ResourceLocation)} is sufficient.
+     * @param clazz type token
+     * @param recipe the recipe object
+     * @param <T> the type of ingredient
+     * @return a tooltip callback object that provides recipe identifier
+     */
+    @Deprecated
     static <T> ITooltipCallback<T> createRecipeIDTooltip(Class<T> clazz, CuisineProcessingRecipe recipe)
     {
-        return (slotIndex, input, ingredient, tooltip) -> {
-            tooltip.add(TextFormatting.DARK_GRAY + Translator.translateToLocalFormatted("jei.tooltip.recipe.id", recipe.getIdentifier()));
+        return identifierTooltip(recipe.getIdentifier());
+    }
+
+    private static <T> ITooltipCallback<T> identifierTooltip(ResourceLocation locator)
+    {
+        return (slot, isInput, ingredient, tooltip) ->
+        {
+            if (!isInput)
+            {
+                tooltip.add(TextFormatting.DARK_GRAY + I18n.translateToLocalFormatted("jei.tooltip.recipe.id", locator));
+            }
         };
     }
 }
