@@ -5,18 +5,15 @@ import java.util.stream.Collectors;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.api.process.Grinding;
 import snownee.kiwi.crafting.input.ProcessingInput;
 
-public class MortarGenericRecipe implements IRecipeWrapper
+public class MortarGenericRecipe extends GenericRecipeWrapper<Grinding>
 {
-    private final Grinding recipe;
-
     MortarGenericRecipe(Grinding recipe)
     {
-        this.recipe = recipe;
+        super(recipe);
     }
 
     @Override
@@ -26,5 +23,4 @@ public class MortarGenericRecipe implements IRecipeWrapper
         ingredients.setInputLists(VanillaTypes.ITEM, inputs);
         ingredients.setOutput(VanillaTypes.ITEM, recipe.getOutput());
     }
-
 }

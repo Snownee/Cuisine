@@ -17,12 +17,12 @@ public class SimpleThrowing implements BasinInteracting
     private final ItemStack outputItem;
     private final ResourceLocation identifier;
 
-    public SimpleThrowing(ProcessingInput inputItem, @Nonnull FluidStack inputFluid, ItemStack outputItem)
+    public SimpleThrowing(ResourceLocation identifier, ProcessingInput inputItem, @Nonnull FluidStack inputFluid, ItemStack outputItem)
     {
         this.inputItem = inputItem;
         this.inputFluid = inputFluid;
         this.outputItem = outputItem;
-        identifier = new ResourceLocation("cuisine", inputItem.examples().get(0).getItem().getRegistryName().getPath() + "_to_" + outputItem.getItem().getRegistryName().getPath());
+        this.identifier = identifier;
     }
 
     @Override

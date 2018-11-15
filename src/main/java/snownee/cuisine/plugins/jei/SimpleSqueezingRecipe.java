@@ -4,16 +4,13 @@ import java.util.Collections;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import snownee.cuisine.api.process.prefab.SimpleSqueezing;
 
-public class SimpleSqueezingRecipe implements IRecipeWrapper
+public class SimpleSqueezingRecipe extends GenericRecipeWrapper<SimpleSqueezing>
 {
-    final SimpleSqueezing recipe;
-
     public SimpleSqueezingRecipe(SimpleSqueezing recipe)
     {
-        this.recipe = recipe;
+        super(recipe);
     }
 
     @Override

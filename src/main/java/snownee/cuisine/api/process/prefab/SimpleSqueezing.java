@@ -17,17 +17,17 @@ public class SimpleSqueezing implements BasinInteracting
     private final ItemStack outputItem;
     private final ResourceLocation identifier;
 
-    public SimpleSqueezing(ProcessingInput input, FluidStack outputFluid)
+    public SimpleSqueezing(ResourceLocation identifier,ProcessingInput input, FluidStack outputFluid)
     {
-        this(input, outputFluid, ItemStack.EMPTY);
+        this(identifier,input, outputFluid, ItemStack.EMPTY);
     }
 
-    public SimpleSqueezing(ProcessingInput input, FluidStack outputFluid, ItemStack outputItem)
+    public SimpleSqueezing(ResourceLocation identifier,ProcessingInput input, FluidStack outputFluid, ItemStack outputItem)
     {
         this.input = input;
         this.outputFluid = outputFluid;
         this.outputItem = outputItem;
-        identifier = new ResourceLocation("cuisine", input.examples().get(0).getItem().getRegistryName().getPath() + "_to_" + outputItem.getItem().getRegistryName().getPath());
+        this.identifier = identifier;
     }
 
     @Override

@@ -32,7 +32,6 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.world.feature.WorldFeatureCitrusGenusTree;
 import snownee.kiwi.block.IModBlock;
 

@@ -15,11 +15,14 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableBuilder;
 import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.util.Translator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -30,6 +33,7 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.Boiling;
+import snownee.cuisine.api.process.CuisineProcessingRecipe;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
@@ -210,5 +214,12 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new BoilingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinSqueezingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinThrowingRecipeCategory(guiHelper, basin));
+    }
+
+    static <T> ITooltipCallback<T> createRecipeIDTooltip(Class<T> clazz, CuisineProcessingRecipe recipe)
+    {
+        return (slotIndex, input, ingredient, tooltip) -> {
+            tooltip.add(TextFormatting.DARK_GRAY + Translator.translateToLocalFormatted("jei.tooltip.recipe.id", recipe.getIdentifier()));
+        };
     }
 }

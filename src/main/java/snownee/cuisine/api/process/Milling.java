@@ -9,8 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
 
-import java.util.Objects;
-
 public final class Milling extends AbstractCuisineProcessingRecipe implements CuisineProcessingRecipe
 {
 

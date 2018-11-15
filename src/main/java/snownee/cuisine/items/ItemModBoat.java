@@ -43,6 +43,7 @@ public class ItemModBoat extends ItemMod
         return 400;
     }
 
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
@@ -128,6 +129,7 @@ public class ItemModBoat extends ItemMod
     {
         private final BehaviorDefaultDispenseItem dispenseBehavior = new BehaviorDefaultDispenseItem();
 
+        @Override
         public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
         {
             EnumFacing enumfacing = source.getBlockState().getValue(BlockDispenser.FACING);
@@ -160,6 +162,7 @@ public class ItemModBoat extends ItemMod
             return stack;
         }
 
+        @Override
         protected void playDispenseSound(IBlockSource source)
         {
             source.getWorld().playEvent(1000, source.getBlockPos(), 0);
