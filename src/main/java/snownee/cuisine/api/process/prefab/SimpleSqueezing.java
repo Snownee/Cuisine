@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -14,6 +15,7 @@ public class SimpleSqueezing implements BasinInteracting
     private final ProcessingInput input;
     private final FluidStack outputFluid;
     private final ItemStack outputItem;
+    private final ResourceLocation identifier;
 
     public SimpleSqueezing(ProcessingInput input, FluidStack outputFluid)
     {
@@ -25,6 +27,7 @@ public class SimpleSqueezing implements BasinInteracting
         this.input = input;
         this.outputFluid = outputFluid;
         this.outputItem = outputItem;
+        identifier = new ResourceLocation("cuisine", input.examples().get(0).getItem().getRegistryName().getPath() + "_to_" + outputItem.getItem().getRegistryName().getPath());
     }
 
     @Override
@@ -71,6 +74,12 @@ public class SimpleSqueezing implements BasinInteracting
     public ItemStack getOutputItem()
     {
         return outputItem;
+    }
+
+    @Override
+    public ResourceLocation getIdentifier()
+    {
+        return identifier;
     }
 
 }
