@@ -7,27 +7,27 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.AbstractCuisineProcessingRecipe;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.kiwi.crafting.input.ProcessingInput;
 
-public class SimpleSqueezing implements BasinInteracting
+public class SimpleSqueezing extends AbstractCuisineProcessingRecipe implements BasinInteracting
 {
     private final ProcessingInput input;
     private final FluidStack outputFluid;
     private final ItemStack outputItem;
-    private final ResourceLocation identifier;
 
-    public SimpleSqueezing(ResourceLocation identifier,ProcessingInput input, FluidStack outputFluid)
+    public SimpleSqueezing(ResourceLocation identifier, ProcessingInput input, FluidStack outputFluid)
     {
         this(identifier,input, outputFluid, ItemStack.EMPTY);
     }
 
-    public SimpleSqueezing(ResourceLocation identifier,ProcessingInput input, FluidStack outputFluid, ItemStack outputItem)
+    public SimpleSqueezing(ResourceLocation identifier, ProcessingInput input, FluidStack outputFluid, ItemStack outputItem)
     {
+        super(identifier);
         this.input = input;
         this.outputFluid = outputFluid;
         this.outputItem = outputItem;
-        this.identifier = identifier;
     }
 
     @Override
@@ -74,12 +74,6 @@ public class SimpleSqueezing implements BasinInteracting
     public ItemStack getOutputItem()
     {
         return outputItem;
-    }
-
-    @Override
-    public ResourceLocation getIdentifier()
-    {
-        return identifier;
     }
 
 }

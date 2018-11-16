@@ -5,15 +5,15 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.AbstractCuisineProcessingRecipe;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.Boiling;
 
-public class DistillationBoiling implements Boiling
+public class DistillationBoiling extends AbstractCuisineProcessingRecipe implements Boiling
 {
     private final FluidStack input;
     private final ItemStack output;
     private final int heatValue;
-    private final ResourceLocation identifier;
 
     public DistillationBoiling(FluidStack input, ItemStack output)
     {
@@ -22,10 +22,10 @@ public class DistillationBoiling implements Boiling
 
     public DistillationBoiling(FluidStack input, ItemStack output, int heatValue)
     {
+        super(new ResourceLocation("cuisine", "distilling_" + input.getFluid().getName()));
         this.input = input;
         this.output = output;
         this.heatValue = heatValue;
-        identifier = new ResourceLocation("cuisine", input.getFluid().getName() + "_distillation");
     }
 
     @Override
@@ -57,9 +57,4 @@ public class DistillationBoiling implements Boiling
         return heatValue;
     }
 
-    @Override
-    public ResourceLocation getIdentifier()
-    {
-        return identifier;
-    }
 }
