@@ -38,6 +38,8 @@ public interface CuisineProcessingRecipeManager<R extends CuisineProcessingRecip
      */
     boolean remove(@Nonnull Object... inputs);
 
+    boolean remove(@Nonnull ResourceLocation identifier);
+
     /**
      * Remove an existent recipe object according to equivalence.
      *

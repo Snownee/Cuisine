@@ -44,6 +44,12 @@ public final class ProcessingManagerImpl<R extends CuisineProcessingRecipe> impl
     }
 
     @Override
+    public boolean remove(ResourceLocation identifier)
+    {
+        return recipes.removeIf(r -> r.getIdentifier().equals(identifier));
+    }
+
+    @Override
     public void removeAll()
     {
         recipes.clear();
@@ -52,7 +58,7 @@ public final class ProcessingManagerImpl<R extends CuisineProcessingRecipe> impl
     @Override
     public @Nullable R findRecipe(ResourceLocation locator)
     {
-        for (R r: recipes)
+        for (R r : recipes)
         {
             if (locator.equals(r.getIdentifier()))
             {

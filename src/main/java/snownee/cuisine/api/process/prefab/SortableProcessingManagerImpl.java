@@ -88,6 +88,12 @@ public final class SortableProcessingManagerImpl<R extends CuisineProcessingReci
     }
 
     @Override
+    public boolean remove(ResourceLocation identifier)
+    {
+        return recipes.removeIf(r -> r.getIdentifier().equals(identifier));
+    }
+
+    @Override
     public void removeAll()
     {
         recipes.clear();
