@@ -21,17 +21,6 @@ public class ClientProxy extends CommonProxy
     public static final ResourceLocation EMPTY = new ResourceLocation(Cuisine.MODID, "empty");
 
     @Override
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        super.preInit(event);
-        if (CuisineConfig.GENERAL.bambooBlowpipe)
-        {
-            RenderingRegistry.registerEntityRenderingHandler(EntitySeed.class, m -> new RenderEntitySeed(m, Minecraft.getMinecraft().getRenderItem()));
-        }
-        RenderingRegistry.registerEntityRenderingHandler(EntityModBoat.class, m -> new RenderModBoat(m));
-    }
-
-    @Override
     public IAnimationStateMachine loadAnimationStateMachine(ResourceLocation identifier, ImmutableMap<String, ITimeValue> parameters)
     {
         return ModelLoaderRegistry.loadASM(identifier, parameters);
