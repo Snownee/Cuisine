@@ -83,18 +83,6 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public int cropsGenRate = 4;
 
-        @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
-        @Config.LangKey("cuisine.config.general.mill_work_cycle")
-        @Config.Name("MillWorkCycle")
-        @Config.RangeInt(min = 1)
-        public int millWorkPeriod = 160;
-
-        @Config.Comment("If true, natural sunlight will be considered as a valid heat source for earthen basin.")
-        @Config.LangKey("cuisine.config.general.basin_heating_in_daylight")
-        @Config.Name("BasinHeatingInDaylight")
-        @Config.RequiresMcRestart
-        public boolean basinHeatingInDaylight = true;
-
         @Config.LangKey("cuisine.config.general.always_render_drinkro")
         @Config.Name("AlwaysRenderDrinkro")
         public boolean alwaysRenderDrinkro = false;
@@ -122,6 +110,18 @@ public final class CuisineConfig
         @Config.Name("AxeList")
         @Config.RequiresMcRestart
         public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
+
+        @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
+        @Config.LangKey("cuisine.config.general.mill_work_cycle")
+        @Config.Name("MillWorkCycle")
+        @Config.RangeInt(min = 1)
+        public int millWorkPeriod = 160;
+
+        @Config.Comment("If true, natural sunlight will be considered as a valid heat source for earthen basin.")
+        @Config.LangKey("cuisine.config.general.basin_heating_in_daylight")
+        @Config.Name("BasinHeatingInDaylight")
+        @Config.RequiresMcRestart
+        public boolean basinHeatingInDaylight = true;
     }
 
     @Config.Comment("Config options related to hardcore mode.")

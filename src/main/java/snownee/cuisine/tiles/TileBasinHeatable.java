@@ -67,7 +67,7 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         if (!world.isRemote && !failed && tank.getFluid() != null && --tickCheckHeating <= 0)
         {
             int heat = getHeatValueFromState(world.getBlockState(pos.down()));
-            if (heat == 0 && !CuisineConfig.GENERAL.basinHeatingInDaylight)
+            if (heat == 0 && !CuisineConfig.PROGRESSION.basinHeatingInDaylight)
             {
                 failed = true;
                 return;
