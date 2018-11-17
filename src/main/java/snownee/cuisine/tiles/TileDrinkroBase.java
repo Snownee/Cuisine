@@ -8,9 +8,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
@@ -71,6 +73,11 @@ public class TileDrinkroBase extends TileBase
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
+        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.PROGRESSION.drinkroUsesFE > 0)
+        {
+            TileDrinkroTank tile = getTank();
+            return tile == null ? false : tile.hasCapability(capability, facing);
+        }
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getTank() != null) || super.hasCapability(capability, facing);
     }
 
@@ -85,6 +92,11 @@ public class TileDrinkroBase extends TileBase
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
+        }
+        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.PROGRESSION.drinkroUsesFE > 0)
+        {
+            TileDrinkroTank tile = getTank();
+            return tile == null ? null : tile.getCapability(capability, facing);
         }
         return super.getCapability(capability, facing);
     }

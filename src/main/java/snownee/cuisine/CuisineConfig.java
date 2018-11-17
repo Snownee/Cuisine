@@ -122,6 +122,14 @@ public final class CuisineConfig
         @Config.Name("BasinHeatingInDaylight")
         @Config.RequiresMcRestart
         public boolean basinHeatingInDaylight = true;
+
+        @Config.Name("SqueezerUsesFE")
+        @Config.RequiresMcRestart
+        public int squeezerUsesFE = 0;
+
+        @Config.Name("DrinkroUsesFE")
+        @Config.RequiresMcRestart
+        public int drinkroUsesFE = 0;
     }
 
     @Config.Comment("Config options related to hardcore mode.")
