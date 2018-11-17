@@ -37,7 +37,7 @@ public class RecipeRegistry
 
     public static void init()
     {
-        if (CuisineConfig.PROGRESSION.axeChopping)
+        if (CuisineConfig.GENERAL.axeChopping)
         {
             Processing.CHOPPING.add(new Chopping(OreDictDefinition.of("plankWood"), new ItemStack(Items.STICK, 4)));
             Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG), new ItemStack(Blocks.PLANKS, 6)));

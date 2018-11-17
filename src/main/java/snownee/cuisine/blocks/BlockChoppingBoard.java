@@ -167,7 +167,7 @@ public class BlockChoppingBoard extends BlockMod
             {
                 ((TileChoppingBoard) te).process(playerIn, held, ProcessionType.KNIFE_HORIZONTAL, null);
             }
-            else if (!worldIn.isRemote && CuisineConfig.PROGRESSION.axeChopping && playerIn.getCooledAttackStrength(0) > 0.5)
+            else if (!worldIn.isRemote && CuisineConfig.GENERAL.axeChopping && playerIn.getCooledAttackStrength(0) > 0.5)
             {
                 int harvestLevel = held.getItem().getHarvestLevel(held, "axe", playerIn, null);
                 if (harvestLevel >= 0)

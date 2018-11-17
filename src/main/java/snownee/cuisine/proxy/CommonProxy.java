@@ -73,15 +73,15 @@ public class CommonProxy
         MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SESAME), 5);
         MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SOYBEAN), 5);
         MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.PEANUT), 5);
-        if (CuisineConfig.GENERAL.cropsGenRate > 0)
+        if (CuisineConfig.WORLD_GEN.cropsGenRate > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenGarden());
         }
-        if (CuisineConfig.GENERAL.bamboosGenRate > 0)
+        if (CuisineConfig.WORLD_GEN.bamboosGenRate > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenBamboo());
         }
-        if (CuisineConfig.GENERAL.fruitTreesGenRate > 0)
+        if (CuisineConfig.WORLD_GEN.fruitTreesGenRate > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenCitrusTrees());
         }

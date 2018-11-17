@@ -38,7 +38,7 @@ public class DistillationBoilingRecipe extends GenericRecipeWrapper<Distillation
     private static List<ItemStack> getSources(int minHeat)
     {
         List<ItemStack> sources = new ArrayList<>();
-        if (minHeat == 0 && CuisineConfig.PROGRESSION.basinHeatingInDaylight)
+        if (minHeat == 0 && CuisineConfig.GENERAL.basinHeatingInDaylight)
         {
             sources.add(ItemStack.EMPTY);
         }

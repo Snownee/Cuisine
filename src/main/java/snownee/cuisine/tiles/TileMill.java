@@ -108,7 +108,7 @@ public class TileMill extends TileBase implements ITickable
         {
             if (working)
             {
-                if (++tick >= CuisineConfig.PROGRESSION.millWorkPeriod)
+                if (++tick >= CuisineConfig.GENERAL.millWorkPeriod)
                 {
                     process();
                     IBlockState state = this.world.getBlockState(this.pos);
@@ -124,10 +124,10 @@ public class TileMill extends TileBase implements ITickable
         {
             if (working)
             {
-                this.tick = Math.min(CuisineConfig.PROGRESSION.millWorkPeriod, this.tick + 1);
-                if (tick < CuisineConfig.PROGRESSION.millWorkPeriod)
+                this.tick = Math.min(CuisineConfig.GENERAL.millWorkPeriod, this.tick + 1);
+                if (tick < CuisineConfig.GENERAL.millWorkPeriod)
                 {
-                    progressValue.setValue((this.tick + Animation.getPartialTickTime()) / CuisineConfig.PROGRESSION.millWorkPeriod);
+                    progressValue.setValue((this.tick + Animation.getPartialTickTime()) / CuisineConfig.GENERAL.millWorkPeriod);
                 }
             }
             else
