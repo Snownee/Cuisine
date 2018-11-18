@@ -143,7 +143,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
                 {
                     if (effect.showInTooltips())
                     {
-                        tooltip.add(Util.color(effect.getColorForDisplay()) + I18n.format(effect.getName()));
+                        tooltip.add(Util.color(effect.getColor()) + I18n.format(effect.getName()));
                     }
                 }
             }

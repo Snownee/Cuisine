@@ -4,8 +4,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Comparator;
 
@@ -24,8 +22,7 @@ public interface Effect
 
     String getName();
 
-    @SideOnly(Side.CLIENT)
-    int getColorForDisplay();
+    int getColor();
 
     String getDescription();
 
