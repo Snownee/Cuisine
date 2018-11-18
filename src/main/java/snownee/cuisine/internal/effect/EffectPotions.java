@@ -43,7 +43,7 @@ public class EffectPotions extends SimpleEffectImpl
     }
 
     @Override
-    public int getColorForDisplay()
+    public int getColor()
     {
         return PotionUtils.getPotionColorFromEffectList(effects);
     }

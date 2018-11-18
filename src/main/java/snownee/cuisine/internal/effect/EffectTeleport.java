@@ -23,7 +23,7 @@ public class EffectTeleport extends SimpleEffectImpl
     }
 
     @Override
-    public int getColorForDisplay()
+    public int getColor()
     {
         return CulinaryHub.CommonMaterials.CHORUS_FRUIT.getRawColorCode();
     }
