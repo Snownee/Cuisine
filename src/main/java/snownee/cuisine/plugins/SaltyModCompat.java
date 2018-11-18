@@ -9,6 +9,7 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.internal.effect.EffectPotions;
@@ -33,7 +34,7 @@ public class SaltyModCompat implements IModule
         {
             Effect effect = new EffectPotions("fermented_saltwort").addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 2));
             Material material = CulinaryHub.API_INSTANCE.register(new MaterialWithEffect("fermented_saltwort", effect, 0x6A7A2E, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.JUICE_ONLY));
-            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(fermented_saltwort), material);
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(fermented_saltwort), new Ingredient(material, Form.JUICE, 0.5));
         }
     }
 }

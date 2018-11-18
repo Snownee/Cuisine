@@ -162,6 +162,8 @@ cuisine.effect.pufferfish_poison.name=Puffer Poison
 cuisine.effect.pufferfish_poison.tip=Puffer Poison
 cuisine.effect.water_breathing.name=Water Breathing
 cuisine.effect.water_breathing.tip=Water Breathing
+cuisine.effect.fermented_saltwort.name=Fermented Saltwort
+cuisine.effect.fermented_saltwort.tip=Fermented Saltwort
 
 cuisine.shape.full=%s
 cuisine.shape.cubed=%s Cube
@@ -282,6 +284,7 @@ cuisine.material.jackfruit=Jackfruit
 cuisine.material.tamarind=Tamarind
 cuisine.material.walnut=Walnut
 cuisine.material.chestnut=Chestnut
+cuisine.material.fermented_saltwort=Fermented Saltwort
 
 cuisine.spice.salt=Table Salt
 cuisine.spice.crude_salt=Crude Salt

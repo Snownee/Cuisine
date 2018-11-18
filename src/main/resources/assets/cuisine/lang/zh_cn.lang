@@ -162,6 +162,8 @@ cuisine.effect.pufferfish_poison.name=河豚毒素
 cuisine.effect.pufferfish_poison.tip=河豚毒素
 cuisine.effect.water_breathing.name=水肺
 cuisine.effect.water_breathing.tip=水肺
+cuisine.effect.fermented_saltwort.name=盐麦芽汁
+cuisine.effect.fermented_saltwort.tip=盐麦芽汁
 
 cuisine.shape.full=%s
 cuisine.shape.cubed=%s块
@@ -282,6 +284,7 @@ cuisine.material.jackfruit=Jackfruit
 cuisine.material.tamarind=Tamarind
 cuisine.material.walnut=核桃
 cuisine.material.chestnut=栗子
+cuisine.material.fermented_saltwort=盐麦芽
 
 cuisine.spice.salt=盐
 cuisine.spice.crude_salt=粗盐
