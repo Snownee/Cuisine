@@ -105,10 +105,13 @@ public class Cuisine
         NetworkChannel.INSTANCE.register(PacketCustomEvent.class);
         NetworkChannel.INSTANCE.register(PacketSkillLevelIncreased.class);
         NetworkChannel.INSTANCE.register(PacketNameFood.class);
-        MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.RICE), 5);
-        MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SESAME), 5);
-        MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SOYBEAN), 5);
-        MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.PEANUT), 5);
+        if (CuisineConfig.GENERAL.basicSeedsWeight > 0)
+        {
+            MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.RICE), CuisineConfig.GENERAL.basicSeedsWeight);
+            MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SESAME), CuisineConfig.GENERAL.basicSeedsWeight);
+            MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SOYBEAN), CuisineConfig.GENERAL.basicSeedsWeight);
+            MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.PEANUT), CuisineConfig.GENERAL.basicSeedsWeight);
+        }
         if (CuisineConfig.WORLD_GEN.cropsGenRate > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenGarden());

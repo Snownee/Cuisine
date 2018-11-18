@@ -93,6 +93,10 @@ public final class CuisineConfig
         @Config.Name("DrinkroUsesFE")
         @Config.RequiresMcRestart
         public int drinkroUsesFE = 0;
+
+        @Config.Name("BasicSeedsWeight")
+        @Config.RequiresMcRestart
+        public int basicSeedsWeight = 5;
     }
 
     @Config.Comment("Config options of Cuisine Hardcore Mode.")
@@ -169,7 +173,8 @@ public final class CuisineConfig
     @Config.Name("WorldGen")
     public static final WorldGen WORLD_GEN = new WorldGen();
 
-    public static final class WorldGen {
+    public static final class WorldGen
+    {
 
         @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
         @Config.Name("FruitTreesGenRate")
