@@ -47,7 +47,7 @@ public final class CuisineConfig
         @Config.LangKey("cuisine.config.general.fruit_growing_speed")
         @Config.Name("FruitGrowingSpeed")
         @Config.RangeInt(min = 0, max = 100)
-        public int fruitGrowingSpeed = 20;
+        public int fruitGrowingSpeed = 15;
 
         @Config.LangKey("cuisine.config.general.fruit_drops")
         @Config.Name("FruitDrops")
