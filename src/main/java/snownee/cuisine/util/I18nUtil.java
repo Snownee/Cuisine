@@ -1,6 +1,5 @@
 package snownee.cuisine.util;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.MinecraftForgeClient;
 import snownee.cuisine.Cuisine;
 

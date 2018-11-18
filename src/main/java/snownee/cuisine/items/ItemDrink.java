@@ -36,7 +36,6 @@ import snownee.cuisine.internal.capabilities.DrinkContainer;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.plugins.TANCompat;
-import snownee.cuisine.client.CuisineClientProxy;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.Kiwi;
 
