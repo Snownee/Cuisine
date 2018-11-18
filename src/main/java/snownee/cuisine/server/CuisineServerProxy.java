@@ -28,4 +28,11 @@ public final class CuisineServerProxy extends CuisineSidedProxy
     {
         return I18n.translateToLocalFormatted(translationKey, params);
     }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canTranslate(String translationKey)
+    {
+        return I18n.canTranslate(translationKey);
+    }
 }

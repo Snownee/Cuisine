@@ -57,4 +57,20 @@ public abstract class CuisineSidedProxy
     {
         return translationKey;
     }
+
+    /**
+     * Determine whether there is a translation available for the given translation
+     * key.
+     *
+     * @implSpec
+     * Default implementation assumes that there is no translation at all, and
+     * will always return false.
+     *
+     * @param fullKey The full traslation key string
+     * @return true if there is an associated translation string; false otherwise.
+     */
+    public boolean canTranslate(String fullKey)
+    {
+        return false;
+    }
 }

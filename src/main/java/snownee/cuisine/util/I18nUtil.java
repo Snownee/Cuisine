@@ -15,7 +15,7 @@ public class I18nUtil
 
     public static boolean canTranslate(String key)
     {
-        return I18n.hasKey(getFullKey(key));
+        return Cuisine.sidedDelegate.canTranslate(getFullKey(key));
     }
 
     /**

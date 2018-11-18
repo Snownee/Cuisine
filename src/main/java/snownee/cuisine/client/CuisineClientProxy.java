@@ -29,4 +29,10 @@ public final class CuisineClientProxy extends CuisineSidedProxy
     {
         return I18n.format(translationKey, params);
     }
+
+    @Override
+    public boolean canTranslate(String translationKey)
+    {
+        return I18n.hasKey(translationKey);
+    }
 }

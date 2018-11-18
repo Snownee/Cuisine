@@ -7,12 +7,10 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.library.RarityManager;
+import snownee.cuisine.util.I18nUtil;
 
 public final class Ingredient
 {
@@ -201,19 +199,23 @@ public final class Ingredient
         return theCopy;
     }
 
-    @SideOnly(Side.CLIENT)
+    /**
+     * @deprecated This shall never be in API package; this method will be removed from public API.
+     * @return translated name of this ingredient
+     */
+    @Deprecated
     public String getTranslation()
     {
         String ingredientForm = this.getForm().getName();
         String ingredientMaterial = this.getMaterial().getID();
-        if (I18n.hasKey("cuisine.ingredient." + ingredientMaterial + '.' + ingredientForm))
+        if (I18nUtil.canTranslate("ingredient." + ingredientMaterial + '.' + ingredientForm))
         {
-            return I18n.format("cuisine.ingredient." + ingredientMaterial + '.' + ingredientForm);
+            return I18nUtil.translate("ingredient." + ingredientMaterial + '.' + ingredientForm);
         }
         else
         {
-            String material = I18n.format("cuisine.material." + this.getMaterial().getID());
-            return I18n.format("cuisine.shape." + ingredientForm, material);
+            String material = I18nUtil.translate("material." + this.getMaterial().getID());
+            return I18nUtil.translate("shape." + ingredientForm, material);
         }
     }
 
