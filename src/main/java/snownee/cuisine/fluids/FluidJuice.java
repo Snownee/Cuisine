@@ -2,8 +2,6 @@ package snownee.cuisine.fluids;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
@@ -34,7 +32,6 @@ public class FluidJuice extends VaporizableFluid
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getLocalizedName(FluidStack stack)
     {
         Material material = CulinaryHub.API_INSTANCE.findMaterial(stack);

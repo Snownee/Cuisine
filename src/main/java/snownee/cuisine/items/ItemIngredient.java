@@ -159,7 +159,6 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
 
     @Nonnull
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack)
     {
         NBTTagCompound data = stack.getTagCompound();
