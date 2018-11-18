@@ -415,3 +415,6 @@ cuisine.toast.skill.get=New skill get!
 cuisine.toast.skill.description=%s up to %d!
 
 cuisine.command.culinaryskill=/culinaryskill <Player> get <SkillPoint> or /culinaryskill <Player> set <SkillPoint> <value>
+
+## Special override - can be used when combined name is either grammatrically incorrect or not following convention
+cuisine.ingredient.water.juice=Water
