@@ -73,7 +73,7 @@ public class TileDrinkroBase extends TileBase
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.PROGRESSION.drinkroUsesFE > 0)
+        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.GENERAL.drinkroUsesFE > 0)
         {
             TileDrinkroTank tile = getTank();
             return tile == null ? false : tile.hasCapability(capability, facing);
@@ -93,7 +93,7 @@ public class TileDrinkroBase extends TileBase
         {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         }
-        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.PROGRESSION.drinkroUsesFE > 0)
+        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.GENERAL.drinkroUsesFE > 0)
         {
             TileDrinkroTank tile = getTank();
             return tile == null ? null : tile.getCapability(capability, facing);

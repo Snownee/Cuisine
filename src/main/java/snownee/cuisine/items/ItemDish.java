@@ -20,9 +20,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.client.CuisineItemRendering;
 import snownee.cuisine.client.model.DishMeshDefinition;
 import snownee.cuisine.internal.capabilities.DishContainer;
-import snownee.cuisine.proxy.ClientProxy;
 import snownee.cuisine.tiles.TileDish;
 import snownee.kiwi.util.PlayerUtil;
 
@@ -32,8 +32,7 @@ public class ItemDish extends ItemAbstractComposite
     public ItemDish(String name)
     {
         super(name);
-        // Creative tab
-        setCreativeTab(Cuisine.CREATIVE_TAB);
+        this.setCreativeTab(Cuisine.CREATIVE_TAB);
     }
 
     @Override
@@ -41,7 +40,7 @@ public class ItemDish extends ItemAbstractComposite
     public void mapModel()
     {
         ModelLoader.setCustomMeshDefinition(this, DishMeshDefinition.INSTANCE);
-        ModelBakery.registerItemVariants(this, ClientProxy.EMPTY, new ResourceLocation(Cuisine.MODID, "dish/fish0"), new ResourceLocation(Cuisine.MODID, "dish/rice0"), new ResourceLocation(Cuisine.MODID, "dish/meat0"), new ResourceLocation(Cuisine.MODID, "dish/meat1"), new ResourceLocation(Cuisine.MODID, "dish/veges0"), new ResourceLocation(Cuisine.MODID, "dish/veges1"), new ResourceLocation(Cuisine.MODID, "dish/mixed0"), new ResourceLocation(Cuisine.MODID, "dish/mixed1"), new ResourceLocation(Cuisine.MODID, "placed_dish"));
+        ModelBakery.registerItemVariants(this, CuisineItemRendering.EMPTY_MODEL, new ResourceLocation(Cuisine.MODID, "dish/fish0"), new ResourceLocation(Cuisine.MODID, "dish/rice0"), new ResourceLocation(Cuisine.MODID, "dish/meat0"), new ResourceLocation(Cuisine.MODID, "dish/meat1"), new ResourceLocation(Cuisine.MODID, "dish/veges0"), new ResourceLocation(Cuisine.MODID, "dish/veges1"), new ResourceLocation(Cuisine.MODID, "dish/mixed0"), new ResourceLocation(Cuisine.MODID, "dish/mixed1"), new ResourceLocation(Cuisine.MODID, "placed_dish"));
     }
 
     @Nullable

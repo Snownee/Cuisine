@@ -22,7 +22,6 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -45,6 +44,7 @@ import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemMortar;
+import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
@@ -54,7 +54,7 @@ public class JEICompat implements IModPlugin
     // Keep an eye on this; this may change in the future
     static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
     static final ResourceLocation CUISINE_RECIPE_GUI = new ResourceLocation(Cuisine.MODID, "textures/gui/jei.png");
-    static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.PROGRESSION.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+    static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
 
     static IDrawable arrowOut;
     static IDrawable arrowOutOverlay;
@@ -125,7 +125,7 @@ public class JEICompat implements IModPlugin
                 }
             }
         });
-        if (CuisineConfig.PROGRESSION.axeChopping)
+        if (CuisineConfig.GENERAL.axeChopping)
         {
             Processing.CHOPPING.preview().forEach(recipe -> recipes.add(new ChoppingBoardAxeRecipe(recipe)));
         }
@@ -235,7 +235,7 @@ public class JEICompat implements IModPlugin
         {
             if (!isInput)
             {
-                tooltip.add(TextFormatting.DARK_GRAY + I18n.translateToLocalFormatted("jei.tooltip.recipe.id", locator));
+                tooltip.add(TextFormatting.DARK_GRAY + I18nUtil.translate("jei.tooltip.recipe.id", locator));
             }
         };
     }

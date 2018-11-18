@@ -38,10 +38,10 @@ import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
+import snownee.cuisine.client.CuisineItemRendering;
 import snownee.cuisine.client.model.IngredientMeshDefinition;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.food.IngredientFood;
-import snownee.cuisine.proxy.ClientProxy;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.IModItem;
@@ -78,7 +78,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
     public void mapModel()
     {
         ModelLoader.setCustomMeshDefinition(this, IngredientMeshDefinition.INSTANCE);
-        ModelBakery.registerItemVariants(this, ClientProxy.EMPTY, new ResourceLocation(Cuisine.MODID, "cmaterial/cubed"), new ResourceLocation(Cuisine.MODID, "cmaterial/diced"), new ResourceLocation(Cuisine.MODID, "cmaterial/minced"), new ResourceLocation(Cuisine.MODID, "cmaterial/paste"), new ResourceLocation(Cuisine.MODID, "cmaterial/shredded"), new ResourceLocation(Cuisine.MODID, "cmaterial/sliced"));
+        ModelBakery.registerItemVariants(this, CuisineItemRendering.EMPTY_MODEL, new ResourceLocation(Cuisine.MODID, "cmaterial/cubed"), new ResourceLocation(Cuisine.MODID, "cmaterial/diced"), new ResourceLocation(Cuisine.MODID, "cmaterial/minced"), new ResourceLocation(Cuisine.MODID, "cmaterial/paste"), new ResourceLocation(Cuisine.MODID, "cmaterial/shredded"), new ResourceLocation(Cuisine.MODID, "cmaterial/sliced"));
     }
 
     @Override
@@ -143,7 +143,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
                 {
                     if (effect.showInTooltips())
                     {
-                        tooltip.add(Util.color(effect.getColorForDisplay()) + I18n.format(effect.getName()));
+                        tooltip.add(Util.color(effect.getColor()) + I18n.format(effect.getName()));
                     }
                 }
             }
@@ -159,7 +159,6 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
 
     @Nonnull
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack)
     {
         NBTTagCompound data = stack.getTagCompound();

@@ -72,10 +72,8 @@ public class ItemModBoat extends ItemMod
             boolean flag = false;
             List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(vec3d2.x * 5.0D, vec3d2.y * 5.0D, vec3d2.z * 5.0D).grow(1.0D));
 
-            for (int i = 0; i < list.size(); ++i)
+            for (Entity entity : list)
             {
-                Entity entity = list.get(i);
-
                 if (entity.canBeCollidedWith())
                 {
                     AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());

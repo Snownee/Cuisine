@@ -106,9 +106,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     public TileDrinkroTank()
     {
         super();
-        if (CuisineConfig.PROGRESSION.drinkroUsesFE > 0)
+        if (CuisineConfig.GENERAL.drinkroUsesFE > 0)
         {
-            cell = new EnergyCell(CuisineConfig.PROGRESSION.drinkroUsesFE * 50, CuisineConfig.PROGRESSION.drinkroUsesFE, 0);
+            cell = new EnergyCell(CuisineConfig.GENERAL.drinkroUsesFE * 50, CuisineConfig.GENERAL.drinkroUsesFE, 0);
         }
         else
         {
@@ -185,7 +185,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         if (poweredIn && !this.powered && !isWorking())
         {
             world.addBlockEvent(pos, getBlockType(), 1, 0);
-            if (cell == null || cell.getEnergyStored() >= CuisineConfig.PROGRESSION.drinkroUsesFE)
+            if (cell == null || cell.getEnergyStored() >= CuisineConfig.GENERAL.drinkroUsesFE)
             {
                 working = true;
                 // world.notifyBlockUpdate(pos, state, state, 3);
@@ -213,7 +213,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     public void stopProcess()
     {
         working = false;
-        if (cell != null && cell.getEnergyStored() < CuisineConfig.PROGRESSION.drinkroUsesFE)
+        if (cell != null && cell.getEnergyStored() < CuisineConfig.GENERAL.drinkroUsesFE)
         {
             return;
         }
@@ -307,7 +307,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
 
         if (cell != null)
         {
-            cell.setEnergy(cell.getEnergyStored() - CuisineConfig.PROGRESSION.drinkroUsesFE);
+            cell.setEnergy(cell.getEnergyStored() - CuisineConfig.GENERAL.drinkroUsesFE);
         }
 
         for (int i = 0; i < inputs.getSlots(); i++)

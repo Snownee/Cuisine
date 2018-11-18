@@ -10,13 +10,11 @@ import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
-import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.BlockCuisineCrops;
 import snownee.cuisine.blocks.BlockModLeaves;
 import snownee.cuisine.blocks.BlockShearedLeaves;
+import snownee.cuisine.util.I18nUtil;
 
-@SuppressWarnings("deprecation")
 final class CuisineCropProvider implements IWailaDataProvider
 {
 
@@ -34,20 +32,20 @@ final class CuisineCropProvider implements IWailaDataProvider
                 int maxAge = cropBlock.getMaxAge();
                 if (age == maxAge)
                 {
-                    tooltip.add(TextFormatting.GREEN + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.fully_grown"));
+                    tooltip.add(TextFormatting.GREEN + I18nUtil.translate("gui.fully_grown"));
                 }
                 else
                 {
-                    tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.grown", TextFormatting.YELLOW + "" + (age * 100) / maxAge));
+                    tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.grown", TextFormatting.YELLOW + "" + (age * 100) / maxAge));
                 }
             }
             else if (accessor.getBlock() instanceof BlockModLeaves)
             {
-                tooltip.add(I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.leaves." + accessor.getBlockState().getValue(BlockModLeaves.AGE)));
+                tooltip.add(I18nUtil.translate("gui.leaves." + accessor.getBlockState().getValue(BlockModLeaves.AGE)));
             }
             else if (accessor.getBlock() instanceof BlockShearedLeaves)
             {
-                tooltip.add(I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.leaves.0"));
+                tooltip.add(I18nUtil.translate("gui.leaves.0"));
             }
         }
         return tooltip;

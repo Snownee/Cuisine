@@ -61,10 +61,10 @@ public class TileSqueezer extends TileBase implements ITickable
 
     public TileSqueezer()
     {
-        this.stateMachine = Cuisine.proxy.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
-        if (CuisineConfig.PROGRESSION.squeezerUsesFE > 0)
+        this.stateMachine = Cuisine.sidedDelegate.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
+        if (CuisineConfig.GENERAL.squeezerUsesFE > 0)
         {
-            cell = new EnergyCell(CuisineConfig.PROGRESSION.squeezerUsesFE * 50, CuisineConfig.PROGRESSION.squeezerUsesFE, 0)
+            cell = new EnergyCell(CuisineConfig.GENERAL.squeezerUsesFE * 50, CuisineConfig.GENERAL.squeezerUsesFE, 0)
             {
                 @Override
                 protected void onEnergyChanged()
@@ -111,7 +111,7 @@ public class TileSqueezer extends TileBase implements ITickable
         {
             if (triggered)
             {
-                if ((state == State.EXTRACTED || state == State.EXTENDING) && cell.getEnergyStored() < CuisineConfig.PROGRESSION.squeezerUsesFE)
+                if ((state == State.EXTRACTED || state == State.EXTENDING) && cell.getEnergyStored() < CuisineConfig.GENERAL.squeezerUsesFE)
                 {
                     return;
                 }
@@ -193,7 +193,7 @@ public class TileSqueezer extends TileBase implements ITickable
                     basin.process(Processing.SQUEEZING, basin.stacks.getStackInSlot(0), false);
                     if (cell != null)
                     {
-                        cell.setEnergy(cell.getEnergyStored() - CuisineConfig.PROGRESSION.squeezerUsesFE);
+                        cell.setEnergy(cell.getEnergyStored() - CuisineConfig.GENERAL.squeezerUsesFE);
                     }
                 }
             }

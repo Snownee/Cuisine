@@ -1,6 +1,5 @@
 package snownee.cuisine.util;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.MinecraftForgeClient;
 import snownee.cuisine.Cuisine;
 
@@ -15,7 +14,7 @@ public class I18nUtil
 
     public static boolean canTranslate(String key)
     {
-        return I18n.hasKey(getFullKey(key));
+        return Cuisine.sidedDelegate.canTranslate(getFullKey(key));
     }
 
     /**
@@ -32,7 +31,7 @@ public class I18nUtil
      */
     public static String translate(String key, Object... parameters)
     {
-        return I18n.format(getFullKey(key), parameters);
+        return Cuisine.sidedDelegate.translate(getFullKey(key), parameters);
     }
 
     /**
@@ -44,7 +43,7 @@ public class I18nUtil
      */
     public static String translate(String key)
     {
-        return I18n.format(getFullKey(key));
+        return Cuisine.sidedDelegate.translate(getFullKey(key));
     }
 
     /**

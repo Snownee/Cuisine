@@ -20,8 +20,8 @@ import net.minecraftforge.client.resource.VanillaResourceType;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
+import snownee.cuisine.client.CuisineItemRendering;
 import snownee.cuisine.internal.CuisineSharedSecrets;
-import snownee.cuisine.proxy.ClientProxy;
 
 public final class IngredientMeshDefinition implements ItemMeshDefinition, ISelectiveResourceReloadListener
 {
@@ -55,7 +55,7 @@ public final class IngredientMeshDefinition implements ItemMeshDefinition, ISele
                 }
             }
         }
-        return new ModelResourceLocation(ClientProxy.EMPTY, "inventory"); // Catch all
+        return new ModelResourceLocation(CuisineItemRendering.EMPTY_MODEL, "inventory"); // Catch all
     }
 
     @Override

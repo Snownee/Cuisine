@@ -51,7 +51,7 @@ public class EffectExperienced extends SimpleEffectImpl
     }
 
     @Override
-    public int getColorForDisplay()
+    public int getColor()
     {
         return CulinaryHub.CommonMaterials.APPLE.getRawColorCode();
     }
