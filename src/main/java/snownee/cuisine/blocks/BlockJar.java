@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
@@ -46,6 +47,7 @@ public class BlockJar extends BlockMod
         setDefaultState(blockState.getBaseState().withProperty(VARIANT, 0));
         setHardness(1.25F);
         setResistance(5.0F);
+        setSoundType(SoundType.STONE);
     }
 
     @Override
