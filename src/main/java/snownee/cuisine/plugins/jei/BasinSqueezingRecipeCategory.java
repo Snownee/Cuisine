@@ -13,13 +13,13 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.util.I18nUtil;
 
-public class BasinSqueezingRecipeCategory implements IRecipeCategory
+public class BasinSqueezingRecipeCategory implements IRecipeCategory<GenericRecipeWrapper>
 {
     static final String UID = Cuisine.MODID + ".basin_squeezing";
 
@@ -74,7 +74,7 @@ public class BasinSqueezingRecipeCategory implements IRecipeCategory
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, GenericRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
         IGuiFluidStackGroup fluids = recipeLayout.getFluidStacks();
@@ -105,6 +105,12 @@ public class BasinSqueezingRecipeCategory implements IRecipeCategory
         fluids.init(1, false, 56, 22, 16, 8, maxAmount, false, null);
         stacks.set(ingredients);
         fluids.set(ingredients);
+
+        if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
+        {
+            stacks.addTooltipCallback(JEICompat.createRecipeIDTooltip(ItemStack.class, recipeWrapper.recipe));
+            fluids.addTooltipCallback(JEICompat.createRecipeIDTooltip(FluidStack.class, recipeWrapper.recipe));
+        }
     }
 
 }

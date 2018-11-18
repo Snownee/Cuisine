@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -16,6 +18,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ForgeBlockStateV1;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
+import net.minecraftforge.client.resource.IResourceType;
+import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
+import net.minecraftforge.client.resource.VanillaResourceType;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.util.Constants;
@@ -27,8 +32,9 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
-public final class ChoppingBoardOverride extends ItemOverrideList
+public final class ChoppingBoardOverride extends ItemOverrideList implements ISelectiveResourceReloadListener
 {
     /**
      * Reference of ChoppingBoardOverride singleton instance.
@@ -81,6 +87,7 @@ public final class ChoppingBoardOverride extends ItemOverrideList
     private ChoppingBoardOverride()
     {
         super(Collections.emptyList());
+        ((IReloadableResourceManager)Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
     }
 
     @Override
@@ -123,5 +130,16 @@ public final class ChoppingBoardOverride extends ItemOverrideList
     public ImmutableList<ItemOverride> getOverrides()
     {
         return ImmutableList.of();
+    }
+
+    @Override
+    public void onResourceManagerReload(IResourceManager manager, Predicate<IResourceType> predicate)
+    {
+        if (predicate.test(VanillaResourceType.TEXTURES) || predicate.test(VanillaResourceType.MODELS))
+        {
+            // We have to invalidate all caches when there is a texture/model reloading, as the
+            // old model data may be no longer valid after reloading.
+            this.modelCache.invalidateAll();
+        }
     }
 }

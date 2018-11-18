@@ -14,6 +14,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import snownee.cuisine.Cuisine;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.kiwi.block.IModBlock;
 import snownee.kiwi.item.ItemModBlock;
@@ -24,6 +25,7 @@ public class ItemDrinkro extends ItemModBlock
     public ItemDrinkro(IModBlock block)
     {
         super(block);
+        this.setCreativeTab(Cuisine.CREATIVE_TAB);
     }
 
     @Override

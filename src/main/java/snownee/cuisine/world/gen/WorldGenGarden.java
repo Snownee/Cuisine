@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeOcean;
-import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.CuisineConfig;
@@ -21,41 +20,35 @@ import snownee.cuisine.blocks.BlockCuisineCrops;
 
 public class WorldGenGarden
 {
-    public static final Block[] PLANT_POOL = new Block[] {
-            CuisineRegistry.CHINESE_CABBAGE, CuisineRegistry.CORN,
-            CuisineRegistry.CUCUMBER, CuisineRegistry.EGGPLANT, CuisineRegistry.GINGER,
-            CuisineRegistry.GREEN_PEPPER, CuisineRegistry.LEEK, CuisineRegistry.LETTUCE, CuisineRegistry.ONION,
-            CuisineRegistry.PEANUT, CuisineRegistry.RED_PEPPER, CuisineRegistry.SCALLION, CuisineRegistry.SESAME,
-            CuisineRegistry.SICHUAN_PEPPER, CuisineRegistry.SOYBEAN, CuisineRegistry.SPINACH,
-            CuisineRegistry.TOMATO, CuisineRegistry.TURNIP, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT
-    };
+    public static final Block[] PLANT_POOL = new Block[] { CuisineRegistry.CHINESE_CABBAGE, CuisineRegistry.CORN, CuisineRegistry.CUCUMBER, CuisineRegistry.EGGPLANT, CuisineRegistry.GINGER, CuisineRegistry.GREEN_PEPPER, CuisineRegistry.LEEK, CuisineRegistry.LETTUCE, CuisineRegistry.ONION, CuisineRegistry.PEANUT, CuisineRegistry.RED_PEPPER, CuisineRegistry.SCALLION, CuisineRegistry.SESAME, CuisineRegistry.SICHUAN_PEPPER, CuisineRegistry.SOYBEAN, CuisineRegistry.SPINACH, CuisineRegistry.TOMATO, CuisineRegistry.TURNIP, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT };
 
     @SubscribeEvent
-    public void decorateEvent(DecorateBiomeEvent.Decorate event)
+    public void decorateEvent(Decorate event)
     {
         World worldIn = event.getWorld();
         if (worldIn.provider.getDimension() == 0 && event.getType() == Decorate.EventType.PUMPKIN)
         {
             Random rand = event.getRand();
-            BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 8, 128, rand.nextInt(16) + 8);
+            BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8);
 
             Biome biome = worldIn.getBiome(position);
 
-            if (!biome.canRain() || biome.topBlock.getMaterial() != Material.GRASS || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(CuisineConfig.GENERAL.cropsGenRate) > 0)
+            if (!biome.canRain() || biome.isSnowyBiome() || biome.getBaseHeight() > 0.4F || biome.decorator.flowersPerChunk < 1 || biome.topBlock.getMaterial() != Material.GRASS || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(CuisineConfig.WORLD_GEN.cropsGenRate) > 0)
             {
                 return;
             }
 
-            for (IBlockState iblockstate = worldIn.getBlockState(position); (iblockstate.getBlock().isAir(iblockstate, worldIn, position) || iblockstate.getBlock().isLeaves(iblockstate, worldIn, position)) && position.getY() > 0; iblockstate = worldIn.getBlockState(position))
+            BlockPos.MutableBlockPos pos = WorldGenHelper.findGround(worldIn, position, true);
+            if (pos == null)
             {
-                position = position.down();
+                return;
             }
-            // position = position.up();
+            pos.move(EnumFacing.DOWN);
 
             Block plant = PLANT_POOL[rand.nextInt(PLANT_POOL.length)];
-            plant(worldIn, position, plant, biome.topBlock.getBlock(), rand);
-            plant(worldIn, position.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
-            plant(worldIn, position.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
+            plant(worldIn, pos, plant, biome.topBlock.getBlock(), rand);
+            plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
+            plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
         }
     }
 
@@ -68,8 +61,7 @@ public class WorldGenGarden
             if (block instanceof BlockCuisineCrops)
             {
                 BlockCuisineCrops blockCuisineCrops = (BlockCuisineCrops) block;
-                world.setBlockState(pos.up(), block == CuisineRegistry.CORN ? block.getDefaultState()
-                        : blockCuisineCrops.withAge(rand.nextInt(blockCuisineCrops.getMaxAge())), 0);
+                world.setBlockState(pos.up(), block == CuisineRegistry.CORN ? block.getDefaultState() : blockCuisineCrops.withAge(rand.nextInt(blockCuisineCrops.getMaxAge())), 0);
             }
             else if (block instanceof BlockCrops)
             {

@@ -1,5 +1,9 @@
 package snownee.cuisine.api.process;
 
+import net.minecraft.util.ResourceLocation;
+
+import javax.annotation.Nonnull;
+
 public interface CuisineProcessingRecipe
 {
 
@@ -25,4 +29,11 @@ public interface CuisineProcessingRecipe
      */
     @Override
     boolean equals(Object another);
+
+    /**
+     * Returns a {@link ResourceLocation} object that functions as a unique locator
+     * of this recipe object.
+     * @return a unique locator
+     */
+    @Nonnull ResourceLocation getIdentifier();
 }

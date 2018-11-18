@@ -6,6 +6,7 @@ import java.util.Comparator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.api.process.prefab.ProcessingManagerImpl;
 import snownee.cuisine.api.process.prefab.SortableProcessingManagerImpl;
 
@@ -37,6 +38,8 @@ public interface CuisineProcessingRecipeManager<R extends CuisineProcessingRecip
      */
     boolean remove(@Nonnull Object... inputs);
 
+    boolean remove(@Nonnull ResourceLocation identifier);
+
     /**
      * Remove an existent recipe object according to equivalence.
      *
@@ -52,18 +55,24 @@ public interface CuisineProcessingRecipeManager<R extends CuisineProcessingRecip
 
     /**
      *
+     * @param locator the unique locator that expected recipe object has
+     * @return The desired recipe object with the same locator
+     */
+    @Nullable R findRecipe(ResourceLocation locator);
+
+    /**
+     *
      * @return recipe object that matches inputs; null if otherwise.
      */
-    @Nullable
-    R findRecipe(Object... inputs);
+    @Nullable R findRecipe(Object... inputs);
 
     /**
     *
     * @return Collection of recipe objects that match inputs, may be empty; null is
-    *         prohibited.
+    *         prohibited; in case of found nothing, an empty collection should be
+     *        returned.
     */
-    @Nonnull
-    Collection<R> findAllPossibleRecipes(Object... inputs);
+    @Nonnull Collection<R> findAllPossibleRecipes(Object... inputs);
 
     static <R extends CuisineProcessingRecipe> CuisineProcessingRecipeManager<R> of()
     {

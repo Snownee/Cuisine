@@ -8,9 +8,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import snownee.cuisine.CuisineConfig;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
 
@@ -70,6 +73,11 @@ public class TileDrinkroBase extends TileBase
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
+        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.GENERAL.drinkroUsesFE > 0)
+        {
+            TileDrinkroTank tile = getTank();
+            return tile == null ? false : tile.hasCapability(capability, facing);
+        }
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && getTank() != null) || super.hasCapability(capability, facing);
     }
 
@@ -84,6 +92,11 @@ public class TileDrinkroBase extends TileBase
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
+        }
+        if (capability == CapabilityEnergy.ENERGY && CuisineConfig.GENERAL.drinkroUsesFE > 0)
+        {
+            TileDrinkroTank tile = getTank();
+            return tile == null ? null : tile.getCapability(capability, facing);
         }
         return super.getCapability(capability, facing);
     }
@@ -121,7 +134,14 @@ public class TileDrinkroBase extends TileBase
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
-        return oldState.getBlock() != newState.getBlock() || oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        if (oldState.getBlock() != CuisineRegistry.DRINKRO || newState.getBlock() != CuisineRegistry.DRINKRO)
+        {
+            return true;
+        }
+        else
+        {
+            return oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        }
     }
 
     void refresh()

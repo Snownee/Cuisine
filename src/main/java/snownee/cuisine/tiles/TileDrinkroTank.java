@@ -2,6 +2,8 @@ package snownee.cuisine.tiles;
 
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,12 +12,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryCapabilities;
@@ -95,11 +99,21 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     private boolean powered = false;
     protected boolean working = false;
     public Drink.Builder builder;
-    public ItemStackHandler inventory;
+    public final ItemStackHandler inventory;
+    @Nullable
+    public final EnergyCell cell;
 
     public TileDrinkroTank()
     {
         super();
+        if (CuisineConfig.GENERAL.drinkroUsesFE > 0)
+        {
+            cell = new EnergyCell(CuisineConfig.GENERAL.drinkroUsesFE * 50, CuisineConfig.GENERAL.drinkroUsesFE, 0);
+        }
+        else
+        {
+            cell = null;
+        }
         builder = Drink.Builder.create();
         inventory = new ItemStackHandler(4)
         {
@@ -170,12 +184,15 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         }
         if (poweredIn && !this.powered && !isWorking())
         {
-            working = true;
             world.addBlockEvent(pos, getBlockType(), 1, 0);
-            // world.notifyBlockUpdate(pos, state, state, 3);
-            world.setBlockState(pos, state.withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
-            world.setBlockState(pos.down(), world.getBlockState(pos.down()).withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
-            world.scheduleUpdate(pos, state.getBlock(), 100);
+            if (cell == null || cell.getEnergyStored() >= CuisineConfig.GENERAL.drinkroUsesFE)
+            {
+                working = true;
+                // world.notifyBlockUpdate(pos, state, state, 3);
+                world.setBlockState(pos, state.withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
+                world.setBlockState(pos.down(), world.getBlockState(pos.down()).withProperty(BlockDrinkro.WORKING, Boolean.TRUE), 11);
+                world.scheduleUpdate(pos, state.getBlock(), 100);
+            }
         }
         this.powered = poweredIn;
     }
@@ -196,6 +213,10 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     public void stopProcess()
     {
         working = false;
+        if (cell != null && cell.getEnergyStored() < CuisineConfig.GENERAL.drinkroUsesFE)
+        {
+            return;
+        }
         TileDrinkroBase tileBase = getBase();
         if (tileBase == null)
         {
@@ -284,6 +305,11 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         tileBase.inventory.setStackInSlot(0, itemDrink);
         world.addBlockEvent(pos, getBlockType(), 0, builder.getColor());
 
+        if (cell != null)
+        {
+            cell.setEnergy(cell.getEnergyStored() - CuisineConfig.GENERAL.drinkroUsesFE);
+        }
+
         for (int i = 0; i < inputs.getSlots(); i++)
         {
             ItemStack stack = inputs.getStackInSlot(i);
@@ -298,7 +324,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && cell != null) || super.hasCapability(capability, facing);
     }
 
     @Override
@@ -312,6 +338,10 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         }
+        if (capability == CapabilityEnergy.ENERGY && cell != null)
+        {
+            return CapabilityEnergy.ENERGY.cast(cell);
+        }
         return super.getCapability(capability, facing);
     }
 
@@ -321,6 +351,10 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         super.readFromNBT(data);
         powered = data.getBoolean("powered");
         inventory.deserializeNBT(data.getCompoundTag("inventory"));
+        if (cell != null)
+        {
+            cell.readFromNBT(data);
+        }
         working = data.getBoolean("working");
         builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
     }
@@ -331,6 +365,10 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         super.writeToNBT(data);
         data.setBoolean("powered", powered);
         data.setTag("inventory", inventory.serializeNBT());
+        if (cell != null)
+        {
+            cell.writeToNBT(data);
+        }
         data.setBoolean("working", working);
         data.setTag("builder", Drink.Builder.toNBT(builder));
         return data;
@@ -340,6 +378,10 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     protected void readPacketData(NBTTagCompound data)
     {
         this.inventory.deserializeNBT(data.getCompoundTag("inventory"));
+        if (cell != null)
+        {
+            cell.readFromNBT(data);
+        }
         this.builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
         this.working = data.getBoolean("working");
     }
@@ -348,6 +390,10 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
         data.setTag("inventory", this.inventory.serializeNBT());
+        if (cell != null)
+        {
+            cell.writeToNBT(data);
+        }
         data.setTag("builder", Drink.Builder.toNBT(builder));
         data.setBoolean("working", this.working);
         return data;
@@ -356,7 +402,14 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
-        return oldState.getBlock() != newState.getBlock() || oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        if (oldState.getBlock() != CuisineRegistry.DRINKRO || newState.getBlock() != CuisineRegistry.DRINKRO)
+        {
+            return true;
+        }
+        else
+        {
+            return oldState.getValue(BlockDrinkro.BASE) != newState.getValue(BlockDrinkro.BASE);
+        }
     }
 
     public boolean isWorking()

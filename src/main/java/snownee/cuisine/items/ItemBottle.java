@@ -3,7 +3,6 @@ package snownee.cuisine.items;
 import java.util.Optional;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,9 +19,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
+import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
@@ -48,7 +46,6 @@ public class ItemBottle extends ItemMod implements CookingVessel
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack)
     {
         stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
@@ -58,7 +55,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
             FluidStack fluid = handler.drain(Integer.MAX_VALUE, false);
             if (fluid != null)
             {
-                return I18n.format(getTranslationKey(stack) + ".name", fluid.getLocalizedName());
+                return Cuisine.sidedDelegate.translate(getTranslationKey(stack) + ".name", fluid.getLocalizedName());
             }
         }
         return super.getItemStackDisplayName(stack);

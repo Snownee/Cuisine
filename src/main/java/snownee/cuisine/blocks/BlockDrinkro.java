@@ -10,6 +10,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -70,6 +71,12 @@ public class BlockDrinkro extends BlockModHorizontal
         Item item = Item.getItemFromBlock(this);
         ModelLoader.setCustomMeshDefinition(item, DrinkroMeshDefinition.INSTANCE);
         ModelBakery.registerItemVariants(item, new ResourceLocation(Cuisine.MODID, "drinkro"), new ResourceLocation(Cuisine.MODID, "drinkro_special"));
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemGroup, NonNullList<ItemStack> items)
+    {
+        items.add(new ItemStack(this));
     }
 
     @Override

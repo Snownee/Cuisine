@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
@@ -12,15 +13,17 @@ import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
+import snownee.cuisine.api.process.AbstractCuisineProcessingRecipe;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.fluids.FluidJuice;
 
-public class MaterialSqueezing implements BasinInteracting
+public class MaterialSqueezing extends AbstractCuisineProcessingRecipe implements BasinInteracting
 {
     private final Material material;
 
     public MaterialSqueezing(Material material)
     {
+        super(new ResourceLocation("cuisine", "squeezing_" + material.getID()));
         if (!(material.isValidForm(Form.JUICE) && (material.isUnderCategoryOf(MaterialCategory.FRUIT) || material.isUnderCategoryOf(MaterialCategory.VEGETABLES))))
         {
             throw new IllegalArgumentException(String.format("material '%s' cannot make juice", material));

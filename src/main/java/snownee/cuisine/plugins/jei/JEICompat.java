@@ -15,11 +15,13 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableBuilder;
 import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -30,6 +32,7 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.Boiling;
+import snownee.cuisine.api.process.CuisineProcessingRecipe;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
@@ -41,6 +44,7 @@ import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemMortar;
+import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
@@ -50,7 +54,7 @@ public class JEICompat implements IModPlugin
     // Keep an eye on this; this may change in the future
     static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
     static final ResourceLocation CUISINE_RECIPE_GUI = new ResourceLocation(Cuisine.MODID, "textures/gui/jei.png");
-    static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.PROGRESSION.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+    static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
 
     static IDrawable arrowOut;
     static IDrawable arrowOutOverlay;
@@ -121,7 +125,7 @@ public class JEICompat implements IModPlugin
                 }
             }
         });
-        if (CuisineConfig.PROGRESSION.axeChopping)
+        if (CuisineConfig.GENERAL.axeChopping)
         {
             Processing.CHOPPING.preview().forEach(recipe -> recipes.add(new ChoppingBoardAxeRecipe(recipe)));
         }
@@ -210,5 +214,29 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new BoilingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinSqueezingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinThrowingRecipeCategory(guiHelper, basin));
+    }
+
+    /**
+     * @deprecated use {@link #identifierTooltip(ResourceLocation)} is sufficient.
+     * @param clazz type token
+     * @param recipe the recipe object
+     * @param <T> the type of ingredient
+     * @return a tooltip callback object that provides recipe identifier
+     */
+    @Deprecated
+    static <T> ITooltipCallback<T> createRecipeIDTooltip(Class<T> clazz, CuisineProcessingRecipe recipe)
+    {
+        return identifierTooltip(recipe.getIdentifier());
+    }
+
+    private static <T> ITooltipCallback<T> identifierTooltip(ResourceLocation locator)
+    {
+        return (slot, isInput, ingredient, tooltip) ->
+        {
+            if (!isInput)
+            {
+                tooltip.add(TextFormatting.DARK_GRAY + I18nUtil.translate("jei.tooltip.recipe.id", locator));
+            }
+        };
     }
 }

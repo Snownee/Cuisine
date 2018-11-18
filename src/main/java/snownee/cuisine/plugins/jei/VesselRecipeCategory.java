@@ -8,7 +8,9 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
@@ -61,6 +63,7 @@ public class VesselRecipeCategory implements IRecipeCategory<VesselRecipe>
     {
         IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
         IGuiFluidStackGroup fluids = recipeLayout.getFluidStacks();
+
         stacks.init(0, true, 0, 0);
         stacks.init(1, true, 36, 0);
         stacks.init(2, false, 94, 0);
@@ -68,8 +71,7 @@ public class VesselRecipeCategory implements IRecipeCategory<VesselRecipe>
         fluids.init(0, true, 19, 1, 16, 16, 100, false, null);
         if (recipeWrapper.recipe.getOutputFluid() != null)
         {
-            fluids.init(1, false, recipeWrapper.recipe.getOutput().isEmpty() ? 95
-                    : 113, 1, 16, 16, recipeWrapper.recipe.getOutputFluid().amount, false, null);
+            fluids.init(1, false, recipeWrapper.recipe.getOutput().isEmpty() ? 95 : 113, 1, 16, 16, recipeWrapper.recipe.getOutputFluid().amount, false, null);
         }
         else
         {
@@ -77,6 +79,12 @@ public class VesselRecipeCategory implements IRecipeCategory<VesselRecipe>
         }
         stacks.set(ingredients);
         fluids.set(ingredients);
+
+        if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
+        {
+            stacks.addTooltipCallback(JEICompat.createRecipeIDTooltip(ItemStack.class, recipeWrapper.recipe));
+            fluids.addTooltipCallback(JEICompat.createRecipeIDTooltip(FluidStack.class, recipeWrapper.recipe));
+        }
     }
 
 }

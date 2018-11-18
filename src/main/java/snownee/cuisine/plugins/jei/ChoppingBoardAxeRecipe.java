@@ -5,16 +5,13 @@ import java.util.Collections;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import snownee.cuisine.api.process.Chopping;
 
-public class ChoppingBoardAxeRecipe implements IRecipeWrapper
+public class ChoppingBoardAxeRecipe extends GenericRecipeWrapper<Chopping>
 {
-    private final Chopping recipe;
-
     ChoppingBoardAxeRecipe(Chopping recipe)
     {
-        this.recipe = recipe;
+        super(recipe);
     }
 
     @Override
@@ -23,5 +20,4 @@ public class ChoppingBoardAxeRecipe implements IRecipeWrapper
         ingredients.setInputLists(VanillaTypes.ITEM, Arrays.asList(recipe.input.examples(), JEICompat.AXES));
         ingredients.setOutputs(VanillaTypes.ITEM, Collections.singletonList(recipe.getOutput()));
     }
-
 }

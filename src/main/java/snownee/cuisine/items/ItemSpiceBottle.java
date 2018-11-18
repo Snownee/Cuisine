@@ -320,7 +320,6 @@ public class ItemSpiceBottle extends ItemMod
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack)
     {
         if (hasItem(stack))

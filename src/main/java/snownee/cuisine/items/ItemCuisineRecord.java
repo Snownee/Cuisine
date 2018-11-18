@@ -64,13 +64,7 @@ public class ItemCuisineRecord extends ItemMod
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(this.getRecordNameLocal());
-    }
-
-    @SideOnly(Side.CLIENT)
-    public String getRecordNameLocal()
-    {
-        return I18nUtil.translate("tip.record");
+        tooltip.add(I18nUtil.translate("tip.record"));
     }
 
     @Override

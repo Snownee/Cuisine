@@ -3,12 +3,13 @@ package snownee.cuisine.api.process;
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.util.definition.ItemDefinition;
 
-public final class Vessel implements CuisineProcessingRecipe
+public final class Vessel extends AbstractCuisineProcessingRecipe implements CuisineProcessingRecipe
 {
 
     private final ProcessingInput input;
@@ -19,6 +20,7 @@ public final class Vessel implements CuisineProcessingRecipe
 
     public Vessel(ProcessingInput input, Fluid solvent, ItemDefinition output, @Nullable FluidStack outputFluid, ProcessingInput extraRequirement)
     {
+        super(new ResourceLocation("cuisine", Integer.toString(System.identityHashCode(input))));
         this.input = input;
         this.solvent = solvent;
         this.output = output;

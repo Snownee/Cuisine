@@ -9,6 +9,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -215,6 +216,24 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     }
 
     @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public boolean isFullBlock(IBlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return true;
+    }
+
+    @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
         return getItemInternal(state);
@@ -326,6 +345,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         }
     }
 
+    @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!worldIn.isRemote)
@@ -335,9 +355,9 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                 int k = pos.getX();
                 int l = pos.getY();
                 int i1 = pos.getZ();
-                if (this.surroundings == null)
+                if (BlockModLeaves.surroundings == null)
                 {
-                    this.surroundings = new int[32768];
+                    BlockModLeaves.surroundings = new int[32768];
                 }
 
                 if (!worldIn.isAreaLoaded(pos, 1))
@@ -359,16 +379,16 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                                 {
                                     if (block.isLeaves(iblockstate, worldIn, blockpos$mutableblockpos.setPos(k + i2, l + j2, i1 + k2)))
                                     {
-                                        this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -2;
+                                        BlockModLeaves.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -2;
                                     }
                                     else
                                     {
-                                        this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -1;
+                                        BlockModLeaves.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = -1;
                                     }
                                 }
                                 else
                                 {
-                                    this.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = 0;
+                                    BlockModLeaves.surroundings[(i2 + 16) * 1024 + (j2 + 16) * 32 + k2 + 16] = 0;
                                 }
                             }
                         }
@@ -382,36 +402,36 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                             {
                                 for (int l3 = -4; l3 <= 4; ++l3)
                                 {
-                                    if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16] == i3 - 1)
+                                    if (BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16] == i3 - 1)
                                     {
-                                        if (this.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
+                                        if (BlockModLeaves.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
                                         {
-                                            this.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
+                                            BlockModLeaves.surroundings[(j3 + 16 - 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
                                         }
 
-                                        if (this.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
+                                        if (BlockModLeaves.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] == -2)
                                         {
-                                            this.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
+                                            BlockModLeaves.surroundings[(j3 + 16 + 1) * 1024 + (k3 + 16) * 32 + l3 + 16] = i3;
                                         }
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] == -2)
+                                        if (BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] == -2)
                                         {
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] = i3;
+                                            BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16 - 1) * 32 + l3 + 16] = i3;
                                         }
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] == -2)
+                                        if (BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] == -2)
                                         {
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] = i3;
+                                            BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16 + 1) * 32 + l3 + 16] = i3;
                                         }
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] == -2)
+                                        if (BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] == -2)
                                         {
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] = i3;
+                                            BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + (l3 + 16 - 1)] = i3;
                                         }
 
-                                        if (this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] == -2)
+                                        if (BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] == -2)
                                         {
-                                            this.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] = i3;
+                                            BlockModLeaves.surroundings[(j3 + 16) * 1024 + (k3 + 16) * 32 + l3 + 16 + 1] = i3;
                                         }
                                     }
                                 }
@@ -420,7 +440,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                     }
                 }
 
-                int l2 = this.surroundings[16912];
+                int l2 = BlockModLeaves.surroundings[16912];
 
                 if (l2 >= 0)
                 {
