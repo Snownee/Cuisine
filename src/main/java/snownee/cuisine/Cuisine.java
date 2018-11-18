@@ -29,7 +29,6 @@ import snownee.cuisine.network.CuisineGuiHandler;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.network.PacketNameFood;
 import snownee.cuisine.network.PacketSkillLevelIncreased;
-import snownee.cuisine.proxy.CommonProxy;
 import snownee.cuisine.world.gen.WorldGenBamboo;
 import snownee.cuisine.world.gen.WorldGenCitrusTrees;
 import snownee.cuisine.world.gen.WorldGenGarden;
@@ -60,8 +59,8 @@ public class Cuisine
         FluidRegistry.enableUniversalBucket();
     }
 
-    @SidedProxy(serverSide = "snownee.cuisine.proxy.CommonProxy", clientSide = "snownee.cuisine.proxy.ClientProxy")
-    public static CommonProxy proxy;
+    @SidedProxy(serverSide = "snownee.cuisine.server.CuisineServerProxy", clientSide = "snownee.cuisine.client.CuisineClientProxy")
+    public static CuisineSidedProxy sidedDelegate;
 
     @Mod.InstanceFactory
     public static Cuisine getInstance()

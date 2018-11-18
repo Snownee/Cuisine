@@ -21,7 +21,7 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.internal.CuisineSharedSecrets;
-import snownee.cuisine.proxy.ClientProxy;
+import snownee.cuisine.client.CuisineClientProxy;
 
 public final class IngredientMeshDefinition implements ItemMeshDefinition, ISelectiveResourceReloadListener
 {
@@ -55,7 +55,7 @@ public final class IngredientMeshDefinition implements ItemMeshDefinition, ISele
                 }
             }
         }
-        return new ModelResourceLocation(ClientProxy.EMPTY, "inventory"); // Catch all
+        return new ModelResourceLocation(CuisineClientProxy.EMPTY, "inventory"); // Catch all
     }
 
     @Override

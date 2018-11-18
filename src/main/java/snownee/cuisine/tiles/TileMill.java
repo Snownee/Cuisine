@@ -73,7 +73,7 @@ public class TileMill extends TileBase implements ITickable
 
     public TileMill()
     {
-        stateMachine = Cuisine.proxy.loadAnimationStateMachine(STATE_MACHINE_JSON, ImmutableMap.of("progress", progressValue));
+        stateMachine = Cuisine.sidedDelegate.loadAnimationStateMachine(STATE_MACHINE_JSON, ImmutableMap.of("progress", progressValue));
         fluidInput.setTileEntity(this);
         fluidOutput.setTileEntity(this);
     }

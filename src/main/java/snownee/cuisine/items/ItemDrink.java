@@ -35,7 +35,7 @@ import snownee.cuisine.internal.capabilities.DrinkContainer;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.plugins.TANCompat;
-import snownee.cuisine.proxy.ClientProxy;
+import snownee.cuisine.client.CuisineClientProxy;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.Kiwi;
 
@@ -54,7 +54,7 @@ public class ItemDrink extends ItemAbstractComposite
     public void mapModel()
     {
         ModelLoader.setCustomMeshDefinition(this, DishMeshDefinition.INSTANCE);
-        ModelBakery.registerItemVariants(this, ClientProxy.EMPTY, new ResourceLocation(Cuisine.MODID, "dish/drink"), new ResourceLocation(Cuisine.MODID, "dish/smoothie"), new ResourceLocation(Cuisine.MODID, "dish/gelo"), new ResourceLocation(Cuisine.MODID, "dish/soda"));
+        ModelBakery.registerItemVariants(this, CuisineClientProxy.EMPTY, new ResourceLocation(Cuisine.MODID, "dish/drink"), new ResourceLocation(Cuisine.MODID, "dish/smoothie"), new ResourceLocation(Cuisine.MODID, "dish/gelo"), new ResourceLocation(Cuisine.MODID, "dish/soda"));
     }
 
     @Nullable

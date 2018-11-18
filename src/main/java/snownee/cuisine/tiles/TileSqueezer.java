@@ -56,7 +56,7 @@ public class TileSqueezer extends TileBase implements ITickable
 
     public TileSqueezer()
     {
-        this.stateMachine = Cuisine.proxy.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
+        this.stateMachine = Cuisine.sidedDelegate.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
     }
 
     @Override
