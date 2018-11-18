@@ -35,6 +35,10 @@ public class EnergyCell extends EnergyStorage
         {
             energy = nbt.getInteger("Energy");
         }
+        else
+        {
+            energy = 0;
+        }
         return this;
     }
 
@@ -49,7 +53,38 @@ public class EnergyCell extends EnergyStorage
 
     public void setEnergy(int energy)
     {
+        int old = this.energy;
         this.energy = MathHelper.clamp(energy, 0, getMaxEnergyStored());
+        if (old != this.energy)
+        {
+            onEnergyChanged();
+        }
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate)
+    {
+        int amount = super.extractEnergy(maxExtract, simulate);
+        if (!simulate && amount > 0)
+        {
+            onEnergyChanged();
+        }
+        return amount;
+    }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate)
+    {
+        int amount = super.receiveEnergy(maxReceive, simulate);
+        if (!simulate && amount > 0)
+        {
+            onEnergyChanged();
+        }
+        return amount;
+    }
+
+    protected void onEnergyChanged()
+    {
     }
 
 }

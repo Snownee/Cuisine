@@ -82,10 +82,10 @@ public class BlockBasin extends BlockMod
                 {
                     entityIn.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.squeeze_0"));
                 }
-                tileBasin.process(Processing.SQUEEZING, input);
+                tileBasin.process(Processing.SQUEEZING, input, false);
                 if (entityIn instanceof EntityIronGolem)
                 {
-                    tileBasin.process(Processing.SQUEEZING, input);
+                    tileBasin.process(Processing.SQUEEZING, input, false);
                 }
             }
         }
@@ -112,7 +112,7 @@ public class BlockBasin extends BlockMod
                 List<ItemStack> items = worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos)).stream().filter(e -> !e.isDead && e.onGround).map(EntityItem::getItem).collect(Collectors.toList());
                 for (ItemStack stack : items)
                 {
-                    tileBasin.process(Processing.BASIN_THROWING, stack);
+                    tileBasin.process(Processing.BASIN_THROWING, stack, false);
                 }
                 tileBasin.tickCheckThrowing = 25;
             }

@@ -144,7 +144,7 @@ public class TileDrinkroBase extends TileBase
         }
     }
 
-    void refresh()
+    protected void refresh()
     {
         if (hasWorld() && !world.isRemote)
         {

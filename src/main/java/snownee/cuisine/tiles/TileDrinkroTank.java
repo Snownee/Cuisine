@@ -417,7 +417,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         return working;
     }
 
-    void refresh()
+    protected void refresh()
     {
         if (hasWorld() && !world.isRemote)
         {

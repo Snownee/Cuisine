@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -138,15 +137,6 @@ public class TileInventoryBase extends TileBase
     public void onContentsChanged(int slot)
     {
         refresh();
-    }
-
-    void refresh()
-    {
-        if (hasWorld() && !world.isRemote)
-        {
-            IBlockState state = world.getBlockState(pos);
-            world.markAndNotifyBlock(pos, null, state, state, 11);
-        }
     }
 
 }
