@@ -3,6 +3,7 @@ package snownee.cuisine.tiles;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -12,6 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -82,6 +84,8 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 builder.apply(new Heating(this), this);
             }
         }
+
+        // WIP, do not bother!
 
         double pX = this.pos.getX() + 0.5 + (this.world.rand.nextDouble() - 1.0/2);
         double pY = this.pos.getY() + 1.0 + (this.world.rand.nextDouble() - 1.0/2);
@@ -175,6 +179,9 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 }
                 break;
         }
+
+        // TODO uh.
+        // this.world.playSound(null, this.pos, SoundEvents.BLOCK_ANVIL_HIT, SoundCategory.BLOCKS, 1F, 1F);
     }
 
     public void tryCook(EntityPlayer cook, ItemStack heldThing)
