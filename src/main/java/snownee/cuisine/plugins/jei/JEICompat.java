@@ -22,7 +22,6 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -45,6 +44,7 @@ import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemMortar;
+import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
@@ -235,7 +235,7 @@ public class JEICompat implements IModPlugin
         {
             if (!isInput)
             {
-                tooltip.add(TextFormatting.DARK_GRAY + I18n.translateToLocalFormatted("jei.tooltip.recipe.id", locator));
+                tooltip.add(TextFormatting.DARK_GRAY + I18nUtil.translate("jei.tooltip.recipe.id", locator));
             }
         };
     }

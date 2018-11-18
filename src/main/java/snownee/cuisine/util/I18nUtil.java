@@ -32,7 +32,7 @@ public class I18nUtil
      */
     public static String translate(String key, Object... parameters)
     {
-        return I18n.format(getFullKey(key), parameters);
+        return Cuisine.sidedDelegate.translate(getFullKey(key), parameters);
     }
 
     /**
@@ -44,7 +44,7 @@ public class I18nUtil
      */
     public static String translate(String key)
     {
-        return I18n.format(getFullKey(key));
+        return Cuisine.sidedDelegate.translate(getFullKey(key));
     }
 
     /**
