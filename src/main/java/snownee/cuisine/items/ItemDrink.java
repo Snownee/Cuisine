@@ -67,7 +67,6 @@ public class ItemDrink extends ItemAbstractComposite
 
     @Nonnull
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack)
     {
         String s = ItemNBTUtil.getString(stack, "customName", "");
