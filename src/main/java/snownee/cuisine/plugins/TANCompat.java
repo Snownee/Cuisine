@@ -49,7 +49,7 @@ public class TANCompat implements IModule
     {
         MinecraftForge.EVENT_BUS.register(this);
 
-        Drink.Builder.FEATURE_INPUTS.put(ItemDefinition.of(TANItems.ice_cube), Drink.DrinkType.SMOOTHIE);
+        // Drink.Builder.FEATURE_INPUTS.put(ItemDefinition.of(TANItems.ice_cube), Drink.DrinkType.SMOOTHIE);
 
         for (int i = 0; i < 8; i++)
         {
