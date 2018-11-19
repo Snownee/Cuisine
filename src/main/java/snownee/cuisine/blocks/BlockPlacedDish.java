@@ -1,6 +1,7 @@
 package snownee.cuisine.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
@@ -43,6 +44,7 @@ public class BlockPlacedDish extends BlockMod
         super(name, Material.CLAY);
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setResistance(5.0F);
+        setSoundType(SoundType.STONE);
         setDefaultState(this.blockState.getBaseState().withProperty(MODEL, ModelType.EMPTY));
         MinecraftForge.EVENT_BUS.register(this);
     }
