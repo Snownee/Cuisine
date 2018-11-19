@@ -22,7 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
@@ -54,9 +53,16 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         IDLE, WORKING
     }
 
+    public static class SeasoningInfo
+    {
+        public int volume;
+        public int color;
+    }
+
     static
     {
         NetworkChannel.INSTANCE.register(PacketIncrementalWokUpdate.class);
+        NetworkChannel.INSTANCE.register(PacketWokSeasoningsUpdate.class);
     }
 
     private Status status = Status.IDLE;
@@ -65,7 +71,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     private int temperature, water, oil;
     public byte actionCycle = 0;
     final transient List<ItemStack> ingredientsForRendering = new ArrayList<>(8);
-    final transient List<FluidStack> spicesForRendering = new ArrayList<>(8);
+    public SeasoningInfo seasoningInfo;
 
     @Override
     public void update()
@@ -200,26 +206,10 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(heldThing);
             if (spice != null)
             {
-                if (CuisineRegistry.SPICE_BOTTLE.hasFluid(heldThing))
-                {
-                    FluidStack fluidStack = CuisineRegistry.SPICE_BOTTLE.getFluidHandler(heldThing).drain(1, false);
-                    for (FluidStack content : spicesForRendering)
-                    {
-                        if (content.isFluidEqual(fluidStack))
-                        {
-                            content.amount += fluidStack.amount;
-                            fluidStack = null;
-                            break;
-                        }
-                    }
-                    if (fluidStack != null)
-                    {
-                        spicesForRendering.add(fluidStack);
-                    }
-                }
                 CuisineRegistry.SPICE_BOTTLE.consume(heldThing, 1);
                 Seasoning seasoning = new Seasoning(spice);
                 this.builder.addSeasoning(player, seasoning, this);
+                refreshSeasoningInfo();
                 return true;
             }
             else
@@ -256,6 +246,69 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         return Collections.unmodifiableList(this.ingredientsForRendering);
     }
 
+    public void refreshSeasoningInfo()
+    {
+        if (builder == null)
+        {
+            return;
+        }
+        if (seasoningInfo == null)
+        {
+            seasoningInfo = new SeasoningInfo();
+        }
+
+        List<Seasoning> seasonings = builder.getSeasonings();
+        if (!seasonings.isEmpty())
+        {
+            Seasoning seasoning = null;
+            int a = 0, r = 0, g = 0, b = 0, size = 0;
+            for (Seasoning s : seasonings)
+            {
+                if (s.getSpice().isLiquid(s))
+                {
+                    int color = s.getSpice().getColorCode();
+                    a += s.getSize() * (color >> 24 & 255);
+                    r += s.getSize() * (color >> 16 & 255);
+                    g += s.getSize() * (color >> 8 & 255);
+                    b += s.getSize() * (color & 255);
+                    size += s.getSize();
+                    if (seasoning == null || seasoning.getSize() < s.getSize())
+                    {
+                        seasoning = s;
+                    }
+                }
+            }
+            if (seasoning == null)
+            {
+                seasoningInfo.volume = 0;
+            }
+            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.WATER && seasoning.getSize() == size)
+            {
+                seasoningInfo.volume = size;
+                seasoningInfo.color = 0xFF4C57D1;
+            }
+            else
+            {
+                int color = seasoning.getSpice().getColorCode();
+                a += seasoning.getSize() * (color >> 24 & 255);
+                r += seasoning.getSize() * (color >> 16 & 255);
+                g += seasoning.getSize() * (color >> 8 & 255);
+                b += seasoning.getSize() * (color & 255);
+                seasoningInfo.volume = size;
+                size += seasoning.getSize();
+                a = a / size;
+                r = r / size;
+                g = g / size;
+                b = b / size;
+                seasoningInfo.color = a << 24 | r << 16 | g << 8 | b;
+            }
+        }
+        if (world != null && !world.isRemote)
+        {
+            NetworkChannel.INSTANCE.sendToAll(new PacketWokSeasoningsUpdate(this.getPos(), seasoningInfo));
+        }
+    }
+
     @Nullable
     private CookingStrategy determineCookingStrategy(ItemStack heldItem)
     {
@@ -279,6 +332,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         if (compound.hasKey("dish", Constants.NBT.TAG_COMPOUND))
         {
             this.builder = Dish.Builder.fromNBT(compound.getCompoundTag("dish"));
+            refreshSeasoningInfo();
         }
         NBTTagList items = compound.getTagList("rendering", Constants.NBT.TAG_COMPOUND);
         for (NBTBase tag : items)
@@ -286,18 +340,6 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             if (tag instanceof NBTTagCompound)
             {
                 this.ingredientsForRendering.add(new ItemStack((NBTTagCompound) tag));
-            }
-        }
-        NBTTagList spices = compound.getTagList("rendering", Constants.NBT.TAG_COMPOUND);
-        for (NBTBase tag : spices)
-        {
-            if (tag instanceof NBTTagCompound)
-            {
-                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT((NBTTagCompound) tag);
-                if (fluidStack != null)
-                {
-                    this.spicesForRendering.add(fluidStack);
-                }
             }
         }
     }
@@ -318,12 +360,6 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             items.appendTag(item.serializeNBT());
         }
         compound.setTag("rendering", items);
-        NBTTagList spices = new NBTTagList();
-        for (FluidStack fluid : this.spicesForRendering)
-        {
-            spices.appendTag(fluid.writeToNBT(new NBTTagCompound()));
-        }
-        compound.setTag("renderingSpices", spices);
         return super.writeToNBT(compound);
     }
 
@@ -427,7 +463,6 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         this.completedDish = null;
         this.status = Status.IDLE;
         this.ingredientsForRendering.clear();
-        this.spicesForRendering.clear();
         NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), ItemStack.EMPTY));
 
         return Optional.of(stack);

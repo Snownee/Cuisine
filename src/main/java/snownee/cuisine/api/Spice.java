@@ -13,6 +13,8 @@ public interface Spice
 
     int getColorCode();
 
+    boolean isLiquid(Seasoning seasoning);
+
     default void onAddedInto(final CompositeFood.Builder<?> dish, final CookingVessel vessel)
     {
         // NO-OP
