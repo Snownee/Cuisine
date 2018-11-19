@@ -416,6 +416,17 @@ cuisine.toast.skill.description=%s提升至%d级！
 
 cuisine.command.culinaryskill=/culinaryskill <玩家> get <技能点> 或 /culinaryskill <玩家> set <技能点> <新的值>
 
+# Do not have to translate:
+cuisine.forestbat.hit=让你尝尝柑橘家族的厉害！
+cuisine.forestbat.drop_success=为什么要丢下我！
+cuisine.forestbat.drop_failure=我不让你走，听我把话说完！
+cuisine.forestbat.pickup0=新人说出常用的模组！
+cuisine.forestbat.pickup1=今天你认真读书了吗？
+cuisine.forestbat.pickup2=我可是来自高贵的柑橘家族！
+cuisine.forestbat.pickup3=昨夜我做了一个奇怪的梦，梦见自己会飞！
+cuisine.forestbat.squeeze=喂，不要踩我帅气的脸！
+cuisine.forestbat.torch=啧，你居然在玩这种东西！信不信我把你……哼哼哼
+
 ## Special override - can be used when combined name is either grammatrically incorrect or not following convention
 cuisine.ingredient.chili.cubed=辣椒段
 cuisine.ingredient.cucumber.cubed=黄瓜段

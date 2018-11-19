@@ -14,8 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.util.FakePlayer;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.ModelUtil;
 import snownee.kiwi.item.IModItem;
 import snownee.kiwi.util.VariantsHolder;
@@ -25,6 +27,7 @@ import snownee.kiwi.util.VariantsHolder.Variant;
 public class ItemBasicFood extends ItemFood implements IModItem
 {
     private final String name;
+    private static int forestbatLastWords;
 
     public ItemBasicFood(String name)
     {
@@ -124,14 +127,11 @@ public class ItemBasicFood extends ItemFood implements IModItem
         {
             if (player.world.rand.nextInt(4) == 0)
             {
-                player.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.drop_0"));
+                citronSays(player, "drop_success");
             }
             else
             {
-                if (player.world.rand.nextBoolean())
-                {
-                    player.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.drop_1"));
-                }
+                citronSays(player, "drop_failure");
                 return false;
             }
         }
@@ -145,10 +145,29 @@ public class ItemBasicFood extends ItemFood implements IModItem
         {
             if (attacker.world.rand.nextInt(5) == 0)
             {
-                attacker.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.hit"));
+                citronSays(attacker, "hit");
             }
         }
         return false;
+    }
+
+    public static void citronSays(EntityLivingBase player, String key)
+    {
+        if (player instanceof FakePlayer || player.world.isRemote)
+        {
+            return;
+        }
+        int hash = key.hashCode();
+        if (hash == forestbatLastWords)
+        {
+            return;
+        }
+        forestbatLastWords = hash;
+        key = "forestbat." + key;
+        if (I18nUtil.canTranslate(key))
+        {
+            player.sendMessage(new TextComponentTranslation(I18nUtil.getFullKey(key)));
+        }
     }
 
     public static class Variants extends VariantsHolder<Variants.SubItem>

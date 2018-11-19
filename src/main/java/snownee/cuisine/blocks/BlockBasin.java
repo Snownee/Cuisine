@@ -24,7 +24,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -78,9 +77,9 @@ public class BlockBasin extends BlockMod
                 {
                     entityIn.attackEntityFrom(DamageSource.CACTUS, 1);
                 }
-                else if (worldIn.isRemote && input.getItem() == CuisineRegistry.BASIC_FOOD && input.getMetadata() == ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta() && entityIn instanceof EntityPlayer && tileBasin.tank.getFluidAmount() == 0)
+                else if (input.getItem() == CuisineRegistry.BASIC_FOOD && input.getMetadata() == ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta() && entityIn instanceof EntityPlayer && tileBasin.tank.getFluidAmount() == 0)
                 {
-                    entityIn.sendMessage(new TextComponentTranslation(Cuisine.MODID + ".forestbat.squeeze_0"));
+                    ItemBasicFood.citronSays((EntityLivingBase) entityIn, "squeeze");
                 }
                 tileBasin.process(Processing.SQUEEZING, input, false);
                 if (entityIn instanceof EntityIronGolem)
@@ -285,7 +284,7 @@ public class BlockBasin extends BlockMod
     {
         return false;
     }
-    
+
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {

@@ -494,7 +494,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new MaterialWithEffect("pickled", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -13784, 0, 1, 1, 1, 0.3F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, 0xF9ECDD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new MaterialWithEffect("cactus", CulinaryHub.CommonEffects.HEAT_RESISTANCE, 0xA9BC98, 0, 1, 1, 1, -0.1F).setValidForms(EnumSet.of(Form.CUBED, Form.DICED, Form.JUICE)));
-        api.register(new SimpleMaterialImpl("water", 0x55FFFFFF, 0, 1, 1, 1, -0.1F).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("water", 0x55DDDDFF, 0, 1, 1, 1, -0.1F).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("milk", 0xCCFFFFFF, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("soy_milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("mandarin", 0xF08A19, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
