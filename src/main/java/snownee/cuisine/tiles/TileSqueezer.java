@@ -57,14 +57,14 @@ public class TileSqueezer extends TileBase implements ITickable
 
     private boolean isInWorkCycle = false;
 
-    private final EnergyCell cell;
+    private final Battery cell;
 
     public TileSqueezer()
     {
         this.stateMachine = Cuisine.sidedDelegate.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
         if (CuisineConfig.GENERAL.squeezerUsesFE > 0)
         {
-            cell = new EnergyCell(CuisineConfig.GENERAL.squeezerUsesFE * 50, CuisineConfig.GENERAL.squeezerUsesFE, 0)
+            cell = new Battery(CuisineConfig.GENERAL.squeezerUsesFE * 50, CuisineConfig.GENERAL.squeezerUsesFE, 0)
             {
                 @Override
                 protected void onEnergyChanged()

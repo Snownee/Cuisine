@@ -6,30 +6,30 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.EnergyStorage;
 
 //TODO (Snownee): Move to Kiwi
-public class EnergyCell extends EnergyStorage
+public class Battery extends EnergyStorage
 {
 
-    public EnergyCell(int capacity)
+    public Battery(int capacity)
     {
         super(capacity);
     }
 
-    public EnergyCell(int capacity, int maxTransfer)
+    public Battery(int capacity, int maxTransfer)
     {
         super(capacity, maxTransfer, maxTransfer, 0);
     }
 
-    public EnergyCell(int capacity, int maxReceive, int maxExtract)
+    public Battery(int capacity, int maxReceive, int maxExtract)
     {
         super(capacity, maxReceive, maxExtract, 0);
     }
 
-    public EnergyCell(int capacity, int maxReceive, int maxExtract, int energy)
+    public Battery(int capacity, int maxReceive, int maxExtract, int energy)
     {
         super(capacity, maxReceive, maxExtract, energy);
     }
 
-    public EnergyCell readFromNBT(NBTTagCompound nbt)
+    public Battery readFromNBT(NBTTagCompound nbt)
     {
         if (nbt.hasKey("Energy", Constants.NBT.TAG_INT))
         {

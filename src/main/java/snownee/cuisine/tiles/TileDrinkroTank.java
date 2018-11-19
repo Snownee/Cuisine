@@ -101,18 +101,18 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     public Drink.Builder builder;
     public final ItemStackHandler inventory;
     @Nullable
-    public final EnergyCell cell;
+    public final Battery battery;
 
     public TileDrinkroTank()
     {
         super();
         if (CuisineConfig.GENERAL.drinkroUsesFE > 0)
         {
-            cell = new EnergyCell(CuisineConfig.GENERAL.drinkroUsesFE * 50, CuisineConfig.GENERAL.drinkroUsesFE, 0);
+            battery = new Battery(CuisineConfig.GENERAL.drinkroUsesFE * 50, CuisineConfig.GENERAL.drinkroUsesFE, 0);
         }
         else
         {
-            cell = null;
+            battery = null;
         }
         builder = Drink.Builder.create();
         inventory = new ItemStackHandler(4)
@@ -185,7 +185,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         if (poweredIn && !this.powered && !isWorking())
         {
             world.addBlockEvent(pos, getBlockType(), 1, 0);
-            if (cell == null || cell.getEnergyStored() >= CuisineConfig.GENERAL.drinkroUsesFE)
+            if (battery == null || battery.getEnergyStored() >= CuisineConfig.GENERAL.drinkroUsesFE)
             {
                 working = true;
                 // world.notifyBlockUpdate(pos, state, state, 3);
@@ -213,7 +213,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     public void stopProcess()
     {
         working = false;
-        if (cell != null && cell.getEnergyStored() < CuisineConfig.GENERAL.drinkroUsesFE)
+        if (battery != null && battery.getEnergyStored() < CuisineConfig.GENERAL.drinkroUsesFE)
         {
             return;
         }
@@ -305,9 +305,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         tileBase.inventory.setStackInSlot(0, itemDrink);
         world.addBlockEvent(pos, getBlockType(), 0, builder.getColor());
 
-        if (cell != null)
+        if (battery != null)
         {
-            cell.setEnergy(cell.getEnergyStored() - CuisineConfig.GENERAL.drinkroUsesFE);
+            battery.setEnergy(battery.getEnergyStored() - CuisineConfig.GENERAL.drinkroUsesFE);
         }
 
         for (int i = 0; i < inputs.getSlots(); i++)
@@ -324,7 +324,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && cell != null) || super.hasCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || (capability == CapabilityEnergy.ENERGY && battery != null) || super.hasCapability(capability, facing);
     }
 
     @Override
@@ -338,9 +338,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         {
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
         }
-        if (capability == CapabilityEnergy.ENERGY && cell != null)
+        if (capability == CapabilityEnergy.ENERGY && battery != null)
         {
-            return CapabilityEnergy.ENERGY.cast(cell);
+            return CapabilityEnergy.ENERGY.cast(battery);
         }
         return super.getCapability(capability, facing);
     }
@@ -351,9 +351,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         super.readFromNBT(data);
         powered = data.getBoolean("powered");
         inventory.deserializeNBT(data.getCompoundTag("inventory"));
-        if (cell != null)
+        if (battery != null)
         {
-            cell.readFromNBT(data);
+            battery.readFromNBT(data);
         }
         working = data.getBoolean("working");
         builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
@@ -365,9 +365,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         super.writeToNBT(data);
         data.setBoolean("powered", powered);
         data.setTag("inventory", inventory.serializeNBT());
-        if (cell != null)
+        if (battery != null)
         {
-            cell.writeToNBT(data);
+            battery.writeToNBT(data);
         }
         data.setBoolean("working", working);
         data.setTag("builder", Drink.Builder.toNBT(builder));
@@ -378,9 +378,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     protected void readPacketData(NBTTagCompound data)
     {
         this.inventory.deserializeNBT(data.getCompoundTag("inventory"));
-        if (cell != null)
+        if (battery != null)
         {
-            cell.readFromNBT(data);
+            battery.readFromNBT(data);
         }
         this.builder = Drink.Builder.fromNBT(data.getCompoundTag("builder"));
         this.working = data.getBoolean("working");
@@ -390,9 +390,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
         data.setTag("inventory", this.inventory.serializeNBT());
-        if (cell != null)
+        if (battery != null)
         {
-            cell.writeToNBT(data);
+            battery.writeToNBT(data);
         }
         data.setTag("builder", Drink.Builder.toNBT(builder));
         data.setBoolean("working", this.working);
