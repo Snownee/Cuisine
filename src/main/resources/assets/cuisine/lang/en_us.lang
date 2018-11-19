@@ -418,3 +418,4 @@ cuisine.command.culinaryskill=/culinaryskill <Player> get <SkillPoint> or /culin
 
 ## Special override - can be used when combined name is either grammatrically incorrect or not following convention
 cuisine.ingredient.water.juice=Water
+cuisine.ingredient.milk.juice=Milk
