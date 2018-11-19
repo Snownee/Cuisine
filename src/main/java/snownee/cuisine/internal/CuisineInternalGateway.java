@@ -259,24 +259,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         return effectRegistry.lookup(uniqueId);
     }
 
-    public final Map<ItemDefinition, SimpleIngredient> simpleIngredientMapping = new HashMap<>();
-
-    private static final class SimpleIngredient
-    {
-        public final Material material;
-        public final Form form;
-
-        public SimpleIngredient(Material material, Form form)
-        {
-            this.material = material;
-            this.form = form;
-        }
-
-        Ingredient makeIngredient()
-        {
-            return new Ingredient(material, form, 1);
-        }
-    }
+    // public final Map<ItemDefinition, Material> itemToMaterialMapping = new HashMap<>();
 
     @Override
     public Ingredient findIngredient(ItemStack item)
@@ -300,12 +283,6 @@ public final class CuisineInternalGateway implements CuisineAPI
         }
 
         ItemDefinition itemDefinition = ItemDefinition.of(item);
-
-        SimpleIngredient juice = simpleIngredientMapping.get(itemDefinition);
-        if (juice != null)
-        {
-            return juice.makeIngredient();
-        }
 
         Ingredient ingredient = this.itemIngredients.get(itemDefinition);
         if (ingredient != null)
@@ -635,11 +612,25 @@ public final class CuisineInternalGateway implements CuisineAPI
         itemIngredients.put(item, ingredient);
     }
 
+    //    @Override
+    //    public void registerMapping(ItemDefinition item, Material material)
+    //    {
+    //        // TODO Auto-generated method stub
+    //        CuisineAPI.super.registerMapping(item, material);
+    //    }
+
     @Override
     public void registerMapping(String ore, Ingredient ingredient)
     {
         oreDictIngredients.put(ore, ingredient);
     }
+
+    //    @Override
+    //    public void registerMapping(String ore, Material material)
+    //    {
+    //        // TODO Auto-generated method stub
+    //        CuisineAPI.super.registerMapping(ore, material);
+    //    }
 
     @Override
     public void registerMapping(ItemDefinition item, Spice spice)
