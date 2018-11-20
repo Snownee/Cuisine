@@ -31,6 +31,7 @@ import snownee.cuisine.items.ItemCrops;
 import snownee.cuisine.items.ItemDish;
 import snownee.cuisine.items.ItemDrink;
 import snownee.cuisine.items.ItemDrinkro;
+import snownee.cuisine.items.ItemEmptyPlate;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.items.ItemIronSpatula;
 import snownee.cuisine.items.ItemKitchenKnife;
@@ -90,6 +91,7 @@ public class CuisineRegistry implements IModule
     public static final BlockMill MILL = new BlockMill("mill");
 
     public static final BlockPlacedDish PLACED_DISH = new BlockPlacedDish("placed_dish");
+    public static final ItemEmptyPlate EMPTY_PLATE = new ItemEmptyPlate(PLACED_DISH);
 
     public static final BlockFirePit FIRE_PIT = new BlockFirePit("fire_pit");
 
