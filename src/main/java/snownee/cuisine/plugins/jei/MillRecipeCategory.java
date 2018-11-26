@@ -9,9 +9,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 
@@ -82,8 +80,8 @@ public class MillRecipeCategory implements IRecipeCategory<MillRecipe>
 
         if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
         {
-            stacks.addTooltipCallback(JEICompat.createRecipeIDTooltip(ItemStack.class, recipe.recipe));
-            fluids.addTooltipCallback(JEICompat.createRecipeIDTooltip(FluidStack.class, recipe.recipe));
+            stacks.addTooltipCallback(JEICompat.identifierTooltip(recipe.recipe.getIdentifier()));
+            fluids.addTooltipCallback(JEICompat.identifierTooltip(recipe.recipe.getIdentifier()));
         }
     }
 }

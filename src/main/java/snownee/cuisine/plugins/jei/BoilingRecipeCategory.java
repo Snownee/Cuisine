@@ -14,7 +14,6 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.config.Constants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.util.I18nUtil;
@@ -110,8 +109,8 @@ public class BoilingRecipeCategory implements IRecipeCategory<GenericRecipeWrapp
 
         if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
         {
-            stacks.addTooltipCallback(JEICompat.createRecipeIDTooltip(ItemStack.class, recipeWrapper.recipe));
-            fluids.addTooltipCallback(JEICompat.createRecipeIDTooltip(FluidStack.class, recipeWrapper.recipe));
+            stacks.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
+            fluids.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
         }
     }
 

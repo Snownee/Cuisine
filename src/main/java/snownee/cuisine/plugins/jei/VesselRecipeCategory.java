@@ -10,7 +10,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
@@ -82,8 +81,8 @@ public class VesselRecipeCategory implements IRecipeCategory<VesselRecipe>
 
         if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
         {
-            stacks.addTooltipCallback(JEICompat.createRecipeIDTooltip(ItemStack.class, recipeWrapper.recipe));
-            fluids.addTooltipCallback(JEICompat.createRecipeIDTooltip(FluidStack.class, recipeWrapper.recipe));
+            stacks.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
+            fluids.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
         }
     }
 

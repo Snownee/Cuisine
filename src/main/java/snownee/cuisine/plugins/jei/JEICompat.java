@@ -19,6 +19,7 @@ import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -44,7 +45,6 @@ import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemMortar;
-import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
@@ -54,7 +54,7 @@ public class JEICompat implements IModPlugin
     // Keep an eye on this; this may change in the future
     static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
     static final ResourceLocation CUISINE_RECIPE_GUI = new ResourceLocation(Cuisine.MODID, "textures/gui/jei.png");
-    static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+    static List<ItemStack> AXES;
 
     static IDrawable arrowOut;
     static IDrawable arrowOutOverlay;
@@ -65,6 +65,8 @@ public class JEICompat implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
+        AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
         arrowOut = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 11, 26, 11, 7);
         arrowOutOverlay = guiHelper.drawableBuilder(JEICompat.CUISINE_RECIPE_GUI, 11, 18, 11, 8).buildAnimated(new CombinedTimer(80, 11, 11, 22), IDrawableAnimated.StartDirection.LEFT);
@@ -229,13 +231,12 @@ public class JEICompat implements IModPlugin
         return identifierTooltip(recipe.getIdentifier());
     }
 
-    private static <T> ITooltipCallback<T> identifierTooltip(ResourceLocation locator)
+    static <T> ITooltipCallback<T> identifierTooltip(ResourceLocation locator)
     {
-        return (slot, isInput, ingredient, tooltip) ->
-        {
+        return (slot, isInput, ingredient, tooltip) -> {
             if (!isInput)
             {
-                tooltip.add(TextFormatting.DARK_GRAY + I18nUtil.translate("jei.tooltip.recipe.id", locator));
+                tooltip.add(TextFormatting.DARK_GRAY + I18n.format("jei.tooltip.recipe.id", locator));
             }
         };
     }
