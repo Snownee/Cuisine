@@ -42,7 +42,7 @@ import snownee.kiwi.util.VariantsHolder;
         useMetadata = true,
         acceptedMinecraftVersions = "[1.12, 1.13)",
         guiFactory = "snownee.cuisine.client.CuisineConfigGUI",
-        dependencies = "required-after:kiwi@[0.3, 0.4);"
+        dependencies = "required-after:kiwi@[0.4, 0.5);"
 )
 public class Cuisine
 {

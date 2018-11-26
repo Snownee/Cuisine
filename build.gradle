@@ -71,7 +71,7 @@ dependencies {
         exclude group: 'cofh'
     }
     compile files(
-        'Kiwi-1.12.2-0.3.0.6-deobf.jar',
+        'Kiwi-1.12.2-0.4.0-deobf.jar',
         'Nutrition-1.12.2-3.5.0.jar',
         'Baubles-1.12-1.5.2.jar',
         'Carry+On+MC1.12.2+v1.10.jar',
