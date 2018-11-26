@@ -17,9 +17,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -524,6 +527,12 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                         entityitem.setDefaultPickupDelay();
                         entityitem.setEntityInvulnerable(true);
                         worldIn.spawnEntity(entityitem);
+                        EntityBat bat = new EntityBat(worldIn);
+                        bat.setPosition(pos2.getX() + d0, pos2.getY() + d1, pos2.getZ() + d2);
+                        bat.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 200, 10));
+                        bat.setCustomNameTag("ForestBat");
+                        bat.setAlwaysRenderNameTag(true);
+                        worldIn.spawnEntity(bat);
                     }
                 }
             }
