@@ -19,6 +19,8 @@ import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -33,7 +35,6 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.Boiling;
-import snownee.cuisine.api.process.CuisineProcessingRecipe;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
@@ -65,7 +66,10 @@ public class JEICompat implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
-        AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+        if (CuisineConfig.GENERAL.axeChopping)
+        {
+            AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+        }
 
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
         arrowOut = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 11, 26, 11, 7);
@@ -218,25 +222,24 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new BasinThrowingRecipeCategory(guiHelper, basin));
     }
 
-    /**
-     * @deprecated use {@link #identifierTooltip(ResourceLocation)} is sufficient.
-     * @param clazz type token
-     * @param recipe the recipe object
-     * @param <T> the type of ingredient
-     * @return a tooltip callback object that provides recipe identifier
-     */
-    @Deprecated
-    static <T> ITooltipCallback<T> createRecipeIDTooltip(Class<T> clazz, CuisineProcessingRecipe recipe)
-    {
-        return identifierTooltip(recipe.getIdentifier());
-    }
-
     static <T> ITooltipCallback<T> identifierTooltip(ResourceLocation locator)
     {
         return (slot, isInput, ingredient, tooltip) -> {
             if (!isInput)
             {
-                tooltip.add(TextFormatting.DARK_GRAY + I18n.format("jei.tooltip.recipe.id", locator));
+                if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips || GuiScreen.isShiftKeyDown())
+                {
+                    String text;
+                    if (locator.getNamespace().equals("crafttweaker"))
+                    {
+                        text = I18n.format("jei.tooltip.recipe.by", "CraftTweaker");
+                    }
+                    else
+                    {
+                        text = I18n.format("jei.tooltip.recipe.id", locator);
+                    }
+                    tooltip.add(TextFormatting.DARK_GRAY + text);
+                }
             }
         };
     }

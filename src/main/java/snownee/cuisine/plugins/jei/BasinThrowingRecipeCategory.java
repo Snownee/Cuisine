@@ -104,11 +104,8 @@ public class BasinThrowingRecipeCategory implements IRecipeCategory<GenericRecip
         stacks.set(ingredients);
         fluids.set(ingredients);
 
-        if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
-        {
-            stacks.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
-            fluids.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
-        }
+        stacks.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
+        fluids.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
     }
 
 }
