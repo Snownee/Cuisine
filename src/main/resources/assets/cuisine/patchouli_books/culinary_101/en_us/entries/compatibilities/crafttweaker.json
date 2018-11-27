@@ -1,0 +1,50 @@
+{
+  "name": "CraftTweaker Support",
+  "icon": "minecraft:iron_pickaxe",
+  "category": "compatibility",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Most of processing devices in Cuisine support CraftTweaker. This article will briefly introduce the API exposed to CraftTweaker.$(br)All classes exposed to CraftTweaker are under the namespace `mods.cuisine` in ZenScript."
+    },
+    {
+      "type": "text",
+      "text": "$(bold)Table of Contents$()$(br2)$(li)$(l:compatibilities/crafttweaker#CrT-Chopping)Axe Chopping$()$(li)Basin$(li2)$(l:compatibilities/crafttweaker#CrT-Basin-Drop)Drop-in$()$(li2)$(l:compatibilities/crafttweaker#CrT-Basin-Distill)Heating$()$(li2)$(l:compatibilities/crafttweaker#CrT-Basin-Squeeze)Squeezing$()$(li)$(l:compatibilities/crafttweaker#CrT-Mill)Mill$()$(li)$(l:compatibilities/crafttweaker#CrT-Mortar)Mortar$()$(li)$(l:compatibilities/crafttweaker#CrT-Vessel)Vessel$()"
+    },
+    {
+      "anchor": "CrT-Chopping",
+      "type": "text",
+      "text": "mods.cuisine.AxeChopping"
+    },
+    {
+      "anchor": "CrT-Basin-Drop",
+      "type": "text",
+      "text": "mods.cuisine.BasinThrowing"
+    },
+    {
+      "anchor": "CrT-Basin-Distill",
+      "type": "text",
+      "text": "mods.cuisine.BasinHeating"
+    },
+    {
+      "anchor": "CrT-Basin-Squeeze",
+      "type": "text",
+      "text": "mods.cuisine.BasinSqueezing"
+    },
+    {
+      "anchor": "CrT-Mill",
+      "type": "text",
+      "text": "mods.cuisine.Mill"
+    },
+    {
+      "anchor": "CrT-Mortar",
+      "type": "text",
+      "text": "mods.cuisine.Mortar"
+    },
+    {
+      "anchor": "CrT-Vessel",
+      "type": "text",
+      "text": "mods.cuisine.Vessel"
+    }
+  ]
+}
