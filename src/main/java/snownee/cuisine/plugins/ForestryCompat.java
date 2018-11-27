@@ -21,13 +21,15 @@ import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.ItemDefinition;
 
-@KiwiModule(modid = Cuisine.MODID, name = "forestry", dependency = "forestry", optional = true)
+@KiwiModule(modid = Cuisine.MODID, name = ForestryCompat.MODID, dependency = ForestryCompat.MODID, optional = true)
 public class ForestryCompat implements IModule
 {
+    static final String MODID = "forestry";
+
     @Override
     public void init()
     {
-        Item material = Item.getByNameOrId("forestry:crafting_material");
+        Item material = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "crafting_material"));
         if (material != null)
         {
             Drink.Builder.FEATURE_INPUTS.put(ItemDefinition.of(material, 5), Drink.DrinkType.SMOOTHIE);
@@ -46,20 +48,20 @@ public class ForestryCompat implements IModule
         Material papaya = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("papaya", 0xa99027, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         CulinaryHub.API_INSTANCE.registerMapping("cropPapaya", papaya);
 
-        Item itemBerry = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "berries"));
+        Item itemBerry = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "berries"));
         if (itemBerry != null)
         {
             Material wildberry = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("wildberry", 0x4D1F23, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
             CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(itemBerry), wildberry);
         }
-        Item itemKelp = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "seaweed"));
+        Item itemKelp = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "seaweed"));
         if (itemKelp != null)
         {
             OreDictionary.registerOre("cropSeaweed", new ItemStack(itemKelp));
             Material seaweed = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("seaweed", 0x99909648, 0, 0, 0, 0, 0, MaterialCategory.SEAFOOD).setValidForms(Form.JUICE_ONLY));
             CulinaryHub.API_INSTANCE.registerMapping("cropSeaweed", seaweed);
         }
-        Item itemBambooshoot = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "sapling_0"));
+        Item itemBambooshoot = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "sapling_0"));
         if (itemBambooshoot != null)
         {
             OreDictionary.registerOre("cropBambooshoot", new ItemStack(itemBambooshoot, 1, 2));
@@ -67,148 +69,148 @@ public class ForestryCompat implements IModule
 
         if (CuisineConfig.GENERAL.axeChopping)
         {
-            Item log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.0"));
-            Item planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "planks.0"));
+            Item log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.0"));
+            Item planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "planks.0"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "larch"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "teak"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "desert_acacia"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "lime"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.1"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.1"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "chestnut"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "wenge"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "baobab"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "sequoia"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.2"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.2"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "kapok"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ebony"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "mahogany"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "balsa"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.3"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.3"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 13)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 14)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 15)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "willow"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "walnut"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 13)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "greenheart"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 14)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "cherry"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 15)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.4"));
-            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "planks.1"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.4"));
+            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "planks.1"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "mahoe"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "poplar"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "palm"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "papaya"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.5"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.5"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "pine"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "plum"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "maple"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "citrus"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.6"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.6"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "giant_sequoia"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ipe"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "padauk"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "cocobolo"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.7"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.7"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
-            }
-
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.0"));
-            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "planks.fireproof.0"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
-            }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.1"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
-            }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.2"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
-            }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.3"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 13)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 14)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 15)));
-            }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.4"));
-            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "planks.fireproof.1"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
-            }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.5"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
-            }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.6"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
-            }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.fireproof.7"));
-            if (log != null && planks != null)
-            {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "zebrawood"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
             }
 
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.vanilla.fireproof.0"));
-            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "planks.vanilla.fireproof.0"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.0"));
+            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "planks.fireproof.0"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "larch_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "teak_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "desert_acacia_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "lime_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
             }
-            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("forestry", "logs.vanilla.fireproof.1"));
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.1"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "chestnut_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "wenge_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "baobab_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "sequoia_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
+            }
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.2"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "kapok_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ebony_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "mahogany_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "balsa_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
+            }
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.3"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "willow_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "walnut_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 13)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "greenheart_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 14)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "cherry_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 15)));
+            }
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.4"));
+            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "planks.fireproof.1"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "mahoe_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "poplar_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "palm_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "papaya_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
+            }
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.5"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "pine_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "plum_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "maple_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "citrus_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 7)));
+            }
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.6"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "giant_sequoia_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 8)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ipe_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 9)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "padauk_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 10)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "cocobolo_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 11)));
+            }
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.fireproof.7"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "zebrawood_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 12)));
+            }
+
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.vanilla.fireproof.0"));
+            planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "planks.vanilla.fireproof.0"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "oak_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "spruce_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "birch_fp"), ItemDefinition.of(log, 2), new ItemStack(planks, 6, 2)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "jungle_fp"), ItemDefinition.of(log, 3), new ItemStack(planks, 6, 3)));
+            }
+            log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "logs.vanilla.fireproof.1"));
+            if (log != null && planks != null)
+            {
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "acacia_fp"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "dark_oak_fp"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 5)));
             }
         }
     }

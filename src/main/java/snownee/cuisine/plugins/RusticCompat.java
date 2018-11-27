@@ -17,9 +17,11 @@ import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.ItemDefinition;
 
-@KiwiModule(modid = Cuisine.MODID, name = "rustic", dependency = "rustic", optional = true)
+@KiwiModule(modid = Cuisine.MODID, name = RusticCompat.MODID, dependency = RusticCompat.MODID, optional = true)
 public class RusticCompat implements IModule
 {
+    static final String MODID = "rustic";
+
     @Override
     public void init()
     {
@@ -32,12 +34,12 @@ public class RusticCompat implements IModule
 
         if (CuisineConfig.GENERAL.axeChopping)
         {
-            Item log = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rustic", "log"));
-            Item planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation("rustic", "planks"));
+            Item log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "log"));
+            Item planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "planks"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
-                Processing.CHOPPING.add(new Chopping(ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "olive"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ironwood"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
             }
         }
     }

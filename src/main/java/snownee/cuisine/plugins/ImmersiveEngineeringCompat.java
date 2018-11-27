@@ -12,18 +12,22 @@ import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
-@KiwiModule(modid = Cuisine.MODID, name = "immersiveengineering", dependency = "immersiveengineering", optional = true)
+@KiwiModule(
+        modid = Cuisine.MODID, name = ImmersiveEngineeringCompat.MODID, dependency = ImmersiveEngineeringCompat.MODID, optional = true
+)
 public class ImmersiveEngineeringCompat implements IModule
 {
+    static final String MODID = "immersiveengineering";
+
     @Override
     public void init()
     {
         if (CuisineConfig.GENERAL.axeChopping)
         {
-            Item stick = ForgeRegistries.ITEMS.getValue(new ResourceLocation("immersiveengineering", "material"));
+            Item stick = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "material"));
             if (stick != null)
             {
-                Processing.CHOPPING.add(new Chopping(OreDictDefinition.of("plankTreatedWood"), new ItemStack(stick, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "treated_stick"), OreDictDefinition.of("plankTreatedWood"), new ItemStack(stick, 4)));
             }
         }
     }

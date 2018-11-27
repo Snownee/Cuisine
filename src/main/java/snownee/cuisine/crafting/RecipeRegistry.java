@@ -39,14 +39,14 @@ public class RecipeRegistry
     {
         if (CuisineConfig.GENERAL.axeChopping)
         {
-            Processing.CHOPPING.add(new Chopping(OreDictDefinition.of("plankWood"), new ItemStack(Items.STICK, 4)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG), new ItemStack(Blocks.PLANKS, 6)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG, 1), new ItemStack(Blocks.PLANKS, 6, 1)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG, 2), new ItemStack(Blocks.PLANKS, 6, 2)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG, 3), new ItemStack(Blocks.PLANKS, 6, 3)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG2), new ItemStack(Blocks.PLANKS, 6, 4)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG2, 1), new ItemStack(Blocks.PLANKS, 6, 5)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(CuisineRegistry.LOG), new ItemStack(CuisineRegistry.PLANKS, 6)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "stick"), OreDictDefinition.of("plankWood"), new ItemStack(Items.STICK, 4)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "oak"), ItemDefinition.of(Blocks.LOG), new ItemStack(Blocks.PLANKS, 6)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "spruce"), ItemDefinition.of(Blocks.LOG, 1), new ItemStack(Blocks.PLANKS, 6, 1)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "birch"), ItemDefinition.of(Blocks.LOG, 2), new ItemStack(Blocks.PLANKS, 6, 2)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "jungle"), ItemDefinition.of(Blocks.LOG, 3), new ItemStack(Blocks.PLANKS, 6, 3)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "acacia"), ItemDefinition.of(Blocks.LOG2), new ItemStack(Blocks.PLANKS, 6, 4)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "dark_oak"), ItemDefinition.of(Blocks.LOG2, 1), new ItemStack(Blocks.PLANKS, 6, 5)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "citrus"), ItemDefinition.of(CuisineRegistry.LOG), new ItemStack(CuisineRegistry.PLANKS, 6)));
         }
 
         Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("cropRice", 1)), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE), 4));

@@ -13,9 +13,9 @@ public class Chopping extends AbstractCuisineProcessingRecipe implements Cuisine
     public final ProcessingInput input;
     private final ItemStack output;
 
-    public Chopping(ProcessingInput input, ItemStack output)
+    public Chopping(ResourceLocation identifier, ProcessingInput input, ItemStack output)
     {
-        super(new ResourceLocation("cuisine", Integer.toString(System.identityHashCode(input))));
+        super(identifier);
         this.input = checkFalseFor(input, input.isEmpty(), "Trying to add an invalid chopping recipe with input: " + input);
         this.output = checkFalseFor(output, output.isEmpty(), "Trying to add an invalid chopping recipe with output: " + output);
     }
