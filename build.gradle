@@ -70,6 +70,7 @@ dependencies {
     deobfCompile("mcjty.theoneprobe:TheOneProbe-1.12:${top_version}") {
         exclude group: 'cofh'
     }
+    deobfCompile "blusunrize:ImmersiveEngineering:0.12-87-496"
     compile files(
         'Kiwi-1.12.2-0.4.0-deobf.jar',
         'Nutrition-1.12.2-3.5.0.jar',
