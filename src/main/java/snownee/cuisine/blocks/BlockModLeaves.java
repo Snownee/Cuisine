@@ -33,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
@@ -455,9 +456,15 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                     worldIn.setBlockToAir(pos);
                 }
             }
-            else if (canGrow(worldIn, pos, state, false) && worldIn.isAreaLoaded(pos, 1) && worldIn.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(100) > 99 - CuisineConfig.GENERAL.fruitGrowingSpeed)
+            else if (canGrow(worldIn, pos, state, false) && worldIn.isAreaLoaded(pos, 1) && worldIn.getLightFromNeighbors(pos.up()) >= 9)
             {
-                grow(worldIn, rand, pos, state);
+                boolean def = rand.nextInt(100) > 99 - CuisineConfig.GENERAL.fruitGrowingSpeed;
+
+                if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, def))
+                {
+                    grow(worldIn, rand, pos, state);
+                    ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+                }
             }
         }
     }
