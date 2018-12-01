@@ -1,0 +1,16 @@
+{
+  "name": "铁炒菜铲",
+  "icon": "cuisine:iron_spatula",
+  "category": "utensils",
+  "pages": [
+    {
+      "type": "text",
+      "text": "铁炒菜铲是种厨具。现实中它是用来炒菜的，可令食材受热均匀。在本 Mod 中它也是干这个的——只需要手持炒菜铲右击$(l:utensils/wok)锅$()就可以了。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:iron_spatula",
+      "text": "合成配方中的木手柄可替换为某些等价物品（例如 BetterWithMods 的木手柄），当然前提是得安装对应的 Mod。"
+    }
+  ]
+}

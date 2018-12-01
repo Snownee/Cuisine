@@ -5,12 +5,12 @@
   "pages": [
     {
       "type": "text",
-      "text": "锅是种灵活的通用厨具。搭配铁铲使用时可在锅中实现多种不同的烹饪方式。"
+      "text": "锅是种灵活的通用厨具。搭配$(l:utensils/spatula)炒菜铲$()使用时可在锅中实现多种不同的烹饪方式。"
     },
     {
-      "type": "spotlight",
-      "item": "cuisine:wok",
-      "link_recipe": true
+      "type": "crafting",
+      "recipe": "cuisine:wok",
+      "text": "合成配方中的木手柄可替换为某些等价物品（例如 BetterWithMods 的木手柄），当然前提是得安装对应的 Mod。"
     }
   ]
 }
