@@ -64,7 +64,9 @@ dependencies {
     compile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 
     deobfCompile "vazkii.patchouli:Patchouli:${patchi_version}"
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${ct_version}"
+    deobfCompile("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-${ct_version}") {
+        exclude group: 'org.ow2.asm'
+    }
     deobfCompile "CraftTweaker2:CraftTweaker2-API:${ct_version}"
     deobfCompile "CraftTweaker2:ZenScript:${ct_version}"
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
