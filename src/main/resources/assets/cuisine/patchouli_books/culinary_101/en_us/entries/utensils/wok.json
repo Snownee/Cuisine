@@ -6,6 +6,11 @@
     {
       "type": "text",
       "text": "Wok is a universal, versatile cookware. With help of iron spatula, one can conduct many cooking techniques within a wok."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:wok",
+      "text": "That wood handle in may be replaced with certain equivalent items (for example, the woo rack from BetterWithMods), if available."
     }
   ]
 }

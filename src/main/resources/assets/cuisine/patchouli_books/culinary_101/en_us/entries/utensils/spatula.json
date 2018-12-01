@@ -6,6 +6,11 @@
     {
       "type": "text",
       "text": "Iron Spatula is a cooking utensil. In real life, it is companion tool of wok, and it is used for stirring stuff inside wok, so that foods are evenly heated. It does the same in Cuisine Mod - you just hold it and right click wok with it."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:iron_spatula",
+      "text": "That wood handle in may be replaced with certain equivalent items (for example, the woo rack from BetterWithMods), if available."
     }
   ]
 }
