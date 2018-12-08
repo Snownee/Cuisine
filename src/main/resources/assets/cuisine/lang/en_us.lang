@@ -252,6 +252,7 @@ cuisine.material.guava=Guava
 cuisine.material.lychee=Lychee
 cuisine.material.passion_fruit=Passion Fruit
 cuisine.material.rambutan=Rambutan
+cuisine.material.jackfruit=Jackfruit
 cuisine.material.ironberry=Ironberry
 cuisine.material.wildberry=Wildberry
 
@@ -273,7 +274,6 @@ cuisine.material.seaweed=Seaweed
 cuisine.material.winter_squash=Winter Squash
 cuisine.material.zucchini=Zucchini
 cuisine.material.water_chestnut=Water Chestnut
-cuisine.material.jackfruit=Jackfruit
 cuisine.material.tamarind=Tamarind
 cuisine.material.walnut=Walnut
 cuisine.material.chestnut=Chestnut
