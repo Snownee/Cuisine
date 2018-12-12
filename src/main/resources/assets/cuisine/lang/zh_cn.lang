@@ -378,9 +378,6 @@ cuisine.skill.skilled_chopping=刀功技法
 cuisine.skill.bigger_size=更大分量
 cuisine.skill.fewer_losses=降低损耗
 
-cuisine.config=料理工艺
-cuisine.config.title=料理工艺配置
-cuisine.config.tooltip=料理工艺使用的可配置变量。
 cuisine.config.progression=进度
 cuisine.config.progression.tooltip=和游戏进度相关的设定。
 cuisine.config.progression.axe_chopping=木板加工

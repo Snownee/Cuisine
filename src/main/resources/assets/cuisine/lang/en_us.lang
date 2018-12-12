@@ -378,9 +378,6 @@ cuisine.skill.skilled_chopping=Skilled Chopping
 cuisine.skill.bigger_size=Bigger Size
 cuisine.skill.fewer_losses=Fewer Losses
 
-cuisine.config=Cuisine
-cuisine.config.title=Cuisine Configuration
-cuisine.config.tooltip=Configurable variables used by Cuisine
 cuisine.config.progression=Progression
 cuisine.config.progression.tooltip=Progression-related variables
 cuisine.config.progression.axe_chopping=Axe Chopping
