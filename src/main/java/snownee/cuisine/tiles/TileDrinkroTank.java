@@ -53,32 +53,32 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource == null || tile.isWorking())
-            {
-                return 0;
-            }
             // 1 size = 500mB, fine-tuning needed
-
-            if (((int) tile.builder.getMaxSize() - tile.builder.getCurrentSize()) <= 0)
+            if (resource == null || resource.amount < 500 || tile.isWorking())
             {
                 return 0;
             }
-            int amountAdded = (int) Math.min(resource.amount, (tile.builder.getMaxSize() - tile.builder.getCurrentSize()) * 500);
 
             Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(resource);
-            if (ingredient == null || ingredient.getForm() != Form.JUICE)
+            if (ingredient == null || ingredient.getForm() != Form.JUICE || !tile.builder.canAddIntoThis(null, ingredient, tile))
             {
                 return 0;
             }
-            ingredient.setSize(amountAdded / 500D);
-            if (!tile.builder.canAddIntoThis(null, ingredient, tile))
+
+            int i = tile.builder.getMaxIngredientLimit() - tile.builder.getIngredients().size();
+            int amount = resource.amount;
+            int amountAdded = 0;
+
+            while (amount >= 500 && i-- > 0)
             {
-                return 0;
+                if (doFill && !tile.builder.addIngredient(null, ingredient.copy(), tile))
+                {
+                    break;
+                }
+                amount -= 500;
+                amountAdded += 500;
             }
-            if (doFill && !tile.builder.addIngredient(null, ingredient, tile))
-            {
-                return 0;
-            }
+            System.out.println(amountAdded);
             return amountAdded;
         }
 

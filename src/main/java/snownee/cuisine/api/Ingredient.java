@@ -7,40 +7,30 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
-import snownee.cuisine.library.RarityManager;
 import snownee.cuisine.util.I18nUtil;
 
 public final class Ingredient
 {
     private final Material material;
     private Form form;
-    private double quantity;
     private int water, oil, heat;
     private final EnumSet<IngredientTrait> traits;
     private final Set<Effect> effects;
 
     public Ingredient(Material material)
     {
-        this(material, 1);
+        this(material, Form.FULL);
     }
 
-    public Ingredient(Material material, double quantity)
+    public Ingredient(Material material, Form form)
     {
-        this(material, Form.FULL, quantity);
+        this(material, form, EnumSet.noneOf(IngredientTrait.class));
     }
 
-    public Ingredient(Material material, Form form, double quantity)
-    {
-        this(material, form, quantity, EnumSet.noneOf(IngredientTrait.class));
-    }
-
-    public Ingredient(Material material, Form form, double quantity, EnumSet<IngredientTrait> traits)
+    public Ingredient(Material material, Form form, EnumSet<IngredientTrait> traits)
     {
         this.material = material;
         this.form = form;
-        this.quantity = quantity;
         this.traits = traits;
         this.effects = new HashSet<>(4);
 
@@ -50,49 +40,9 @@ public final class Ingredient
         material.onCrafted(this);
     }
 
-    /**
-     *
-     * @param stack item
-     * @param baseSize initial size of returned ingredient
-     * @return Ingredient instance, with adjusted size
-     */
-    public static Ingredient make(ItemStack stack, double baseSize)
-    {
-        Ingredient i = CulinaryHub.API_INSTANCE.findIngredient(stack);
-        if (i != null)
-        {
-            if (RarityManager.getRarity(stack) != EnumRarity.COMMON)
-            {
-                baseSize *= 1.5;
-            }
-            i.setSize(baseSize);
-        }
-        return i;
-    }
-
-    public double getSize()
-    {
-        return quantity;
-    }
-
     public double getFoodLevel()
     {
-        return getSize() * getMaterial().getCategories().size();
-    }
-
-    public void setSize(double newSize)
-    {
-        this.quantity = newSize;
-    }
-
-    public void increaseSizeBy(double increment)
-    {
-        quantity += increment;
-    }
-
-    public void decreaseSizeBy(double decrement)
-    {
-        quantity -= decrement;
+        return getMaterial().getCategories().size();
     }
 
     public Material getMaterial()
@@ -192,7 +142,7 @@ public final class Ingredient
 
     public final Ingredient copy()
     {
-        Ingredient theCopy = new Ingredient(this.material, this.form, this.quantity, this.traits.clone());
+        Ingredient theCopy = new Ingredient(this.material, this.form, this.traits.clone());
         theCopy.water = this.water;
         theCopy.oil = this.oil;
         theCopy.heat = this.heat;

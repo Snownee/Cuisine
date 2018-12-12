@@ -242,11 +242,11 @@ public class Dish extends CompositeFood
             }
             if (SkillUtil.hasPlayerLearnedSkill(cook, CulinaryHub.CommonSkills.BIGGER_SIZE))
             {
-                return this.getCurrentSize() + ingredient.getSize() <= this.getMaxSize() && ingredient.getMaterial().canAddInto(this, ingredient);
+                return getIngredients().size() < getMaxIngredientLimit() && ingredient.getMaterial().canAddInto(this, ingredient);
             }
             else
             {
-                return this.getCurrentSize() + ingredient.getSize() < this.getMaxSize() * 0.75 && ingredient.getMaterial().canAddInto(this, ingredient);
+                return getIngredients().size() < getMaxIngredientLimit() * 0.75 && ingredient.getMaterial().canAddInto(this, ingredient);
             }
         }
 
@@ -298,7 +298,7 @@ public class Dish extends CompositeFood
                         seasoningSize += seasoning.getSize();
                     }
                 }
-                boolean isPlain = seasoningSize == 0 || (this.getCurrentSize() / seasoningSize) / (1 + waterSize / 3) > 3;
+                boolean isPlain = seasoningSize == 0 || (getIngredients().size() / seasoningSize) / (1 + waterSize / 3) > 3;
 
                 for (Ingredient ingredient : this.getIngredients())
                 {

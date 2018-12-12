@@ -178,12 +178,6 @@ public abstract class CompositeFood
      * 影响。（3TUSK: 这个现在叫 Serves，大约是“例”的意思，想想下馆子的时候怎么点菜的就知道了）
      */
 
-    @Deprecated // TODO Merge into CompositeFood.Builder#addIngredient, as a pre-check
-    public boolean canAdd(final Ingredient ingredient)
-    {
-        return this.getSize() + ingredient.getSize() <= this.getMaxSize() /*&& ingredient.getMaterial().canAddInto(this, ingredient)*/;
-    }
-
     /**
      * @param material The material to lookup
      * @return true if there is at least one Ingredient whose Material is equals to
@@ -250,11 +244,6 @@ public abstract class CompositeFood
     public boolean alwaysEdible()
     {
         return contains(CommonEffects.ALWAYS_EDIBLE);
-    }
-
-    public double getSize()
-    {
-        return this.ingredients.stream().mapToDouble(Ingredient::getSize).sum();
     }
 
     public double getMaxSize()
@@ -547,16 +536,6 @@ public abstract class CompositeFood
             return false;
         }
 
-        public double getCurrentSize()
-        {
-            return this.ingredients.stream().mapToDouble(Ingredient::getSize).sum();
-        }
-
-        public double getMaxSize()
-        {
-            return CompositeFood.DEFAULT_MAX_SIZE;
-        }
-
         public int getMaxIngredientLimit()
         {
             return 6;
@@ -566,7 +545,7 @@ public abstract class CompositeFood
 
         public boolean canAddIntoThis(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
         {
-            return ingredient.getMaterial().canAddInto(this, ingredient);
+            return ingredients.size() >= getMaxIngredientLimit() || ingredient.getMaterial().canAddInto(this, ingredient);
         }
 
         public boolean canAddIntoThis(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
@@ -591,24 +570,12 @@ public abstract class CompositeFood
         {
             if (this.canAddIntoThis(cook, ingredient, vessel))
             {
-                boolean merged = false;
-                for (Ingredient i : ingredients)
+                if (ingredients.size() >= getMaxIngredientLimit())
                 {
-                    if (i.equalsIgnoreSize(ingredient))
-                    {
-                        i.increaseSizeBy(ingredient.getSize());
-                        merged = true;
-                        break;
-                    }
+                    return false;
                 }
-                if (!merged)
-                {
-                    if (ingredients.size() >= getMaxIngredientLimit())
-                    {
-                        return false;
-                    }
-                    ingredients.add(ingredient);
-                }
+                ingredients.add(ingredient);
+
                 ingredient.getMaterial().onAddedInto(this, ingredient, vessel);
                 return true;
             }
@@ -670,23 +637,7 @@ public abstract class CompositeFood
 
         public boolean removeIngredient(Ingredient ingredient)
         {
-            boolean changed = false;
-            for (Iterator<Ingredient> itr = this.ingredients.iterator(); itr.hasNext();)
-            {
-                Ingredient i = itr.next();
-                if (ingredient.equalsIgnoreSize(i))
-                {
-                    i.decreaseSizeBy(ingredient.getSize());
-                    if (i.getSize() <= 0)
-                    {
-                        // i.getMaterial().onRemovedFrom(this, i, cookingVessel???); // TODO (3TUSK): callback
-                        itr.remove();
-                    }
-                    changed = true;
-                    break;
-                }
-            }
-            return changed;
+            return ingredients.remove(ingredient);
         }
 
         public boolean removeSeasoning(Seasoning seasoning)

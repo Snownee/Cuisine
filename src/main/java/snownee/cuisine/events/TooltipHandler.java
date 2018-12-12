@@ -55,7 +55,7 @@ public final class TooltipHandler
             {
                 for (MaterialCategory category : ingredientIn.getMaterial().getCategories())
                 {
-                    map.put(category, map.getOrDefault(category, 0D) + ingredientIn.getSize());
+                    map.put(category, map.getOrDefault(category, 0D) + 1);
                 }
             }
             i = map.values().stream().mapToInt(MathHelper::ceil).sum();
@@ -63,7 +63,7 @@ public final class TooltipHandler
         else if ((ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack)) != null)
         {
             // add categories line
-            i = ingredient.getMaterial().getCategories().size() * MathHelper.ceil(ingredient.getSize());
+            i = ingredient.getMaterial().getCategories().size();
             if (event.getFlags().isAdvanced())
             {
                 // TODO (3TUSK): What is this originally for?
@@ -153,7 +153,7 @@ public final class TooltipHandler
             {
                 for (MaterialCategory category : ingredientIn.getMaterial().getCategories())
                 {
-                    map.put(category, map.getOrDefault(category, 0D) + ingredientIn.getSize());
+                    map.put(category, map.getOrDefault(category, 0D) + 1);
                 }
             }
 
@@ -182,7 +182,7 @@ public final class TooltipHandler
                 Object2DoubleMap<MaterialCategory> map = new Object2DoubleArrayMap<>();
                 for (MaterialCategory category : set)
                 {
-                    map.put(category, ingredient.getSize());
+                    map.put(category, map.getOrDefault(category, 0D) + 1);
                 }
                 CulinaryRenderHelper.renderMaterialCategoryIcons(map, 0, 0, 0.4F + ingredient.getMaterial().getSaturationModifier(ingredient), event.getWidth() * 2 - 5);
                 GlStateManager.popMatrix();

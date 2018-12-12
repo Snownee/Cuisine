@@ -127,23 +127,23 @@ public class Drink extends CompositeFood
 
         protected void calculateColor()
         {
-            double size = 0;
+            int size = 0;
             float r = 0;
             float g = 0;
             float b = 0;
             for (Ingredient ingredient : getIngredients())
             {
                 int color = ingredient.getMaterial().getRawColorCode();
-                r += ingredient.getSize() * (color >> 16 & 255) / 255.0F;
-                g += ingredient.getSize() * (color >> 8 & 255) / 255.0F;
-                b += ingredient.getSize() * (color & 255) / 255.0F;
-                size += ingredient.getSize();
+                r += (color >> 16 & 255) / 255.0F;
+                g += (color >> 8 & 255) / 255.0F;
+                b += (color & 255) / 255.0F;
+                ++size;
             }
             if (size > 0)
             {
-                r = (float) (r / size * 255.0F);
-                g = (float) (g / size * 255.0F);
-                b = (float) (b / size * 255.0F);
+                r = r / size * 255.0F;
+                g = g / size * 255.0F;
+                b = b / size * 255.0F;
                 color = (int) r << 16 | (int) g << 8 | (int) b;
             }
         }
@@ -160,15 +160,9 @@ public class Drink extends CompositeFood
         }
 
         @Override
-        public double getMaxSize()
-        {
-            return 2;
-        }
-
-        @Override
         public int getMaxIngredientLimit()
         {
-            return 4;
+            return 3;
         }
 
         @Override
@@ -428,15 +422,15 @@ public class Drink extends CompositeFood
             Material material = ingredient.getMaterial();
             if (material.isUnderCategoryOf(MaterialCategory.VEGETABLES))
             {
-                vege += ingredient.getSize();
+                ++vege;
             }
             if (material.isUnderCategoryOf(MaterialCategory.FRUIT))
             {
-                fruit += ingredient.getSize();
+                ++fruit;
             }
             if (!material.isUnderCategoryOf(MaterialCategory.VEGETABLES) && !material.isUnderCategoryOf(MaterialCategory.FRUIT))
             {
-                others += ingredient.getSize();
+                ++others;
             }
         }
         if (vege != 0 || fruit != 0)

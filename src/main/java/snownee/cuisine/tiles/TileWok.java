@@ -176,12 +176,12 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 {
                     return;
                 }
-                double limit = builder.getMaxSize();
+                double limit = builder.getMaxIngredientLimit();
                 if (!SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.BIGGER_SIZE))
                 {
                     limit *= 0.75;
                 }
-                if (builder.getCurrentSize() > limit)
+                if (builder.getIngredients().size() > limit)
                 {
                     playerIn.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.wok_size_too_large")), true);
                     return;

@@ -299,10 +299,6 @@ public class TileChoppingBoard extends TileInventoryBase
             raw.setTagCompound(tag);
             return raw;
         }
-        if (ingredient.getSize() > 0.5)
-        {
-            ingredient.decreaseSizeBy(rand.nextFloat() * (fewerLosses ? 0.02F : 0.05F));
-        }
         ItemStack itemIngredient = ItemIngredient.make(ingredient);
         itemIngredient.setCount(raw.getCount());
         ItemNBTUtil.setIntArray(itemIngredient, ItemIngredient.KEY_ACTIONS, actions);
@@ -325,7 +321,7 @@ public class TileChoppingBoard extends TileInventoryBase
         }
         else
         {
-            return Ingredient.make(stack, 1);
+            return CulinaryHub.API_INSTANCE.findIngredient(stack);
         }
     }
 

@@ -1,12 +1,14 @@
 package snownee.cuisine.server;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import snownee.cuisine.CuisineSidedProxy;
 
+@SuppressWarnings("deprecation")
 public final class CuisineServerProxy extends CuisineSidedProxy
 {
 

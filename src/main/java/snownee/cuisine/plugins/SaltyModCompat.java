@@ -36,7 +36,7 @@ public class SaltyModCompat implements IModule
             fermented_saltwort.setContainerItem(Items.GLASS_BOTTLE);
             Effect effect = new EffectPotions("fermented_saltwort").addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 2));
             Material material = CulinaryHub.API_INSTANCE.register(new MaterialWithEffect("fermented_saltwort", effect, 0x6A7A2E, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.JUICE_ONLY));
-            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(fermented_saltwort), new Ingredient(material, Form.JUICE, 0.5));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(fermented_saltwort), new Ingredient(material, Form.JUICE));
         }
     }
 }

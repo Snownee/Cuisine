@@ -115,7 +115,7 @@ public class NutritionCompat implements IModule
             {
                 for (MaterialCategory category : ingredient.getMaterial().getCategories())
                 {
-                    map.put(category, map.getOrDefault(category, 0D) + ingredient.getSize());
+                    map.put(category, map.getOrDefault(category, 0D) + 1);
                 }
             }
             for (Object2DoubleMap.Entry<MaterialCategory> entry : map.object2DoubleEntrySet())

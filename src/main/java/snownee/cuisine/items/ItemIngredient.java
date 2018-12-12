@@ -187,20 +187,15 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
 
     public static ItemStack make(Material material, Form form)
     {
-        return ItemIngredient.make(material, form, 1);
+        return ItemIngredient.make(material, form, 1, form.getStandardActions());
     }
 
-    public static ItemStack make(Material material, Form form, float size)
-    {
-        return ItemIngredient.make(material, form, size, 1, form.getStandardActions());
-    }
-
-    public static ItemStack make(Material material, Form form, float size, int amount, int[] actions)
+    public static ItemStack make(Material material, Form form, int amount, int[] actions)
     {
         if (material.isValidForm(form))
         {
             ItemStack stack = new ItemStack(CuisineRegistry.INGREDIENT, amount);
-            Ingredient ingredient = new Ingredient(material, form, size);
+            Ingredient ingredient = new Ingredient(material, form);
             NBTTagCompound data = CuisinePersistenceCenter.serialize(ingredient);
             data.setIntArray(KEY_ACTIONS, actions);
             stack.setTagCompound(data);

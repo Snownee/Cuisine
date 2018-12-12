@@ -27,12 +27,12 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
     {
 
         int oilAmount = 0;
-        double currentSize = 0;
+        int currentSize = 0;
 
         @Override
         public void beginCook(CompositeFood.Builder<?> dish)
         {
-            this.currentSize = dish.getCurrentSize();
+            this.currentSize = dish.getIngredients().size();
         }
 
         @Override
@@ -54,7 +54,7 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
                 ingredient.addTrait(IngredientTrait.AROMATIC);
 
                 // Oily is actually bad, man!
-                if (this.oilAmount / this.currentSize > 0.25)
+                if (this.currentSize > 0 && this.oilAmount / (float) this.currentSize > 0.25)
                 {
                     ingredient.addTrait(IngredientTrait.OILY);
                 }
@@ -67,7 +67,7 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
             ingredient.setHeat(ingredient.getHeat() + Item.itemRand.nextInt(10));
             //if (vessel.getTemperature() > 100) // TODO Move this somewhere else? New interface HeatingVessel?
             //{
-                ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
+            ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
             //}
 
         }

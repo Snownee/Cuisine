@@ -114,32 +114,32 @@ public class HarvestCraftCompat implements IModule
 
         CulinaryHub.API_INSTANCE.registerMapping("cropBeet", CulinaryHub.CommonMaterials.BEETROOT);
         CulinaryHub.API_INSTANCE.registerMapping("cropWhitemushroom", CulinaryHub.CommonMaterials.MUSHROOM);
-        CulinaryHub.API_INSTANCE.registerMapping("foodApplejuice", new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodMelonjuice", new Ingredient(CulinaryHub.CommonMaterials.MELON, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodCarrotjuice", new Ingredient(CulinaryHub.CommonMaterials.CARROT, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodStrawberryjuice", new Ingredient(strawberry, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodGrapejuice", new Ingredient(grape, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodBlueberryjuice", new Ingredient(blueberry, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodCherryjuice", new Ingredient(cherry, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodPapayajuice", new Ingredient(papaya, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodStarfruitjuice", new Ingredient(starfruit, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodOrangejuice", new Ingredient(CulinaryHub.CommonMaterials.ORANGE, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodPeachjuice", new Ingredient(peach, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodLimejuice", new Ingredient(CulinaryHub.CommonMaterials.LIME, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodMangojuice", new Ingredient(mango, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodPomegranatejuice", new Ingredient(pomegranate, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodBlackberryjuice", new Ingredient(blackberry, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodRaspberryjuice", new Ingredient(raspberry, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodKiwijuice", new Ingredient(kiwi, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodCranberryjuice", new Ingredient(cranberry, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodCactusfruitjuice", new Ingredient(cactus_fruit, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodPlumjuice", new Ingredient(plum, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodPearjuice", new Ingredient(pear, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodApricotjuice", new Ingredient(apricot, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodFigjuice", new Ingredient(fig, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodGrapefruitjuice", new Ingredient(CulinaryHub.CommonMaterials.GRAPEFRUIT, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodPersimmonjuice", new Ingredient(persimmon, Form.JUICE, 1));
-        CulinaryHub.API_INSTANCE.registerMapping("foodLemonaide", new Ingredient(CulinaryHub.CommonMaterials.LEMON, Form.JUICE, 1));
+        CulinaryHub.API_INSTANCE.registerMapping("foodApplejuice", new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodMelonjuice", new Ingredient(CulinaryHub.CommonMaterials.MELON, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodCarrotjuice", new Ingredient(CulinaryHub.CommonMaterials.CARROT, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodStrawberryjuice", new Ingredient(strawberry, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodGrapejuice", new Ingredient(grape, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodBlueberryjuice", new Ingredient(blueberry, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodCherryjuice", new Ingredient(cherry, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodPapayajuice", new Ingredient(papaya, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodStarfruitjuice", new Ingredient(starfruit, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodOrangejuice", new Ingredient(CulinaryHub.CommonMaterials.ORANGE, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodPeachjuice", new Ingredient(peach, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodLimejuice", new Ingredient(CulinaryHub.CommonMaterials.LIME, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodMangojuice", new Ingredient(mango, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodPomegranatejuice", new Ingredient(pomegranate, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodBlackberryjuice", new Ingredient(blackberry, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodRaspberryjuice", new Ingredient(raspberry, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodKiwijuice", new Ingredient(kiwi, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodCranberryjuice", new Ingredient(cranberry, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodCactusfruitjuice", new Ingredient(cactus_fruit, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodPlumjuice", new Ingredient(plum, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodPearjuice", new Ingredient(pear, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodApricotjuice", new Ingredient(apricot, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodFigjuice", new Ingredient(fig, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodGrapefruitjuice", new Ingredient(CulinaryHub.CommonMaterials.GRAPEFRUIT, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodPersimmonjuice", new Ingredient(persimmon, Form.JUICE));
+        CulinaryHub.API_INSTANCE.registerMapping("foodLemonaide", new Ingredient(CulinaryHub.CommonMaterials.LEMON, Form.JUICE));
     }
 
 }

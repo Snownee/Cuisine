@@ -31,7 +31,6 @@ public interface CuisinePersistenceCenter
         }
         data.setString(CuisineSharedSecrets.KEY_MATERIAL, ingredient.getMaterial().getID());
         data.setString(CuisineSharedSecrets.KEY_FORM, ingredient.getForm().name());
-        data.setDouble(CuisineSharedSecrets.KEY_QUANTITY, ingredient.getSize());
         data.setIntArray(CuisineSharedSecrets.KEY_TRAITS, ingredient.getAllTraits().stream().mapToInt(Enum::ordinal).toArray());
         NBTTagList effectList = new NBTTagList();
         for (Effect effect : ingredient.getEffects())
@@ -65,13 +64,12 @@ public interface CuisinePersistenceCenter
             return null;
         }
         Form form = Form.valueOf(data.getString(CuisineSharedSecrets.KEY_FORM));
-        float quantity = data.getFloat(CuisineSharedSecrets.KEY_QUANTITY);
         EnumSet<IngredientTrait> traits = EnumSet.noneOf(IngredientTrait.class);
         for (int id : data.getIntArray(CuisineSharedSecrets.KEY_TRAITS))
         {
             traits.add(IngredientTrait.VALUES[id]);
         }
-        Ingredient result = new Ingredient(material, form, quantity, traits);
+        Ingredient result = new Ingredient(material, form, traits);
         for (NBTBase baseTag : data.getTagList(CuisineSharedSecrets.KEY_EFFECT_LIST, Constants.NBT.TAG_STRING))
         {
             if (baseTag instanceof NBTTagString)
