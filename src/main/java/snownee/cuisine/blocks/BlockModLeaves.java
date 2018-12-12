@@ -17,9 +17,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -30,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
@@ -452,9 +456,15 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                     worldIn.setBlockToAir(pos);
                 }
             }
-            else if (canGrow(worldIn, pos, state, false) && worldIn.isAreaLoaded(pos, 1) && worldIn.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(100) > 99 - CuisineConfig.GENERAL.fruitGrowingSpeed)
+            else if (canGrow(worldIn, pos, state, false) && worldIn.isAreaLoaded(pos, 1) && worldIn.getLightFromNeighbors(pos.up()) >= 9)
             {
-                grow(worldIn, rand, pos, state);
+                boolean def = rand.nextInt(100) > 99 - CuisineConfig.GENERAL.fruitGrowingSpeed;
+
+                if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, def))
+                {
+                    grow(worldIn, rand, pos, state);
+                    ForgeHooks.onCropsGrowPost(worldIn, pos, state, worldIn.getBlockState(pos));
+                }
             }
         }
     }
@@ -524,6 +534,12 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                         entityitem.setDefaultPickupDelay();
                         entityitem.setEntityInvulnerable(true);
                         worldIn.spawnEntity(entityitem);
+                        EntityBat bat = new EntityBat(worldIn);
+                        bat.setPosition(pos2.getX() + d0, pos2.getY() + d1, pos2.getZ() + d2);
+                        bat.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 200, 10));
+                        bat.setCustomNameTag("ForestBat");
+                        bat.setAlwaysRenderNameTag(true);
+                        worldIn.spawnEntity(bat);
                     }
                 }
             }

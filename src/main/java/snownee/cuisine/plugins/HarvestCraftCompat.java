@@ -72,6 +72,7 @@ public class HarvestCraftCompat implements IModule
         Helper.registerMaterial(new SimpleMaterialImpl("lychee", 0xab2323, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY), "harvestcraft:lycheeitem");
         Helper.registerMaterial(new SimpleMaterialImpl("passion_fruit", 0x5b3a43, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY), "harvestcraft:passionfruititem");
         Helper.registerMaterial(new SimpleMaterialImpl("rambutan", 0xa31b1b, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY), "harvestcraft:rambutanitem");
+        Helper.registerMaterial(new SimpleMaterialImpl("jackfruit", 0x614430, 0, 0, 0, 0, 0, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY), "harvestcraft:jackfruititem");
 
         Material asparagus = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("asparagus", 0x416f33, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropAsparagus", asparagus);
@@ -110,7 +111,6 @@ public class HarvestCraftCompat implements IModule
         Material water_chestnut = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("water_chestnut", 0x614430, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropWaterchestnut", water_chestnut);
         Helper.registerMaterial(new SimpleMaterialImpl("tamarind", 0x997336, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE), "harvestcraft:tamarinditem");
-        Helper.registerMaterial(new SimpleMaterialImpl("jackfruit", 0x614430, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE), "harvestcraft:jackfruititem");
 
         CulinaryHub.API_INSTANCE.registerMapping("cropBeet", CulinaryHub.CommonMaterials.BEETROOT);
         CulinaryHub.API_INSTANCE.registerMapping("cropWhitemushroom", CulinaryHub.CommonMaterials.MUSHROOM);

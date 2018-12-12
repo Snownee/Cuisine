@@ -7,9 +7,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 
@@ -59,9 +57,9 @@ public class ChoppingBoardRecipeCategory implements IRecipeCategory
         items.init(2, false, 58, 18);
         items.set(ingredients);
 
-        if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips && recipeWrapper instanceof GenericRecipeWrapper)
+        if (recipeWrapper instanceof GenericRecipeWrapper)
         {
-            items.addTooltipCallback(JEICompat.createRecipeIDTooltip(ItemStack.class, ((GenericRecipeWrapper) recipeWrapper).recipe));
+            items.addTooltipCallback(JEICompat.identifierTooltip(((GenericRecipeWrapper) recipeWrapper).recipe.getIdentifier()));
         }
     }
 }

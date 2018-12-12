@@ -34,7 +34,6 @@ import toughasnails.api.TANCapabilities;
 import toughasnails.api.TANPotions;
 import toughasnails.api.config.GameplayOption;
 import toughasnails.api.config.SyncedConfig;
-import toughasnails.api.item.TANItems;
 import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.stat.capability.IThirst;
 import toughasnails.api.temperature.Temperature;

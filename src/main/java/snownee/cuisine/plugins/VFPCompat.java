@@ -9,6 +9,8 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
+import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.ItemDefinition;
@@ -45,6 +47,11 @@ public class VFPCompat implements IModule
             {
                 CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 212), new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE, 1));
             }
+        }
+        Item soda = ForgeRegistries.ITEMS.getValue(new ResourceLocation("vanillafoodpantry", "baking_soda"));
+        if (soda != null)
+        {
+            Drink.Builder.FEATURE_INPUTS.put(ItemDefinition.of(soda), DrinkType.SODA);
         }
     }
 }
