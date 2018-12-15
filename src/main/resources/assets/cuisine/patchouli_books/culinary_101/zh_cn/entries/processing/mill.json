@@ -1,0 +1,17 @@
+{
+  "name": "磨",
+  "icon": "cuisine:mill",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "spotlight",
+      "item": "cuisine:mill",
+      "text": "磨是种加工设备，可用于精炼某些材料，比如将小麦磨成面粉、精制食盐、从含油作物种提取食用油、以及磨制豆浆。$(br)手持物品右击可放入物品。手持流体容器右击可倒入流体；手持空容器右击则可提取其中流体。空手右击可令其工作一圈。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:mill",
+      "text": "合成配方中的木手柄可替换为某些等价物品（例如 BetterWithMods 的木手柄），当然前提是得安装对应的 Mod。"
+    }
+  ]
+}
