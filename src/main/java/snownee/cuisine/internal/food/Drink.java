@@ -230,7 +230,11 @@ public class Drink extends CompositeFood
             {
                 if (baseTag.getId() == Constants.NBT.TAG_COMPOUND)
                 {
-                    ingredients.add(CuisinePersistenceCenter.deserializeIngredient((NBTTagCompound) baseTag));
+                    Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient((NBTTagCompound) baseTag);
+                    if (ingredient != null)
+                    {
+                        ingredients.add(ingredient);
+                    }
                 }
             }
 

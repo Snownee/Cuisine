@@ -8,7 +8,7 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
-import snownee.cuisine.proxy.ClientProxy;
+import snownee.cuisine.client.CuisineItemRendering;
 
 public final class DishMeshDefinition implements ItemMeshDefinition
 {
@@ -30,7 +30,7 @@ public final class DishMeshDefinition implements ItemMeshDefinition
         }
         else
         {
-            return new ModelResourceLocation(ClientProxy.EMPTY, "inventory");
+            return new ModelResourceLocation(CuisineItemRendering.EMPTY_MODEL, "inventory");
         }
     }
 }

@@ -61,6 +61,7 @@ public class VesselRecipeCategory implements IRecipeCategory<VesselRecipe>
     {
         IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
         IGuiFluidStackGroup fluids = recipeLayout.getFluidStacks();
+
         stacks.init(0, true, 0, 0);
         stacks.init(1, true, 36, 0);
         stacks.init(2, false, 94, 0);
@@ -68,8 +69,7 @@ public class VesselRecipeCategory implements IRecipeCategory<VesselRecipe>
         fluids.init(0, true, 19, 1, 16, 16, 100, false, null);
         if (recipeWrapper.recipe.getOutputFluid() != null)
         {
-            fluids.init(1, false, recipeWrapper.recipe.getOutput().isEmpty() ? 95
-                    : 113, 1, 16, 16, recipeWrapper.recipe.getOutputFluid().amount, false, null);
+            fluids.init(1, false, recipeWrapper.recipe.getOutput().isEmpty() ? 95 : 113, 1, 16, 16, recipeWrapper.recipe.getOutputFluid().amount, false, null);
         }
         else
         {
@@ -77,6 +77,9 @@ public class VesselRecipeCategory implements IRecipeCategory<VesselRecipe>
         }
         stacks.set(ingredients);
         fluids.set(ingredients);
+
+        stacks.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
+        fluids.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
     }
 
 }

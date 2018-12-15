@@ -78,6 +78,7 @@ public class PacketIncrementalWokUpdate implements PacketMod
             else // When it's empty or it's bad packet
             {
                 ((TileWok) tile).ingredientsForRendering.clear();
+                ((TileWok) tile).seasoningInfo = null;
             }
         }
     }

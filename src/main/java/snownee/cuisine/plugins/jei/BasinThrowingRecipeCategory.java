@@ -12,13 +12,12 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.util.I18nUtil;
 
-public class BasinThrowingRecipeCategory implements IRecipeCategory
+public class BasinThrowingRecipeCategory implements IRecipeCategory<GenericRecipeWrapper>
 {
     static final String UID = Cuisine.MODID + ".basin_throwing";
 
@@ -73,7 +72,7 @@ public class BasinThrowingRecipeCategory implements IRecipeCategory
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, GenericRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
         IGuiFluidStackGroup fluids = recipeLayout.getFluidStacks();
@@ -105,6 +104,8 @@ public class BasinThrowingRecipeCategory implements IRecipeCategory
         stacks.set(ingredients);
         fluids.set(ingredients);
 
+        stacks.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
+        fluids.addTooltipCallback(JEICompat.identifierTooltip(recipeWrapper.recipe.getIdentifier()));
     }
 
 }

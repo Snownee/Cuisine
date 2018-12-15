@@ -1,6 +1,10 @@
 package snownee.cuisine.tiles;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,11 +17,10 @@ import net.minecraftforge.common.animation.TimeValues;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
+import net.minecraftforge.energy.CapabilityEnergy;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.Processing;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TileSqueezer extends TileBase implements ITickable
 {
@@ -54,30 +57,93 @@ public class TileSqueezer extends TileBase implements ITickable
 
     private boolean isInWorkCycle = false;
 
+    private final Battery battery;
+
     public TileSqueezer()
     {
-        this.stateMachine = Cuisine.proxy.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
+        this.stateMachine = Cuisine.sidedDelegate.loadAnimationStateMachine(STATE_MACHINE, ImmutableMap.of("offset", this.extensionOffset));
+        if (CuisineConfig.GENERAL.squeezerUsesFE > 0)
+        {
+            battery = new Battery(CuisineConfig.GENERAL.squeezerUsesFE * 50, CuisineConfig.GENERAL.squeezerUsesFE, 0)
+            {
+                @Override
+                protected void onEnergyChanged()
+                {
+                    refresh();
+                }
+            };
+        }
+        else
+        {
+            battery = null;
+        }
     }
 
     @Override
     public void update()
     {
-        boolean triggered = this.world.isBlockPowered(this.pos);
-        if (triggered)
+        boolean triggered = this.world.isBlockPowered(this.pos); //TODO: better implement
+        if (battery != null)
         {
-            if (state == State.EXTRACTED || state == State.EXTRACTING)
+            triggered = !triggered;
+        }
+        if (battery == null)
+        {
+            if (triggered)
             {
-                this.isInWorkCycle = this.state == State.EXTRACTED;
-                this.state = State.EXTENDING;
-                this.animationTransition("moving");
+                if (state == State.EXTRACTED || state == State.EXTRACTING)
+                {
+                    this.isInWorkCycle = this.state == State.EXTRACTED;
+                    this.state = State.EXTENDING;
+                    this.animationTransition("moving");
+                }
+            }
+            else
+            {
+                if (state == State.EXTENDED || state == State.EXTENDING)
+                {
+                    this.state = State.EXTRACTING;
+                    this.animationTransition("moving");
+                }
             }
         }
         else
         {
-            if (state == State.EXTENDED || state == State.EXTENDING)
+            if (triggered)
             {
-                this.state = State.EXTRACTING;
-                this.animationTransition("moving");
+                if ((state == State.EXTRACTED || state == State.EXTENDING) && battery.getEnergyStored() < CuisineConfig.GENERAL.squeezerUsesFE)
+                {
+                    return;
+                }
+                if (state == State.EXTENDED)
+                {
+                    this.state = State.EXTRACTING;
+                    this.animationTransition("moving");
+                }
+                else if (state == State.EXTRACTED)
+                {
+                    TileEntity tile = world.getTileEntity(pos.down());
+                    if (tile instanceof TileBasin)
+                    {
+                        TileBasin tileBasin = (TileBasin) tile;
+                        tileBasin.process(Processing.SQUEEZING, tileBasin.stacks.getStackInSlot(0), true);
+                        if (tileBasin.squeezingFailed)
+                        {
+                            return;
+                        }
+                        this.isInWorkCycle = true;
+                        this.state = State.EXTENDING;
+                        this.animationTransition("moving");
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                return;
             }
         }
 
@@ -124,7 +190,11 @@ public class TileSqueezer extends TileBase implements ITickable
                 if (tile instanceof TileBasin)
                 {
                     TileBasin basin = (TileBasin) tile;
-                    basin.process(Processing.SQUEEZING, basin.stacks.getStackInSlot(0));
+                    basin.process(Processing.SQUEEZING, basin.stacks.getStackInSlot(0), false);
+                    if (battery != null)
+                    {
+                        battery.setEnergy(battery.getEnergyStored() - CuisineConfig.GENERAL.squeezerUsesFE);
+                    }
                 }
             }
         }
@@ -152,6 +222,10 @@ public class TileSqueezer extends TileBase implements ITickable
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
+        if (battery != null)
+        {
+            battery.readFromNBT(compound);
+        }
         this.extensionProgress = compound.getInteger("Extension");
         this.state = State.values()[compound.getInteger("State")];
         this.isInWorkCycle = compound.getBoolean("WorkCycle");
@@ -180,6 +254,10 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
+        if (battery != null)
+        {
+            battery.writeToNBT(compound);
+        }
         compound.setInteger("Extension", this.extensionProgress);
         compound.setInteger("State", this.state.ordinal());
         compound.setBoolean("WorkCycle", this.isInWorkCycle);
@@ -189,6 +267,10 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
+        if (battery != null)
+        {
+            battery.readFromNBT(data);
+        }
         this.extensionProgress = data.getInteger("Extension");
         this.state = State.values()[data.getInteger("State")];
     }
@@ -197,6 +279,10 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
+        if (battery != null)
+        {
+            battery.writeToNBT(data);
+        }
         data.setInteger("Extension", this.extensionProgress);
         data.setInteger("State", this.state.ordinal());
         return data;
@@ -211,7 +297,7 @@ public class TileSqueezer extends TileBase implements ITickable
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CapabilityAnimation.ANIMATION_CAPABILITY || super.hasCapability(capability, facing);
+        return capability == CapabilityAnimation.ANIMATION_CAPABILITY || (capability == CapabilityEnergy.ENERGY && battery != null) || super.hasCapability(capability, facing);
     }
 
     @Nullable
@@ -221,6 +307,10 @@ public class TileSqueezer extends TileBase implements ITickable
         if (capability == CapabilityAnimation.ANIMATION_CAPABILITY)
         {
             return CapabilityAnimation.ANIMATION_CAPABILITY.cast(this.stateMachine);
+        }
+        else if (capability == CapabilityEnergy.ENERGY && battery != null)
+        {
+            return CapabilityEnergy.ENERGY.cast(battery);
         }
         else
         {

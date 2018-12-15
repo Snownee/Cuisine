@@ -58,6 +58,11 @@ public class MortarRecipeCategory implements IRecipeCategory
         }
         items.init(5, false, 130, 0);
         items.set(ingredients);
+
+        if (recipeWrapper instanceof GenericRecipeWrapper)
+        {
+            items.addTooltipCallback(JEICompat.identifierTooltip(((GenericRecipeWrapper) recipeWrapper).recipe.getIdentifier()));
+        }
     }
 
 }

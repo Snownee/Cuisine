@@ -17,7 +17,7 @@ import snownee.cuisine.api.CulinarySkillManager;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.client.FontUtil;
-import snownee.kiwi.client.Modal9Grid;
+import snownee.kiwi.client.gui.element.DrawableNineSlice;
 
 public class GuiManual extends GuiScreen
 {
@@ -28,8 +28,7 @@ public class GuiManual extends GuiScreen
     public static int PAGE_MARGIN = 25;
     public static int SKILL_PANEL_WIDTH = PAGE_WIDTH / 2;
 
-    public final Modal9Grid pageGrid;
-    private final ResourceLocation skillPanel = new ResourceLocation(Cuisine.MODID, "textures/gui/skill_panel.png");
+    public final DrawableNineSlice pageGrid;
     private boolean twoPages = false;
 
     private int currentSkillPage = 1;
@@ -48,7 +47,9 @@ public class GuiManual extends GuiScreen
     public GuiManual(int slot, ItemStack stack)
     {
         this.stack = stack;
-        pageGrid = new Modal9Grid(0, 0, 25, 25, 50, 50, 75, 75);
+        pageGrid = new DrawableNineSlice(BOOK_GUI_TEXTURES, 0, 0, 75, 75, 25, 25, 25, 25);
+        pageGrid.setHeight(PAGE_HEIGHT);
+        pageGrid.setWidth(PAGE_WIDTH);
     }
 
     @Override
@@ -94,10 +95,10 @@ public class GuiManual extends GuiScreen
         mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
         int i = (this.width - getXSize()) / 2;
         int j = (this.height - getYSize()) / 2;
-        pageGrid.draw(i/* + SKILL_PANEL_WIDTH*/, j, PAGE_WIDTH, PAGE_HEIGHT, false, false);
+        pageGrid.draw(mc, i/* + SKILL_PANEL_WIDTH*/, j);
         if (twoPages)
         {
-            pageGrid.draw(i + PAGE_WIDTH/* + SKILL_PANEL_WIDTH*/, j, PAGE_WIDTH, PAGE_HEIGHT, true, false);
+            pageGrid.draw(mc, i + PAGE_WIDTH/* + SKILL_PANEL_WIDTH*/, j);
         }
 
         //mc.getTextureManager().bindTexture(skillPanel);

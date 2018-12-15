@@ -76,5 +76,8 @@ public class MillRecipeCategory implements IRecipeCategory<MillRecipe>
         }
         stacks.set(ingredients);
         fluids.set(ingredients);
+
+        stacks.addTooltipCallback(JEICompat.identifierTooltip(recipe.recipe.getIdentifier()));
+        fluids.addTooltipCallback(JEICompat.identifierTooltip(recipe.recipe.getIdentifier()));
     }
 }

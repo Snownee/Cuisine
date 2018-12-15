@@ -3,11 +3,13 @@ package snownee.cuisine.api.process.prefab;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.AbstractCuisineProcessingRecipe;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.Boiling;
 
-public class DistillationBoiling implements Boiling
+public class DistillationBoiling extends AbstractCuisineProcessingRecipe implements Boiling
 {
     private final FluidStack input;
     private final ItemStack output;
@@ -20,6 +22,7 @@ public class DistillationBoiling implements Boiling
 
     public DistillationBoiling(FluidStack input, ItemStack output, int heatValue)
     {
+        super(new ResourceLocation("cuisine", "distilling_" + input.getFluid().getName()));
         this.input = input;
         this.output = output;
         this.heatValue = heatValue;
@@ -53,4 +56,5 @@ public class DistillationBoiling implements Boiling
     {
         return heatValue;
     }
+
 }

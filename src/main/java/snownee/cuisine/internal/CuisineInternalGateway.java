@@ -259,24 +259,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         return effectRegistry.lookup(uniqueId);
     }
 
-    public final Map<ItemDefinition, SimpleIngredient> simpleIngredientMapping = new HashMap<>();
-
-    private static final class SimpleIngredient
-    {
-        public final Material material;
-        public final Form form;
-
-        public SimpleIngredient(Material material, Form form)
-        {
-            this.material = material;
-            this.form = form;
-        }
-
-        Ingredient makeIngredient()
-        {
-            return new Ingredient(material, form, 1);
-        }
-    }
+    // public final Map<ItemDefinition, Material> itemToMaterialMapping = new HashMap<>();
 
     @Override
     public Ingredient findIngredient(ItemStack item)
@@ -300,12 +283,6 @@ public final class CuisineInternalGateway implements CuisineAPI
         }
 
         ItemDefinition itemDefinition = ItemDefinition.of(item);
-
-        SimpleIngredient juice = simpleIngredientMapping.get(itemDefinition);
-        if (juice != null)
-        {
-            return juice.makeIngredient();
-        }
 
         Ingredient ingredient = this.itemIngredients.get(itemDefinition);
         if (ingredient != null)
@@ -517,8 +494,8 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new MaterialWithEffect("pickled", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, -13784, 0, 1, 1, 1, 0.3F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new MaterialWithEffect("bamboo_shoot", CulinaryHub.CommonEffects.ALWAYS_EDIBLE, 0xF9ECDD, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new MaterialWithEffect("cactus", CulinaryHub.CommonEffects.HEAT_RESISTANCE, 0xA9BC98, 0, 1, 1, 1, -0.1F).setValidForms(EnumSet.of(Form.CUBED, Form.DICED, Form.JUICE)));
-        api.register(new SimpleMaterialImpl("water", -15831787, 0, 1, 1, 1, -0.1F).setValidForms(Form.JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("water", 0x55DDDDFF, 0, 1, 1, 1, -0.1F).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("milk", 0xCCFFFFFF, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("soy_milk", -15831787, 0, 1, 1, 1, -0.1F, MaterialCategory.PROTEIN).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("mandarin", 0xF08A19, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("citron", 0xDDCC58, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
@@ -529,18 +506,18 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("lime", 0xCADA76, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("empowered_citron", 0xE6B701, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(Form.JUICE_ONLY));
 
-        api.register(new SimpleSpiceImpl("edible_oil", 0));
-        api.register(new SimpleSpiceImpl("sesame_oil", 0));
-        api.register(new SimpleSpiceImpl("soy_sauce", 0));
-        api.register(new SimpleSpiceImpl("rice_vinegar", 0));
-        api.register(new SimpleSpiceImpl("fruit_vinegar", 0));
-        api.register(new SimpleSpiceImpl("water", 0));
+        api.register(new SimpleSpiceImpl("edible_oil", 0x99D1A71A, true));
+        api.register(new SimpleSpiceImpl("sesame_oil", 0x99CE8600, true));
+        api.register(new SimpleSpiceImpl("soy_sauce", 0xDD100000, true));
+        api.register(new SimpleSpiceImpl("rice_vinegar", 0xCC100000, true));
+        api.register(new SimpleSpiceImpl("fruit_vinegar", 0xBB100000, true));
+        api.register(new SimpleSpiceImpl("water", 0x55FFFFFF, true));
         api.register(new SpiceChiliPowder("chili_powder", 11546150));
-        api.register(new SimpleSpiceImpl("sichuan_pepper_powder", 8606770));
-        api.register(new SimpleSpiceImpl("crude_salt", 4673362));
-        api.register(new SimpleSpiceImpl("salt", 0xE3E3E3));
-        api.register(new SimpleSpiceImpl("sugar", 16383998));
-        api.register(new SimpleSpiceImpl("unrefined_sugar", 0xB35400));
+        api.register(new SimpleSpiceImpl("sichuan_pepper_powder", 8606770, false));
+        api.register(new SimpleSpiceImpl("crude_salt", 4673362, false));
+        api.register(new SimpleSpiceImpl("salt", 0xE3E3E3, false));
+        api.register(new SimpleSpiceImpl("sugar", 16383998, false));
+        api.register(new SimpleSpiceImpl("unrefined_sugar", 0xB35400, false));
 
         CulinaryHub.CommonSkills.init();
     }
@@ -635,11 +612,25 @@ public final class CuisineInternalGateway implements CuisineAPI
         itemIngredients.put(item, ingredient);
     }
 
+    //    @Override
+    //    public void registerMapping(ItemDefinition item, Material material)
+    //    {
+    //        // TODO Auto-generated method stub
+    //        CuisineAPI.super.registerMapping(item, material);
+    //    }
+
     @Override
     public void registerMapping(String ore, Ingredient ingredient)
     {
         oreDictIngredients.put(ore, ingredient);
     }
+
+    //    @Override
+    //    public void registerMapping(String ore, Material material)
+    //    {
+    //        // TODO Auto-generated method stub
+    //        CuisineAPI.super.registerMapping(ore, material);
+    //    }
 
     @Override
     public void registerMapping(ItemDefinition item, Spice spice)

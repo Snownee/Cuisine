@@ -34,7 +34,6 @@ import toughasnails.api.TANCapabilities;
 import toughasnails.api.TANPotions;
 import toughasnails.api.config.GameplayOption;
 import toughasnails.api.config.SyncedConfig;
-import toughasnails.api.item.TANItems;
 import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.stat.capability.IThirst;
 import toughasnails.api.temperature.Temperature;
@@ -49,7 +48,7 @@ public class TANCompat implements IModule
     {
         MinecraftForge.EVENT_BUS.register(this);
 
-        Drink.Builder.FEATURE_INPUTS.put(ItemDefinition.of(TANItems.ice_cube), Drink.DrinkType.SMOOTHIE);
+        // Drink.Builder.FEATURE_INPUTS.put(ItemDefinition.of(TANItems.ice_cube), Drink.DrinkType.SMOOTHIE);
 
         for (int i = 0; i < 8; i++)
         {

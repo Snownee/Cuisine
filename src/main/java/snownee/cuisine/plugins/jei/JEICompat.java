@@ -15,11 +15,16 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableBuilder;
 import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -50,7 +55,7 @@ public class JEICompat implements IModPlugin
     // Keep an eye on this; this may change in the future
     static final ResourceLocation VANILLA_RECIPE_GUI = new ResourceLocation("jei", "textures/gui/gui_vanilla.png");
     static final ResourceLocation CUISINE_RECIPE_GUI = new ResourceLocation(Cuisine.MODID, "textures/gui/jei.png");
-    static final List<ItemStack> AXES = Arrays.stream(CuisineConfig.PROGRESSION.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+    static List<ItemStack> AXES;
 
     static IDrawable arrowOut;
     static IDrawable arrowOutOverlay;
@@ -61,6 +66,11 @@ public class JEICompat implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
+        if (CuisineConfig.GENERAL.axeChopping)
+        {
+            AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+        }
+
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
         arrowOut = guiHelper.createDrawable(JEICompat.CUISINE_RECIPE_GUI, 11, 26, 11, 7);
         arrowOutOverlay = guiHelper.drawableBuilder(JEICompat.CUISINE_RECIPE_GUI, 11, 18, 11, 8).buildAnimated(new CombinedTimer(80, 11, 11, 22), IDrawableAnimated.StartDirection.LEFT);
@@ -121,7 +131,7 @@ public class JEICompat implements IModPlugin
                 }
             }
         });
-        if (CuisineConfig.PROGRESSION.axeChopping)
+        if (CuisineConfig.GENERAL.axeChopping)
         {
             Processing.CHOPPING.preview().forEach(recipe -> recipes.add(new ChoppingBoardAxeRecipe(recipe)));
         }
@@ -210,5 +220,27 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new BoilingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinSqueezingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinThrowingRecipeCategory(guiHelper, basin));
+    }
+
+    static <T> ITooltipCallback<T> identifierTooltip(ResourceLocation locator)
+    {
+        return (slot, isInput, ingredient, tooltip) -> {
+            if (!isInput)
+            {
+                if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips || GuiScreen.isShiftKeyDown())
+                {
+                    String text;
+                    if (locator.getNamespace().equals("crafttweaker"))
+                    {
+                        text = I18n.format("jei.tooltip.recipe.by", "CraftTweaker");
+                    }
+                    else
+                    {
+                        text = I18n.format("jei.tooltip.recipe.id", locator);
+                    }
+                    tooltip.add(TextFormatting.DARK_GRAY + text);
+                }
+            }
+        };
     }
 }

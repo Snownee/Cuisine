@@ -69,7 +69,7 @@ public class TileChoppingBoard extends TileInventoryBase
         }
         ItemStack ret = stacks.insertItem(0, stack, false);
         ItemStack con = stacks.getStackInSlot(0);
-        isAxe = CuisineConfig.PROGRESSION.axeChopping && !con.isEmpty() && !OreUtil.doesItemHaveOreName(stack, "itemFoodCutter") && con.getItem() != CuisineRegistry.INGREDIENT && !CulinaryHub.API_INSTANCE.isKnownIngredient(con) && (Processing.CHOPPING.findRecipe(con) != null);
+        isAxe = CuisineConfig.GENERAL.axeChopping && !con.isEmpty() && !OreUtil.doesItemHaveOreName(stack, "itemFoodCutter") && con.getItem() != CuisineRegistry.INGREDIENT && !CulinaryHub.API_INSTANCE.isKnownIngredient(con) && (Processing.CHOPPING.findRecipe(con) != null);
         return ret;
     }
 
@@ -80,7 +80,7 @@ public class TileChoppingBoard extends TileInventoryBase
         {
             return true;
         }
-        if (CuisineConfig.PROGRESSION.axeChopping && Processing.CHOPPING.findRecipe(stack) != null)
+        if (CuisineConfig.GENERAL.axeChopping && Processing.CHOPPING.findRecipe(stack) != null)
         {
             return true;
         }

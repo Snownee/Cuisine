@@ -25,6 +25,10 @@ public interface CuisinePersistenceCenter
     static NBTTagCompound serialize(Ingredient ingredient)
     {
         NBTTagCompound data = new NBTTagCompound();
+        if (ingredient.getMaterial() == null)
+        {
+            return data;
+        }
         data.setString(CuisineSharedSecrets.KEY_MATERIAL, ingredient.getMaterial().getID());
         data.setString(CuisineSharedSecrets.KEY_FORM, ingredient.getForm().name());
         data.setDouble(CuisineSharedSecrets.KEY_QUANTITY, ingredient.getSize());
@@ -48,6 +52,10 @@ public interface CuisinePersistenceCenter
 
     static @Nullable Ingredient deserializeIngredient(@Nonnull NBTTagCompound data)
     {
+        if (!data.hasKey(CuisineSharedSecrets.KEY_MATERIAL, Constants.NBT.TAG_STRING))
+        {
+            return null;
+        }
         final String materialKey = data.getString(CuisineSharedSecrets.KEY_MATERIAL);
         Material material = CulinaryHub.API_INSTANCE.findMaterial(materialKey);
         if (material == null)

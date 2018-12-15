@@ -5,6 +5,7 @@ import java.util.Locale;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
@@ -22,8 +23,13 @@ public class FarmingForBlockheadsCompat implements IModule
     {
         for (Variant<? extends SubItem> variant : CuisineRegistry.CROPS.getVariants())
         {
-            addTrade(variant == ItemCrops.Variants.BAMBOO_SHOOT ? MarketCategory.SAPLINGS : MarketCategory.SEEDS,
-                    new ItemStack(CuisineRegistry.CROPS, 1, variant.getMeta()));
+            addTrade(variant == ItemCrops.Variants.BAMBOO_SHOOT ? MarketCategory.SAPLINGS : MarketCategory.SEEDS, new ItemStack(CuisineRegistry.CROPS, 1, variant.getMeta()));
+        }
+        NonNullList<ItemStack> stacks = NonNullList.create();
+        CuisineRegistry.SAPLING.getSubBlocks(Cuisine.CREATIVE_TAB, stacks);
+        for (ItemStack stack : stacks)
+        {
+            addTrade(MarketCategory.SAPLINGS, stack);
         }
     }
 

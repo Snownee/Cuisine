@@ -12,8 +12,6 @@ import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -41,6 +39,7 @@ public class TileBasin extends TileInventoryBase
     };
     public int tickCheckThrowing = 0;
     private FluidStack liquidForRendering = null;
+    boolean squeezingFailed = false;
 
     public TileBasin()
     {
@@ -70,7 +69,7 @@ public class TileBasin extends TileInventoryBase
         FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(tank.getFluid(), world, pos));
     }
 
-    @SideOnly(Side.CLIENT)
+    // @SideOnly(Side.CLIENT) // Left commented so we know that this is for client only
     public FluidStack getFluidForRendering(float partialTicks)
     {
         final FluidStack actual = tank.getFluid();
@@ -122,6 +121,7 @@ public class TileBasin extends TileInventoryBase
     {
         super.writeToNBT(compound);
         compound.setTag("tank", tank.writeToNBT(new NBTTagCompound()));
+        compound.setBoolean("squeezingFailed", squeezingFailed);
         return compound;
     }
 
@@ -130,6 +130,10 @@ public class TileBasin extends TileInventoryBase
     {
         super.readPacketData(data);
         tank.readFromNBT(data.getCompoundTag("tank"));
+        if (data.hasKey("squeezingFailed"))
+        {
+            squeezingFailed = data.getBoolean("squeezingFailed");
+        }
     }
 
     @Override
@@ -140,10 +144,15 @@ public class TileBasin extends TileInventoryBase
         return writeToNBT(data);
     }
 
-    public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input)
+    public void process(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack input, boolean simulated)
     {
+        if (squeezingFailed && recipeManager == Processing.SQUEEZING)
+        {
+            return;
+        }
         if (input.isEmpty())
         {
+            squeezingFailed = true;
             return;
         }
         FluidStack fluid = tank.getFluid();
@@ -155,20 +164,31 @@ public class TileBasin extends TileInventoryBase
             {
                 if (output.fluid.amount > tank.getCapacity())
                 {
+                    squeezingFailed = true;
                     return;
                 }
                 if (output.fluid.amount <= 0)
                 {
                     output.fluid = null;
                 }
-                tank.setFluid(output.fluid);
+                if (!simulated)
+                {
+                    tank.setFluid(output.fluid);
+                }
             }
-            if (!output.item.isEmpty())
+            if (!simulated)
             {
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output.item);
+                if (!output.item.isEmpty())
+                {
+                    InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), output.item);
+                }
+                recipe.consumeInput(input, fluid, world.rand);
             }
-            recipe.consumeInput(input, fluid, world.rand);
             refresh();
+        }
+        else
+        {
+            squeezingFailed = true;
         }
     }
 
@@ -176,6 +196,13 @@ public class TileBasin extends TileInventoryBase
     public boolean isItemValidForSlot(int index, ItemStack stack)
     {
         return BasinInteracting.isKnownInput(Processing.SQUEEZING, stack);
+    }
+
+    @Override
+    public void onContentsChanged(int slot)
+    {
+        squeezingFailed = false;
+        refresh();
     }
 
     public FluidStack getCurrentFluidContent()

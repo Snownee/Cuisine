@@ -14,14 +14,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidStack;
-import snownee.cuisine.Cuisine;
 import snownee.cuisine.tiles.TileBasinHeatable;
+import snownee.cuisine.util.I18nUtil;
 
-@SuppressWarnings("deprecation")
 final class CuisineBasinProvider implements IWailaDataProvider
 {
     @Nonnull
@@ -33,13 +31,13 @@ final class CuisineBasinProvider implements IWailaDataProvider
             TileBasinHeatable tile = (TileBasinHeatable) accessor.getTileEntity();
             NBTTagCompound data = accessor.getNBTData();
             boolean working = data.getBoolean("working");
-            MessageFormat formatter = new MessageFormat(I18n.translateToLocal(Cuisine.MODID + ".gui.progress"), MinecraftForgeClient.getLocale());
+            MessageFormat formatter = new MessageFormat(I18nUtil.translate("gui.progress"), MinecraftForgeClient.getLocale());
             if (working)
             {
                 FluidStack fluidContent = FluidStack.loadFluidStackFromNBT(data.getCompoundTag("fluidContent"));
                 if (fluidContent != null)
                 {
-                    tooltip.add(TextFormatting.GRAY + I18n.translateToLocalFormatted(Cuisine.MODID + ".gui.fluid_show", fluidContent.getLocalizedName(), fluidContent.amount));
+                    tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.fluid_show", fluidContent.getLocalizedName(), fluidContent.amount));
                 }
                 int currentProgress = data.getInteger("heatValue");
                 int max = tile.getMaxHeatingTick();

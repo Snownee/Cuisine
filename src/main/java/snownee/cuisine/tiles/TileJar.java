@@ -14,8 +14,6 @@ import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
 import snownee.cuisine.network.PacketCustomEvent;
@@ -120,7 +118,7 @@ public class TileJar extends TileInventoryBase implements ITickable
         return super.getCapability(capability, facing);
     }
 
-    @SideOnly(Side.CLIENT)
+    // @SideOnly(Side.CLIENT) // Left commented so we know that this is for client only
     public void forceSetWorkingStatus(boolean working)
     {
         this.isWorking = working;

@@ -12,7 +12,7 @@ public class SpiceChiliPowder extends SimpleSpiceImpl
 
     public SpiceChiliPowder(String id, int color)
     {
-        super(id, color);
+        super(id, color, false);
     }
 
     @Override

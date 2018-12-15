@@ -7,7 +7,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Config(modid = Cuisine.MODID, name = Cuisine.MODID, category = "")
-@Config.LangKey("cuisine.config")
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
 public final class CuisineConfig
 {
@@ -44,29 +43,14 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean spawnBook = true;
 
-        @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
-        @Config.Name("FruitTreesGenRate")
-        @Config.RangeInt(min = 0, max = 100)
-        @Config.RequiresMcRestart
-        public int fruitTreesGenRate = 50;
-
         @Config.LangKey("cuisine.config.general.fruit_growing_speed")
         @Config.Name("FruitGrowingSpeed")
         @Config.RangeInt(min = 0, max = 100)
-        public int fruitGrowingSpeed = 20;
+        public int fruitGrowingSpeed = 15;
 
         @Config.LangKey("cuisine.config.general.fruit_drops")
         @Config.Name("FruitDrops")
         public boolean fruitDrops = true;
-
-        @Config.Comment(
-            "Generation rate of bamboo; larger value means lower generation rate; set to 0 to completely disable."
-        )
-        @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
-        @Config.Name("BamboosGenRate")
-        @Config.RangeInt(min = 0)
-        @Config.RequiresMcRestart
-        public int bamboosGenRate = 35;
 
         @Config.Comment("If true, bamboo can be used as a blowpipe which can shoot seeds.")
         @Config.LangKey("cuisine.config.general.bamboo_blowpipe")
@@ -74,14 +58,20 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean bambooBlowpipe = false;
 
-        @Config.Comment(
-            "Generation rate of wild crops; larger value means lower generation rate; set to 0 to completely disable."
-        )
-        @Config.LangKey("cuisine.config.general.crops_gen_rate")
-        @Config.Name("CropsGenRate")
-        @Config.RangeInt(min = 0)
+        @Config.LangKey("cuisine.config.general.always_render_drinkro")
+        @Config.Name("AlwaysRenderDrinkro")
+        public boolean alwaysRenderDrinkro = false;
+
+        @Config.Comment("Allow axes to chop things on chopping board. Provided for mod pack creators.")
+        @Config.LangKey("cuisine.config.progression.axe_chopping")
+        @Config.Name("AxeChopping")
+        public boolean axeChopping = true;
+
+        @Config.Comment("List of axes that will show in JEI recipes. Does not affect chopping board behavior.")
+        @Config.LangKey("cuisine.config.progression.axe_list")
+        @Config.Name("AxeList")
         @Config.RequiresMcRestart
-        public int cropsGenRate = 4;
+        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
 
         @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
         @Config.LangKey("cuisine.config.general.mill_work_cycle")
@@ -94,33 +84,21 @@ public final class CuisineConfig
         @Config.Name("BasinHeatingInDaylight")
         @Config.RequiresMcRestart
         public boolean basinHeatingInDaylight = true;
-    }
 
-    @Config.Comment("Progression features of Cuisine.")
-    @Config.LangKey("cuisine.config.progression")
-    @Config.Name("Progression")
-    public static final Progression PROGRESSION = new Progression();
-
-    public static final class Progression
-    {
-        Progression()
-        {
-            // No-op. Package-level access.
-        }
-
-        @Config.Comment("Allow axes to chop things on chopping board. Pack creators may wish to adjust it.")
-        @Config.LangKey("cuisine.config.progression.axe_chopping")
-        @Config.Name("AxeChopping")
-        public boolean axeChopping = true;
-
-        @Config.Comment("List of axes that will show in JEI recipes. This doesn't affect actual behavior.")
-        @Config.LangKey("cuisine.config.progression.axe_list")
-        @Config.Name("AxeList")
+        @Config.Name("SqueezerUsesFE")
         @Config.RequiresMcRestart
-        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
+        public int squeezerUsesFE = 0;
+
+        @Config.Name("DrinkroUsesFE")
+        @Config.RequiresMcRestart
+        public int drinkroUsesFE = 0;
+
+        @Config.Name("BasicSeedsWeight")
+        @Config.RequiresMcRestart
+        public int basicSeedsWeight = 5;
     }
 
-    @Config.Comment("Config options related to hardcore mode.")
+    @Config.Comment("Config options of Cuisine Hardcore Mode.")
     @Config.LangKey("cuisine.config.hardcore")
     @Config.Name("Hardcore")
     public static final Hardcore HARDCORE = new Hardcore();
@@ -187,6 +165,35 @@ public final class CuisineConfig
         @Config.RangeDouble(min = 0, max = 1)
         public double skillPointsRetainRatio = 1.0;
 
+    }
+
+    @Config.Comment("Configurable variables related to world generation")
+    @Config.LangKey("cuisine.config.world_gen")
+    @Config.Name("WorldGen")
+    public static final WorldGen WORLD_GEN = new WorldGen();
+
+    public static final class WorldGen
+    {
+
+        @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
+        @Config.Name("FruitTreesGenRate")
+        @Config.RangeInt(min = 0, max = 100)
+        @Config.RequiresMcRestart
+        public int fruitTreesGenRate = 50;
+
+        @Config.Comment("Generation rate of bamboo; larger value means lower generation rate; set to 0 to disable.")
+        @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
+        @Config.Name("BamboosGenRate")
+        @Config.RangeInt(min = 0)
+        @Config.RequiresMcRestart
+        public int bamboosGenRate = 35;
+
+        @Config.Comment("Generation rate of wild crops; larger value means lower generation rate; set to 0 to disable.")
+        @Config.LangKey("cuisine.config.general.crops_gen_rate")
+        @Config.Name("CropsGenRate")
+        @Config.RangeInt(min = 0)
+        @Config.RequiresMcRestart
+        public int cropsGenRate = 4;
     }
 
 }

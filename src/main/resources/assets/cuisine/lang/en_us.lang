@@ -24,7 +24,6 @@ item.cuisine.material.bamboo_charcoal.name=Bamboo Charcoal
 item.cuisine.material.unrefined_sugar.name=Crude Sugar
 item.cuisine.mortar.empty.name=Mortar
 item.cuisine.mortar.water.name=Mortar with Water
-item.cuisine.mortar.salt.name=Mortar with Salt
 item.cuisine.food.peanut.name=Peanut
 item.cuisine.food.sesame.name=Sesame
 item.cuisine.food.rice.name=Rice
@@ -91,16 +90,10 @@ tile.cuisine.earthen_basin.12.name=Brown-Colored Earthen Basin
 tile.cuisine.earthen_basin.13.name=Green-Colored Earthen Basin
 tile.cuisine.earthen_basin.14.name=Red-Colored Earthen Basin
 tile.cuisine.earthen_basin.15.name=Black-Colored Earthen Basin
-tile.cuisine.drinkro.name=Drinkro™ [WIP]
+tile.cuisine.drinkro.name=Drinkro™
 tile.cuisine.tofu_block.name=Tofu Block
-tile.cuisine.tofu_block.tip=Soymilk will solidify into tofu block when touching water; break tofu block to get tofu.
+tile.cuisine.tofu_block.tip=Soymilk will solidify into tofu block when touching vinegar or crude salt; break tofu block to get tofu.
 tile.cuisine.chopping_board.name=Chopping Board
-tile.cuisine.chopping_board.oak.name=Oak Chopping Board
-tile.cuisine.chopping_board.spruce.name=Spruce Chopping Board
-tile.cuisine.chopping_board.birch.name=Birch Chopping Board
-tile.cuisine.chopping_board.jungle.name=Jungle Chopping Board
-tile.cuisine.chopping_board.acacia.name=Acacia Chopping Board
-tile.cuisine.chopping_board.big_oak.name=Dark Oak Chopping Board
 tile.cuisine.placed_dish.name=Plate
 tile.cuisine.placed_dish.tip=Right click wok to get your dish out
 tile.cuisine.bamboo_plant.name=Bamboo
@@ -162,6 +155,8 @@ cuisine.effect.pufferfish_poison.name=Puffer Poison
 cuisine.effect.pufferfish_poison.tip=Puffer Poison
 cuisine.effect.water_breathing.name=Water Breathing
 cuisine.effect.water_breathing.tip=Water Breathing
+cuisine.effect.fermented_saltwort.name=Fermented Saltwort
+cuisine.effect.fermented_saltwort.tip=Fermented Saltwort
 
 cuisine.shape.full=%s
 cuisine.shape.cubed=%s Cube
@@ -206,6 +201,7 @@ cuisine.material.lemon=Lemon
 cuisine.material.grapefruit=Grapefruit
 cuisine.material.lime=Lime
 cuisine.material.empowered_citron=Empowered Citron
+cuisine.material.golden_carrot=Golden Carrot
 
 cuisine.material.chorus_fruit=Chorus Fruit
 cuisine.material.apple=Apple
@@ -257,6 +253,7 @@ cuisine.material.guava=Guava
 cuisine.material.lychee=Lychee
 cuisine.material.passion_fruit=Passion Fruit
 cuisine.material.rambutan=Rambutan
+cuisine.material.jackfruit=Jackfruit
 cuisine.material.ironberry=Ironberry
 cuisine.material.wildberry=Wildberry
 
@@ -278,10 +275,10 @@ cuisine.material.seaweed=Seaweed
 cuisine.material.winter_squash=Winter Squash
 cuisine.material.zucchini=Zucchini
 cuisine.material.water_chestnut=Water Chestnut
-cuisine.material.jackfruit=Jackfruit
 cuisine.material.tamarind=Tamarind
 cuisine.material.walnut=Walnut
 cuisine.material.chestnut=Chestnut
+cuisine.material.fermented_saltwort=Fermented Saltwort
 
 cuisine.spice.salt=Table Salt
 cuisine.spice.crude_salt=Crude Salt
@@ -375,9 +372,6 @@ cuisine.skill.skilled_chopping=Skilled Chopping
 cuisine.skill.bigger_size=Bigger Size
 cuisine.skill.fewer_losses=Fewer Losses
 
-cuisine.config=Cuisine
-cuisine.config.title=Cuisine Configuration
-cuisine.config.tooltip=Configurable variables used by Cuisine
 cuisine.config.progression=Progression
 cuisine.config.progression.tooltip=Progression-related variables
 cuisine.config.progression.axe_chopping=Axe Chopping
@@ -415,3 +409,7 @@ cuisine.toast.skill.get=New skill get!
 cuisine.toast.skill.description=%s up to %d!
 
 cuisine.command.culinaryskill=/culinaryskill <Player> get <SkillPoint> or /culinaryskill <Player> set <SkillPoint> <value>
+
+## Special override - can be used when combined name is either grammatrically incorrect or not following convention
+cuisine.ingredient.water.juice=Water
+cuisine.ingredient.milk.juice=Milk

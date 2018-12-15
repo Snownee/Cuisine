@@ -2,6 +2,7 @@ package snownee.cuisine.tiles;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -53,5 +54,14 @@ abstract class TileBase extends TileEntity
      */
     @Nonnull
     protected abstract NBTTagCompound writePacketData(NBTTagCompound data);
+
+    protected void refresh()
+    {
+        if (hasWorld() && !world.isRemote)
+        {
+            IBlockState state = world.getBlockState(pos);
+            world.markAndNotifyBlock(pos, null, state, state, 11);
+        }
+    }
 
 }

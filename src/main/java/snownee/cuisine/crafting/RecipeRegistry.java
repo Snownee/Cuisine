@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
@@ -36,16 +37,16 @@ public class RecipeRegistry
 
     public static void init()
     {
-        if (CuisineConfig.PROGRESSION.axeChopping)
+        if (CuisineConfig.GENERAL.axeChopping)
         {
-            Processing.CHOPPING.add(new Chopping(OreDictDefinition.of("plankWood"), new ItemStack(Items.STICK, 4)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG), new ItemStack(Blocks.PLANKS, 6)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG, 1), new ItemStack(Blocks.PLANKS, 6, 1)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG, 2), new ItemStack(Blocks.PLANKS, 6, 2)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG, 3), new ItemStack(Blocks.PLANKS, 6, 3)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG2), new ItemStack(Blocks.PLANKS, 6, 4)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(Blocks.LOG2, 1), new ItemStack(Blocks.PLANKS, 6, 5)));
-            Processing.CHOPPING.add(new Chopping(ItemDefinition.of(CuisineRegistry.LOG), new ItemStack(CuisineRegistry.PLANKS, 6)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "stick"), OreDictDefinition.of("plankWood"), new ItemStack(Items.STICK, 4)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "oak"), ItemDefinition.of(Blocks.LOG), new ItemStack(Blocks.PLANKS, 6)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "spruce"), ItemDefinition.of(Blocks.LOG, 1), new ItemStack(Blocks.PLANKS, 6, 1)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "birch"), ItemDefinition.of(Blocks.LOG, 2), new ItemStack(Blocks.PLANKS, 6, 2)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "jungle"), ItemDefinition.of(Blocks.LOG, 3), new ItemStack(Blocks.PLANKS, 6, 3)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "acacia"), ItemDefinition.of(Blocks.LOG2), new ItemStack(Blocks.PLANKS, 6, 4)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "dark_oak"), ItemDefinition.of(Blocks.LOG2, 1), new ItemStack(Blocks.PLANKS, 6, 5)));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "citrus"), ItemDefinition.of(CuisineRegistry.LOG), new ItemStack(CuisineRegistry.PLANKS, 6)));
         }
 
         Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("cropRice", 1)), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE), 4));
@@ -86,12 +87,12 @@ public class RecipeRegistry
         Processing.BOILING.add(new DistillationBoiling(FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
 
         ItemStack sugar = new ItemStack(Items.SUGAR);
-        Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
-        Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(Items.COAL, 1), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
-        Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
-        Processing.BASIN_THROWING.add(new SimpleThrowing(ItemDefinition.of(Items.COAL, 1), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
+        Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_bamboo_and_sugarcane"), ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
+        Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_charcoal_and_sugarcane"), ItemDefinition.of(Items.COAL, 1), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
+        Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_bamboo_and_beet"), ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
+        Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_charcoal_and_beet"), ItemDefinition.of(Items.COAL, 1), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
 
-        Processing.SQUEEZING.add(new SimpleSqueezing(OreDictDefinition.of("sugarcane"), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
+        Processing.SQUEEZING.add(new SimpleSqueezing(new ResourceLocation(Cuisine.MODID, "sugarcane_squeezing"), OreDictDefinition.of("sugarcane"), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
 
         CulinaryHub.API_INSTANCE.getKnownMaterials().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
 

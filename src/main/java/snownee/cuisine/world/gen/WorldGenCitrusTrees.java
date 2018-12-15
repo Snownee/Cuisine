@@ -22,7 +22,7 @@ public class WorldGenCitrusTrees
     @SubscribeEvent
     public void decorateEvent(Decorate event)
     {
-        if (event.getType() == Decorate.EventType.TREE && event.getRand().nextInt(200) < CuisineConfig.GENERAL.fruitTreesGenRate)
+        if (event.getType() == Decorate.EventType.TREE && event.getRand().nextInt(200) < CuisineConfig.WORLD_GEN.fruitTreesGenRate)
         {
             Random rand = event.getRand();
             World world = event.getWorld();

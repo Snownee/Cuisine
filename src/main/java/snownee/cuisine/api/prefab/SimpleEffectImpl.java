@@ -51,9 +51,9 @@ public class SimpleEffectImpl implements Effect
     }
 
     @Override
-    public int getColorForDisplay()
+    public int getColor()
     {
-        return color;
+        return this.color;
     }
 
 }

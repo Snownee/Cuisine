@@ -7,20 +7,17 @@ import java.util.List;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.prefab.DistillationBoiling;
 import snownee.cuisine.tiles.TileBasinHeatable;
 
-public class DistillationBoilingRecipe implements IRecipeWrapper
+public class DistillationBoilingRecipe extends GenericRecipeWrapper<DistillationBoiling>
 {
-    final DistillationBoiling recipe;
-
     public DistillationBoilingRecipe(DistillationBoiling recipe)
     {
-        this.recipe = recipe;
+        super(recipe);
     }
 
     @Override

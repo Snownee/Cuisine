@@ -43,6 +43,7 @@ public class ItemModBoat extends ItemMod
         return 400;
     }
 
+    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
@@ -71,10 +72,8 @@ public class ItemModBoat extends ItemMod
             boolean flag = false;
             List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(vec3d2.x * 5.0D, vec3d2.y * 5.0D, vec3d2.z * 5.0D).grow(1.0D));
 
-            for (int i = 0; i < list.size(); ++i)
+            for (Entity entity : list)
             {
-                Entity entity = list.get(i);
-
                 if (entity.canBeCollidedWith())
                 {
                     AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
@@ -128,6 +127,7 @@ public class ItemModBoat extends ItemMod
     {
         private final BehaviorDefaultDispenseItem dispenseBehavior = new BehaviorDefaultDispenseItem();
 
+        @Override
         public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
         {
             EnumFacing enumfacing = source.getBlockState().getValue(BlockDispenser.FACING);
@@ -160,6 +160,7 @@ public class ItemModBoat extends ItemMod
             return stack;
         }
 
+        @Override
         protected void playDispenseSound(IBlockSource source)
         {
             source.getWorld().playEvent(1000, source.getBlockPos(), 0);
