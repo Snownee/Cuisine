@@ -4,7 +4,6 @@
   "edition": -1,
   "creative_tab": "cuisine",
   "advancement_namespaces": [
-    "cuisine",
-    "minecraft"
+    "cuisine"
   ]
 }
