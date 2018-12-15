@@ -2,10 +2,11 @@
   "name": "砧板",
   "icon": "cuisine:chopping_board",
   "category": "processing",
+  "flag": "cuisine:enable_axe_chopping",
   "pages": [
     {
       "type": "text",
-      "text": "从技术角度来说，“砧板”应该改叫“切菜板”，而且它也应该归类于厨具。但在 Cuisine 中，若配置文件允许，你可以用斧子把放在砧板上的原木劈成木板。$(br)手持物品右击砧板可将物品放在砧板上。手持斧子左击砧板若干次后可将物品劈碎。"
+      "text": "虽然这是个$(l:utensil/cutting_board)“切菜板”$()，但在 Cuisine 中，你可以用斧子把放在砧板上的原木劈成木板。$(br)手持物品右击砧板可将物品放在砧板上。手持斧子左击砧板若干次后可将物品劈碎。"
     }
   ]
 }
