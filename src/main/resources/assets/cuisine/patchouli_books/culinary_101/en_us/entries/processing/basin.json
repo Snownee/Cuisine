@@ -1,0 +1,108 @@
+{
+  "name": "Basin",
+  "icon": "cuisine:earthen_basin",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Basin is a processing device. It comes with two variants: wooden and earthen. Earthen Basin also has 16 variants in all colors found in vanilla color palette. Basin has three working modes: $(l:processing/basin#distillation)\"distillation\"$(), $(l:processing/basin#squeezing)\"squeezing\"$() and $(l:processing/basin#throwing)\"contact\"$()."
+    },
+    {
+      "anchor": "throwing",
+      "type": "spotlight",
+      "item": "cuisine:wooden_basin",
+      "title": "   ",
+      "text": "\"Contact\" simply means that you just throw items (press $(k:drop))into basin, and it will mix up with fluid inside the basin and become another item."
+    },
+    {
+      "anchor": "distillation",
+      "type": "text",
+      "text": "\"Distillation\" means that you need to heat the fluid inside the basin to get refined products. To heat fluid, you need a heat source. Typical heat sources include lava and fire. It can be sunlight if enabled in config."
+    },
+    {
+      "type": "multiblock",
+      "multiblock": {
+        "pattern": [
+          [ "_B_" ],
+          [ "_S_" ],
+          [ "_0_" ]
+        ],
+        "symmetrical": true,
+        "mapping": {
+          "B": "cuisine:earthen_basin",
+          "S": "minecraft:fire"
+        }
+      }
+    },
+    {
+      "anchor": "squeezing",
+      "type": "text",
+      "text": "Squeezing is a bit complicated. It means that you need to put items into basin by right clicking basin, then either put a vanilla piston on the basin to form a squeezer (see diagram on your right), or use your feet to crush them by let yourself jump and fall on the basin.$(br)The squeezer structure only needs redstone pulse to work."
+    },
+    {
+      "type": "multiblock",
+      "multiblock": {
+        "pattern": [
+          [ "P" ],
+          [ "B" ],
+          [ "0" ]
+        ],
+        "symmetrical": true,
+        "mapping": {
+          "B": "cuisine:earthen_basin",
+          "P": "minecraft:piston[facing=down,extended=false]"
+        }
+      }
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:wooden_basin",
+      "text": "Unlike its earthen counterpart, wooden basin has only one variant: the one with oak wood texture."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:earthen_basin",
+      "text": "Want colored basins? Replace terracotta with colored terracotta. Although technically this entry ends here, if you feel bored, you can still browse the rest of pages of this entry."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:white_earthen_basin",
+      "recipe2": "cuisine:orange_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:magenta_earthen_basin",
+      "recipe2": "cuisine:light_blue_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:yellow_earthen_basin",
+      "recipe2": "cuisine:lime_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:pink_earthen_basin",
+      "recipe2": "cuisine:gray_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:light_gray_earthen_basin",
+      "recipe2": "cuisine:cyan_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:purple_earthen_basin",
+      "recipe2": "cuisine:blue_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:brown_earthen_basin",
+      "recipe2": "cuisine:green_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:red_earthen_basin",
+      "recipe2": "cuisine:black_earthen_basin"
+    }
+  ]
+}
