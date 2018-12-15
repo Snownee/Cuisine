@@ -1,0 +1,16 @@
+{
+  "name": "Mortar",
+  "icon": "cuisine:mortar",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Mortar is a processing device that can grind things. It is primarily for grinding ingredients into paste form. It can also refine crude salt into regular table salt."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:mortar",
+      "text": "To use mortar, firstly place it down as a block. Right click the mortar block with items being held will put items into mortar. Right click with empty hand will let it work; after several times of right-clicking, the products will automatically pop out."
+    }
+  ]
+}
