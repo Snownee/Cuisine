@@ -1,0 +1,22 @@
+{
+  "name": "Plate",
+  "icon": "cuisine:placed_dish",
+  "category": "utensils",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Yes, you have to use a plate to hold your food. You cannot eat food with your bare hand in Cuisine mod.$(br)You can place the plate down by right clicking. If it's an empty plate, it's right clicking while sneaking."
+    },
+    {
+      "type": "crafting",
+      "flag": "!mod:ceramics",
+      "recipe": "cuisine:plate"
+    },
+    {
+      "type": "crafting",
+      "flag": "mod:ceramics",
+      "recipe": "cuisine:plate",
+      "recipe2": "cuisine:compatibilities/ceramic_plate"
+    }
+  ]
+}
