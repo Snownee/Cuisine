@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Jar is a processing device. It can ferment something into another thing, for example you can make soy sauce from soybean and water, or vinegar from various fruit or grains. To put items in, simply right click jar with the items you want to put in; if the item is fluid container, this will pour fluid into it."
+      "text": "Jar is a processing device. It can ferment something into another thing, for example you can make soy sauce from soybean and water, or vinegar from various fruit or grains. Jar does not have GUI; everything must be done through direct interacting in world. To put items in, simply right click jar with the items you want to put in; if the item is fluid container, this will pour fluid into it."
     },
     {
       "type": "spotlight",
