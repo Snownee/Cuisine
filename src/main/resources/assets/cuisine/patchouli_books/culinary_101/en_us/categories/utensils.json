@@ -1,5 +1,6 @@
 {
   "name": "Utensils",
   "description": "All detailed descriptions of cooking utensils can be found here.",
-  "icon": "cuisine:wok"
+  "icon": "cuisine:wok",
+  "sortnum": 2
 }

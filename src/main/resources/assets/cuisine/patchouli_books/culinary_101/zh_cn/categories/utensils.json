@@ -1,5 +1,6 @@
 {
   "name": "厨具",
   "description": "所有厨具均在这里有所说明。",
-  "icon": "cuisine:wok"
+  "icon": "cuisine:wok",
+  "sortnum": 2
 }

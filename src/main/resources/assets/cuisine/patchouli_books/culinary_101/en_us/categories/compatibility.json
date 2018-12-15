@@ -1,5 +1,6 @@
 {
   "name": "Compatibility",
   "description": "Hidden gems in inter-mod interactions.",
-  "icon": "minecraft:emerald"
+  "icon": "minecraft:emerald",
+  "sortnum": 100
 }
