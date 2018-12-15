@@ -1,0 +1,22 @@
+{
+  "name": "盘子",
+  "icon": "cuisine:placed_dish",
+  "category": "utensils",
+  "pages": [
+    {
+      "type": "text",
+      "text": "是的，在 Cuisine 中你不能直接用手吃菜，必须用盘子盛。$(br)盘子可以右击放在地上。对于空盘子来说，则是潜行时右击才能放在地上。"
+    },
+    {
+      "type": "crafting",
+      "flag": "!mod:ceramics",
+      "recipe": "cuisine:plate"
+    },
+    {
+      "type": "crafting",
+      "flag": "mod:ceramics",
+      "recipe": "cuisine:plate",
+      "recipe2": "cuisine:compatibilities/ceramic_plate"
+    }
+  ]
+}
