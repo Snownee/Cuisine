@@ -1,0 +1,33 @@
+{
+  "type": "forge:ore_shaped",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:or",
+        "values": [
+          { "type": "forge:mod_loaded", "modid": "techreborn" },
+          { "type": "forge:mod_loaded", "modid": "immersiveengineering" },
+          { "type": "forge:mod_loaded", "modid": "thermalfoundation" }
+        ]
+      }
+    }
+  ],
+  "result": {
+    "item": "cuisine:kitchen_knife"
+  },
+  "pattern": [
+    " i",
+    "s "
+  ],
+  "key": {
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "handleWood"
+    },
+    "i": {
+      "ore" : "ingotIron",
+      "type": "forge:ore_dict"
+    }
+  }
+}
