@@ -1,9 +1,9 @@
 /*
- * Adapted from https://github.com/Shadows-of-Fire/Plants/blob/master/
- * src/main/java/shadows/plants2/client/Transformer.java
+ * Adapted from https://github.com/SlimeKnights/Mantle/blob/a262e27b7cd4b912b512a4dc297799fde9e01722/
+ * src/main/java/slimeknights/mantle/client/model/TRSRBakedModel.java#L150-L190
  * Original license are duplicated below.
  *
- * Copyright (c) 2017 Brennan Ward
+ * Copyright (c) 2013-2014 Slime Knights (mDiyo, fuj1n, Sunstrike, progwml6, pillbox, alexbegt)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -13,8 +13,7 @@
  * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software. Any derivative works using
- * code from this project must be open source.
+ * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -37,19 +36,21 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 import javax.vecmath.Vector4f;
 
-final class QuadTransformer extends VertexTransformer
+final class TRSRBasedQuadTransformer extends VertexTransformer
 {
-    private final Matrix4f transform;
-    private final Matrix3f normalTransform;
+    private final Matrix4f transformation;
+    private final Matrix3f normalTransformation;
 
-    QuadTransformer(TRSRTransformation transform, VertexFormat vertexFormat)
+    TRSRBasedQuadTransformer(TRSRTransformation transform, VertexFormat vertexFormat)
     {
         super(new UnpackedBakedQuad.Builder(vertexFormat));
-        this.transform = transform.getMatrix();
-        this.normalTransform = new Matrix3f();
-        this.transform.getRotationScale(this.normalTransform);
-        this.normalTransform.invert();
-        this.normalTransform.transpose();
+        // position transform
+        this.transformation = transform.getMatrix();
+        // normal transform
+        this.normalTransformation = new Matrix3f();
+        this.transformation.getRotationScale(this.normalTransformation);
+        this.normalTransformation.invert();
+        this.normalTransformation.transpose();
     }
 
     @Override
@@ -60,16 +61,15 @@ final class QuadTransformer extends VertexTransformer
         // transform normals and position
         if (usage == VertexFormatElement.EnumUsage.POSITION && data.length >= 3)
         {
-            Vector4f vec = new Vector4f(data);
-            vec.setW(1.0f);
-            transform.transform(vec);
+            Vector4f vec = new Vector4f(data[0], data[1], data[2], 1f);
+            transformation.transform(vec);
             data = new float[4];
             vec.get(data);
         }
         else if (usage == VertexFormatElement.EnumUsage.NORMAL && data.length >= 3)
         {
             Vector3f vec = new Vector3f(data);
-            normalTransform.transform(vec);
+            normalTransformation.transform(vec);
             vec.normalize();
             data = new float[4];
             vec.get(data);
