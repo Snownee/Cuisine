@@ -1,0 +1,11 @@
+{
+  "name": "Chopping Board",
+  "icon": "cuisine:chopping_board",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Technically speaking, chopping board is a cooking utensil, and it should be called \"cutting board\" instead. However, in Cuisine, if enabled in config, you can also chop wood logs into planks on chopping board using an axe. $(br)Right click with items to put them onto chopping board. To chop things, left click chopping board with axe."
+    }
+  ]
+}
