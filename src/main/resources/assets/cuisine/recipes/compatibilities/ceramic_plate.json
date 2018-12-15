@@ -1,0 +1,23 @@
+{
+  "type": "forge:ore_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ceramics"
+    }
+  ],
+  "result": {
+    "item": "cuisine:placed_dish"
+  },
+  "pattern": [
+    "qqq"
+  ],
+  "key": {
+    "q": [
+      {
+        "item": "ceramics:unfired_clay",
+        "data": 5
+      }
+    ]
+  }
+}
