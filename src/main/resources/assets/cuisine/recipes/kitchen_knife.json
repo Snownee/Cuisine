@@ -6,8 +6,9 @@
       "value": {
         "type": "forge:or",
         "values": [
-          { "type": "forge:mod_loaded", "modid": "techreborn" },
+          { "type": "forge:mod_loaded", "modid": "ic2" },
           { "type": "forge:mod_loaded", "modid": "immersiveengineering" },
+          { "type": "forge:mod_loaded", "modid": "techreborn" },
           { "type": "forge:mod_loaded", "modid": "thermalfoundation" }
         ]
       }
