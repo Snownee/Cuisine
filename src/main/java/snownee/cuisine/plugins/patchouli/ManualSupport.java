@@ -13,6 +13,6 @@ public class ManualSupport implements IModule
     @Override
     public void init()
     {
-        PatchouliAPI.instance.setConfigFlag("cuisine:enable_axe_chopping", CuisineConfig.PROGRESSION.axeChopping);
+        PatchouliAPI.instance.setConfigFlag("cuisine:enable_axe_chopping", CuisineConfig.GENERAL.axeChopping);
     }
 }
