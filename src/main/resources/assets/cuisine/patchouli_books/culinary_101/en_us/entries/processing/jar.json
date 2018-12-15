@@ -1,0 +1,22 @@
+{
+  "name": "Jar",
+  "icon": "cuisine:jar",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Jar is a processing device. It can ferment something into another thing, for example you can make soy sauce from soybean and water, or vinegar from various fruit or grains. To put items in, simply right click jar with the items you want to put in; if the item is fluid container, this will pour fluid into it."
+    },
+    {
+      "type": "spotlight",
+      "item": "cuisine:jar",
+      "title": "   ",
+      "text": "Jar will start working if its contents matches a known recipe; when working, there will be white particles rotating around the jar, serving as indicator of progress; when the white particles finish one full round, it means the jar has also finished one working cycle."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:jar",
+      "text": ":think:"
+    }
+  ]
+}
