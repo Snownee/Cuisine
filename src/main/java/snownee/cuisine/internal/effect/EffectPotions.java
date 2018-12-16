@@ -31,14 +31,14 @@ public class EffectPotions extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, @Nullable CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
     {
-        double size = 1;
-        int modifier = ingredient == null || ingredient.getForm().ordinal() > 3 ? 1 : 2;
+        double size = ingredients.length;
+        int modifier = 0;
         // TODO: Fine tuning
         for (PotionEffect effect : effects)
         {
-            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size * 4 / modifier)), effect.getAmplifier() + modifier - 1, effect.getIsAmbient(), effect.doesShowParticles()));
+            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size * 4 / modifier)), effect.getAmplifier() + modifier, effect.getIsAmbient(), effect.doesShowParticles()));
         }
     }
 

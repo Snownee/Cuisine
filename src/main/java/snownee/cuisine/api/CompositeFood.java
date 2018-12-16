@@ -7,9 +7,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -159,6 +163,13 @@ public abstract class CompositeFood
         return Collections.unmodifiableList(this.effects);
     }
 
+    public final Set<Effect> getMergedEffects()
+    {
+        Set<Effect> effects = getIngredients().stream().map(Ingredient::getEffects).flatMap(Set::stream).collect(Collectors.toSet());
+        effects.addAll(getEffects());
+        return effects;
+    }
+
     /**
      * Determine whether this is consumed entirely.
      * @return <code>true</code> if this is already eaten up; <code>false</code> otherwise.
@@ -295,13 +306,13 @@ public abstract class CompositeFood
 
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
-        Collection<IngredientBinding> bindings = getEffectBindings();
+        Collection<EffectBinding> bindings = getEffectBindings();
         EffectCollector collector = new DefaultConsumedCollector();
 
         // And then apply them
-        for (IngredientBinding binding : bindings)
+        for (EffectBinding binding : bindings)
         {
-            binding.effect.onEaten(stack, player, this, binding.ingredient, collector);
+            binding.effect.onEaten(stack, player, this, binding.ingredients, collector);
         }
 
         // And finally, consume seasonings
@@ -315,18 +326,17 @@ public abstract class CompositeFood
         player.getFoodStats().addStats(getFoodLevel(), getSaturationModifier());
     }
 
-    protected Collection<IngredientBinding> getEffectBindings()
+    protected Collection<EffectBinding> getEffectBindings()
     {
-        List<IngredientBinding> bindings = new ArrayList<>();
-
-        effects.forEach(effect -> bindings.add(new IngredientBinding(effect)));
+        Multimap<Effect, Ingredient> effectMap = HashMultimap.create();
         for (Ingredient ingredient : ingredients)
         {
-            for (Effect effect : ingredient.getEffects())
-            {
-                bindings.add(new IngredientBinding(ingredient, effect));
-            }
+            ingredient.getEffects().forEach(effect -> effectMap.put(effect, ingredient));
         }
+        effects.forEach(effect -> effectMap.put(effect, null));
+
+        List<EffectBinding> bindings = new ArrayList<>();
+        effectMap.keySet().forEach(effect -> bindings.add(new EffectBinding(effectMap.get(effect).toArray(new Ingredient[0]), effect)));
 
         // Sort the list of effects based on priority
         Collections.sort(bindings);
@@ -334,24 +344,19 @@ public abstract class CompositeFood
         return bindings;
     }
 
-    public static class IngredientBinding implements Comparable<IngredientBinding>
+    public static class EffectBinding implements Comparable<EffectBinding>
     {
-        public final Ingredient ingredient;
         public final Effect effect;
+        public final Ingredient[] ingredients; // element can be null
 
-        public IngredientBinding(@Nullable Ingredient ingredient, @Nonnull Effect effect)
+        public EffectBinding(Ingredient[] ingredients, @Nonnull Effect effect)
         {
-            this.ingredient = ingredient;
+            this.ingredients = ingredients;
             this.effect = effect;
         }
 
-        public IngredientBinding(@Nonnull Effect effect)
-        {
-            this(null, effect);
-        }
-
         @Override
-        public int compareTo(@Nonnull IngredientBinding another)
+        public int compareTo(@Nonnull EffectBinding another)
         {
             return Integer.compare(another.effect.getPriority(), this.effect.getPriority());
         }

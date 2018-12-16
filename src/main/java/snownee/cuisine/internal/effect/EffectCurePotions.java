@@ -17,7 +17,7 @@ public class EffectCurePotions extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
     {
         player.curePotionEffects(new ItemStack(Items.MILK_BUCKET));
     }

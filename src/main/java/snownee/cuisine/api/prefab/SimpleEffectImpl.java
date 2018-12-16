@@ -1,7 +1,5 @@
 package snownee.cuisine.api.prefab;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.api.CompositeFood;
@@ -21,7 +19,7 @@ public class SimpleEffectImpl implements Effect
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
     {
         // Do nothing by default
     }

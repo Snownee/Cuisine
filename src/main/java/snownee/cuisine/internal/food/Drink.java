@@ -367,7 +367,7 @@ public class Drink extends CompositeFood
     @Override
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
-        Collection<IngredientBinding> bindings = getEffectBindings();
+        Collection<EffectBinding> bindings = getEffectBindings();
         float modifier = 1;
         for (Seasoning seasoning : seasonings)
         {
@@ -396,9 +396,9 @@ public class Drink extends CompositeFood
         EffectCollector collector = new DefaultConsumedCollector(modifier);
 
         // And then apply them
-        for (IngredientBinding binding : bindings)
+        for (EffectBinding binding : bindings)
         {
-            binding.effect.onEaten(stack, player, this, binding.ingredient, collector);
+            binding.effect.onEaten(stack, player, this, binding.ingredients, collector);
         }
 
         // And finally, consume seasonings

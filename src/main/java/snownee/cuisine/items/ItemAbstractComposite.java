@@ -230,9 +230,7 @@ public abstract class ItemAbstractComposite extends ItemMod
         {
             tooltip.add(I18nUtil.translateWithFormat("tip.food_serve_amount", dish.getServes()));
 
-            Set<Effect> effects = dish.getIngredients().stream().map(Ingredient::getEffects).flatMap(Set::stream).collect(Collectors.toSet());
-            effects.addAll(dish.getEffects());
-            for (Effect effect : effects)
+            for (Effect effect : dish.getMergedEffects())
             {
                 if (effect.showInTooltips())
                 {

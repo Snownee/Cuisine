@@ -24,10 +24,10 @@ public class EffectHeatResistance extends EffectPotions
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
     {
         player.extinguish();
-        super.onEaten(stack, player, food, ingredient, collector);
+        super.onEaten(stack, player, food, ingredients, collector);
     }
 
 }
