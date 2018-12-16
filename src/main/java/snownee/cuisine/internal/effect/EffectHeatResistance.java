@@ -1,5 +1,7 @@
 package snownee.cuisine.internal.effect;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -24,7 +26,7 @@ public class EffectHeatResistance extends EffectPotions
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, List<Ingredient> ingredients, EffectCollector collector)
     {
         player.extinguish();
         super.onEaten(stack, player, food, ingredients, collector);

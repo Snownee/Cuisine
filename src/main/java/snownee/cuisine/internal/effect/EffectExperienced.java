@@ -1,17 +1,15 @@
 package snownee.cuisine.internal.effect;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.EffectCollector;
@@ -28,7 +26,7 @@ public class EffectExperienced extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, List<Ingredient> ingredients, EffectCollector collector)
     {
         ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
 

@@ -1,5 +1,7 @@
 package snownee.cuisine.api.prefab;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.api.CompositeFood;
@@ -19,7 +21,7 @@ public class SimpleEffectImpl implements Effect
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, List<Ingredient> ingredients, EffectCollector collector)
     {
         // Do nothing by default
     }

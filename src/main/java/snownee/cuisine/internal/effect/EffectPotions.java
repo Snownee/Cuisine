@@ -3,8 +3,6 @@ package snownee.cuisine.internal.effect;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -31,9 +29,9 @@ public class EffectPotions extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient[] ingredients, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, List<Ingredient> ingredients, EffectCollector collector)
     {
-        double size = ingredients.length;
+        double size = ingredients.size();
         int modifier = 0;
         // TODO: Fine tuning
         for (PotionEffect effect : effects)

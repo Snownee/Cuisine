@@ -336,7 +336,7 @@ public abstract class CompositeFood
         effects.forEach(effect -> effectMap.put(effect, null));
 
         List<EffectBinding> bindings = new ArrayList<>();
-        effectMap.keySet().forEach(effect -> bindings.add(new EffectBinding(effectMap.get(effect).toArray(new Ingredient[0]), effect)));
+        effectMap.keySet().forEach(effect -> bindings.add(new EffectBinding(effectMap.get(effect).stream().collect(Collectors.toList()), effect)));
 
         // Sort the list of effects based on priority
         Collections.sort(bindings);
@@ -347,9 +347,9 @@ public abstract class CompositeFood
     public static class EffectBinding implements Comparable<EffectBinding>
     {
         public final Effect effect;
-        public final Ingredient[] ingredients; // element can be null
+        public final List<Ingredient> ingredients; // element can be null
 
-        public EffectBinding(Ingredient[] ingredients, @Nonnull Effect effect)
+        public EffectBinding(List<Ingredient> ingredients, @Nonnull Effect effect)
         {
             this.ingredients = ingredients;
             this.effect = effect;
