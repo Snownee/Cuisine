@@ -56,8 +56,8 @@ public class RecipeRegistry
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropSichuanpepper"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SICHUAN_PEPPER_POWDER)));
         Processing.MILLING.add(new Milling(new ItemStack(Items.WHEAT), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.FLOUR)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("foodRice"), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.RICE_POWDER)));
-        Processing.MILLING.add(new Milling(OreDictDefinition.of("dustCrudesalt"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT)));
-        Processing.MILLING.add(new Milling(OreDictDefinition.of("cropSesame"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.SESAME_OIL, 20)));
+        Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "crude_salt_refining"), OreDictDefinition.of("dustCrudesalt"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT)));
+        Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "sesame_oil"), OreDictDefinition.of("cropSesame"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.SESAME_OIL, 20)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropPeanut"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 100)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropRice"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 20)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("seedRice"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 20)));
