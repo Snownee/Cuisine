@@ -64,7 +64,7 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
                 }
             }
 
-            ingredient.setHeat(ingredient.getHeat() + Item.itemRand.nextInt(10));
+            ingredient.setDoneness(ingredient.getDoneness() + Item.itemRand.nextInt(10));
             //if (vessel.getTemperature() > 100) // TODO Move this somewhere else? New interface HeatingVessel?
             //{
             ingredient.removeTrait(IngredientTrait.UNDERCOOKED);

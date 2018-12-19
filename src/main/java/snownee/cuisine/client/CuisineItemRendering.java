@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -37,8 +38,7 @@ public final class CuisineItemRendering
     public static void onItemColorsInit(ColorHandlerEvent.Item event)
     {
         ItemColors itemColors = event.getItemColors();
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 0)
             {
                 NBTTagCompound data = stack.getTagCompound();
@@ -47,15 +47,28 @@ public final class CuisineItemRendering
                     Material material = CulinaryHub.API_INSTANCE.findMaterial(data.getString(CuisineSharedSecrets.KEY_MATERIAL));
                     if (material != null)
                     {
-                        return material.getRawColorCode();
+                        int doneness = 0;
+                        if (data.hasKey(CuisineSharedSecrets.KEY_DONENESS, Constants.NBT.TAG_INT))
+                        {
+                            doneness = data.getInteger(CuisineSharedSecrets.KEY_DONENESS);
+                        }
+                        int raw = material.getRawColorCode();
+                        int cooked = material.getCookedColorCode();
+                        if (doneness < 100)
+                        {
+                            return mixColor(raw, cooked, doneness / 100f);
+                        }
+                        else
+                        {
+                            return mixColor(cooked, 0, (doneness - 100) / 100f);
+                        }
                     }
                 }
             }
             return -1;
         }, CuisineRegistry.INGREDIENT);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 0 && CuisineRegistry.SPICE_BOTTLE.hasItem(stack))
             {
                 Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(stack);
@@ -79,8 +92,7 @@ public final class CuisineItemRendering
             return -1;
         }, CuisineRegistry.SPICE_BOTTLE);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 0)
             {
                 stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
@@ -97,8 +109,7 @@ public final class CuisineItemRendering
             return -1;
         }, CuisineRegistry.BOTTLE);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 1 && stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
             {
                 FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
@@ -111,6 +122,37 @@ public final class CuisineItemRendering
             return -1;
         }, CuisineRegistry.DRINK);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ColorizerFoliage.getFoliageColorBasic() : -1, CuisineRegistry.SHEARED_LEAVES);
+        itemColors.registerItemColorHandler((
+                stack, tintIndex
+        ) -> tintIndex == 0 ? ColorizerFoliage.getFoliageColorBasic() : -1, CuisineRegistry.SHEARED_LEAVES);
+    }
+
+    public static int mixColor(int color1, int color2, float weight)
+    {
+        if (weight <= 0)
+        {
+            return color1;
+        }
+        else if (weight >= 1)
+        {
+            return color2;
+        }
+        else
+        {
+            float a = (color1 >> 24 & 255) / 255.0F * weight;
+            float r = (color1 >> 16 & 255) / 255.0F * weight;
+            float g = (color1 >> 8 & 255) / 255.0F * weight;
+            float b = (color1 & 255) / 255.0F * weight;
+            weight = 1 - weight;
+            a += (color2 >> 24 & 255) / 255.0F * weight;
+            r += (color2 >> 16 & 255) / 255.0F * weight;
+            g += (color2 >> 8 & 255) / 255.0F * weight;
+            b += (color2 & 255) / 255.0F * weight;
+            a *= 255;
+            r *= 255;
+            g *= 255;
+            b *= 255;
+            return (int) a << 24 | (int) r << 16 | (int) g << 8 | (int) b;
+        }
     }
 }

@@ -416,8 +416,8 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 return;
             }
             int increment = Math.max(0, initialTemp / 4);
-            ingredient.setHeat(ingredient.getHeat() + increment);
-            if (ingredient.getHeat() > 250 && Math.random() < 0.01)
+            ingredient.setDoneness(ingredient.getDoneness() + increment);
+            if (ingredient.getDoneness() > 250 && Math.random() < 0.01)
             {
                 // Unconditionally remove the undercooked trait, so that
                 // we won't see both co-exist together

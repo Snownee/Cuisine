@@ -13,7 +13,7 @@ public class SimpleMaterialImpl implements Material
 {
 
     private final String id;
-    private final int rawColor, cookedColor, waterValue, oilValue, heatValue;
+    private final int rawColor, cookedColor, waterValue, oilValue;
     private final float saturationModifier;
     private final EnumSet<MaterialCategory> categories;
     private EnumSet<Form> validForms = EnumSet.noneOf(Form.class);
@@ -31,14 +31,22 @@ public class SimpleMaterialImpl implements Material
             rawColor |= 0xFF000000;
         }
         this.rawColor = rawColor;
-        if (cookedColor >> 24 == 0)
+        if (cookedColor == 0)
+        {
+            float a = (rawColor >> 24 & 255) / 255.0F;
+            float r = (rawColor >> 16 & 255) / 255.0F * 1.1F;
+            float g = (rawColor >> 8 & 255) / 255.0F * 1.1F;
+            float b = (rawColor & 255) / 255.0F * 0.8F;
+            cookedColor = (int) a << 24 | (int) r << 16 | (int) g << 8 | (int) b;
+        }
+        else if (cookedColor >> 24 == 0)
         {
             cookedColor |= 0xFF000000;
         }
         this.cookedColor = cookedColor;
         this.waterValue = waterValue;
         this.oilValue = oilValue;
-        this.heatValue = heatValue;
+        //this.heatValue = heatValue;
         this.saturationModifier = foodSaturationModifier;
         this.categories = EnumSet.noneOf(MaterialCategory.class);
     }
@@ -89,12 +97,6 @@ public class SimpleMaterialImpl implements Material
     public int getInitialOilValue()
     {
         return oilValue;
-    }
-
-    @Override
-    public int getInitialHeatValue()
-    {
-        return heatValue;
     }
 
     @Override

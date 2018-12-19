@@ -87,7 +87,7 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
             }
 
             GlStateManager.pushMatrix();
-            // ÕûÌåÎ»ÒÆÐý×ª
+            // æ•´ä½“ä½ç§»æ—‹è½¬
             double dx = x + 0.5;
             double dy = y + 0.5;
             double dz = z + 0.5;
@@ -101,7 +101,7 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
             
             GlStateManager.disableLighting();
 
-            // È·¶¨½çÃæÎ»ÖÃ
+            // ç¡®å®šç•Œé¢ä½ç½®
             long countStacks = tile.stacks.getStacks().stream().filter(e -> !e.isEmpty()).count();
             int width = 20;
             if (countStacks > 0)
@@ -118,7 +118,7 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
                 offsetX = 42;
             }
 
-            // äÖÈ¾×ÜÎÂ¶È
+            // æ¸²æŸ“æ€»æ¸©åº¦
             GlStateManager.pushMatrix();
             GlStateManager.rotate(180, 0, 0, 0);
             double scale = 1 / 84d;
@@ -144,8 +144,8 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
             CulinaryRenderHelper.drawModalRect(-4, -10 + 80 * (1 - profile.icon2), 128, 48, 16, 16, 256, 256, .3f);
 
             GlStateManager.popMatrix();
-
-            // äÖÈ¾²âÊÔÓÃÎïÆ·£¨2D±âÆ½£©
+ 
+            // æ¸²æŸ“æµ‹è¯•ç”¨ç‰©å“ï¼ˆ2Dæ‰å¹³ï¼‰
             //            GlStateManager.rotate(180, 0, 1, 0);
             //            int color = (int) (transparency * 255) << 24 | 0xFFFFFF;
             //            CulinaryRenderHelper.renderColoredGuiItem(mc, new ItemStack(Blocks.TALLGRASS, 1, 1), color);

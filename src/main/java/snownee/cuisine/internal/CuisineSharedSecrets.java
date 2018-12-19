@@ -22,6 +22,7 @@ public interface CuisineSharedSecrets
     String KEY_USE_DURATION = "useDuration";
     String KEY_FOOD_LEVEL = "foodLevel";
     String KEY_SATURATION_MODIFIER = "saturation";
+    String KEY_DONENESS = "doneness";
 
     /**
      * Used to indicate the actual type of CompositeFood, for (de)serialization purpose

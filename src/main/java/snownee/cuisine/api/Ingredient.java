@@ -13,7 +13,7 @@ public final class Ingredient
 {
     private final Material material;
     private Form form;
-    private int water, oil, heat;
+    private int water, oil, doneness;
     private final EnumSet<IngredientTrait> traits;
     private final Set<Effect> effects;
 
@@ -36,7 +36,7 @@ public final class Ingredient
 
         this.water = material.getInitialWaterValue();
         this.oil = material.getInitialOilValue();
-        this.heat = material.getInitialHeatValue();
+        this.doneness = 0;
         material.onCrafted(this);
     }
 
@@ -125,14 +125,14 @@ public final class Ingredient
         this.oil = oil;
     }
 
-    public int getHeat()
+    public int getDoneness()
     {
-        return heat;
+        return doneness;
     }
 
-    public void setHeat(int heat)
+    public void setDoneness(int doneness)
     {
-        this.heat = heat;
+        this.doneness = doneness;
     }
 
     public boolean equalsIgnoreSize(@Nonnull Ingredient other)
@@ -145,7 +145,7 @@ public final class Ingredient
         Ingredient theCopy = new Ingredient(this.material, this.form, this.traits.clone());
         theCopy.water = this.water;
         theCopy.oil = this.oil;
-        theCopy.heat = this.heat;
+        theCopy.doneness = this.doneness;
         return theCopy;
     }
 

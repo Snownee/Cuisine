@@ -30,8 +30,6 @@ public interface Material
 
     int getInitialOilValue();
 
-    int getInitialHeatValue();
-
     default float getSaturationModifier(final Ingredient ingredient)
     {
         return this.getSaturationModifier();

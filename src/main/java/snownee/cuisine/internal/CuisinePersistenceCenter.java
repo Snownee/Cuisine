@@ -31,6 +31,7 @@ public interface CuisinePersistenceCenter
         }
         data.setString(CuisineSharedSecrets.KEY_MATERIAL, ingredient.getMaterial().getID());
         data.setString(CuisineSharedSecrets.KEY_FORM, ingredient.getForm().name());
+        data.setInteger(CuisineSharedSecrets.KEY_DONENESS, ingredient.getDoneness());
         data.setIntArray(CuisineSharedSecrets.KEY_TRAITS, ingredient.getAllTraits().stream().mapToInt(Enum::ordinal).toArray());
         NBTTagList effectList = new NBTTagList();
         for (Effect effect : ingredient.getEffects())
@@ -70,6 +71,10 @@ public interface CuisinePersistenceCenter
             traits.add(IngredientTrait.VALUES[id]);
         }
         Ingredient result = new Ingredient(material, form, traits);
+        if (data.hasKey(CuisineSharedSecrets.KEY_DONENESS, Constants.NBT.TAG_INT))
+        {
+            result.setDoneness(data.getInteger(CuisineSharedSecrets.KEY_DONENESS));
+        }
         for (NBTBase baseTag : data.getTagList(CuisineSharedSecrets.KEY_EFFECT_LIST, Constants.NBT.TAG_STRING))
         {
             if (baseTag instanceof NBTTagString)
