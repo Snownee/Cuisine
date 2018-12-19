@@ -139,7 +139,10 @@ public class BlockChoppingBoard extends BlockMod
                 if (!worldIn.isRemote)
                 {
                     held = teCB.insertItem(playerIn, held);
-                    playerIn.setHeldItem(hand, held);
+                    if (!playerIn.isCreative())
+                    {
+                        playerIn.setHeldItem(hand, held);
+                    }
                     //return !teCB.stacks.getStackInSlot(0).isEmpty();
                 }
                 worldIn.notifyBlockUpdate(pos, state, state, 11);

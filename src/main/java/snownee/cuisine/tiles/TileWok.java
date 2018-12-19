@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
@@ -164,7 +165,10 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.EXPERTISE, (int) (completedDish.getFoodLevel() * completedDish.getSaturationModifier()));
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
 
-                heldThing.shrink(1);
+                if (!playerIn.isCreative())
+                {
+                    heldThing.shrink(1);
+                }
                 playerIn.openGui(Cuisine.getInstance(), CuisineGUI.NAME_FOOD, world, pos.getX(), pos.getY(), pos.getZ());
 
                 break;
@@ -206,7 +210,10 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(heldThing);
             if (spice != null)
             {
-                CuisineRegistry.SPICE_BOTTLE.consume(heldThing, 1);
+                if (!player.isCreative())
+                {
+                    CuisineRegistry.SPICE_BOTTLE.consume(heldThing, 1);
+                }
                 Seasoning seasoning = new Seasoning(spice);
                 this.builder.addSeasoning(player, seasoning, this);
                 refreshSeasoningInfo();
@@ -228,7 +235,11 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             }
             if (this.builder.addIngredient(player, ingredient, this))
             {
-                ItemStack newStack = heldThing.splitStack(1);
+                ItemStack newStack = ItemHandlerHelper.copyStackWithSize(heldThing, 1);
+                if (!player.isCreative())
+                {
+                    heldThing.shrink(1);
+                }
                 this.ingredientsForRendering.add(newStack);
                 NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), newStack));
                 return true;

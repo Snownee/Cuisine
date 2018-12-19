@@ -169,8 +169,11 @@ public class BlockDrinkro extends BlockModHorizontal
                 {
                     tileDrinkro.builder.addIngredient(playerIn, ingredient, tileDrinkro);
                     ItemStack container = held.getItem().getContainerItem(held);
-                    held.shrink(1);
-                    if (!container.isEmpty())
+                    if (!playerIn.isCreative())
+                    {
+                        held.shrink(1);
+                    }
+                    else if (!container.isEmpty())
                     {
                         PlayerUtil.mergeItemStack(container, playerIn, hand);
                     }
@@ -207,7 +210,11 @@ public class BlockDrinkro extends BlockModHorizontal
                 {
                     if (inv.getStackInSlot(i).isEmpty())
                     {
-                        playerIn.setHeldItem(hand, inv.insertItem(i, held, false));
+                        ItemStack ramain = inv.insertItem(i, held, false);
+                        if (!playerIn.isCreative())
+                        {
+                            playerIn.setHeldItem(hand, ramain);
+                        }
                         break;
                     }
                 }

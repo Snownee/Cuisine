@@ -330,7 +330,7 @@ public class BlockBamboo extends BlockMod
 
                 player.getCooldownTracker().setCooldown(Item.getItemFromBlock(CuisineRegistry.BAMBOO), 20);
                 event.getWorld().playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (event.getWorld().rand.nextFloat() * 0.4F + 0.8F));
-                if (!player.capabilities.isCreativeMode)
+                if (!player.isCreative())
                 {
                     stack.shrink(1);
                 }
