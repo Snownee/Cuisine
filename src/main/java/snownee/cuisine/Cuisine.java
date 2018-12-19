@@ -4,6 +4,9 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+
+import java.util.Calendar;
+
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -73,10 +76,14 @@ public class Cuisine
         // No-op, private access only
     }
 
+    public static boolean aprilFools;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         logger = event.getModLog();
+        Calendar calendar = Calendar.getInstance();
+        aprilFools = calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DAY_OF_MONTH) == 1;
         CuisineInternalGateway.init();
         CulinarySkillCapability.init();
         FoodContainerCapability.init();
