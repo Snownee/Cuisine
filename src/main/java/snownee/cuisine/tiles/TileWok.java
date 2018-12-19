@@ -219,6 +219,13 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         }
         else if ((ingredient = CulinaryHub.API_INSTANCE.findIngredient(heldThing)) != null)
         {
+            if (!SkillUtil.hasPlayerLearnedSkill(player, CulinaryHub.CommonSkills.BIGGER_SIZE))
+            {
+                if (this.builder.getIngredients().size() + 1 > this.builder.getMaxIngredientLimit() * 0.75)
+                {
+                    return false;
+                }
+            }
             if (this.builder.addIngredient(player, ingredient, this))
             {
                 ItemStack newStack = heldThing.splitStack(1);
