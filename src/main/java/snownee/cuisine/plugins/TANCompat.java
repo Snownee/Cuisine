@@ -8,8 +8,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -23,6 +26,7 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.events.SpiceBottleContentConsumedEvent;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.tiles.TileBasinHeatable;
@@ -37,6 +41,7 @@ import toughasnails.api.config.SyncedConfig;
 import toughasnails.api.stat.capability.ITemperature;
 import toughasnails.api.stat.capability.IThirst;
 import toughasnails.api.temperature.Temperature;
+import toughasnails.api.thirst.WaterType;
 
 @KiwiModule(modid = Cuisine.MODID, name = "toughasnails", dependency = "toughasnails", optional = true)
 public class TANCompat implements IModule
@@ -149,5 +154,38 @@ public class TANCompat implements IModule
             return false;
         }
         return thirst.getThirst() < 20;
+    }
+
+    @SubscribeEvent
+    public static void onSpiceBottleUsed(SpiceBottleContentConsumedEvent event)
+    {
+        WaterType waterType = null;
+        if (event.getContent() instanceof FluidStack)
+        {
+            Fluid fluid = ((FluidStack) event.getContent()).getFluid();
+            if (fluid == FluidRegistry.WATER)
+            {
+                waterType = WaterType.NORMAL;
+            }
+            else if (fluid.getName().equals("purified_water"))
+            {
+                waterType = WaterType.PURIFIED;
+            }
+        }
+        if (waterType == null)
+        {
+            return;
+        }
+        IThirst handler = event.getEntityLiving().getCapability(TANCapabilities.THIRST, null);
+        if (enableThirst() && handler != null)
+        {
+            World world = event.getWorld();
+            handler.addStats(waterType.getThirst(), waterType.getHydration());
+            if (!world.isRemote && world.rand.nextFloat() < waterType.getPoisonChance())
+            {
+                event.getEntityLiving().addPotionEffect(new PotionEffect(TANPotions.thirst, 600));
+            }
+            event.setCanceled(true);
+        }
     }
 }
