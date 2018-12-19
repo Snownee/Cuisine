@@ -407,7 +407,7 @@ public class ItemSpiceBottle extends ItemMod
             creative = ((EntityPlayer) entityLiving).isCreative();
         }
         if (creative || consume(stack, MAX_VOLUME))
-            MinecraftForge.EVENT_BUS.post(new SpiceBottleContentConsumedEvent(worldIn, entityLiving, stack, content, MAX_VOLUME));
+            MinecraftForge.EVENT_BUS.post(new SpiceBottleContentConsumedEvent(worldIn, entityLiving, stack, content));
         return stack;
     }
 
