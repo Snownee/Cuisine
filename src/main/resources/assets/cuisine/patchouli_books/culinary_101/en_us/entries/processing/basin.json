@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Basin is a processing device. It comes with two variants: wooden and earthen. Earthen Basin also has 16 variants in all colors found in vanilla color palette. Basin has three working modes: $(l:processing/basin#distillation)\"distillation\"$(), $(l:processing/basin#squeezing)\"squeezing\"$() and $(l:processing/basin#throwing)\"contact\"$()."
+      "text": "Basin is a processing device. They come with two variants: wooden and earthen. Earthen Basins also have 16 variants in all colors found in vanilla color palette. Basin has three working modes: $(l:processing/basin#distillation)\"distillation\"$(), $(l:processing/basin#squeezing)\"squeezing\"$() and $(l:processing/basin#throwing)\"contact\"$()."
     },
     {
       "anchor": "throwing",
@@ -17,7 +17,7 @@
     {
       "anchor": "distillation",
       "type": "text",
-      "text": "\"Distillation\" means that you need to heat the fluid inside the basin to get refined products. Only earthen basin are capable to handle distillation. To heat fluid, you need a heat source. Typical heat sources include lava and fire. It can be sunlight if enabled in config."
+      "text": "\"Distillation\" means that you need to heat the fluid inside the basin to get refined products. Only earthen basins are capable to handle distillation. To heat fluid, you need a heat source. Typical heat sources include lava and fire. It can be sunlight if enabled in config."
     },
     {
       "type": "multiblock",
