@@ -17,7 +17,7 @@
     {
       "anchor": "distillation",
       "type": "text",
-      "text": "\"Distillation\" means that you need to heat the fluid inside the basin to get refined products. To heat fluid, you need a heat source. Typical heat sources include lava and fire. It can be sunlight if enabled in config."
+      "text": "\"Distillation\" means that you need to heat the fluid inside the basin to get refined products. Only earthen basin are capable to handle distillation. To heat fluid, you need a heat source. Typical heat sources include lava and fire. It can be sunlight if enabled in config."
     },
     {
       "type": "multiblock",
