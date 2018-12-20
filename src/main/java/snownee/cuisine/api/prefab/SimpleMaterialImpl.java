@@ -33,11 +33,11 @@ public class SimpleMaterialImpl implements Material
         this.rawColor = rawColor;
         if (cookedColor == 0)
         {
-            float a = (rawColor >> 24 & 255) / 255.0F;
-            float r = (rawColor >> 16 & 255) / 255.0F * 1.1F;
-            float g = (rawColor >> 8 & 255) / 255.0F * 1.1F;
-            float b = (rawColor & 255) / 255.0F * 0.8F;
-            cookedColor = (int) a << 24 | (int) r << 16 | (int) g << 8 | (int) b;
+            int a = rawColor >> 24 & 255;
+            int r = (int) Math.min(255, (rawColor >> 16 & 255) * 1.1F);
+            int g = (int) Math.min(255, (rawColor >> 8 & 255) * 1.1F);
+            int b = (int) ((rawColor & 255) * 0.8F);
+            cookedColor = a << 24 | r << 16 | g << 8 | b;
         }
         else if (cookedColor >> 24 == 0)
         {

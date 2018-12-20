@@ -1,8 +1,10 @@
 package snownee.cuisine.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.util.Constants;
@@ -54,6 +56,10 @@ public final class CuisineItemRendering
                         }
                         int raw = material.getRawColorCode();
                         int cooked = material.getCookedColorCode();
+
+                        //debug code
+                        doneness = (int) (Minecraft.getSystemTime() / 10 % 200);
+
                         if (doneness < 100)
                         {
                             return mixColor(raw, cooked, doneness / 100f);
@@ -148,10 +154,10 @@ public final class CuisineItemRendering
             r += (color2 >> 16 & 255) / 255.0F * weight;
             g += (color2 >> 8 & 255) / 255.0F * weight;
             b += (color2 & 255) / 255.0F * weight;
-            a *= 255;
-            r *= 255;
-            g *= 255;
-            b *= 255;
+            a = MathHelper.clamp(a, 0, 1) * 255;
+            r = MathHelper.clamp(r, 0, 1) * 255;
+            g = MathHelper.clamp(g, 0, 1) * 255;
+            b = MathHelper.clamp(b, 0, 1) * 255;
             return (int) a << 24 | (int) r << 16 | (int) g << 8 | (int) b;
         }
     }
