@@ -58,7 +58,7 @@ public final class CuisineItemRendering
                         int cooked = material.getCookedColorCode();
 
                         //debug code
-                        doneness = (int) (Minecraft.getSystemTime() / 10 % 200);
+                        //doneness = (int) (Minecraft.getSystemTime() / 10 % 200);
 
                         if (doneness < 100)
                         {
@@ -145,19 +145,22 @@ public final class CuisineItemRendering
         }
         else
         {
-            float a = (color1 >> 24 & 255) / 255.0F * weight;
-            float r = (color1 >> 16 & 255) / 255.0F * weight;
-            float g = (color1 >> 8 & 255) / 255.0F * weight;
-            float b = (color1 & 255) / 255.0F * weight;
-            weight = 1 - weight;
-            a += (color2 >> 24 & 255) / 255.0F * weight;
-            r += (color2 >> 16 & 255) / 255.0F * weight;
-            g += (color2 >> 8 & 255) / 255.0F * weight;
-            b += (color2 & 255) / 255.0F * weight;
-            a = MathHelper.clamp(a, 0, 1) * 255;
-            r = MathHelper.clamp(r, 0, 1) * 255;
-            g = MathHelper.clamp(g, 0, 1) * 255;
-            b = MathHelper.clamp(b, 0, 1) * 255;
+            float a = (color1 >> 24 & 255);
+            float r = (color1 >> 16 & 255);
+            float g = (color1 >> 8 & 255);
+            float b = (color1 & 255);
+            float a1 = (color2 >> 24 & 255);
+            float r1 = (color2 >> 16 & 255);
+            float g1 = (color2 >> 8 & 255);
+            float b1 = (color2 & 255);
+            a += (a1 - a) * weight;
+            r += (r1 - r) * weight;
+            g += (g1 - g) * weight;
+            b += (b1 - b) * weight;
+            a = MathHelper.clamp(a, 0, 255);
+            r = MathHelper.clamp(r, 0, 255);
+            g = MathHelper.clamp(g, 0, 255);
+            b = MathHelper.clamp(b, 0, 255);
             return (int) a << 24 | (int) r << 16 | (int) g << 8 | (int) b;
         }
     }
