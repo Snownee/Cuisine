@@ -10,7 +10,11 @@
     {
       "type": "crafting",
       "recipe": "cuisine:mill",
-      "text": "with empty hand will cause mill to work for one cycle. $(br)That wood handle in the recipe may be replaced with certain equivalent items (for example, the woo rack from BetterWithMods), if available."
+      "text": "with empty hand will cause mill to work for one cycle. $(br)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers. $(br)That wood handle in the recipe may be replaced with certain equivalent items (for example,"
+    },
+    {
+      "type": "text",
+      "text": "the woo rack from BetterWithMods), if available."
     }
   ]
 }
