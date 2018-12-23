@@ -22,6 +22,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockFirePit;
+import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.util.ItemNBTUtil;
 
 public class TileBarbecueRack extends TileFirePit implements ITickable
 {
@@ -58,7 +60,7 @@ public class TileBarbecueRack extends TileFirePit implements ITickable
             {
                 if (slot < 3)
                 {
-                    return FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood;
+                    return stack.getItem() == CuisineRegistry.INGREDIENT || FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood;
                 }
                 else
                 {
@@ -102,13 +104,25 @@ public class TileBarbecueRack extends TileFirePit implements ITickable
                     continue;
                 }
                 burnTime[i] += heatLevel;
-                if (burnTime[i] >= 800)
+                if (stack.getItem() == CuisineRegistry.INGREDIENT)
                 {
-                    burnTime[i] = 0;
-                    ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
-                    if (!result.isEmpty())
+                    if (burnTime[i] >= 6)
                     {
-                        stacks.setStackInSlot(i, result.copy());
+                        burnTime[i] = 0;
+                        int doneness = ItemNBTUtil.getInt(stack, CuisineSharedSecrets.KEY_DONENESS, 0);
+                        ItemNBTUtil.setInt(stack, CuisineSharedSecrets.KEY_DONENESS, ++doneness);
+                    }
+                }
+                else
+                {
+                    if (burnTime[i] >= 800)
+                    {
+                        burnTime[i] = 0;
+                        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
+                        if (!result.isEmpty())
+                        {
+                            stacks.setStackInSlot(i, result.copy());
+                        }
                     }
                 }
             }
