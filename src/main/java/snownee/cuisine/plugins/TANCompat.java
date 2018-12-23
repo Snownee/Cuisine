@@ -185,7 +185,6 @@ public class TANCompat implements IModule
             {
                 event.getEntityLiving().addPotionEffect(new PotionEffect(TANPotions.thirst, 600));
             }
-            event.setCanceled(true);
         }
     }
 }
