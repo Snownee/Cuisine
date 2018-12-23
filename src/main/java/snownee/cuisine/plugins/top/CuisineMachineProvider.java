@@ -15,6 +15,7 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.tiles.TileBasinHeatable;
+import snownee.cuisine.tiles.TileFirePit;
 import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.util.I18nUtil;
 
@@ -32,15 +33,15 @@ public class CuisineMachineProvider implements IProbeInfoProvider
     @Override
     public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data)
     {
-        if (player.isCreative() && blockState.getBlock() instanceof BlockFirePit)
+        if (mode == ProbeMode.DEBUG && blockState.getBlock() instanceof BlockFirePit)
         {
             TileEntity tile = world.getTileEntity(data.getPos());
-            if (tile instanceof TileWok)
+            if (tile instanceof TileFirePit)
             {
-                TileWok tileWok = (TileWok) tile;
-                probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.temperature", tileWok.getTemperature()));
-                probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.water_amount", tileWok.getWaterAmount()));
-                probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.oil_amount", tileWok.getOilAmount()));
+                TileFirePit tileFirePit = (TileFirePit) tile;
+                probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.heat", tileFirePit.heatHandler.getHeat()));
+                // probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.water_amount", tileWok.getWaterAmount()));
+                // probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.oil_amount", tileWok.getOilAmount()));
             }
         }
         else if (mode == ProbeMode.EXTENDED || mode == ProbeMode.DEBUG)
@@ -51,7 +52,7 @@ public class CuisineMachineProvider implements IProbeInfoProvider
                 if (tile instanceof TileBasinHeatable)
                 {
                     TileBasinHeatable tileBasinHeatable = (TileBasinHeatable) tile;
-                    MessageFormat formatter = new MessageFormat(I18nUtil.translate( "gui.progress"), MinecraftForgeClient.getLocale());
+                    MessageFormat formatter = new MessageFormat(I18nUtil.translate("gui.progress"), MinecraftForgeClient.getLocale());
                     if (tileBasinHeatable.isWorking())
                     {
                         int max = tileBasinHeatable.getMaxHeatingTick();

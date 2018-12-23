@@ -30,7 +30,6 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.CulinarySkillPoint;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
-import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.util.SkillUtil;
@@ -64,7 +63,7 @@ public class TileWok extends TileFirePit implements CookingVessel
     private Status status = Status.IDLE;
     private Dish.Builder builder;
     private transient Dish completedDish;
-    private int temperature, water, oil;
+    private int water, oil;
     public byte actionCycle = 0;
     final transient List<ItemStack> ingredientsForRendering = new ArrayList<>(8);
     public SeasoningInfo seasoningInfo;
@@ -75,13 +74,9 @@ public class TileWok extends TileFirePit implements CookingVessel
         super.update();
         if (!world.isRemote && status == Status.WORKING)
         {
-            if (temperature < 300 && this.world.rand.nextInt(5) == 0)
+            if (builder != null && this.world.getTotalWorldTime() % 20 == 0)
             {
-                this.temperature += this.world.rand.nextInt(10);
-            }
-            if (builder != null && this.world.getWorldTime() % 20 == 0)
-            {
-                builder.apply(new Heating(this), this);
+                builder.apply(new Heating(heatHandler.getLevel()), this);
             }
         }
     }
@@ -89,11 +84,6 @@ public class TileWok extends TileFirePit implements CookingVessel
     public Status getStatus()
     {
         return status;
-    }
-
-    public int getTemperature()
-    {
-        return this.temperature;
     }
 
     public int getWaterAmount()
@@ -113,12 +103,15 @@ public class TileWok extends TileFirePit implements CookingVessel
         {
         case IDLE:
         {
-            if (heldThing.getItem() instanceof ItemSpiceBottle || FuelHeatHandler.isFuel(heldThing) || CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null)
+            boolean isIngredient = heldThing.getItem() instanceof ItemSpiceBottle || CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null;
+            if (isIngredient || FuelHeatHandler.isFuel(heldThing))
             {
-                this.builder = Dish.Builder.create();
-                this.temperature = 0;
+                if (isIngredient)
+                {
+                    this.builder = Dish.Builder.create();
+                }
                 boolean result = cook(playerIn, hand, heldThing, facing);
-                if (result)
+                if (isIngredient && result)
                 {
                     this.status = Status.WORKING;
                 }
@@ -337,7 +330,6 @@ public class TileWok extends TileFirePit implements CookingVessel
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.temperature = compound.getInteger("temperature");
         this.status = compound.getBoolean("status") ? Status.WORKING : Status.IDLE;
         if (compound.hasKey("dish", Constants.NBT.TAG_COMPOUND))
         {
@@ -358,7 +350,6 @@ public class TileWok extends TileFirePit implements CookingVessel
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setInteger("temperature", this.temperature);
         compound.setBoolean("status", this.status == Status.WORKING);
         if (builder != null)
         {
@@ -388,65 +379,47 @@ public class TileWok extends TileFirePit implements CookingVessel
 
     static final class Heating implements CookingStrategy
     {
-        private final TileWok wok;
+        private int heatLevel;
+        private int count = 0;
 
-        Heating(TileWok wok)
+        Heating(int heatLevel)
         {
-            this.wok = wok;
+            this.heatLevel = heatLevel;
         }
-
-        // TODO This is just a prototype, we need further refinement
-
-        private int ingredientSize = 0;
-        private int initialTemp = -1;
-        private int decrement = 0;
 
         @Override
         public void beginCook(CompositeFood.Builder<?> dish)
         {
-            this.ingredientSize = dish.getIngredients().size();
         }
 
         @Override
         public void preCook(Seasoning seasoning, CookingVessel vessel)
         {
-            if (ingredientSize < 1)
-            {
-                return;
-            }
-            initialTemp = this.wok.getTemperature();
-            decrement = initialTemp / ingredientSize;
         }
 
         @Override
         public void cook(Ingredient ingredient, CookingVessel vessel)
         {
-            if (ingredientSize < 1)
+            if (heatLevel == 0)
             {
                 return;
             }
-            int increment = Math.max(0, initialTemp / 4);
-            ingredient.setDoneness(ingredient.getDoneness() + increment);
-            if (ingredient.getDoneness() > 250 && Math.random() < 0.01)
+            ingredient.setDoneness(ingredient.getDoneness() + heatLevel);
+            if (++count > 1)
             {
-                // Unconditionally remove the undercooked trait, so that
-                // we won't see both co-exist together
-                ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
-                ingredient.addTrait(IngredientTrait.OVERCOOKED);
+                count = 0;
+                --heatLevel;
             }
-            initialTemp -= decrement;
         }
 
         @Override
         public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
         {
-
         }
 
         @Override
         public void endCook()
         {
-
         }
 
     }
