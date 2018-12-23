@@ -157,7 +157,7 @@ public class TANCompat implements IModule
     }
 
     @SubscribeEvent
-    public static void onSpiceBottleUsed(SpiceBottleContentConsumedEvent event)
+    public void onSpiceBottleUsed(SpiceBottleContentConsumedEvent event)
     {
         WaterType waterType = null;
         if (event.getContent() instanceof FluidStack)
