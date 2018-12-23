@@ -45,6 +45,7 @@ import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.network.NetworkChannel;
+import snownee.kiwi.tile.TileBase;
 
 public class TileWok extends TileBase implements CookingVessel, ITickable
 {

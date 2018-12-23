@@ -15,6 +15,7 @@ import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.util.StacksUtil;
+import snownee.kiwi.tile.TileInventoryBase;
 
 public class TileMortar extends TileInventoryBase
 {

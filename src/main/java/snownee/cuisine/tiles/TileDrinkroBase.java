@@ -16,6 +16,7 @@ import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
+import snownee.kiwi.tile.TileBase;
 
 public class TileDrinkroBase extends TileBase
 {

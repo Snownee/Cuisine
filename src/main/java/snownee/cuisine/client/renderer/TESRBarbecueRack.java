@@ -72,7 +72,8 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
         GlStateManager.popMatrix();
 
         HoloProfile profile = HoloProfiles.get(tile);
-        int heat = (int) (mc.getSystemTime() % 15000 / 5);
+        // int heat = (int) (mc.getSystemTime() % 15000 / 5);
+        int heat = (int) tile.heatHandler.getHeat();
         boolean focusing = mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && mc.objectMouseOver.getBlockPos().equals(tile.getPos());
         float transparency = profile.update(focusing, heat, partialTicks);
         if (transparency > 0)
@@ -98,13 +99,12 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
             double distance = MathHelper.sqrt(dx * dx + dz * dz);
             float pitch = (float) (MathHelper.atan2(y - 1, distance) * (-180D / Math.PI));
             GlStateManager.rotate(pitch, 1, 0, 0);
-            
+
             GlStateManager.disableLighting();
 
             // 确定界面位置
-            long countStacks = tile.stacks.getStacks().stream().filter(e -> !e.isEmpty()).count();
             int width = 20;
-            if (countStacks > 0)
+            if (!tile.isEmpty())
             {
                 width += 40;
             }
@@ -144,7 +144,7 @@ public class TESRBarbecueRack extends TileEntitySpecialRenderer<TileBarbecueRack
             CulinaryRenderHelper.drawModalRect(-4, -10 + 80 * (1 - profile.icon2), 128, 48, 16, 16, 256, 256, .3f);
 
             GlStateManager.popMatrix();
- 
+
             // 渲染测试用物品（2D扁平）
             //            GlStateManager.rotate(180, 0, 1, 0);
             //            int color = (int) (transparency * 255) << 24 | 0xFFFFFF;

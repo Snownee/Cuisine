@@ -32,6 +32,7 @@ import snownee.cuisine.api.Spice;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
+import snownee.kiwi.tile.TileBase;
 
 public class TileDrinkroTank extends TileBase implements CookingVessel
 {

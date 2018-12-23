@@ -32,6 +32,7 @@ import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.tile.TileInventoryBase;
 import snownee.kiwi.util.OreUtil;
 
 public class TileChoppingBoard extends TileInventoryBase

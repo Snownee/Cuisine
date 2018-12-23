@@ -15,6 +15,7 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.internal.food.Dish;
+import snownee.kiwi.tile.TileBase;
 
 public class TileDish extends TileBase
 {

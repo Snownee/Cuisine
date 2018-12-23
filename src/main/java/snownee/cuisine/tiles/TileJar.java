@@ -18,6 +18,7 @@ import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.kiwi.network.NetworkChannel;
+import snownee.kiwi.tile.TileInventoryBase;
 import snownee.kiwi.util.InventoryUtil;
 
 public class TileJar extends TileInventoryBase implements ITickable

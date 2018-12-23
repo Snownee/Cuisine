@@ -44,6 +44,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.tiles.TileBarbecueRack;
+import snownee.cuisine.tiles.TileFirePit;
 import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockModHorizontal;
@@ -162,9 +163,9 @@ public class BlockFirePit extends BlockModHorizontal
             worldIn.setBlockState(pos, state.withProperty(COMPONENT, Component.STICKS));
             return true;
         }
-        else if (hand == EnumHand.MAIN_HAND && hasComponent(state, Component.WOK)) // You cannot use off-hand to control wok. Simply can't.
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (hand == EnumHand.MAIN_HAND && hasComponent(state, Component.WOK)) // You cannot use off-hand to control wok. Simply can't.
         {
-            TileEntity tile = worldIn.getTileEntity(pos);
             if (tile instanceof TileWok)
             {
                 if (!worldIn.isRemote && playerIn instanceof EntityPlayerMP)
@@ -176,12 +177,19 @@ public class BlockFirePit extends BlockModHorizontal
         }
         else if (hand == EnumHand.MAIN_HAND && hasComponent(state, Component.STICKS))
         {
-            TileEntity tile = worldIn.getTileEntity(pos);
             if (tile instanceof TileBarbecueRack)
             {
-                if (!worldIn.isRemote)
+                TileBarbecueRack teBR = (TileBarbecueRack) tile;
+                if (teBR.stacks.isItemValid(3, stack))
                 {
-                    TileBarbecueRack teBR = (TileBarbecueRack) tile;
+                    ItemStack remain = teBR.stacks.insertItem(3, stack, false);
+                    if (!playerIn.isCreative())
+                    {
+                        playerIn.setHeldItem(hand, remain);
+                    }
+                }
+                else if (!worldIn.isRemote)
+                {
                     List<AxisAlignedBB> aabbs = Lists.newArrayList();
                     EnumFacing facing2 = state.getValue(BlockHorizontal.FACING);
                     AxisAlignedBB aabbItem = AABBUtil.rotate(new AxisAlignedBB(0.3D, 0.5D, 0.2D, 0.7D, 0.9D, 0.4D), facing2);
@@ -216,6 +224,7 @@ public class BlockFirePit extends BlockModHorizontal
                         }
                     }
                 }
+
                 return true;
             }
         }
@@ -267,17 +276,36 @@ public class BlockFirePit extends BlockModHorizontal
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        float f = (float) (rand.nextFloat() * Math.PI * 2);
-        double x = pos.getX() + 0.5D + MathHelper.sin(f) * 0.1D;
-        double y = pos.getY() + 0.12D + rand.nextDouble() * 0.05D;
-        double z = pos.getZ() + 0.5D + MathHelper.cos(f) * 0.1D;
-        if (!hasComponent(stateIn, Component.WOK))
+        int heatLevel = 1;
+        if (stateIn.getValue(COMPONENT) != Component.NONE)
         {
-            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.FLAME.getParticleID(), x, y, z, 0.0D, 0.0D, 0.0D);
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity instanceof TileFirePit)
+            {
+                heatLevel = ((TileFirePit) tileEntity).heatHandler.getLevel();
+            }
         }
-        else if (rand.nextInt(5) == 0)
+        for (int i = 0; i < heatLevel; i++)
         {
-            worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pos.getX() + 0.5D + MathHelper.sin(f) * rand.nextDouble() * 0.5D, y + 0.2D, pos.getZ() + 0.5D + MathHelper.cos(f) * rand.nextDouble() * 0.5D, 0.0D, 0.0D, 0.0D);
+            float f = (float) (rand.nextFloat() * Math.PI * 2);
+            double x = MathHelper.sin(f) * 0.1D;
+            double y = pos.getY() + 0.12D + rand.nextDouble() * 0.05D;
+            double z = MathHelper.cos(f) * 0.1D;
+            if (!hasComponent(stateIn, Component.WOK))
+            {
+                if (heatLevel > 1)
+                {
+                    worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.FLAME.getParticleID(), pos.getX() + 0.5D + x, y, pos.getZ() + 0.5D + z, x * 0.2, 0.01 * heatLevel, z * 0.2);
+                }
+                else
+                {
+                    worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.FLAME.getParticleID(), pos.getX() + 0.5D + x, y, pos.getZ() + 0.5D + z, 0D, 0D, 0D);
+                }
+            }
+            else if (rand.nextInt(5) == 0)
+            {
+                worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pos.getX() + 0.5D + x * rand.nextDouble() * 0.5D, y + 0.2D, pos.getZ() + 0.5D + z * rand.nextDouble() * 0.5D, 0, 0, 0);
+            }
         }
     }
 
@@ -367,11 +395,12 @@ public class BlockFirePit extends BlockModHorizontal
         {
             TileBarbecueRack teBR = (TileBarbecueRack) te;
             int output = 0;
-            for (ItemStack stack : teBR.stacks.getStacks())
+            for (int i = 0; i < 3; ++i)
             {
+                ItemStack stack = teBR.stacks.getStackInSlot(i);
                 if (!stack.isEmpty())
                 {
-                    output += teBR.isItemValidForSlot(0, stack) ? 1 : 5;
+                    output += teBR.stacks.isItemValid(0, stack) ? 1 : 5;
                 }
             }
             return output;
