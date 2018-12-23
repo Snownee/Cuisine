@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -45,9 +44,8 @@ import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.network.NetworkChannel;
-import snownee.kiwi.tile.TileBase;
 
-public class TileWok extends TileBase implements CookingVessel, ITickable
+public class TileWok extends TileFirePit implements CookingVessel
 {
 
     public enum Status
@@ -78,6 +76,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     @Override
     public void update()
     {
+        super.update();
         if (!world.isRemote && status == Status.WORKING)
         {
             if (temperature < 300 && this.world.rand.nextInt(5) == 0)

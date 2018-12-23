@@ -1,10 +1,11 @@
 package snownee.cuisine.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.util.Constants;
 import snownee.kiwi.tile.TileBase;
 
-public class TileFirePit extends TileBase
+public class TileFirePit extends TileBase implements ITickable
 {
     public final FuelHeatHandler heatHandler;
 
@@ -44,6 +45,12 @@ public class TileFirePit extends TileBase
     {
         data.setFloat("heat", heatHandler.getHeat());
         return data;
+    }
+
+    @Override
+    public void update()
+    {
+        heatHandler.update(0);
     }
 
 }

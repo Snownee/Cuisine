@@ -25,7 +25,7 @@ import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.util.ItemNBTUtil;
 
-public class TileBarbecueRack extends TileFirePit implements ITickable
+public class TileBarbecueRack extends TileFirePit
 {
     public final ItemStackHandler stacks;
     private int[] burnTime = new int[3];
@@ -88,7 +88,7 @@ public class TileBarbecueRack extends TileFirePit implements ITickable
     @Override
     public void update()
     {
-        heatHandler.update(0);
+        super.update();
         if (world.isRemote)
         {
             return;

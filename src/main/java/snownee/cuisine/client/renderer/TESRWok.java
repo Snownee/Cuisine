@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -21,7 +20,7 @@ import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.tiles.TileWok.SeasoningInfo;
 
-public class TESRWok extends TileEntitySpecialRenderer<TileWok>
+public class TESRWok extends TESRFirePit<TileWok>
 {
     @Override
     public void render(TileWok tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
@@ -104,5 +103,11 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
             GlStateManager.popMatrix();
         }
         GlStateManager.popMatrix();
+    }
+
+    @Override
+    protected int getWidth(TileWok tile)
+    {
+        return 0;
     }
 }
