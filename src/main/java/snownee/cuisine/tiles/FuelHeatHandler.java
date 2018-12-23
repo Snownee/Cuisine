@@ -3,10 +3,13 @@ package snownee.cuisine.tiles;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.HeatHandler;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
@@ -31,9 +34,16 @@ public class FuelHeatHandler implements HeatHandler
 
     static
     {
-        ITEM_FUELS.put(ItemDefinition.of(Items.COAL, OreDictionary.WILDCARD_VALUE), new FuelInfo(3, 1000));
+        ITEM_FUELS.put(ItemDefinition.of(Items.BLAZE_ROD), new FuelInfo(3, 1000));
+        ITEM_FUELS.put(ItemDefinition.of(Items.COAL, OreDictionary.WILDCARD_VALUE), new FuelInfo(3, 800));
+        ITEM_FUELS.put(ItemDefinition.of(Blocks.WOOL, OreDictionary.WILDCARD_VALUE), new FuelInfo(1, 100));
+        ITEM_FUELS.put(ItemDefinition.of(Blocks.CARPET, OreDictionary.WILDCARD_VALUE), new FuelInfo(1, 67));
+        ITEM_FUELS.put(ItemDefinition.of(CuisineRegistry.BAMBOO), new FuelInfo(1, 250));
 
-        ORE_FUELS.put(OreDictDefinition.of("plankWood"), new FuelInfo(2, 1000));
+        ORE_FUELS.put(OreDictDefinition.of("fuelCoke"), new FuelInfo(3, 2000));
+        ORE_FUELS.put(OreDictDefinition.of("treeSapling"), new FuelInfo(1, 100));
+        ORE_FUELS.put(OreDictDefinition.of("paper"), new FuelInfo(1, 150));
+        ORE_FUELS.put(OreDictDefinition.of("sugarcane"), new FuelInfo(1, 100));
     }
 
     public static FuelInfo registerFuel(ItemDefinition item, int level, int heat)
@@ -128,12 +138,21 @@ public class FuelHeatHandler implements HeatHandler
                 }
             }
         }
+        if (info == null)
+        {
+            int burnTime = TileEntityFurnace.getItemBurnTime(stack);
+            if (burnTime > 0)
+            {
+                info = new FuelInfo(2, burnTime);
+            }
+        }
         if (info != null)
         {
             int max = info.level * 1000;
-            if (getHeat() + info.heat <= max)
+            if (getHeat() + 20 < max)
             {
-                addHeat(info.heat);
+                float newHeat = Math.min(heat + info.heat, max);
+                setHeat(newHeat);
                 stack.shrink(1);
             }
         }
@@ -142,9 +161,13 @@ public class FuelHeatHandler implements HeatHandler
 
     public static boolean isFuel(ItemStack stack)
     {
-        if (stack.isEmpty())
+        if (stack.isEmpty() || !stack.getItem().getContainerItem(stack).isEmpty())
         {
             return false;
+        }
+        if (TileEntityFurnace.getItemBurnTime(stack) > 0)
+        {
+            return true;
         }
         if (ITEM_FUELS.containsKey(ItemDefinition.of(stack)))
         {
