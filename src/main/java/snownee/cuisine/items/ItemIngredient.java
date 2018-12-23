@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -26,6 +28,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.Constants;
@@ -37,6 +40,7 @@ import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.client.CuisineItemRendering;
 import snownee.cuisine.client.model.IngredientMeshDefinition;
@@ -139,12 +143,23 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
             Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
             if (ingredient != null)
             {
-                for (Effect effect : ingredient.getEffects())
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
                 {
-                    if (effect.showInTooltips())
+                    for (IngredientTrait trait : ingredient.getAllTraits())
                     {
-                        tooltip.add(Util.color(effect.getColor()) + I18n.format(effect.getName()));
+                        tooltip.add(TextFormatting.ITALIC + I18n.format(trait.getTranslationKey()));
                     }
+                }
+                else
+                {
+                    for (Effect effect : ingredient.getEffects())
+                    {
+                        if (effect.showInTooltips())
+                        {
+                            tooltip.add(Util.color(effect.getColor()) + I18n.format(effect.getName()));
+                        }
+                    }
+                    tooltip.add(TextFormatting.WHITE + TextFormatting.ITALIC.toString() + I18nUtil.translate("tip.shift_ingredients"));
                 }
             }
         }

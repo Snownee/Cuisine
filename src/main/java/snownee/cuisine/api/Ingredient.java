@@ -132,6 +132,14 @@ public final class Ingredient
 
     public void setDoneness(int doneness)
     {
+        if (doneness >= 150 && this.doneness < 150)
+        {
+            addTrait(IngredientTrait.OVERCOOKED);
+        }
+        else if (doneness < 150 && this.doneness >= 150)
+        {
+            removeTrait(IngredientTrait.OVERCOOKED);
+        }
         this.doneness = doneness;
     }
 
