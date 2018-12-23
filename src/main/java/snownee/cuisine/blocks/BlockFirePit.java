@@ -21,6 +21,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -30,6 +31,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -291,6 +293,12 @@ public class BlockFirePit extends BlockModHorizontal
                 heatLevel = ((TileFirePit) tileEntity).heatHandler.getLevel();
             }
         }
+
+        if (heatLevel > 0 && rand.nextInt(15 - heatLevel * 3) == 0)
+        {
+            worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 0.7F + 0.15F * heatLevel + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+        }
+
         for (int i = 0; i < heatLevel; i++)
         {
             float f = (float) (rand.nextFloat() * Math.PI * 2);
