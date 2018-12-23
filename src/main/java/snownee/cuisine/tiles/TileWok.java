@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,9 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
@@ -37,7 +34,6 @@ import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.util.SkillUtil;
-import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.client.gui.CuisineGUI;
 import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.items.ItemSpiceBottle;
@@ -90,19 +86,6 @@ public class TileWok extends TileFirePit implements CookingVessel
         }
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
-        if (oldState.getBlock() != CuisineRegistry.FIRE_PIT || newState.getBlock() != CuisineRegistry.FIRE_PIT)
-        {
-            return true;
-        }
-        else
-        {
-            return oldState.getValue(BlockFirePit.COMPONENT) != newState.getValue(BlockFirePit.COMPONENT);
-        }
-    }
-
     public Status getStatus()
     {
         return status;
@@ -125,12 +108,12 @@ public class TileWok extends TileFirePit implements CookingVessel
 
     public void onActivated(EntityPlayerMP playerIn, EnumHand hand, EnumFacing facing)
     {
+        ItemStack heldThing = playerIn.getHeldItem(hand);
         switch (status)
         {
         case IDLE:
         {
-            ItemStack heldThing = playerIn.getHeldItem(hand);
-            if (CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null || heldThing.getItem() instanceof ItemSpiceBottle)
+            if (heldThing.getItem() instanceof ItemSpiceBottle || FuelHeatHandler.isFuel(heldThing) || CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null)
             {
                 this.builder = Dish.Builder.create();
                 this.temperature = 0;
@@ -147,7 +130,6 @@ public class TileWok extends TileFirePit implements CookingVessel
             break;
         }
         case WORKING:
-            ItemStack heldThing = playerIn.getHeldItem(hand);
             if (cook(playerIn, hand, heldThing, facing))
             {
                 break;
@@ -249,6 +231,16 @@ public class TileWok extends TileFirePit implements CookingVessel
                 player.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.cannot_add_more")), true);
                 return false;
             }
+        }
+        else if (FuelHeatHandler.isFuel(heldThing))
+        {
+            ItemStack remain = heatHandler.addFuel(heldThing);
+            if (!player.isCreative())
+            {
+                player.setHeldItem(hand, remain);
+            }
+            refresh();
+            return true;
         }
 
         return false;
@@ -385,13 +377,13 @@ public class TileWok extends TileFirePit implements CookingVessel
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        return data;
+        return super.writePacketData(data);
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        // No-op
+        super.readPacketData(data);
     }
 
     static final class Heating implements CookingStrategy

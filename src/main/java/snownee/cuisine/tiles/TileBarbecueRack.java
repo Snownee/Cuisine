@@ -4,16 +4,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,7 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.util.ItemNBTUtil;
 
@@ -126,19 +121,6 @@ public class TileBarbecueRack extends TileFirePit
                     }
                 }
             }
-        }
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-    {
-        if (oldState.getBlock() != CuisineRegistry.FIRE_PIT || newSate.getBlock() != CuisineRegistry.FIRE_PIT)
-        {
-            return true;
-        }
-        else
-        {
-            return oldState.getValue(BlockFirePit.COMPONENT) != newSate.getValue(BlockFirePit.COMPONENT);
         }
     }
 

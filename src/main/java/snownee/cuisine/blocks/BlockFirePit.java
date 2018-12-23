@@ -153,13 +153,19 @@ public class BlockFirePit extends BlockModHorizontal
         ItemStack stack = playerIn.getHeldItem(hand);
         if (stack.getItem() == CuisineRegistry.WOK && hasComponent(state, Component.NONE))
         {
-            stack.shrink(1);
+            if (!playerIn.isCreative())
+            {
+                stack.shrink(1);
+            }
             worldIn.setBlockState(pos, getDefaultState().withProperty(BlockHorizontal.FACING, playerIn.getHorizontalFacing().getOpposite()).withProperty(COMPONENT, Component.WOK));
             return true;
         }
         if (OreUtil.doesItemHaveOreName(stack, "stickWood") && stack.getCount() >= 3 && hasComponent(state, Component.NONE))
         {
-            stack.shrink(3);
+            if (!playerIn.isCreative())
+            {
+                stack.shrink(3);
+            }
             worldIn.setBlockState(pos, state.withProperty(COMPONENT, Component.STICKS));
             return true;
         }
