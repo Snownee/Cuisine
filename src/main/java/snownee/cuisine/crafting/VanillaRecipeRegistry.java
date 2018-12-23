@@ -70,6 +70,10 @@ public final class VanillaRecipeRegistry
         {
             event.setBurnTime(200);
         }
+        else if (stack.getItem() == Item.getItemFromBlock(CuisineRegistry.SAPLING))
+        {
+            event.setBurnTime(100);
+        }
         else if (stack.getItem() == CuisineRegistry.MATERIAL && stack.getItemDamage() == Cuisine.Materials.WOODEN_HANDLE.getMeta())
         {
             event.setBurnTime(100);
