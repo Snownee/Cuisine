@@ -38,7 +38,7 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
         @Override
         public void preCook(Seasoning seasoning, CookingVessel vessel)
         {
-            if (seasoning.getSpice() == CulinaryHub.CommonSpices.EDIBLE_OIL)
+            if (seasoning.getSpice() == CulinaryHub.CommonSpices.EDIBLE_OIL || seasoning.getSpice() == CulinaryHub.CommonSpices.SESAME_OIL)
             {
                 this.oilAmount += seasoning.getSize();
             }
@@ -63,13 +63,6 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
                     ingredient.removeTrait(IngredientTrait.OILY);
                 }
             }
-
-            ingredient.setDoneness(ingredient.getDoneness() + Item.itemRand.nextInt(10));
-            //if (vessel.getTemperature() > 100) // TODO Move this somewhere else? New interface HeatingVessel?
-            //{
-            ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
-            //}
-
         }
 
         @Override
