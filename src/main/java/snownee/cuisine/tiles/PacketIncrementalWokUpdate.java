@@ -3,6 +3,8 @@ package snownee.cuisine.tiles;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -19,12 +21,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.kiwi.network.PacketMod;
 
 public class PacketIncrementalWokUpdate implements PacketMod
 {
 
     private BlockPos pos;
+    @Nullable
+    private Ingredient ingredient;
     private ItemStack diff;
 
     public PacketIncrementalWokUpdate()
@@ -39,9 +45,10 @@ public class PacketIncrementalWokUpdate implements PacketMod
      * @param diff
      *            The incremental update content
      */
-    PacketIncrementalWokUpdate(BlockPos pos, ItemStack diff)
+    PacketIncrementalWokUpdate(BlockPos pos, @Nullable Ingredient ingredient, ItemStack diff)
     {
         this.pos = pos;
+        this.ingredient = ingredient;
         this.diff = diff;
     }
 
@@ -50,6 +57,10 @@ public class PacketIncrementalWokUpdate implements PacketMod
     {
         buffer.writeLong(pos.toLong());
         ByteBufUtils.writeItemStack(buffer, diff);
+        if (ingredient != null)
+        {
+            ByteBufUtils.writeTag(buffer, CuisinePersistenceCenter.serialize(ingredient));
+        }
     }
 
     @Override
@@ -57,6 +68,10 @@ public class PacketIncrementalWokUpdate implements PacketMod
     {
         this.pos = BlockPos.fromLong(buffer.readLong());
         this.diff = ByteBufUtils.readItemStack(buffer);
+        if (!diff.isEmpty())
+        {
+            this.ingredient = CuisinePersistenceCenter.deserializeIngredient(ByteBufUtils.readTag(buffer));
+        }
     }
 
     @Override
@@ -74,11 +89,11 @@ public class PacketIncrementalWokUpdate implements PacketMod
             {
                 if (Cuisine.aprilFools)
                 {
-                    ((TileWok) tile).ingredientsForRendering.add(getRandomItem(tile.getWorld().rand));
+                    ((TileWok) tile).ingredientsForRendering.put(ingredient, getRandomItem(tile.getWorld().rand));
                 }
                 else
                 {
-                    ((TileWok) tile).ingredientsForRendering.add(diff);
+                    ((TileWok) tile).ingredientsForRendering.put(ingredient, diff);
                 }
                 for (int k = 0; k < 4; ++k)
                 {

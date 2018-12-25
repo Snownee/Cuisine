@@ -101,4 +101,9 @@ public abstract class TESRFirePit<T extends TileFirePit> extends TileEntitySpeci
     }
 
     protected abstract int getWidth(T tile);
+
+    private static void renderProgress()
+    {
+
+    }
 }

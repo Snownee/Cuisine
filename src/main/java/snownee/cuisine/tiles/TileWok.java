@@ -1,8 +1,10 @@
 package snownee.cuisine.tiles;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -34,6 +36,8 @@ import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.client.gui.CuisineGUI;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.network.PacketCustomEvent;
@@ -65,8 +69,9 @@ public class TileWok extends TileFirePit implements CookingVessel
     private transient Dish completedDish;
     private int water, oil;
     public byte actionCycle = 0;
-    final transient List<ItemStack> ingredientsForRendering = new ArrayList<>(8);
+    final transient Map<Ingredient, ItemStack> ingredientsForRendering = new LinkedHashMap<>(8);
     public SeasoningInfo seasoningInfo;
+    private boolean shouldRefresh = false;
 
     @Override
     public void update()
@@ -77,6 +82,15 @@ public class TileWok extends TileFirePit implements CookingVessel
             if (builder != null && this.world.getTotalWorldTime() % 20 == 0)
             {
                 builder.apply(new Heating(heatHandler.getLevel()), this);
+                if (!builder.getIngredients().isEmpty())
+                {
+                    requiresRefresh();
+                }
+            }
+            if (shouldRefresh && this.world.getTotalWorldTime() % 5 == 0)
+            {
+                refresh();
+                shouldRefresh = false;
             }
         }
     }
@@ -215,8 +229,8 @@ public class TileWok extends TileFirePit implements CookingVessel
                 {
                     heldThing.shrink(1);
                 }
-                this.ingredientsForRendering.add(newStack);
-                NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), newStack));
+                this.ingredientsForRendering.put(ingredient, newStack);
+                NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), ingredient, newStack));
                 return true;
             }
             else
@@ -244,9 +258,9 @@ public class TileWok extends TileFirePit implements CookingVessel
      *
      * @return View of ingredients that added into this TileWok
      */
-    public List<ItemStack> getWokContents()
+    public Map<Ingredient, ItemStack> getWokContents()
     {
-        return Collections.unmodifiableList(this.ingredientsForRendering);
+        return Collections.unmodifiableMap(this.ingredientsForRendering);
     }
 
     public void refreshSeasoningInfo()
@@ -341,7 +355,11 @@ public class TileWok extends TileFirePit implements CookingVessel
         {
             if (tag instanceof NBTTagCompound)
             {
-                this.ingredientsForRendering.add(new ItemStack((NBTTagCompound) tag));
+                NBTTagCompound tagCompound = (NBTTagCompound) tag;
+                if (tagCompound.hasKey("ingredient", Constants.NBT.TAG_COMPOUND))
+                {
+                    this.ingredientsForRendering.put(CuisinePersistenceCenter.deserializeIngredient(tagCompound.getCompoundTag("ingredient")), new ItemStack(tagCompound.getCompoundTag("item")));
+                }
             }
         }
     }
@@ -355,12 +373,15 @@ public class TileWok extends TileFirePit implements CookingVessel
         {
             compound.setTag("dish", Dish.Builder.toNBT(this.builder));
         }
-        NBTTagList items = new NBTTagList();
-        for (ItemStack item : this.ingredientsForRendering)
+        NBTTagList map = new NBTTagList();
+        for (Entry<Ingredient, ItemStack> entry : this.ingredientsForRendering.entrySet())
         {
-            items.appendTag(item.serializeNBT());
+            NBTTagCompound tagEntry = new NBTTagCompound();
+            tagEntry.setTag("ingredient", CuisinePersistenceCenter.serialize(entry.getKey()));
+            tagEntry.setTag("item", entry.getValue().serializeNBT());
+            map.appendTag(tagEntry);
         }
-        compound.setTag("rendering", items);
+        compound.setTag("rendering", map);
         return super.writeToNBT(compound);
     }
 
@@ -368,12 +389,40 @@ public class TileWok extends TileFirePit implements CookingVessel
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
+        if (builder != null && !builder.getIngredients().isEmpty())
+        {
+            int[] donenesses = new int[builder.getIngredients().size()];
+            int i = 0;
+            for (Ingredient ingredient : builder.getIngredients())
+            {
+                donenesses[i] = ingredient.getDoneness();
+                ++i;
+            }
+            data.setIntArray("donenesses", donenesses);
+        }
         return super.writePacketData(data);
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
+        if (data.hasKey("donenesses", Constants.NBT.TAG_INT_ARRAY))
+        {
+            int[] donenesses = data.getIntArray("donenesses");
+            if (donenesses.length == ingredientsForRendering.size())
+            {
+                int i = 0;
+                for (Entry<Ingredient, ItemStack> entry : ingredientsForRendering.entrySet())
+                {
+                    entry.getKey().setDoneness(donenesses[i]);
+                    if (entry.getValue().getItem() == CuisineRegistry.INGREDIENT)
+                    {
+                        entry.getValue().getTagCompound().setInteger(CuisineSharedSecrets.KEY_DONENESS, donenesses[i]);
+                    }
+                    ++i;
+                }
+            }
+        }
         super.readPacketData(data);
     }
 
@@ -405,6 +454,7 @@ public class TileWok extends TileFirePit implements CookingVessel
                 return;
             }
             ingredient.setDoneness(ingredient.getDoneness() + heatLevel);
+            System.out.println(ingredient.getDoneness());
             if (++count > 1)
             {
                 count = 0;
@@ -446,8 +496,13 @@ public class TileWok extends TileFirePit implements CookingVessel
         this.completedDish = null;
         this.status = Status.IDLE;
         this.ingredientsForRendering.clear();
-        NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), ItemStack.EMPTY));
+        NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), null, ItemStack.EMPTY));
 
         return Optional.of(stack);
+    }
+
+    public void requiresRefresh()
+    {
+        shouldRefresh = true;
     }
 }

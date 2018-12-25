@@ -1,5 +1,7 @@
 package snownee.cuisine.plugins.top;
 
+import java.text.MessageFormat;
+
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
@@ -16,10 +18,7 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.tiles.TileBasinHeatable;
 import snownee.cuisine.tiles.TileFirePit;
-import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.util.I18nUtil;
-
-import java.text.MessageFormat;
 
 public class CuisineMachineProvider implements IProbeInfoProvider
 {

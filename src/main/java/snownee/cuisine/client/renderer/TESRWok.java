@@ -1,6 +1,6 @@
 package snownee.cuisine.client.renderer;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -35,7 +35,7 @@ public class TESRWok extends TESRFirePit<TileWok>
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
 
-        List<ItemStack> list = tile.getWokContents();
+        Collection<ItemStack> list = tile.getWokContents().values();
         if (!list.isEmpty())
         {
             GlStateManager.pushMatrix();
