@@ -6,10 +6,12 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.util.definition.OreDictDefinition;
+import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -19,23 +21,25 @@ public class CTMill
 {
 
     @ZenMethod
-    public static void add(IItemStack input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
+    public static void add(@Optional String name, IItemStack input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
+        ResourceLocation identifier = CTSupport.fromUserInputOrGenerate(name, input, inputFluid);
         ItemStack actualInput = CTSupport.toNative(input);
         ItemStack actualOutput = CTSupport.toNative(output);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
-        CTSupport.DELAYED_ACTIONS.add(new ItemBasedAddition(actualInput, actualInputFluid, actualOutput, actualOutputFluid));
+        CTSupport.DELAYED_ACTIONS.add(new ItemBasedAddition(identifier, actualInput, actualInputFluid, actualOutput, actualOutputFluid));
     }
 
     @ZenMethod
-    public static void add(IOreDictEntry input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
+    public static void add(@Optional String name, IOreDictEntry input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
+        ResourceLocation identifier = CTSupport.fromUserInputOrGenerate(name, input, inputFluid);
         OreDictDefinition actualInput = OreDictDefinition.of(input.getName(), input.getAmount());
         ItemStack actualOutput = CTSupport.toNative(output);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
-        CTSupport.DELAYED_ACTIONS.add(new OreDictBasedAddition(actualInput, actualInputFluid, actualOutput, actualOutputFluid));
+        CTSupport.DELAYED_ACTIONS.add(new OreDictBasedAddition(identifier, actualInput, actualInputFluid, actualOutput, actualOutputFluid));
     }
 
     @ZenMethod
@@ -60,7 +64,7 @@ public class CTMill
         CTSupport.DELAYED_ACTIONS.add(new RemoveAll());
     }
 
-    private static final class ItemBasedAddition implements IAction
+    private static final class ItemBasedAddition extends CTSupport.ActionWithLocator implements IAction
     {
 
         private final ItemStack actualInput;
@@ -68,8 +72,9 @@ public class CTMill
         private final ItemStack actualOutput;
         private final FluidStack actualOutputFluid;
 
-        ItemBasedAddition(ItemStack actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
+        ItemBasedAddition(ResourceLocation id, ItemStack actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
         {
+            super(id);
             this.actualInput = actualInput;
             this.actualInputFluid = actualInputFluid;
             this.actualOutput = actualOutput;
@@ -79,7 +84,7 @@ public class CTMill
         @Override
         public void apply()
         {
-            Processing.MILLING.add(new Milling(actualInput, actualOutput, actualInputFluid, actualOutputFluid));
+            Processing.MILLING.add(new Milling(locator, actualInput, actualOutput, actualInputFluid, actualOutputFluid));
         }
 
         @Override
@@ -89,15 +94,16 @@ public class CTMill
         }
     }
 
-    private static final class OreDictBasedAddition implements IAction
+    private static final class OreDictBasedAddition extends CTSupport.ActionWithLocator implements IAction
     {
         private final OreDictDefinition actualInput;
         private final FluidStack actualInputFluid;
         private final ItemStack actualOutput;
         private final FluidStack actualOutputFluid;
 
-        OreDictBasedAddition(OreDictDefinition actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
+        OreDictBasedAddition(ResourceLocation id, OreDictDefinition actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
         {
+            super(id);
             this.actualInput = actualInput;
             this.actualInputFluid = actualInputFluid;
             this.actualOutput = actualOutput;
@@ -107,7 +113,7 @@ public class CTMill
         @Override
         public void apply()
         {
-            Processing.MILLING.add(new Milling(actualInput, actualOutput, actualInputFluid, actualOutputFluid));
+            Processing.MILLING.add(new Milling(locator, actualInput, actualOutput, actualInputFluid, actualOutputFluid));
         }
 
         @Override
