@@ -40,17 +40,24 @@ public class TESRChoppingBoard extends TileEntitySpecialRenderer<TileChoppingBoa
 
             GlStateManager.rotate(tile.getFacing().getHorizontalAngle() + angle, 0, 1, 0);
 
+            float offsetY = 0;
+            if (Minecraft.getSystemTime() - tile.tickLastChop < 150)
+            {
+                float tick = (Minecraft.getSystemTime() - tile.tickLastChop) / 1000F;
+                offsetY = -10 * tick * tick + 1.5F * tick;
+            }
+
             if (bakedModel.isGui3d())
             {
                 // Block
                 GlStateManager.scale(0.8, 0.8, 0.8);
-                GlStateManager.translate(0, 0.55, 0);
+                GlStateManager.translate(0, 0.55 + offsetY, 0);
             }
             else
             {
                 // Item
                 GlStateManager.scale(0.5, 0.5, 0.5);
-                GlStateManager.translate(0, 0.5, 0);
+                GlStateManager.translate(0, 0.5 + offsetY, 0);
                 GlStateManager.rotate(90, 1, 0, 0);
             }
 

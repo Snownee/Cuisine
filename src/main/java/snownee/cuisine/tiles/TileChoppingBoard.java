@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,6 +21,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
@@ -41,6 +44,7 @@ public class TileChoppingBoard extends TileInventoryBase
     private EnumFacing facing = EnumFacing.NORTH;
     private boolean isAxe = false;
     private int chopped = 0;
+    public long tickLastChop;
 
     public static final ItemStack DEFAULT_COVER = new ItemStack(Blocks.LOG);
     private ItemStack cover = ItemStack.EMPTY;
@@ -193,6 +197,7 @@ public class TileChoppingBoard extends TileInventoryBase
         world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 0.3F, 0.5F);
         if (world.isRemote)
         {
+            updateTick();
             return;
         }
 
@@ -284,6 +289,12 @@ public class TileChoppingBoard extends TileInventoryBase
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateTick()
+    {
+        tickLastChop = Minecraft.getSystemTime();
     }
 
     private static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, boolean fewerLosses, Random rand)
