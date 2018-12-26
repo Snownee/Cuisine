@@ -1,5 +1,9 @@
 package snownee.cuisine.client.renderer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -10,7 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.tiles.TileBarbecueRack;
+import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.util.AABBUtil;
 
 public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
@@ -66,8 +72,29 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
     }
 
     @Override
-    protected int getWidth(TileBarbecueRack tile)
+    protected List<IngredientInfo> getIngredientInfo(TileBarbecueRack tile)
     {
-        return tile.isEmpty() ? 0 : 40;
+        if (tile.isEmpty())
+        {
+            return Collections.EMPTY_LIST;
+        }
+        else
+        {
+            List<IngredientInfo> infos = new ArrayList<>(tile.stacks.getSlots());
+            for (int i = 0; i < tile.stacks.getSlots(); ++i)
+            {
+                ItemStack stack = tile.stacks.getStackInSlot(i);
+                if (!stack.isEmpty())
+                {
+                    int doneness = 0;
+                    if (stack.getItem() == CuisineRegistry.INGREDIENT)
+                    {
+                        doneness = ItemNBTUtil.getInt(stack, CuisineSharedSecrets.KEY_DONENESS, 0);
+                    }
+                    infos.add(new IngredientInfo(stack, doneness));
+                }
+            }
+            return infos;
+        }
     }
 }

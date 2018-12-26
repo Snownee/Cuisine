@@ -7,10 +7,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.HeatHandler;
 import snownee.cuisine.blocks.BlockFirePit;
 import snownee.kiwi.tile.TileBase;
 
-public class TileFirePit extends TileBase implements ITickable
+public class TileFirePit extends TileBase implements ITickable, IHeatable
 {
     public final FuelHeatHandler heatHandler;
 
@@ -69,6 +70,12 @@ public class TileFirePit extends TileBase implements ITickable
         {
             return oldState.getValue(BlockFirePit.COMPONENT) != newState.getValue(BlockFirePit.COMPONENT);
         }
+    }
+
+    @Override
+    public HeatHandler getHeatHandler()
+    {
+        return heatHandler;
     }
 
 }

@@ -51,6 +51,7 @@ public class HoloProfiles
         public float alpha;
         public float icon0, icon1, icon2;
         public float minProgress, maxProgress;
+        public float extraWidth;
 
         public HoloProfile(BlockPos pos)
         {
@@ -119,7 +120,7 @@ public class HoloProfiles
             return alpha = chase(alpha, focusing ? 1 : 0, delta * 2);
         }
 
-        private static float chase(float raw, float target, float delta)
+        public static float chase(float raw, float target, float delta)
         {
             if (target == raw)
             {

@@ -1,6 +1,10 @@
 package snownee.cuisine.client.renderer;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,6 +20,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.tiles.TileWok.SeasoningInfo;
@@ -106,8 +111,14 @@ public class TESRWok extends TESRFirePit<TileWok>
     }
 
     @Override
-    protected int getWidth(TileWok tile)
+    protected List<IngredientInfo> getIngredientInfo(TileWok tile)
     {
-        return 0;
+        Map<Ingredient, ItemStack> contents = tile.getWokContents();
+        List<IngredientInfo> infos = new ArrayList<>(contents.size());
+        for (Entry<Ingredient, ItemStack> entry : contents.entrySet())
+        {
+            infos.add(new IngredientInfo(entry.getValue(), entry.getKey().getDoneness()));
+        }
+        return infos;
     }
 }
