@@ -23,6 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -36,6 +37,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -49,6 +51,8 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockModSapling.Type;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemBasicFood.Variants.SubItem;
+import snownee.cuisine.tiles.TileFruitTree;
+import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.util.VariantsHolder.Variant;
 
@@ -141,13 +145,19 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     @Override
     public boolean hasTileEntity(IBlockState state)
     {
-        return false;
+        return state.getValue(CORE);
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        return new TileFruitTree(getFruitType());
     }
 
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient)
     {
-        if (!CuisineConfig.GENERAL.fruitDrops && state.getValue(AGE) == 3)
+        if (!(CuisineConfig.GENERAL.fruitDrops && worldIn.getGameRules().getBoolean("doTileDrops")) && state.getValue(AGE) == 3)
         {
             return false;
         }
@@ -165,7 +175,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     {
         if (state.getValue(AGE) == 3)
         {
-            worldIn.setBlockState(pos, state.withProperty(AGE, 1));
+            worldIn.setBlockState(pos, onPassiveGathered(worldIn, pos, state));
             spawnAsEntity(worldIn, pos, CuisineRegistry.BASIC_FOOD.getItemStack(fruit));
         }
         else
@@ -254,6 +264,38 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         CuisineRegistry.SHEARED_LEAVES.getDrops(drops, world, pos, getShearedState(state), fortune);
     }
 
+    private Type getFruitType()
+    {
+        if (fruit == ItemBasicFood.Variants.CITRON)
+        {
+            return Type.CITRON;
+        }
+        else if (fruit == ItemBasicFood.Variants.LEMON)
+        {
+            return Type.LEMON;
+        }
+        else if (fruit == ItemBasicFood.Variants.LIME)
+        {
+            return Type.LIME;
+        }
+        else if (fruit == ItemBasicFood.Variants.MANDARIN)
+        {
+            return Type.MANDARIN;
+        }
+        else if (fruit == ItemBasicFood.Variants.GRAPEFRUIT)
+        {
+            return Type.GRAPEFRUIT;
+        }
+        else if (fruit == ItemBasicFood.Variants.ORANGE)
+        {
+            return Type.ORANGE;
+        }
+        else
+        {
+            return Type.POMELO;
+        }
+    }
+
     private IBlockState getShearedState(IBlockState state)
     {
         IBlockState newState = CuisineRegistry.SHEARED_LEAVES.getDefaultState();
@@ -261,32 +303,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         {
             newState = newState.withProperty(BlockShearedLeaves.FLOWER, true);
         }
-        Type type = Type.POMELO;
-        if (fruit == ItemBasicFood.Variants.CITRON)
-        {
-            type = Type.CITRON;
-        }
-        else if (fruit == ItemBasicFood.Variants.LEMON)
-        {
-            type = Type.LEMON;
-        }
-        else if (fruit == ItemBasicFood.Variants.LIME)
-        {
-            type = Type.LIME;
-        }
-        else if (fruit == ItemBasicFood.Variants.MANDARIN)
-        {
-            type = Type.MANDARIN;
-        }
-        else if (fruit == ItemBasicFood.Variants.GRAPEFRUIT)
-        {
-            type = Type.GRAPEFRUIT;
-        }
-        else if (fruit == ItemBasicFood.Variants.ORANGE)
-        {
-            type = Type.ORANGE;
-        }
-        return newState.withProperty(BlockModSapling.VARIANT, type);
+        return newState.withProperty(BlockModSapling.VARIANT, getFruitType());
     }
 
     @Override
@@ -306,7 +323,14 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     {
         if (state.getValue(AGE) == 3 && worldIn.setBlockState(pos, state.withProperty(AGE, 1)))
         {
-            ItemHandlerHelper.giveItemToPlayer(playerIn, CuisineRegistry.BASIC_FOOD.getItemStack(fruit));
+            if (playerIn instanceof FakePlayer)
+            {
+                StacksUtil.spawnItemStack(worldIn, pos, CuisineRegistry.BASIC_FOOD.getItemStack(fruit), true);
+            }
+            else
+            {
+                ItemHandlerHelper.giveItemToPlayer(playerIn, CuisineRegistry.BASIC_FOOD.getItemStack(fruit));
+            }
             return true;
         }
         return false;
@@ -483,7 +507,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance)
     {
         super.onFallenUpon(worldIn, pos, entityIn, fallDistance);
-        if (fallDistance >= 1 && entityIn instanceof EntityLivingBase)
+        if (!worldIn.isRemote && fallDistance >= 1 && entityIn instanceof EntityLivingBase)
         {
             for (BlockPos pos2 : BlockPos.getAllInBoxMutable(pos.getX() - 1, Math.max(0, pos.getY() - 2), pos.getZ() - 1, pos.getX() + 1, pos.getY(), pos.getZ() + 1))
             {
@@ -518,7 +542,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                 IBlockState state2 = worldIn.getBlockState(pos2);
                 if (state2.getBlock() == this && state2.getValue(AGE) == 3)
                 {
-                    worldIn.setBlockState(pos2, state2.withProperty(AGE, 1));
+                    worldIn.setBlockState(pos2, onPassiveGathered(worldIn, pos2, state2));
                     if (worldIn.getGameRules().getBoolean("doTileDrops") && !worldIn.restoringBlockSnapshots) // do not drop items while restoring blockstates, prevents item dupe
                     {
                         ItemStack stack = CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.EMPOWERED_CITRON);
@@ -543,6 +567,28 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                     }
                 }
             }
+        }
+    }
+
+    private IBlockState onPassiveGathered(World world, BlockPos pos, IBlockState state)
+    {
+        int death = 30;
+        for (BlockPos pos2 : BlockPos.getAllInBoxMutable(pos.getX() - 2, pos.getY(), pos.getZ() - 2, pos.getX() + 2, pos.getY() + 2 + 1, pos.getZ() + 2))
+        {
+            TileEntity tile = world.getTileEntity(pos2);
+            if (tile instanceof TileFruitTree)
+            {
+                death = ((TileFruitTree) tile).updateDeathRate();
+                break;
+            }
+        }
+        if (death >= 50 || world.rand.nextInt(50) < death)
+        {
+            return state.withProperty(AGE, 0);
+        }
+        else
+        {
+            return state.withProperty(AGE, 1);
         }
     }
 }
