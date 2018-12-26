@@ -27,7 +27,7 @@ public class ItemManual extends ItemMod
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-        if (this.manualHandler == null)
+        if (this.manualHandler == null || (hand == EnumHand.OFF_HAND && player.isSneaking()))
         {
             return defaultManualHandler(world, player, hand);
         }
