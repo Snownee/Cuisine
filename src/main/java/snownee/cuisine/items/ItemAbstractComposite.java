@@ -316,7 +316,7 @@ public abstract class ItemAbstractComposite extends ItemMod
         {
             return new ActionResult<>(EnumActionResult.FAIL, ItemStack.EMPTY);
         }
-        if (playerIn.canEat(dish.alwaysEdible()))
+        if (playerIn.isCreative() || playerIn.canEat(dish.alwaysEdible()))
         {
             playerIn.setActiveHand(handIn);
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
