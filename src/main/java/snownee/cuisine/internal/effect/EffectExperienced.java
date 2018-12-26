@@ -36,7 +36,7 @@ public class EffectExperienced extends SimpleEffectImpl
             categories.addAll(in.getMaterial().getCategories());
         }
 
-        int xpValue = categories.size() * 3;
+        int xpValue = categories.size() * ingredients.size() * 3;
 
         if (!itemstack.isEmpty() && itemstack.isItemDamaged())
         {

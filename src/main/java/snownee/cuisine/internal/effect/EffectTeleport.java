@@ -40,9 +40,9 @@ public class EffectTeleport extends SimpleEffectImpl
 
             for (int i = 0; i < 16; ++i)
             {
-                double d3 = player.posX + (player.getRNG().nextDouble() - 0.5D) * 16.0D;
+                double d3 = player.posX + (player.getRNG().nextDouble() - 0.5D) * 16.0D * ingredients.size();
                 double d4 = MathHelper.clamp(player.posY + (player.getRNG().nextInt(16) - 8), 0.0D, world.getActualHeight() - 1);
-                double d5 = player.posZ + (player.getRNG().nextDouble() - 0.5D) * 16.0D;
+                double d5 = player.posZ + (player.getRNG().nextDouble() - 0.5D) * 16.0D * ingredients.size();
 
                 if (player.isRiding())
                 {

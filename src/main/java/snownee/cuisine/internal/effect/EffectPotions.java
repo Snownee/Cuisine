@@ -9,6 +9,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.EffectCollector;
+import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.prefab.DefaultTypes;
 import snownee.cuisine.api.prefab.SimpleEffectImpl;
@@ -33,10 +34,27 @@ public class EffectPotions extends SimpleEffectImpl
     {
         double size = ingredients.size();
         int modifier = 0;
+        int count = 0;
+        for (Ingredient ingredient : ingredients)
+        {
+            if (ingredient == null)
+            {
+                count += Form.JUICE.ordinal();
+            }
+            else
+            {
+                count += ingredient.getForm().ordinal();
+            }
+        }
+        if (count / size > 4)
+        {
+            modifier = 1;
+        }
         // TODO: Fine tuning
+        System.out.println(size * 4 / modifier);
         for (PotionEffect effect : effects)
         {
-            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size * 4 / modifier)), effect.getAmplifier() + modifier, effect.getIsAmbient(), effect.doesShowParticles()));
+            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size / (modifier + 1) / 4)), effect.getAmplifier() + modifier, effect.getIsAmbient(), effect.doesShowParticles()));
         }
     }
 
