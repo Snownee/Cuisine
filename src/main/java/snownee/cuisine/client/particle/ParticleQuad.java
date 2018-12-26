@@ -29,9 +29,9 @@ public class ParticleQuad extends Particle
         particleScale = 3;
         particleGravity = 1;
         particleAlpha = (color >> 24 & 255) / 255F;
-        particleRed = (color >> 16 & 255) / 255F;
-        particleGreen = (color >> 8 & 255) / 255F;
-        particleBlue = (color & 255) / 255F;
+        particleRed = 0.8F * (color >> 16 & 255) / 255F;
+        particleGreen = 0.8F * (color >> 8 & 255) / 255F;
+        particleBlue = 0.8F * (color & 255) / 255F;
     }
 
     @Override
