@@ -2,10 +2,15 @@ package snownee.cuisine.client.renderer;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHandSide;
@@ -34,6 +39,7 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
         {
             //GlStateManager.enableAlpha();
             //GlStateManager.alphaFunc(516, 0.1F);
+            GlStateManager.disableDepth();
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             if (transparency < 1)
@@ -42,7 +48,7 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
             }
 
             GlStateManager.pushMatrix();
-            // ÕûÌåÎ»ÒÆĞı×ª
+            // æ•´ä½“ä½ç§»æ—‹è½¬
             double dx = x + 0.5;
             double dy = y + 0.5;
             double dz = z + 0.5;
@@ -56,12 +62,12 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
 
             GlStateManager.disableLighting();
 
-            // È·¶¨½çÃæÎ»ÖÃ
+            // ç¡®å®šç•Œé¢ä½ç½®
             List<IngredientInfo> infos = getIngredientInfo(tile);
             int width = 20;
             if (!infos.isEmpty())
             {
-                width += 40;
+                width += ((infos.size() - 1) / 3 + 1) * 20;
             }
             float offsetX;
             if (mc.player.getPrimaryHand() == EnumHandSide.RIGHT)
@@ -74,7 +80,7 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
                 offsetX = 42;
             }
 
-            // äÖÈ¾×ÜÎÂ¶È
+            // æ¸²æŸ“æ€»æ¸©åº¦
             GlStateManager.pushMatrix();
             GlStateManager.rotate(180, 0, 0, 0);
             double scale = 1 / 84d;
@@ -98,14 +104,75 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
             CulinaryRenderHelper.drawModalRect(-4, -10 + 80 * (1 - profile.icon1), 112, 48, 16, 16, 256, 256, .2f);
             GlStateManager.color(1, 1, 1, transparency);
             CulinaryRenderHelper.drawModalRect(-4, -10 + 80 * (1 - profile.icon2), 128, 48, 16, 16, 256, 256, .3f);
+            GlStateManager.color(1, 1, 1, 1);
 
             GlStateManager.popMatrix();
 
-            // äÖÈ¾²âÊÔÓÃÎïÆ·£¨2D±âÆ½£©
-            //            GlStateManager.rotate(180, 0, 1, 0);
-            //            int color = (int) (transparency * 255) << 24 | 0xFFFFFF;
-            //            CulinaryRenderHelper.renderColoredGuiItem(mc, new ItemStack(Blocks.TALLGRASS, 1, 1), color);
+            // æ¸²æŸ“æµ‹è¯•ç”¨ç‰©å“ï¼ˆ2Dæ‰å¹³ï¼‰
+            GlStateManager.pushMatrix();
+            GlStateManager.enableAlpha();
+            GlStateManager.rotate(180, 0, 1, 0);
+            scale = 1 / 6d;
+            GlStateManager.scale(scale, scale, scale);
+            scale = 6 / 84d;
+            GlStateManager.translate((offsetX + 20) * scale, 42 * scale, 0);
+            int yList = 0;
+            int xList = 0;
+            for (IngredientInfo info : infos)
+            {
+                GlStateManager.disableTexture2D();
+                GlStateManager.disableLighting();
+                if (info.doneness <= 100)
+                {
+                    GlStateManager.color(1, 1, 1, 0.6F * transparency);
+                }
+                else if (info.doneness < 150)
+                {
+                    float f = 1 - (info.doneness - 110) / 50F;
+                    GlStateManager.color(1, f, f, 0.6F * transparency);
+                }
+                else
+                {
+                    GlStateManager.color(1, 0.2F, 0.2F, 0.6F * transparency);
+                }
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder buffer = tessellator.getBuffer();
+                buffer.begin(GL11.GL_POLYGON, DefaultVertexFormats.POSITION);
+                double rad = 0.65;
+                if (info.doneness < 100)
+                {
+                    buffer.pos(xList * 1.5F, -1.5F + yList * 1.5F, 0).endVertex();
+                }
+                for (float i = Math.min(1, info.doneness / 100F); i > 0; i -= 0.04F)
+                {
+                    buffer.pos(xList * 1.5F + Math.sin(i / 0.5F * Math.PI) * rad, -1.5F + yList * 1.5F + Math.cos(i / 0.5F * Math.PI) * rad, 0).endVertex();
+                }
+                buffer.pos(xList * 1.5F, -1.5F + yList * 1.5F + rad, 0).endVertex();
+                if (info.doneness < 100)
+                {
+                    buffer.pos(xList * 1.5F, -1.5F + yList * 1.5F, 0).endVertex();
+                }
+                tessellator.draw();
+                GlStateManager.enableTexture2D();
 
+                CulinaryRenderHelper.renderColoredGuiItem(mc, info.stack, (int) (transparency * 255) << 24 | 0x00FFFFFF, xList * 1.5F, -1.5F + yList * 1.5F);
+                // GlStateManager.pushMatrix();
+                // GlStateManager.rotate(180, 1, 0, 0);
+                // GlStateManager.scale(scale, scale, scale);
+                // getFontRenderer().drawString("æµ‹è¯•ç‰©å“", 8, -2 - yList * 11, 0xFF000000);
+                // GlStateManager.popMatrix();
+                yList -= 1;
+                if (yList < -2)
+                {
+                    yList = 0;
+                    ++xList;
+                }
+            }
+            GlStateManager.disableAlpha();
+            GlStateManager.popMatrix();
+
+            GlStateManager.enableLighting();
+            GlStateManager.enableDepth();
             GlStateManager.popMatrix();
         }
     }

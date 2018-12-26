@@ -454,7 +454,6 @@ public class TileWok extends TileFirePit implements CookingVessel
                 return;
             }
             ingredient.setDoneness(ingredient.getDoneness() + heatLevel);
-            System.out.println(ingredient.getDoneness());
             if (++count > 1)
             {
                 count = 0;

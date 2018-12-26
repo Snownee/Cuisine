@@ -23,7 +23,8 @@ import snownee.cuisine.util.ItemNBTUtil;
 public class TileBarbecueRack extends TileFirePit
 {
     public final ItemStackHandler stacks;
-    private int[] burnTime = new int[3];
+    public int[] burnTime = new int[3];
+    public boolean[] completed = new boolean[3];
     private boolean isEmpty;
 
     public TileBarbecueRack()
@@ -72,6 +73,7 @@ public class TileBarbecueRack extends TileFirePit
                     if (stack.isEmpty())
                     {
                         burnTime[i] = 0;
+                        completed[i] = false;
                     }
                 }
                 refreshEmpty();
@@ -117,6 +119,10 @@ public class TileBarbecueRack extends TileFirePit
                         if (!result.isEmpty())
                         {
                             stacks.setStackInSlot(i, result.copy());
+                            if (!stacks.isItemValid(0, stack))
+                            {
+                                completed[i] = true;
+                            }
                         }
                     }
                 }
@@ -146,6 +152,12 @@ public class TileBarbecueRack extends TileFirePit
     {
         NBTTagCompound tag = super.writeToNBT(compound);
         tag.setIntArray("burnTime", burnTime);
+        //        int[] arr = new int[3];
+        //        for (int i = 0; i < completed.length; i++)
+        //        {
+        //            arr[i] = completed[i] ? 1 : 0;
+        //        }
+        //        tag.setIntArray("completed", arr);
         tag.setTag("Items", this.stacks.serializeNBT());
         return tag;
     }

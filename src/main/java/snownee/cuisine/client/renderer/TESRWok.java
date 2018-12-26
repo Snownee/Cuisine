@@ -38,6 +38,7 @@ public class TESRWok extends TESRFirePit<TileWok>
         }
 
         GlStateManager.pushMatrix();
+        GlStateManager.enableAlpha();
         GlStateManager.translate(x, y, z);
 
         Collection<ItemStack> list = tile.getWokContents().values();

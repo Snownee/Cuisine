@@ -38,7 +38,6 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
 
         if (Minecraft.getMinecraft().gameSettings.showDebugInfo)
         {
-
             AxisAlignedBB aabbItem = AABBUtil.rotate(new AxisAlignedBB(0.3D, 0.5D, 0.2D, 0.7D, 0.9D, 0.4D), facing);
             AxisAlignedBB aabbEmpty = AABBUtil.rotate(new AxisAlignedBB(0.45D, 0.65D, 0.2D, 0.55D, 0.75D, 0.4D), facing);
             GlStateManager.disableTexture2D();
@@ -52,6 +51,7 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
             GlStateManager.enableTexture2D();
         }
 
+        GlStateManager.enableAlpha();
         GlStateManager.translate(x + 0.5, y + 0.7, z + 0.5);
         GlStateManager.scale(0.5, 0.5, 0.5);
         GlStateManager.rotate(facing.getHorizontalAngle(), 0, 1, 0.1F);
@@ -69,6 +69,7 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
             GlStateManager.rotate(10, rotate * 1.5F, 0, rotate);
         }
         GlStateManager.popMatrix();
+        GlStateManager.disableAlpha();
     }
 
     @Override
@@ -90,6 +91,10 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
                     if (stack.getItem() == CuisineRegistry.INGREDIENT)
                     {
                         doneness = ItemNBTUtil.getInt(stack, CuisineSharedSecrets.KEY_DONENESS, 0);
+                    }
+                    else
+                    {
+                        doneness = tile.burnTime[i] / 8;
                     }
                     infos.add(new IngredientInfo(stack, doneness));
                 }

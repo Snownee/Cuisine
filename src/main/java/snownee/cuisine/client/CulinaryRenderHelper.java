@@ -111,11 +111,12 @@ public class CulinaryRenderHelper
         }
     }
 
-    public static void renderColoredGuiItem(Minecraft mc, ItemStack stack, int color)
+    public static void renderColoredGuiItem(Minecraft mc, ItemStack stack, int color, float x, float y)
     {
         RenderItem renderItem = mc.getRenderItem();
 
         GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, 0);
         mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
         GlStateManager.enableRescaleNormal();
