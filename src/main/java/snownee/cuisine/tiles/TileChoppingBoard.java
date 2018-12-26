@@ -297,6 +297,10 @@ public class TileChoppingBoard extends TileInventoryBase
     @SideOnly(Side.CLIENT)
     private void updateTick(ItemStack stack)
     {
+        if (stack.getItem() == CuisineRegistry.KITCHEN_KNIFE)
+        {
+            return;
+        }
         tickLastChop = Minecraft.getSystemTime();
         Minecraft mc = Minecraft.getMinecraft();
         if (stack.getItem() == CuisineRegistry.INGREDIENT)
