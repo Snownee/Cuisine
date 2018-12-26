@@ -14,10 +14,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
@@ -32,6 +34,7 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.process.Chopping;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.util.SkillUtil;
+import snownee.cuisine.client.particle.ParticleQuad;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.util.ItemNBTUtil;
@@ -195,13 +198,13 @@ public class TileChoppingBoard extends TileInventoryBase
     public void process(EntityPlayer playerIn, ItemStack tool, ProcessionType type, @Nullable Integer harvestlevel)
     {
         world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 0.3F, 0.5F);
-        if (world.isRemote)
+        ItemStack stack = stacks.getStackInSlot(0);
+        if (world.isRemote && !stack.isEmpty())
         {
-            updateTick();
+            updateTick(stack);
             return;
         }
 
-        ItemStack stack = stacks.getStackInSlot(0);
         if (ProcessionType.AXE != type)
         {
             Ingredient processingIngredient = tryConvert(stack);
@@ -292,9 +295,30 @@ public class TileChoppingBoard extends TileInventoryBase
     }
 
     @SideOnly(Side.CLIENT)
-    private void updateTick()
+    private void updateTick(ItemStack stack)
     {
         tickLastChop = Minecraft.getSystemTime();
+        Minecraft mc = Minecraft.getMinecraft();
+        if (stack.getItem() == CuisineRegistry.INGREDIENT)
+        {
+            Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+            if (ingredient == null)
+            {
+                return;
+            }
+            int color = ingredient.getMaterial().getColorCode(ingredient.getDoneness());
+            for (int i = 0; i < 4; i++)
+            {
+                mc.effectRenderer.addEffect(new ParticleQuad(world, pos, color));
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                world.spawnParticle(EnumParticleTypes.ITEM_CRACK, false, pos.getX() + 0.5, pos.getY() + 0.3, pos.getZ() + 0.5, (world.rand.nextDouble() - 0.5) * 0.2, 0.1, (world.rand.nextDouble() - 0.5) * 0.2, Item.getIdFromItem(stack.getItem()), stack.getMetadata());
+            }
+        }
     }
 
     private static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, boolean fewerLosses, Random rand)

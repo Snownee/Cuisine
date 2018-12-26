@@ -53,20 +53,11 @@ public final class CuisineItemRendering
                         {
                             doneness = data.getInteger(CuisineSharedSecrets.KEY_DONENESS);
                         }
-                        int raw = material.getRawColorCode();
-                        int cooked = material.getCookedColorCode();
 
                         //debug code
                         //doneness = (int) (Minecraft.getSystemTime() / 10 % 200);
 
-                        if (doneness < 100)
-                        {
-                            return mixColor(raw, cooked, doneness / 100f);
-                        }
-                        else
-                        {
-                            return mixColor(cooked, 0, (doneness - 100) / 100f);
-                        }
+                        return material.getColorCode(doneness);
                     }
                 }
             }
@@ -130,37 +121,5 @@ public final class CuisineItemRendering
         itemColors.registerItemColorHandler((
                 stack, tintIndex
         ) -> tintIndex == 0 ? ColorizerFoliage.getFoliageColorBasic() : -1, CuisineRegistry.SHEARED_LEAVES);
-    }
-
-    public static int mixColor(int color1, int color2, float weight)
-    {
-        if (weight <= 0)
-        {
-            return color1;
-        }
-        else if (weight >= 1)
-        {
-            return color2;
-        }
-        else
-        {
-            float a = (color1 >> 24 & 255);
-            float r = (color1 >> 16 & 255);
-            float g = (color1 >> 8 & 255);
-            float b = (color1 & 255);
-            float a1 = (color2 >> 24 & 255);
-            float r1 = (color2 >> 16 & 255);
-            float g1 = (color2 >> 8 & 255);
-            float b1 = (color2 & 255);
-            a += (a1 - a) * weight;
-            r += (r1 - r) * weight;
-            g += (g1 - g) * weight;
-            b += (b1 - b) * weight;
-            a = MathHelper.clamp(a, 0, 255);
-            r = MathHelper.clamp(r, 0, 255);
-            g = MathHelper.clamp(g, 0, 255);
-            b = MathHelper.clamp(b, 0, 255);
-            return (int) a << 24 | (int) r << 16 | (int) g << 8 | (int) b;
-        }
     }
 }
