@@ -110,7 +110,10 @@ public class ItemBasicFood extends ItemFood implements IModItem
     {
         if (this.isInCreativeTab(tab))
         {
-            getVariants().stream().filter(v -> !(this == CuisineRegistry.BASIC_FOOD && v.getMeta() == Variants.EMPOWERED_CITRON.getMeta())).forEach(v -> items.add(getItemStack(v)));
+            getVariants().stream()
+                    .filter(v -> !(this == CuisineRegistry.BASIC_FOOD && v.getMeta() == Variants.EMPOWERED_CITRON.getMeta()))
+                    .map(this::getItemStack)
+                    .forEach(items::add);
         }
     }
 

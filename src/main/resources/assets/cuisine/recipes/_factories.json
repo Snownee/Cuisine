@@ -1,4 +1,7 @@
 {
+  "ingredients": {
+    "hacked_wildcard": "snownee.cuisine.crafting.WildcardIngredient$Factory"
+  },
   "recipes": {
     "dump_food_container": "snownee.cuisine.crafting.RecipeFoodEmpty$Factory",
     "chopping_board": "snownee.cuisine.crafting.RecipeChoppingBoard$Factory",

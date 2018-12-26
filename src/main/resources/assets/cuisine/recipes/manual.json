@@ -10,6 +10,7 @@
         "data": 32767
       },
       {
+        "type": "cuisine:hacked_wildcard",
         "item": "cuisine:food",
         "data": 32767
       }
