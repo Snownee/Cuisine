@@ -170,7 +170,10 @@ public class ItemDrink extends ItemAbstractComposite
                 return stack;
             }
 
-            drink.setServes(drink.getServes() - 1);
+            if (!player.isCreative())
+            {
+                drink.setServes(drink.getServes() - 1);
+            }
             drink.onEaten(stack, worldIn, player);
             player.addStat(StatList.getObjectUseStats(this));
 
