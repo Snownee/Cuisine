@@ -93,13 +93,13 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
 
             if (profile.icon0 < 0)
             {
-                GlStateManager.color(1, 1, 1, 1 + profile.icon0 / 0.1f);
+                GlStateManager.color(1, 1, 1, (1 + profile.icon0 / 0.1f) * transparency);
             }
             CulinaryRenderHelper.drawModalRect(-4, -10 + 80 * (1 - profile.icon0), 96, 48, 16, 16, 256, 256, .1f);
             GlStateManager.color(1, 1, 1, transparency);
             if (profile.icon1 < 0)
             {
-                GlStateManager.color(1, 1, 1, 1 + profile.icon1 / 0.1f);
+                GlStateManager.color(1, 1, 1, (1 + profile.icon1 / 0.1f) * transparency);
             }
             CulinaryRenderHelper.drawModalRect(-4, -10 + 80 * (1 - profile.icon1), 112, 48, 16, 16, 256, 256, .2f);
             GlStateManager.color(1, 1, 1, transparency);
