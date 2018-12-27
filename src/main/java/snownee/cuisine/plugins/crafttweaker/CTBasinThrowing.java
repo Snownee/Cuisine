@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.prefab.SimpleThrowing;
 import snownee.kiwi.crafting.input.ProcessingInput;
+import snownee.kiwi.util.definition.OreDictDefinition;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -46,19 +47,19 @@ public final class CTBasinThrowing
     @ZenMethod
     public static void remove(IItemStack input, ILiquidStack inputFluid)
     {
-
+        CTSupport.DELAYED_ACTIONS.add(new RemovalByItem(CTSupport.toNative(input), CTSupport.toNative(inputFluid)));
     }
 
     @ZenMethod
     public static void remove(IOreDictEntry input, ILiquidStack inputFluid)
     {
-
+        CTSupport.DELAYED_ACTIONS.add(new RemovalByOre(CTSupport.fromOreEntry(input), CTSupport.toNative(inputFluid)));
     }
 
     @ZenMethod
     public static void removeAll()
     {
-
+        CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
     }
 
     private static final class Addition implements IAction
@@ -80,6 +81,70 @@ public final class CTBasinThrowing
         public void apply()
         {
             Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(CraftTweaker.MODID, identifier), input, inputFluid, output));
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
+        }
+    }
+
+    private static final class RemovalByItem implements IAction
+    {
+        private final ItemStack input;
+        private final FluidStack inputFluid;
+
+        RemovalByItem(ItemStack input, FluidStack inputFluid)
+        {
+            this.input = input;
+            this.inputFluid = inputFluid;
+        }
+
+        @Override
+        public void apply()
+        {
+            Processing.BASIN_THROWING.remove(this.input, this.inputFluid);
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
+        }
+    }
+
+    private static final class RemovalByOre implements IAction
+    {
+        private final OreDictDefinition input;
+        private final FluidStack inputFluid;
+
+        RemovalByOre(OreDictDefinition input, FluidStack inputFluid)
+        {
+            this.input = input;
+            this.inputFluid = inputFluid;
+        }
+
+        @Override
+        public void apply()
+        {
+            Processing.BASIN_THROWING.remove(this.input, this.inputFluid);
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
+        }
+    }
+
+    private static final class BulkRemoval implements IAction
+    {
+
+        @Override
+        public void apply()
+        {
+            Processing.BASIN_THROWING.removeAll();
         }
 
         @Override
