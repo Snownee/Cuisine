@@ -44,7 +44,7 @@ public class GuiManual extends GuiScreen
         this.fontRenderer = AdvancedFontRenderer.INSTANCE;
         this.buttonList.clear();
         this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openlink")));
-        this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 + 40, 80, 20, I18n.format("gui.close"))); // Use vanilla language key
+        this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 + 40, 80, 20, I18nUtil.translate("gui.close")));
 
         if (mc.getLanguageManager().getCurrentLanguage().getLanguageCode().startsWith("zh"))
         {
