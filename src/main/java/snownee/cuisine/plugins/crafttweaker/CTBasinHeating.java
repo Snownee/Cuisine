@@ -28,7 +28,7 @@ public final class CTBasinHeating
     @ZenMethod
     public static void add(String identifier, ILiquidStack input, IItemStack output, @Optional(valueLong = 1L) int heatValue)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier);
+        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input);
         FluidStack actualInput = CTSupport.toNative(input);
         ItemStack actualOutput = CTSupport.toNative(output);
         CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualOutput, heatValue));
