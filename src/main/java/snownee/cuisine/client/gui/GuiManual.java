@@ -3,7 +3,6 @@ package snownee.cuisine.client.gui;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Locale;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
@@ -21,18 +20,18 @@ public class GuiManual extends GuiScreen
 {
     private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(Cuisine.MODID, "textures/gui/book.png");
 
-    public static int PAGE_HEIGHT = 200;
-    public static int PAGE_WIDTH = (int) (PAGE_HEIGHT * 0.75F);
-    public static int PAGE_MARGIN = 25;
+    private static int PAGE_HEIGHT = 200;
+    private static int PAGE_WIDTH = /*(int) (PAGE_HEIGHT * 0.75F)*/ 150;
+    private static int PAGE_MARGIN = 25;
     public static int SKILL_PANEL_WIDTH = PAGE_WIDTH / 2;
 
-    public final DrawableNineSlice pageGrid;
+    private final DrawableNineSlice pageGrid;
     private boolean twoPages = false;
 
     private final String chatRoomURL = I18nUtil.translate("gui.chat_room_link");
     private final String mcmodWikiURL = I18nUtil.translate("gui.mcmod_link");
 
-    public GuiManual(int slot, ItemStack stack)
+    public GuiManual()
     {
         pageGrid = new DrawableNineSlice(BOOK_GUI_TEXTURES, 0, 0, 75, 75, 25, 25, 25, 25);
         pageGrid.setHeight(PAGE_HEIGHT);
@@ -47,8 +46,7 @@ public class GuiManual extends GuiScreen
         this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openlink")));
         this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 + 40, 80, 20, I18n.format("gui.close"))); // Use vanilla language key
 
-        Locale locale = mc.getLanguageManager().getCurrentLanguage().getJavaLocale();
-        if (locale.toString().startsWith("zh"))
+        if (mc.getLanguageManager().getCurrentLanguage().getLanguageCode().startsWith("zh"))
         {
             this.addButton(new GuiButton(2, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 - 40, 80, 20, I18nUtil.translate("gui.openwiki")));
         }

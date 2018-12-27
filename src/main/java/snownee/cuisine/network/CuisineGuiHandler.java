@@ -41,8 +41,7 @@ public class CuisineGuiHandler implements IGuiHandler
         switch (ID)
         {
         case CuisineGUI.MANUAL:
-            ItemStack stack = player.inventory.getStackInSlot(x);
-            return new GuiManual(x, stack);
+            return new GuiManual();
         case CuisineGUI.NAME_FOOD:
             TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
             if (tile instanceof CookingVessel)
