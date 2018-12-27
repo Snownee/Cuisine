@@ -15,17 +15,42 @@ public class DistillationBoiling extends AbstractCuisineProcessingRecipe impleme
     private final ItemStack output;
     private final int heatValue;
 
+    /**
+     * @deprecated Use the one with explicit locator declaration
+     * @param input
+     * @param output
+     */
+    @Deprecated
     public DistillationBoiling(FluidStack input, ItemStack output)
     {
         this(input, output, 1);
     }
 
+    /**
+     * @deprecated Use the one with explicit locator declaration
+     * @param input
+     * @param output
+     */
+    @Deprecated
     public DistillationBoiling(FluidStack input, ItemStack output, int heatValue)
     {
         super(new ResourceLocation("cuisine", "distilling_" + input.getFluid().getName()));
         this.input = input;
         this.output = output;
         this.heatValue = heatValue;
+    }
+
+    public DistillationBoiling(ResourceLocation locator, FluidStack input, ItemStack output)
+    {
+        this(locator, input, output, 1);
+    }
+
+    public DistillationBoiling(ResourceLocation locator, FluidStack input, ItemStack output, int heatValue)
+    {
+        super(locator);
+        this.input = input;
+        this.output = output;
+        this.heatValue = 1;
     }
 
     @Override
