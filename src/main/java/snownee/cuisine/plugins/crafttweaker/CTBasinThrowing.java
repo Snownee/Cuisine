@@ -30,7 +30,7 @@ public final class CTBasinThrowing
     @ZenMethod
     public static void add(String identifier, IItemStack input, ILiquidStack inputFluid, IItemStack output)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier);
+        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input, inputFluid);
         ProcessingInput actualInput = CTSupport.fromItemStack(input);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         ItemStack actualOutput = CTSupport.toNative(output);
@@ -40,7 +40,7 @@ public final class CTBasinThrowing
     @ZenMethod
     public static void add(String identifier, IOreDictEntry input, ILiquidStack inputFluid, IItemStack output)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier);
+        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input, inputFluid);
         ProcessingInput actualInput = CTSupport.fromOreEntry(input);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         ItemStack actualOutput = CTSupport.toNative(output);
