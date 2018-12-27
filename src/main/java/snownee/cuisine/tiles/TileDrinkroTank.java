@@ -79,7 +79,6 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
                 amount -= 500;
                 amountAdded += 500;
             }
-            System.out.println(amountAdded);
             return amountAdded;
         }
 
