@@ -29,6 +29,18 @@ public final class CTBasinHeating
         CTSupport.DELAYED_ACTIONS.add(new AdditionDistillation(actualInput, actualOutput));
     }
 
+    @ZenMethod
+    public static void remove(ILiquidStack input)
+    {
+
+    }
+
+    @ZenMethod
+    public static void removeAll()
+    {
+
+    }
+
     private static final class AdditionDistillation implements IAction
     {
 

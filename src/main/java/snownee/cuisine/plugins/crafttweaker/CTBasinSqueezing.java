@@ -55,6 +55,24 @@ public final class CTBasinSqueezing
         CTSupport.DELAYED_ACTIONS.add(new Addition(identifier, actualInput, actualOutput, extra));
     }
 
+    @ZenMethod
+    public static void remove(IItemStack input)
+    {
+
+    }
+
+    @ZenMethod
+    public static void remove(IOreDictEntry input)
+    {
+
+    }
+
+    @ZenMethod
+    public static void removeAll()
+    {
+
+    }
+
     private static final class Addition implements IAction
     {
         private final String identifier;

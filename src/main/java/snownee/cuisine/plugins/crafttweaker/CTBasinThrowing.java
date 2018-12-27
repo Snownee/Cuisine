@@ -43,6 +43,24 @@ public final class CTBasinThrowing
         CTSupport.DELAYED_ACTIONS.add(new Addition(identifier, actualInput, actualInputFluid, actualOutput));
     }
 
+    @ZenMethod
+    public static void remove(IItemStack input, ILiquidStack inputFluid)
+    {
+
+    }
+
+    @ZenMethod
+    public static void remove(IOreDictEntry input, ILiquidStack inputFluid)
+    {
+
+    }
+
+    @ZenMethod
+    public static void removeAll()
+    {
+
+    }
+
     private static final class Addition implements IAction
     {
         private final String identifier;
