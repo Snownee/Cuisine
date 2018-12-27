@@ -29,8 +29,8 @@ public class FuelHeatHandler implements HeatHandler
         }
     }
 
-    private static final Map<ItemDefinition, FuelInfo> ITEM_FUELS = new HashMap<>();
-    private static final Map<OreDictDefinition, FuelInfo> ORE_FUELS = new HashMap<>();
+    public static final Map<ItemDefinition, FuelInfo> ITEM_FUELS = new HashMap<>();
+    public static final Map<OreDictDefinition, FuelInfo> ORE_FUELS = new HashMap<>();
 
     static
     {
@@ -122,6 +122,50 @@ public class FuelHeatHandler implements HeatHandler
     public ItemStack addFuel(ItemStack stack)
     {
         stack = stack.copy();
+        FuelInfo info = getFuel(stack);
+        if (info != null)
+        {
+            int max = info.level * 1000;
+            if (getHeat() + 20 < max)
+            {
+                float newHeat = Math.min(heat + info.heat, max);
+                setHeat(newHeat);
+                stack.shrink(1);
+            }
+        }
+        return stack;
+    }
+
+    public static boolean isFuel(ItemStack stack, boolean useVanillaFuels)
+    {
+        if (stack.isEmpty() || !stack.getItem().getContainerItem(stack).isEmpty())
+        {
+            return false;
+        }
+        if (useVanillaFuels && TileEntityFurnace.getItemBurnTime(stack) > 0)
+        {
+            return true;
+        }
+        if (ITEM_FUELS.containsKey(ItemDefinition.of(stack)))
+        {
+            return true;
+        }
+        if (ITEM_FUELS.containsKey(ItemDefinition.of(stack.getItem(), OreDictionary.WILDCARD_VALUE)))
+        {
+            return true;
+        }
+        for (String ore : OreUtil.getOreNames(stack))
+        {
+            if (ORE_FUELS.containsKey(OreDictDefinition.of(ore)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static FuelInfo getFuel(ItemStack stack)
+    {
         FuelInfo info = ITEM_FUELS.get(ItemDefinition.of(stack));
         if (info == null)
         {
@@ -146,45 +190,7 @@ public class FuelHeatHandler implements HeatHandler
                 info = new FuelInfo(2, burnTime);
             }
         }
-        if (info != null)
-        {
-            int max = info.level * 1000;
-            if (getHeat() + 20 < max)
-            {
-                float newHeat = Math.min(heat + info.heat, max);
-                setHeat(newHeat);
-                stack.shrink(1);
-            }
-        }
-        return stack;
-    }
-
-    public static boolean isFuel(ItemStack stack)
-    {
-        if (stack.isEmpty() || !stack.getItem().getContainerItem(stack).isEmpty())
-        {
-            return false;
-        }
-        if (TileEntityFurnace.getItemBurnTime(stack) > 0)
-        {
-            return true;
-        }
-        if (ITEM_FUELS.containsKey(ItemDefinition.of(stack)))
-        {
-            return true;
-        }
-        if (ITEM_FUELS.containsKey(ItemDefinition.of(stack.getItem(), OreDictionary.WILDCARD_VALUE)))
-        {
-            return true;
-        }
-        for (String ore : OreUtil.getOreNames(stack))
-        {
-            if (ORE_FUELS.containsKey(OreDictDefinition.of(ore)))
-            {
-                return true;
-            }
-        }
-        return false;
+        return info;
     }
 
 }

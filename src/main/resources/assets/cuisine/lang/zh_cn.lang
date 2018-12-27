@@ -401,6 +401,9 @@ cuisine.gui.cannot_add_more=你不能添加更多食材了
 cuisine.gui.jei.title.basin_squeezing=盆 - 压榨
 cuisine.gui.jei.title.basin_throwing=盆 - 投入物品
 cuisine.gui.jei.title.basin_boiling=盆 - 加热
+cuisine.gui.jei.title.firepit_fuel=火塘 - 燃料
+cuisine.gui.jei.brun_heat=燃烧热量：%d
+cuisine.gui.jei.brun_level=燃烧等级：%d
 
 cuisine.skillpoint.expertise=技巧度
 cuisine.skillpoint.proficiency=熟练度

@@ -118,7 +118,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         case IDLE:
         {
             boolean isIngredient = heldThing.getItem() instanceof ItemSpiceBottle || CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null;
-            if (isIngredient || FuelHeatHandler.isFuel(heldThing))
+            if (isIngredient || FuelHeatHandler.isFuel(heldThing, true))
             {
                 if (isIngredient)
                 {
@@ -239,7 +239,7 @@ public class TileWok extends TileFirePit implements CookingVessel
                 return false;
             }
         }
-        else if (FuelHeatHandler.isFuel(heldThing))
+        else if (FuelHeatHandler.isFuel(heldThing, true))
         {
             ItemStack remain = heatHandler.addFuel(heldThing);
             if (!player.isCreative())

@@ -401,6 +401,9 @@ cuisine.gui.cannot_add_more=You can't add more ingredients
 cuisine.gui.jei.title.basin_squeezing=Basin - Squeezing
 cuisine.gui.jei.title.basin_throwing=Basin - Throwing
 cuisine.gui.jei.title.basin_boiling=Basin - Heating
+cuisine.gui.jei.title.firepit_fuel=Firepit - Fuels
+cuisine.gui.jei.brun_heat=Burn Heat: %d
+cuisine.gui.jei.brun_level=Burn Level: %d
 
 cuisine.skillpoint.expertise=Expertise
 cuisine.skillpoint.proficiency=Proficiency
