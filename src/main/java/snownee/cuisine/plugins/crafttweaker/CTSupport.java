@@ -42,12 +42,12 @@ public final class CTSupport implements IModule
         return entry == null ? OreDictDefinition.EMPTY : OreDictDefinition.of(entry.getName(), entry.getAmount());
     }
 
-    static RegularItemStackInput fromItemStack(IItemStack ctDefinition)
+    static RegularItemStackInput fromItemStack(@Nullable IItemStack ctDefinition)
     {
         return RegularItemStackInput.of(toNative(ctDefinition));
     }
 
-    static ItemStack toNative(IItemStack ctDefinition)
+    static ItemStack toNative(@Nullable IItemStack ctDefinition)
     {
         return CraftTweakerMC.getItemStack(ctDefinition);
     }
