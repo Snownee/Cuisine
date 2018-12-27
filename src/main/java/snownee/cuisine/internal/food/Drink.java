@@ -162,7 +162,7 @@ public class Drink extends CompositeFood
         @Override
         public int getMaxIngredientLimit()
         {
-            return 3;
+            return 4;
         }
 
         @Override

@@ -54,8 +54,8 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            // 1 size = 500mB, fine-tuning needed
-            if (resource == null || resource.amount < 500 || tile.isWorking())
+            // 1 size = 250mB, fine-tuning needed
+            if (resource == null || resource.amount < 250 || tile.isWorking())
             {
                 return 0;
             }
@@ -70,14 +70,14 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
             int amount = resource.amount;
             int amountAdded = 0;
 
-            while (amount >= 500 && i-- > 0)
+            while (amount >= 250 && i-- > 0)
             {
                 if (doFill && !tile.builder.addIngredient(null, ingredient.copy(), tile))
                 {
                     break;
                 }
-                amount -= 500;
-                amountAdded += 500;
+                amount -= 250;
+                amountAdded += 250;
             }
             return amountAdded;
         }
