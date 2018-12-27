@@ -9,6 +9,7 @@ import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.api.process.Chopping;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
 import snownee.kiwi.util.definition.OreDictDefinition;
@@ -51,7 +52,12 @@ public class CTAxeChopping
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTAxeChopping::getManager));
+    }
+
+    private static CuisineProcessingRecipeManager<Chopping> getManager()
+    {
+        return Processing.CHOPPING;
     }
 
     private static final class ItemBasedAddition implements IAction
@@ -146,19 +152,4 @@ public class CTAxeChopping
         }
     }
 
-    private static final class BulkRemoval implements IAction
-    {
-
-        @Override
-        public void apply()
-        {
-            Processing.CHOPPING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Remove all Cuisine Axe-Chopping recipes";
-        }
-    }
 }

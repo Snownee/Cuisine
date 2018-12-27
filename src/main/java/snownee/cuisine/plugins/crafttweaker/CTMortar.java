@@ -10,6 +10,7 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -36,7 +37,12 @@ public class CTMortar
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTMortar::getManager));
+    }
+
+    private static CuisineProcessingRecipeManager<Grinding> getManager()
+    {
+        return Processing.GRINDING;
     }
 
     private static final class Addition implements IAction
@@ -88,18 +94,4 @@ public class CTMortar
         }
     }
 
-    private static final class BulkRemoval implements IAction
-    {
-        @Override
-        public void apply()
-        {
-            Processing.GRINDING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Remove all Cuisine Mortar recipes";
-        }
-    }
 }

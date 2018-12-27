@@ -7,6 +7,8 @@ import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.Boiling;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.prefab.DistillationBoiling;
 import stanhebben.zenscript.annotations.Optional;
@@ -41,7 +43,12 @@ public final class CTBasinHeating
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTBasinHeating::getManager));
+    }
+
+    private static CuisineProcessingRecipeManager<Boiling> getManager()
+    {
+        return Processing.BOILING;
     }
 
     private static final class Addition extends CTSupport.ActionWithLocator implements IAction
@@ -95,23 +102,4 @@ public final class CTBasinHeating
         }
     }
 
-    private static final class BulkRemoval implements IAction
-    {
-        private BulkRemoval()
-        {
-
-        }
-
-        @Override
-        public void apply()
-        {
-            Processing.BOILING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
-        }
-    }
 }

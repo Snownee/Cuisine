@@ -7,6 +7,7 @@ import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.util.definition.OreDictDefinition;
@@ -57,7 +58,12 @@ public class CTMill
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new RemoveAll());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTMill::getManager));
+    }
+
+    private static CuisineProcessingRecipeManager<Milling> getManager()
+    {
+        return Processing.MILLING;
     }
 
     private static final class ItemBasedAddition implements IAction
@@ -162,22 +168,6 @@ public class CTMill
         public String describe()
         {
             return null;
-        }
-    }
-
-    private static final class RemoveAll implements IAction
-    {
-
-        @Override
-        public void apply()
-        {
-            Processing.MILLING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing all Cuisine milling recipes";
         }
     }
 

@@ -8,6 +8,8 @@ import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.BasinInteracting;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.prefab.SimpleSqueezing;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -61,7 +63,12 @@ public final class CTBasinSqueezing
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTBasinSqueezing::getManager));
+    }
+
+    private static CuisineProcessingRecipeManager<BasinInteracting> getManager()
+    {
+        return Processing.SQUEEZING;
     }
 
     private static final class Addition extends CTSupport.ActionWithLocator implements IAction
@@ -137,19 +144,4 @@ public final class CTBasinSqueezing
         }
     }
 
-    private static final class BulkRemoval implements IAction
-    {
-
-        @Override
-        public void apply()
-        {
-            Processing.SQUEEZING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
-        }
-    }
 }

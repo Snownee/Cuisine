@@ -9,6 +9,8 @@ import crafttweaker.mc1120.CraftTweaker;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.BasinInteracting;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.prefab.SimpleThrowing;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -59,7 +61,12 @@ public final class CTBasinThrowing
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTBasinThrowing::getManager));
+    }
+
+    private static CuisineProcessingRecipeManager<BasinInteracting> getManager()
+    {
+        return Processing.BASIN_THROWING;
     }
 
     private static final class Addition implements IAction
@@ -138,19 +145,4 @@ public final class CTBasinThrowing
         }
     }
 
-    private static final class BulkRemoval implements IAction
-    {
-
-        @Override
-        public void apply()
-        {
-            Processing.BASIN_THROWING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
-        }
-    }
 }

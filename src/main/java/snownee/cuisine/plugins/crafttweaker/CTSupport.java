@@ -2,6 +2,7 @@ package snownee.cuisine.plugins.crafttweaker;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
@@ -13,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.api.process.CuisineProcessingRecipe;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
@@ -69,6 +72,28 @@ public final class CTSupport implements IModule
         ActionWithLocator(ResourceLocation locator)
         {
             this.locator = locator;
+        }
+    }
+
+    static final class BulkRemoval implements IAction
+    {
+        private final Supplier<? extends CuisineProcessingRecipeManager<? extends CuisineProcessingRecipe>> managerAccess;
+
+        BulkRemoval(Supplier<? extends CuisineProcessingRecipeManager<? extends CuisineProcessingRecipe>> managerAccess)
+        {
+            this.managerAccess = Objects.requireNonNull(managerAccess);
+        }
+
+        @Override
+        public void apply()
+        {
+            this.managerAccess.get().removeAll();
+        }
+
+        @Override
+        public String describe()
+        {
+            return "Removing all recipes from " + this.managerAccess.get();
         }
     }
 }
