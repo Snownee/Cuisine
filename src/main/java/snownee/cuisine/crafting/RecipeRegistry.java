@@ -49,13 +49,13 @@ public class RecipeRegistry
             Processing.CHOPPING.add(new Chopping(new ResourceLocation(Cuisine.MODID, "citrus"), ItemDefinition.of(CuisineRegistry.LOG), new ItemStack(CuisineRegistry.PLANKS, 6)));
         }
 
-        Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("cropRice", 1)), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE), 4));
+        Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("cropRice", 1)), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.WHITE_RICE), 4));
         Processing.GRINDING.add(new Grinding(ImmutableList.of(OreDictDefinition.of("dustCrudesalt", 1)), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT), 10));
 
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropChilipepper"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CHILI_POWDER)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropSichuanpepper"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SICHUAN_PEPPER_POWDER)));
-        Processing.MILLING.add(new Milling(new ItemStack(Items.WHEAT), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.FLOUR)));
-        Processing.MILLING.add(new Milling(OreDictDefinition.of("foodRice"), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.RICE_POWDER)));
+        Processing.MILLING.add(new Milling(new ItemStack(Items.WHEAT), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.FLOUR)));
+        Processing.MILLING.add(new Milling(OreDictDefinition.of("foodRice"), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.RICE_POWDER)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("dustCrudesalt"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropSesame"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.SESAME_OIL, 20)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropPeanut"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 100)));
@@ -68,13 +68,13 @@ public class RecipeRegistry
         Processing.MILLING.add(new Milling(new ItemStack(Items.WHEAT_SEEDS), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 20)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropSoybean"), ItemStack.EMPTY, new FluidStack(FluidRegistry.WATER, 100), new FluidStack(CuisineFluids.SOY_MILK, 100)));
 
-        Processing.VESSEL.add(new Vessel(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.RICE_POWDER.getMeta()), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.RICE_VINEGAR, 20)));
+        Processing.VESSEL.add(new Vessel(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.RICE_POWDER.getMeta()), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.RICE_VINEGAR, 20)));
         Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropRice"), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.RICE_VINEGAR, 30)));
         Processing.VESSEL.add(new Vessel(OreDictDefinition.of("foodRice"), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.RICE_VINEGAR, 20)));
-        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropChilipepper"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.PICKLED_PEPPER.getMeta()), null, OreDictDefinition.of("dustSalt")));
-        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropCucumber"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.PICKLED_CUCUMBER.getMeta()), null, OreDictDefinition.of("dustSalt")));
-        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropCabbage"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.PICKLED_CABBAGE.getMeta()), null, OreDictDefinition.of("dustSalt")));
-        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropTurnip"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.PICKLED_TURNIP.getMeta()), null, OreDictDefinition.of("dustSalt")));
+        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropChilipepper"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.PICKLED_PEPPER.getMeta()), null, OreDictDefinition.of("dustSalt")));
+        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropCucumber"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.PICKLED_CUCUMBER.getMeta()), null, OreDictDefinition.of("dustSalt")));
+        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropCabbage"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.PICKLED_CABBAGE.getMeta()), null, OreDictDefinition.of("dustSalt")));
+        Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropTurnip"), FluidRegistry.WATER, ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.PICKLED_TURNIP.getMeta()), null, OreDictDefinition.of("dustSalt")));
         Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropSoybean"), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.SOY_SAUCE, 20)));
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Items.APPLE), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 10)));
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Items.GOLDEN_APPLE), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 20)));

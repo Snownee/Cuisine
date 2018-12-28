@@ -529,8 +529,8 @@ public final class CuisineInternalGateway implements CuisineAPI
     public static void deferredInit()
     {
         CuisineInternalGateway api = CuisineInternalGateway.INSTANCE;
-        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variants.RED_PEPPER.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.RED_PEPPER, Form.FULL));
-        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.EMPOWERED_CITRON, Form.FULL));
+        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variant.RED_PEPPER.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.RED_PEPPER, Form.FULL));
+        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.EMPOWERED_CITRON.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.EMPOWERED_CITRON, Form.FULL));
 
         api.itemIngredients.put(ItemDefinition.of(Items.GOLDEN_APPLE), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_APPLE, Form.FULL));
         api.itemIngredients.put(ItemDefinition.of(Items.GOLDEN_APPLE, 1), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_APPLE_ENCHANTED, Form.FULL));

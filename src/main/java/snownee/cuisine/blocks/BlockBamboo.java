@@ -300,7 +300,7 @@ public class BlockBamboo extends BlockMod
             {
                 return;
             }
-            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variants.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variants.PEANUT.getMeta())))
+            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variant.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variant.PEANUT.getMeta())))
             {
                 event.setCanceled(true);
                 event.setCancellationResult(EnumActionResult.FAIL);
@@ -319,7 +319,7 @@ public class BlockBamboo extends BlockMod
             {
                 return;
             }
-            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variants.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variants.PEANUT.getMeta())))
+            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variant.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variant.PEANUT.getMeta())))
             {
                 if (!event.getWorld().isRemote)
                 {

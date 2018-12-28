@@ -177,7 +177,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
         int ordinal = state.getValue(TYPE).ordinal();
         if (ordinal < 2)
         {
-            return CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.BAMBOO_SHOOT);
+            return CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.BAMBOO_SHOOT);
         }
         else if (ordinal < 7)
         {

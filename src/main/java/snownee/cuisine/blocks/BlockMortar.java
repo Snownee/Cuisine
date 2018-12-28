@@ -175,7 +175,7 @@ public class BlockMortar extends BlockModHorizontal
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY);
+        return CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variant.EMPTY);
     }
 
     @Override

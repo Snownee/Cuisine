@@ -10,11 +10,9 @@ import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.process.Chopping;
 import snownee.cuisine.api.process.Processing;
-import snownee.cuisine.items.ItemBasicFood.Variants.SubItem;
-import snownee.cuisine.items.ItemCrops.Variants.SubCrop;
+import snownee.cuisine.items.ItemCrops.Variant;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
-import snownee.kiwi.util.VariantsHolder.Variant;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
 @KiwiModule(
@@ -36,10 +34,9 @@ public class ImmersiveEngineeringCompat implements IModule
             }
         }
 
-        // I have to say design of Kiwi is a failure.
-        for (Variant<? extends SubItem> variant : CuisineRegistry.CROPS.getVariants())
+        for (Variant variant : CuisineRegistry.CROPS.getVariants())
         {
-            Variant<SubCrop> variantCasted = (Variant<SubCrop>) variant;
+            Variant variantCasted = variant;
             BelljarHandler.registerHandler(new CuisinePlantHandler(variantCasted));
         }
 

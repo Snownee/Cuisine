@@ -15,7 +15,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -32,11 +31,12 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.kiwi.item.ItemModVariants;
+import snownee.cuisine.items.ItemMortar.Variant;
+import snownee.kiwi.item.IVariant;
+import snownee.kiwi.item.ItemModVariantsNew;
 import snownee.kiwi.util.PlayerUtil;
-import snownee.kiwi.util.VariantsHolder;
 
-public class ItemMortar extends ItemModVariants
+public class ItemMortar extends ItemModVariantsNew<Void, Variant>
 {
     public class MortarFluidWrapper implements IFluidHandlerItem, ICapabilityProvider
     {
@@ -51,7 +51,7 @@ public class ItemMortar extends ItemModVariants
         public FluidStack getFluid()
         {
             int meta = container.getMetadata();
-            if (meta == Variants.WATER.getMeta())
+            if (meta == Variant.WATER.getMeta())
             {
                 return new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
             }
@@ -65,7 +65,7 @@ public class ItemMortar extends ItemModVariants
         {
             container = container.copy();
             container.setCount(1);
-            container.setItemDamage(fluidStack == null ? Variants.EMPTY.getMeta() : Variants.WATER.getMeta());
+            container.setItemDamage(fluidStack == null ? Variant.EMPTY.getMeta() : Variant.WATER.getMeta());
         }
 
         public boolean canFillFluidType(FluidStack fluid)
@@ -146,7 +146,7 @@ public class ItemMortar extends ItemModVariants
 
     public ItemMortar(String name, Block block)
     {
-        super(name, Variants.INSTANCE);
+        super(name, Variant.values());
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setContainerItem(this);
     }
@@ -175,9 +175,9 @@ public class ItemMortar extends ItemModVariants
                 return new ActionResult<>(EnumActionResult.PASS, stack);
             }
 
-            worldIn.playSound(playerIn, playerIn.posX, playerIn.posY + playerIn.height / 2, playerIn.posZ, stack.getMetadata() == Variants.EMPTY.getMeta() ? SoundEvents.ITEM_BOTTLE_FILL : SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+            worldIn.playSound(playerIn, playerIn.posX, playerIn.posY + playerIn.height / 2, playerIn.posZ, stack.getMetadata() == Variant.EMPTY.getMeta() ? SoundEvents.ITEM_BOTTLE_FILL : SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.NEUTRAL, 1.0F, 1.0F);
             stack.shrink(1);
-            ItemStack newStack = getItemStack(stack.getMetadata() == Variants.EMPTY.getMeta() ? Variants.WATER : Variants.EMPTY);
+            ItemStack newStack = getItemStack(stack.getMetadata() == Variant.EMPTY.getMeta() ? Variant.WATER : Variant.EMPTY);
 
             if (stack.isEmpty())
             {
@@ -204,7 +204,7 @@ public class ItemMortar extends ItemModVariants
 
         ItemStack stack = player.getHeldItem(hand);
         int meta = stack.getMetadata();
-        if (meta != Variants.WATER.getMeta())
+        if (meta != Variant.WATER.getMeta())
         {
             BlockPos result = PlayerUtil.tryPlaceBlock(worldIn, pos, side, player, hand, CuisineRegistry.MORTAR.getStateForPlacement(worldIn, pos, side, hitX, hitY, hitZ, 0, player, hand), stack, false);
             return result != null ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
@@ -228,12 +228,21 @@ public class ItemMortar extends ItemModVariants
         return EnumAction.BLOCK;
     }
 
-    public static class Variants extends VariantsHolder<IStringSerializable>
+    public static enum Variant implements IVariant<Void>
     {
-        static final Variants INSTANCE = new Variants();
+        EMPTY, WATER;
 
-        public static final Variant EMPTY = INSTANCE.addVariant(new Type("empty"));
-        public static final Variant WATER = INSTANCE.addVariant(new Type("water"));
+        @Override
+        public int getMeta()
+        {
+            return ordinal();
+        }
+
+        @Override
+        public Void getValue()
+        {
+            return null;
+        }
     }
 
 }

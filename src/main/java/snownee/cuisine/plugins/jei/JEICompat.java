@@ -85,7 +85,7 @@ public class JEICompat implements IModPlugin
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.INGREDIENT));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.DRINK));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.BOTTLE));
-        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.EMPOWERED_CITRON));
+        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.EMPOWERED_CITRON));
 
         registry.addRecipes(BlockChoppingBoard.getSuitableCovers().stream().map(RecipeChoppingBoardWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(CuisineInternalGateway.INSTANCE.itemToSpiceMapping.keySet().stream().map(RecipeSpiceBottleFillingWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
@@ -141,7 +141,7 @@ public class JEICompat implements IModPlugin
         registry.addRecipes(recipes, ChoppingBoardRecipeCategory.UID);
 
         recipes.clear();
-        registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY), MortarRecipeCategory.UID);
+        registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variant.EMPTY), MortarRecipeCategory.UID);
         Processing.GRINDING.preview().forEach(recipe -> recipes.add(new MortarGenericRecipe(recipe)));
         CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
             if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)

@@ -27,18 +27,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.items.ItemBasicFood.IRarityGetter;
+import snownee.cuisine.items.ItemCrops.Variant;
+import snownee.cuisine.items.ItemCrops.Variant.SubCrop;
 import snownee.cuisine.library.RarityManager;
 import snownee.cuisine.util.I18nUtil;
-import snownee.kiwi.client.ModelUtil;
+import snownee.kiwi.item.IVariant;
 import snownee.kiwi.util.PlayerUtil;
-import snownee.kiwi.util.VariantsHolder.Variant;
 
-public class ItemCrops extends ItemBasicFood implements IPlantable
+public class ItemCrops extends ItemBasicFood<SubCrop, Variant> implements IPlantable
 {
 
     public ItemCrops(String name)
     {
-        super(name);
+        super(name, Variant.values());
     }
 
     @Override
@@ -53,58 +55,68 @@ public class ItemCrops extends ItemBasicFood implements IPlantable
         return Blocks.AIR.getDefaultState();
     }
 
-    @Override
-    public void mapModel()
+    public static enum Variant implements IVariant<SubCrop>, IRarityGetter
     {
-        ModelUtil.mapItemVariantsModel(this, "food_", Variants.INSTANCE, "");
-    }
+        PEANUT(() -> CuisineRegistry.PEANUT),
+        SESAME(() -> CuisineRegistry.SESAME),
+        SOYBEAN(() -> CuisineRegistry.SOYBEAN),
+        RICE(() -> CuisineRegistry.RICE, EnumPlantType.Water),
+        TOMATO(() -> CuisineRegistry.TOMATO),
+        CHILI(() -> CuisineRegistry.CHILI, EnumPlantType.Nether),
+        GARLIC(() -> CuisineRegistry.GARLIC),
+        GINGER(() -> CuisineRegistry.GINGER),
+        SICHUAN_PEPPER(() -> CuisineRegistry.SICHUAN_PEPPER),
+        SCALLION(() -> CuisineRegistry.SCALLION),
+        TURNIP(() -> CuisineRegistry.TURNIP),
+        CHINESE_CABBAGE(() -> CuisineRegistry.CHINESE_CABBAGE),
+        LETTUCE(() -> CuisineRegistry.LETTUCE),
+        CORN(() -> CuisineRegistry.CORN),
+        CUCUMBER(() -> CuisineRegistry.CUCUMBER),
+        GREEN_PEPPER(() -> CuisineRegistry.GREEN_PEPPER),
+        RED_PEPPER(() -> CuisineRegistry.RED_PEPPER),
+        LEEK(() -> CuisineRegistry.LEEK),
+        ONION(() -> CuisineRegistry.ONION),
+        EGGPLANT(() -> CuisineRegistry.EGGPLANT),
+        SPINACH(() -> CuisineRegistry.SPINACH),
+        BAMBOO_SHOOT(() -> CuisineRegistry.BAMBOO_PLANT, EnumPlantType.Plains);
 
-    @Override
-    public List<? extends Variant<? extends snownee.cuisine.items.ItemBasicFood.Variants.SubItem>> getVariants()
-    {
-        return Variants.INSTANCE;
-    }
+        private final SubCrop subCrop;
 
-    public static class Variants extends snownee.kiwi.util.VariantsHolder<Variants.SubCrop>
-    {
-        static final Variants INSTANCE = new Variants();
+        Variant(Supplier<Block> block)
+        {
+            this(block, EnumPlantType.Crop);
+        }
 
-        public static final Variant<SubCrop> PEANUT = INSTANCE.addVariant(new SubCrop("peanut", () -> CuisineRegistry.PEANUT));
-        public static final Variant<SubCrop> SESAME = INSTANCE.addVariant(new SubCrop("sesame", () -> CuisineRegistry.SESAME));
-        public static final Variant<SubCrop> SOYBEAN = INSTANCE.addVariant(new SubCrop("soybean", () -> CuisineRegistry.SOYBEAN));
-        public static final Variant<SubCrop> RICE = INSTANCE.addVariant(new SubCrop("rice", () -> CuisineRegistry.RICE, EnumPlantType.Water));
-        public static final Variant<SubCrop> TOMATO = INSTANCE.addVariant(new SubCrop("tomato", () -> CuisineRegistry.TOMATO));
-        public static final Variant<SubCrop> CHILI = INSTANCE.addVariant(new SubCrop("chili", () -> CuisineRegistry.CHILI, EnumPlantType.Nether));
-        public static final Variant<SubCrop> GARLIC = INSTANCE.addVariant(new SubCrop("garlic", () -> CuisineRegistry.GARLIC));
-        public static final Variant<SubCrop> GINGER = INSTANCE.addVariant(new SubCrop("ginger", () -> CuisineRegistry.GINGER));
-        public static final Variant<SubCrop> SICHUAN_PEPPER = INSTANCE.addVariant(new SubCrop("sichuan_pepper", () -> CuisineRegistry.SICHUAN_PEPPER));
-        public static final Variant<SubCrop> SCALLION = INSTANCE.addVariant(new SubCrop("scallion", () -> CuisineRegistry.SCALLION));
-        public static final Variant<SubCrop> TURNIP = INSTANCE.addVariant(new SubCrop("turnip", () -> CuisineRegistry.TURNIP));
-        public static final Variant<SubCrop> CHINESE_CABBAGE = INSTANCE.addVariant(new SubCrop("chinese_cabbage", () -> CuisineRegistry.CHINESE_CABBAGE));
-        public static final Variant<SubCrop> LETTUCE = INSTANCE.addVariant(new SubCrop("lettuce", () -> CuisineRegistry.LETTUCE));
-        public static final Variant<SubCrop> CORN = INSTANCE.addVariant(new SubCrop("corn", () -> CuisineRegistry.CORN));
-        public static final Variant<SubCrop> CUCUMBER = INSTANCE.addVariant(new SubCrop("cucumber", () -> CuisineRegistry.CUCUMBER));
-        public static final Variant<SubCrop> GREEN_PEPPER = INSTANCE.addVariant(new SubCrop("green_pepper", () -> CuisineRegistry.GREEN_PEPPER));
-        public static final Variant<SubCrop> RED_PEPPER = INSTANCE.addVariant(new SubCrop("red_pepper", () -> CuisineRegistry.RED_PEPPER));
-        public static final Variant<SubCrop> LEEK = INSTANCE.addVariant(new SubCrop("leek", () -> CuisineRegistry.LEEK));
-        public static final Variant<SubCrop> ONION = INSTANCE.addVariant(new SubCrop("onion", () -> CuisineRegistry.ONION));
-        public static final Variant<SubCrop> EGGPLANT = INSTANCE.addVariant(new SubCrop("eggplant", () -> CuisineRegistry.EGGPLANT));
-        public static final Variant<SubCrop> SPINACH = INSTANCE.addVariant(new SubCrop("spinach", () -> CuisineRegistry.SPINACH));
-        public static final Variant<SubCrop> BAMBOO_SHOOT = INSTANCE.addVariant(new SubCrop("bamboo_shoot", () -> CuisineRegistry.BAMBOO_PLANT, EnumPlantType.Plains));
+        Variant(Supplier<Block> block, EnumPlantType plantType)
+        {
+            this.subCrop = new SubCrop(block, plantType);
+        }
 
-        public static class SubCrop extends snownee.cuisine.items.ItemBasicFood.Variants.SubItem
+        @Override
+        public EnumRarity getRarity()
+        {
+            return EnumRarity.COMMON;
+        };
+
+        @Override
+        public int getMeta()
+        {
+            return ordinal();
+        }
+
+        @Override
+        public SubCrop getValue()
+        {
+            return subCrop;
+        }
+
+        public static class SubCrop
         {
             private final EnumPlantType plantType;
             private final Supplier<Block> block;
 
-            protected SubCrop(String name, Supplier<Block> block)
+            protected SubCrop(Supplier<Block> block, EnumPlantType plantType)
             {
-                this(name, block, EnumPlantType.Crop);
-            }
-
-            protected SubCrop(String name, Supplier<Block> block, EnumPlantType plantType)
-            {
-                super(name);
                 this.block = block;
                 this.plantType = plantType;
             }
@@ -125,12 +137,12 @@ public class ItemCrops extends ItemBasicFood implements IPlantable
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = player.getHeldItem(hand);
-        Variants.SubCrop crop = (Variants.SubCrop) getVariants().get(stack.getMetadata()).getValue();
+        Variant variant = getVariants().get(stack.getMetadata());
 
-        BlockPos target = canPlantAt(worldIn, pos, facing, crop, player);
+        BlockPos target = canPlantAt(worldIn, pos, facing, variant, player);
         if (target != null)
         {
-            IBlockState newState = crop.getBlock().getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, 0, player, hand);
+            IBlockState newState = variant.subCrop.getBlock().getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, 0, player, hand);
             EnumRarity rarity = RarityManager.getRarity(stack);
             boolean flag = PlayerUtil.tryPlaceBlock(worldIn, target, facing, player, hand, newState, stack);
             if (flag && rarity != EnumRarity.COMMON)
@@ -159,18 +171,18 @@ public class ItemCrops extends ItemBasicFood implements IPlantable
     }
 
     @Nullable
-    public BlockPos canPlantAt(World world, BlockPos pos, EnumFacing side, Variants.SubCrop subCrop, EntityPlayer player)
+    public BlockPos canPlantAt(World world, BlockPos pos, EnumFacing side, Variant variant, EntityPlayer player)
     {
         if (!world.getBlockState(pos).getBlock().isReplaceable(world, pos))
         {
             pos = pos.offset(side);
         }
-        if (subCrop.getBlock() == null)
+        if (variant.subCrop.getBlock() == null)
         {
-            Cuisine.logger.error("{}: Attempting plant a crop which doesnt have a block!", subCrop.getName());
+            Cuisine.logger.error("{}: Attempting plant a crop which doesnt have a block!", variant.getName());
             return null;
         }
-        if (!world.isBlockModifiable(player, pos) || !world.mayPlace(subCrop.getBlock(), pos, true, side, player) || !player.capabilities.allowEdit)
+        if (!world.isBlockModifiable(player, pos) || !world.mayPlace(variant.subCrop.getBlock(), pos, true, side, player) || !player.capabilities.allowEdit)
         {
             return null;
         }
@@ -183,7 +195,7 @@ public class ItemCrops extends ItemBasicFood implements IPlantable
         //                return oldState.getBlock().isReplaceable(world, pos) ? pos : null;
         //            }
         //        }
-        if (subCrop.getPlantType() == EnumPlantType.Water)
+        if (variant.subCrop.getPlantType() == EnumPlantType.Water)
         {
             IBlockState soilState = world.getBlockState(pos.down());
             if (soilState.getMaterial() != Material.GROUND && soilState.getMaterial() != Material.GRASS)
@@ -200,14 +212,12 @@ public class ItemCrops extends ItemBasicFood implements IPlantable
         }
         else
         {
-            if (!(subCrop.getBlock() instanceof IPlantable))
+            if (!(variant.subCrop.getBlock() instanceof IPlantable))
             {
                 return null;
             }
             IBlockState soilState = world.getBlockState(pos.down());
-            return soilState.getBlock().canSustainPlant(soilState, world, pos.down(), side, (IPlantable) subCrop.getBlock())
-                    ? pos
-                    : null;
+            return soilState.getBlock().canSustainPlant(soilState, world, pos.down(), side, (IPlantable) variant.subCrop.getBlock()) ? pos : null;
         }
     }
 
@@ -215,7 +225,7 @@ public class ItemCrops extends ItemBasicFood implements IPlantable
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        Variants.SubCrop subCrop = (Variants.SubCrop) getVariants().get(stack.getMetadata()).getValue();
+        SubCrop subCrop = getVariants().get(stack.getMetadata()).subCrop;
         if (subCrop.getPlantType() != EnumPlantType.Crop)
         {
             tooltip.add(I18nUtil.translate("tip.crops." + subCrop.getPlantType().toString().toLowerCase(Locale.ROOT)));

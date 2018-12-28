@@ -48,9 +48,7 @@ import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockModSapling.Type;
 import snownee.cuisine.items.ItemBasicFood;
-import snownee.cuisine.items.ItemBasicFood.Variants.SubItem;
 import snownee.kiwi.block.BlockMod;
-import snownee.kiwi.util.VariantsHolder.Variant;
 
 @EventBusSubscriber(modid = Cuisine.MODID)
 public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
@@ -59,10 +57,10 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     public static final PropertyBool CORE = PropertyBool.create("core");
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 3);
 
-    private final Variant<SubItem> fruit;
+    private final ItemBasicFood.Variant fruit;
     private static int[] surroundings;
 
-    public BlockModLeaves(String name, Variant<SubItem> fruit)
+    public BlockModLeaves(String name, ItemBasicFood.Variant fruit)
     {
         super(name, Material.LEAVES);
         this.setTickRandomly(true);
@@ -262,27 +260,27 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
             newState = newState.withProperty(BlockShearedLeaves.FLOWER, true);
         }
         Type type = Type.POMELO;
-        if (fruit == ItemBasicFood.Variants.CITRON)
+        if (fruit == ItemBasicFood.Variant.CITRON)
         {
             type = Type.CITRON;
         }
-        else if (fruit == ItemBasicFood.Variants.LEMON)
+        else if (fruit == ItemBasicFood.Variant.LEMON)
         {
             type = Type.LEMON;
         }
-        else if (fruit == ItemBasicFood.Variants.LIME)
+        else if (fruit == ItemBasicFood.Variant.LIME)
         {
             type = Type.LIME;
         }
-        else if (fruit == ItemBasicFood.Variants.MANDARIN)
+        else if (fruit == ItemBasicFood.Variant.MANDARIN)
         {
             type = Type.MANDARIN;
         }
-        else if (fruit == ItemBasicFood.Variants.GRAPEFRUIT)
+        else if (fruit == ItemBasicFood.Variant.GRAPEFRUIT)
         {
             type = Type.GRAPEFRUIT;
         }
-        else if (fruit == ItemBasicFood.Variants.ORANGE)
+        else if (fruit == ItemBasicFood.Variant.ORANGE)
         {
             type = Type.ORANGE;
         }
@@ -521,7 +519,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                     worldIn.setBlockState(pos2, state2.withProperty(AGE, 1));
                     if (worldIn.getGameRules().getBoolean("doTileDrops") && !worldIn.restoringBlockSnapshots) // do not drop items while restoring blockstates, prevents item dupe
                     {
-                        ItemStack stack = CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.EMPOWERED_CITRON);
+                        ItemStack stack = CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.EMPOWERED_CITRON);
                         if (captureDrops.get())
                         {
                             capturedDrops.get().add(stack);

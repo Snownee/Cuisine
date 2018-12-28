@@ -11,16 +11,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.items.ItemCrops;
-import snownee.cuisine.items.ItemCrops.Variants.SubCrop;
+import snownee.cuisine.items.ItemCrops.Variant;
 import snownee.kiwi.util.OreUtil;
-import snownee.kiwi.util.VariantsHolder.Variant;
 
 public class CuisinePlantHandler implements IPlantHandler
 {
-    private final Variant<SubCrop> variant;
+    private final Variant variant;
 
-    public CuisinePlantHandler(Variant<SubCrop> variant)
+    public CuisinePlantHandler(Variant variant)
     {
         this.variant = variant;
     }
@@ -30,7 +28,7 @@ public class CuisinePlantHandler implements IPlantHandler
     @SideOnly(Side.CLIENT)
     public IBlockState[] getRenderedPlant(ItemStack seed, ItemStack soil, float growth, TileEntity tile)
     {
-        if (variant == ItemCrops.Variants.BAMBOO_SHOOT) // cannot tint?
+        if (variant == Variant.BAMBOO_SHOOT) // cannot tint?
         {
             return new IBlockState[] { variant.getValue().getBlock().getDefaultState() };
         }
@@ -57,7 +55,7 @@ public class CuisinePlantHandler implements IPlantHandler
     public ItemStack[] getOutput(ItemStack seed, ItemStack soil, TileEntity tile)
     {
         ItemStack output;
-        if (variant == ItemCrops.Variants.BAMBOO_SHOOT) // cannot tint?
+        if (variant == Variant.BAMBOO_SHOOT) // cannot tint?
         {
             output = new ItemStack(CuisineRegistry.BAMBOO, 2);
         }
