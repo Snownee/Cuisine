@@ -30,7 +30,7 @@ public class ImmersiveEngineeringCompat implements IModule
             Item stick = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "material"));
             if (stick != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "treated_stick"), OreDictDefinition.of("plankTreatedWood"), new ItemStack(stick, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "treated_stick"), OreDictDefinition.of("plankTreatedWood"), new ItemStack(stick, CuisineConfig.GENERAL.axeChoppingStickOutput)));
             }
         }
 

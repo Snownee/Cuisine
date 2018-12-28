@@ -74,6 +74,16 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
 
+        @Config.Name("AxeChoppingPlanksOutput")
+        @Config.RequiresMcRestart
+        @Config.RangeInt(min=1, max=64)
+        public int axeChoppingPlanksOutput = 6;
+
+        @Config.Name("AxeChoppingStickOutput")
+        @Config.RequiresMcRestart
+        @Config.RangeInt(min=1, max=64)
+        public int axeChoppingStickOutput = 4;
+
         @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
         @Config.LangKey("cuisine.config.general.mill_work_cycle")
         @Config.Name("MillWorkCycle")

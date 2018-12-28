@@ -38,8 +38,9 @@ public class RusticCompat implements IModule
             Item planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "planks"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "olive"), ItemDefinition.of(log, 0), new ItemStack(planks, 6, 0)));
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ironwood"), ItemDefinition.of(log, 1), new ItemStack(planks, 6, 1)));
+                int amount = CuisineConfig.GENERAL.axeChoppingPlanksOutput;
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "olive"), ItemDefinition.of(log, 0), new ItemStack(planks, amount, 0)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ironwood"), ItemDefinition.of(log, 1), new ItemStack(planks, amount, 1)));
             }
         }
     }

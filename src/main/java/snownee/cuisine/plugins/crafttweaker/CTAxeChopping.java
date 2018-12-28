@@ -8,6 +8,7 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.Chopping;
 import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
@@ -52,6 +53,18 @@ public class CTAxeChopping
     public static void removeAll()
     {
         CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
+    }
+
+    @ZenMethod
+    public static int getDefaultPlanksOutput()
+    {
+        return CuisineConfig.GENERAL.axeChoppingPlanksOutput;
+    }
+
+    @ZenMethod
+    public static int getDefaultStickOutput()
+    {
+        return CuisineConfig.GENERAL.axeChoppingStickOutput;
     }
 
     private static final class ItemBasedAddition implements IAction
