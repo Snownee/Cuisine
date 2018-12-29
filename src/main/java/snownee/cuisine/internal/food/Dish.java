@@ -386,6 +386,8 @@ public class Dish extends CompositeFood
                 effectList.appendTag(new NBTTagString(effect.getID()));
             }
             data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
+            data.setInteger("water", builder.water);
+            data.setInteger("oil", builder.oil);
 
             return data;
         }
