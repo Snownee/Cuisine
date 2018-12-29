@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
@@ -18,6 +19,7 @@ import snownee.cuisine.api.process.CuisineProcessingRecipe;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
+import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.crafting.input.RegularItemStackInput;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
@@ -38,6 +40,11 @@ public final class CTSupport implements IModule
     static ResourceLocation fromUserInputOrGenerate(@Nullable String name, Object... inputs)
     {
         return new ResourceLocation("crafttweaker", isEmpty(name) ? Integer.toString(Objects.hash(inputs)) : name);
+    }
+
+    static ProcessingInput fromIngredient(IIngredient ingredient)
+    {
+        return new CTIngredientInput(ingredient);
     }
 
     static OreDictDefinition fromOreEntry(IOreDictEntry entry)
