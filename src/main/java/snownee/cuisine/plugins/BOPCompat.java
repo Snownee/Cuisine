@@ -1,8 +1,11 @@
 package snownee.cuisine.plugins;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
@@ -14,9 +17,11 @@ import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.prefab.SimpleMaterialImpl;
 import snownee.cuisine.api.process.Chopping;
 import snownee.cuisine.api.process.Processing;
+import snownee.cuisine.api.process.prefab.SimpleThrowing;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.util.definition.ItemDefinition;
+import snownee.kiwi.util.definition.OreDictDefinition;
 
 @KiwiModule(modid = Cuisine.MODID, name = BOPCompat.MODID, dependency = BOPCompat.MODID, optional = true)
 public class BOPCompat implements IModule
@@ -87,6 +92,17 @@ public class BOPCompat implements IModule
                 Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "ebony"), ItemDefinition.of(log, 6), new ItemStack(planks, amount, 14)));
                 Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "eucalyptus"), ItemDefinition.of(log, 7), new ItemStack(planks, amount, 15)));
             }
+        }
+
+        Item mud = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "mud"));
+        if (mud != null)
+        {
+            Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(MODID, "mud_from_dirt"), OreDictDefinition.of("dirt"), new FluidStack(FluidRegistry.WATER, 500), new ItemStack(mud)));
+        }
+        Item dried_sand = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "dried_sand"));
+        if (dried_sand != null)
+        {
+            Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(MODID, "sand_from_dried_sand"), ItemDefinition.of(dried_sand), new FluidStack(FluidRegistry.WATER, 500), new ItemStack(Blocks.SAND)));
         }
     }
 }

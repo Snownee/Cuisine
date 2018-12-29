@@ -67,6 +67,8 @@ public class RecipeRegistry
         Processing.MILLING.add(new Milling(new ItemStack(Items.PUMPKIN_SEEDS), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 40)));
         Processing.MILLING.add(new Milling(new ItemStack(Items.WHEAT_SEEDS), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 20)));
         Processing.MILLING.add(new Milling(OreDictDefinition.of("cropSoybean"), ItemStack.EMPTY, new FluidStack(FluidRegistry.WATER, 100), new FluidStack(CuisineFluids.SOY_MILK, 100)));
+        Processing.MILLING.add(new Milling(OreDictDefinition.of("bone"), new ItemStack(Items.DYE, 4, 15), null, null));
+        Processing.MILLING.add(new Milling(new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(Items.PRISMARINE_CRYSTALS), null, null));
 
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.RICE_POWDER.getMeta()), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.RICE_VINEGAR, 20)));
         Processing.VESSEL.add(new Vessel(OreDictDefinition.of("cropRice"), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.RICE_VINEGAR, 30)));
