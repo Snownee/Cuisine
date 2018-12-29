@@ -27,9 +27,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.items.ItemBasicFood.IRarityGetter;
+import snownee.cuisine.items.ItemCrops.SubCrop;
 import snownee.cuisine.items.ItemCrops.Variant;
-import snownee.cuisine.items.ItemCrops.Variant.SubCrop;
 import snownee.cuisine.library.RarityManager;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.item.IVariant;
@@ -110,26 +109,27 @@ public class ItemCrops extends ItemBasicFood<SubCrop, Variant> implements IPlant
             return subCrop;
         }
 
-        public static class SubCrop
+    }
+
+    public static class SubCrop
+    {
+        private final EnumPlantType plantType;
+        private final Supplier<Block> block;
+
+        protected SubCrop(Supplier<Block> block, EnumPlantType plantType)
         {
-            private final EnumPlantType plantType;
-            private final Supplier<Block> block;
+            this.block = block;
+            this.plantType = plantType;
+        }
 
-            protected SubCrop(Supplier<Block> block, EnumPlantType plantType)
-            {
-                this.block = block;
-                this.plantType = plantType;
-            }
+        public EnumPlantType getPlantType()
+        {
+            return plantType;
+        }
 
-            public EnumPlantType getPlantType()
-            {
-                return plantType;
-            }
-
-            public Block getBlock()
-            {
-                return block.get();
-            }
+        public Block getBlock()
+        {
+            return block.get();
         }
     }
 

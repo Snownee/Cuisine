@@ -19,7 +19,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.items.ItemBasicFood.IRarityGetter;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.ModelUtil;
 import snownee.kiwi.item.IModItem;
@@ -79,20 +78,20 @@ public class ItemBasicFood<T, E extends IVariant<T> & IRarityGetter> extends Ite
     {
         if (this.isInCreativeTab(tab))
         {
-            getVariants().stream().filter(v -> !(this == CuisineRegistry.BASIC_FOOD && v.getMeta() == Variant.EMPOWERED_CITRON.getMeta())).forEach(v -> items.add(getItemStack(v)));
+            getVariants().stream().filter(v -> v != Variant.EMPOWERED_CITRON).forEach(v -> items.add(getItemStack(v)));
         }
     }
 
     @Override
     public boolean hasEffect(ItemStack stack)
     {
-        return this == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta();
+        return stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta();
     }
 
     @Override
-    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+    public boolean onDroppedByPlayer(ItemStack stack, EntityPlayer player)
     {
-        if (this == CuisineRegistry.BASIC_FOOD && item.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
+        if (stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
         {
             if (player.world.rand.nextInt(4) == 0)
             {
@@ -110,7 +109,7 @@ public class ItemBasicFood<T, E extends IVariant<T> & IRarityGetter> extends Ite
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        if (this == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
+        if (stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
         {
             if (attacker.world.rand.nextInt(5) == 0)
             {
@@ -223,10 +222,5 @@ public class ItemBasicFood<T, E extends IVariant<T> & IRarityGetter> extends Ite
         {
             return null;
         }
-    }
-
-    public static interface IRarityGetter
-    {
-        EnumRarity getRarity();
     }
 }
