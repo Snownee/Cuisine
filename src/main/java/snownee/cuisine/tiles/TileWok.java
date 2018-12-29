@@ -426,7 +426,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         super.readPacketData(data);
     }
 
-    static final class Heating implements CookingStrategy
+    static final class Heating implements CookingStrategy<Dish.Builder>
     {
         private int heatLevel;
         private int count = 0;
@@ -437,7 +437,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         }
 
         @Override
-        public void beginCook(CompositeFood.Builder<?> dish)
+        public void beginCook(Dish.Builder food)
         {
         }
 
@@ -462,7 +462,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         }
 
         @Override
-        public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
+        public void postCook(Dish.Builder food, CookingVessel vessel)
         {
         }
 

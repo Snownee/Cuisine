@@ -4,7 +4,7 @@ package snownee.cuisine.api;
  * A {@code CookingStrategy} defines a set of procedures to manipulating the food
  * based on the food itself and its container.
  */
-public interface CookingStrategy
+public interface CookingStrategy<F extends CompositeFood.Builder<?>>
 {
 
     /**
@@ -12,7 +12,7 @@ public interface CookingStrategy
      * @param dish The incoming {@code CompositeFood} object at its initial
      *             state
      */
-    void beginCook(final CompositeFood.Builder<?> dish);
+    void beginCook(final F food);
 
     /**
      * Manipulate each {@code Seasoning} objects.
@@ -44,7 +44,7 @@ public interface CookingStrategy
      *                               {@link #cook} is called, or after
      *                               this has been already called
      */
-    void postCook(final CompositeFood.Builder<?> dish, final CookingVessel vessel);
+    void postCook(final F food, final CookingVessel vessel);
 
     /**
      * Finish the cooking by executing all necessary procedures left.

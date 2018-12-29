@@ -28,7 +28,7 @@ public class FoodValueCounter implements CookingStrategy
     }
 
     @Override
-    public void beginCook(CompositeFood.Builder<?> dish)
+    public void beginCook(CompositeFood.Builder dish)
     {
 
     }
@@ -53,7 +53,7 @@ public class FoodValueCounter implements CookingStrategy
     }
 
     @Override
-    public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
+    public void postCook(CompositeFood.Builder dish, CookingVessel vessel)
     {
 
     }

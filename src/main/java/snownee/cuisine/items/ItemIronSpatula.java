@@ -15,6 +15,7 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.internal.food.Dish;
 import snownee.kiwi.item.ItemMod;
 
 public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
@@ -23,14 +24,14 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
     // Adapt CookingStrategyProvider to Capability system is somehow tricky, thus
     // it's not something we should consider right now
 
-    static final class StirFrying implements CookingStrategy
+    static final class StirFrying implements CookingStrategy<Dish.Builder>
     {
 
         int oilAmount = 0;
         int currentSize = 0;
 
         @Override
-        public void beginCook(CompositeFood.Builder<?> dish)
+        public void beginCook(Dish.Builder dish)
         {
             this.currentSize = dish.getIngredients().size();
         }
@@ -66,7 +67,7 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
         }
 
         @Override
-        public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
+        public void postCook(Dish.Builder dish, CookingVessel vessel)
         {
             Collections.shuffle(dish.getIngredients(), Item.itemRand);
         }
