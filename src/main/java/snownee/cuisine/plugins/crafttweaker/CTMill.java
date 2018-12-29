@@ -2,16 +2,18 @@ package snownee.cuisine.plugins.crafttweaker;
 
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
+import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.util.definition.OreDictDefinition;
-import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -21,25 +23,14 @@ public class CTMill
 {
 
     @ZenMethod
-    public static void add(@Optional String name, IItemStack input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
+    public static void add(String identifier, IIngredient input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
-        ResourceLocation identifier = CTSupport.fromUserInputOrGenerate(name, input, inputFluid);
-        ItemStack actualInput = CTSupport.toNative(input);
+        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input, inputFluid);
+        ProcessingInput actualInput = CTSupport.fromIngredient(input);
         ItemStack actualOutput = CTSupport.toNative(output);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
-        CTSupport.DELAYED_ACTIONS.add(new ItemBasedAddition(identifier, actualInput, actualInputFluid, actualOutput, actualOutputFluid));
-    }
-
-    @ZenMethod
-    public static void add(@Optional String name, IOreDictEntry input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
-    {
-        ResourceLocation identifier = CTSupport.fromUserInputOrGenerate(name, input, inputFluid);
-        OreDictDefinition actualInput = OreDictDefinition.of(input.getName(), input.getAmount());
-        ItemStack actualOutput = CTSupport.toNative(output);
-        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
-        FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
-        CTSupport.DELAYED_ACTIONS.add(new OreDictBasedAddition(identifier, actualInput, actualInputFluid, actualOutput, actualOutputFluid));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualInputFluid, actualOutput, actualOutputFluid));
     }
 
     @ZenMethod
@@ -61,18 +52,22 @@ public class CTMill
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new RemoveAll());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTMill::getManager));
     }
 
-    private static final class ItemBasedAddition extends CTSupport.ActionWithLocator implements IAction
+    private static CuisineProcessingRecipeManager<Milling> getManager()
     {
+        return Processing.MILLING;
+    }
 
-        private final ItemStack actualInput;
+    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    {
+        private final ProcessingInput actualInput;
         private final FluidStack actualInputFluid;
         private final ItemStack actualOutput;
         private final FluidStack actualOutputFluid;
 
-        ItemBasedAddition(ResourceLocation id, ItemStack actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
+        Addition(ResourceLocation id, ProcessingInput actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
         {
             super(id);
             this.actualInput = actualInput;
@@ -84,36 +79,7 @@ public class CTMill
         @Override
         public void apply()
         {
-            Processing.MILLING.add(new Milling(locator, actualInput, actualOutput, actualInputFluid, actualOutputFluid));
-        }
-
-        @Override
-        public String describe()
-        {
-            return String.format("Add Cuisine Mill recipe: %s + %s -> %s + %s", actualInput, actualInputFluid, actualOutput, actualOutputFluid);
-        }
-    }
-
-    private static final class OreDictBasedAddition extends CTSupport.ActionWithLocator implements IAction
-    {
-        private final OreDictDefinition actualInput;
-        private final FluidStack actualInputFluid;
-        private final ItemStack actualOutput;
-        private final FluidStack actualOutputFluid;
-
-        OreDictBasedAddition(ResourceLocation id, OreDictDefinition actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
-        {
-            super(id);
-            this.actualInput = actualInput;
-            this.actualInputFluid = actualInputFluid;
-            this.actualOutput = actualOutput;
-            this.actualOutputFluid = actualOutputFluid;
-        }
-
-        @Override
-        public void apply()
-        {
-            Processing.MILLING.add(new Milling(locator, actualInput, actualOutput, actualInputFluid, actualOutputFluid));
+            Processing.MILLING.add(new Milling(this.locator, actualInput, actualOutput, actualInputFluid, actualOutputFluid));
         }
 
         @Override
@@ -168,22 +134,6 @@ public class CTMill
         public String describe()
         {
             return null;
-        }
-    }
-
-    private static final class RemoveAll implements IAction
-    {
-
-        @Override
-        public void apply()
-        {
-            Processing.MILLING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing all Cuisine milling recipes";
         }
     }
 

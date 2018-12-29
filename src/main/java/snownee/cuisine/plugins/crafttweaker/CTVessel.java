@@ -7,6 +7,7 @@ import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.Vessel;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -139,7 +140,12 @@ public class CTVessel
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new RemoveAll());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTVessel::getManager));
+    }
+
+    private static CuisineProcessingRecipeManager<Vessel> getManager()
+    {
+        return Processing.VESSEL;
     }
 
     private static final class Addition implements IAction
@@ -196,22 +202,6 @@ public class CTVessel
         public String describe()
         {
             return String.format("Remove all Cuisine Vessel recipes that has input of %s, %s and %s", actualInput, actualInputFluid, actualExtra);
-        }
-    }
-
-    private static final class RemoveAll implements IAction
-    {
-
-        @Override
-        public void apply()
-        {
-            Processing.VESSEL.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Removing all Cuisine vessel recipes";
         }
     }
 
