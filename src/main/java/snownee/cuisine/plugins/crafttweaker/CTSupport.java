@@ -20,7 +20,6 @@ import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.crafting.input.ProcessingInput;
-import snownee.kiwi.crafting.input.RegularItemStackInput;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
 import javax.annotation.Nullable;
@@ -50,11 +49,6 @@ public final class CTSupport implements IModule
     static OreDictDefinition fromOreEntry(IOreDictEntry entry)
     {
         return entry == null ? OreDictDefinition.EMPTY : OreDictDefinition.of(entry.getName(), entry.getAmount());
-    }
-
-    static RegularItemStackInput fromItemStack(@Nullable IItemStack ctDefinition)
-    {
-        return RegularItemStackInput.of(toNative(ctDefinition));
     }
 
     static ItemStack toNative(@Nullable IItemStack ctDefinition)
