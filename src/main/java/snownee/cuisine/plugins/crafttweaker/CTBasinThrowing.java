@@ -2,6 +2,7 @@ package snownee.cuisine.plugins.crafttweaker;
 
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
@@ -28,20 +29,10 @@ public final class CTBasinThrowing
     }
 
     @ZenMethod
-    public static void add(String identifier, IItemStack input, ILiquidStack inputFluid, IItemStack output)
+    public static void add(String identifier, IIngredient input, ILiquidStack inputFluid, IItemStack output)
     {
         ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input, inputFluid);
-        ProcessingInput actualInput = CTSupport.fromItemStack(input);
-        FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
-        ItemStack actualOutput = CTSupport.toNative(output);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualInputFluid, actualOutput));
-    }
-
-    @ZenMethod
-    public static void add(String identifier, IOreDictEntry input, ILiquidStack inputFluid, IItemStack output)
-    {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input, inputFluid);
-        ProcessingInput actualInput = CTSupport.fromOreEntry(input);
+        ProcessingInput actualInput = CTSupport.fromIngredient(input);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         ItemStack actualOutput = CTSupport.toNative(output);
         CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualInputFluid, actualOutput));
