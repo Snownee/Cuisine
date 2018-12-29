@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public final class CTIngredientInput implements ProcessingInput
+final class CTIngredientInput implements ProcessingInput
 {
     private final IIngredient ingredient;
 
