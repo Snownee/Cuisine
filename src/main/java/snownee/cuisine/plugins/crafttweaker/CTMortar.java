@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
@@ -22,14 +23,14 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CTMortar
 {
     @ZenMethod
-    public static void add(IOreDictEntry inputs[], IItemStack output, int step)
+    public static void add(IIngredient[] inputs, IItemStack output, int step)
     {
-        List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList());
+        List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromIngredient).collect(Collectors.toList());
         CTSupport.DELAYED_ACTIONS.add(new Addition(list, CraftTweakerMC.getItemStack(output), step));
     }
 
     @ZenMethod
-    public static void remove(IOreDictEntry inputs[])
+    public static void remove(IOreDictEntry[] inputs)
     {
         CTSupport.DELAYED_ACTIONS.add(new Removal(Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList())));
     }
@@ -68,7 +69,7 @@ public class CTMortar
         @Override
         public String describe()
         {
-            return String.format("Add Cuisine Mortar recipe: input %s -> output %s", inputs, output);
+            return String.format("Add Cuisine Mortar recipe: %s -> %s", inputs, output);
         }
     }
 
