@@ -2,6 +2,7 @@ package snownee.cuisine.plugins.crafttweaker;
 
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
@@ -29,20 +30,10 @@ public final class CTBasinSqueezing
     }
 
     @ZenMethod
-    public static void add(String identifier, IItemStack input, ILiquidStack output, @Optional IItemStack extraOutput)
+    public static void add(String identifier, IIngredient input, ILiquidStack output, @Optional IItemStack extraOutput)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier);
-        ProcessingInput actualInput = CTSupport.fromItemStack(input);
-        FluidStack actualOutput = CTSupport.toNative(output);
-        ItemStack extra = CTSupport.toNative(extraOutput);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualOutput, extra));
-    }
-
-    @ZenMethod
-    public static void add(String identifier, IOreDictEntry input, ILiquidStack output, @Optional IItemStack extraOutput)
-    {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier);
-        ProcessingInput actualInput = CTSupport.fromOreEntry(input);
+        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input);
+        ProcessingInput actualInput = CTSupport.fromIngredient(input);
         FluidStack actualOutput = CTSupport.toNative(output);
         ItemStack extra = CTSupport.toNative(extraOutput);
         CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualOutput, extra));
@@ -100,7 +91,6 @@ public final class CTBasinSqueezing
 
     private static final class RemovalByItem implements IAction
     {
-
         private final ItemStack input;
 
         private RemovalByItem(ItemStack input)
@@ -123,7 +113,6 @@ public final class CTBasinSqueezing
 
     private static final class RemovalByOre implements IAction
     {
-
         private final OreDictDefinition input;
 
         private RemovalByOre(OreDictDefinition input)
