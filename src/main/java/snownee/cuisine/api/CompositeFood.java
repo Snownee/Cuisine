@@ -731,6 +731,21 @@ public abstract class CompositeFood
             strategy.endCook();
         }
 
+        public final void apply(final CookingStrategy.Specialized<F> strategy, final CookingVessel vessel)
+        {
+            strategy.beginCookSpecialized(this);
+            for (Seasoning seasoning : this.seasonings)
+            {
+                strategy.preCook(seasoning, vessel);
+            }
+            for (Ingredient ingredient : this.ingredients)
+            {
+                strategy.cook(ingredient, vessel);
+            }
+            strategy.postCookSpecialized(this, vessel);
+            strategy.endCook();
+        }
+
         /**
          * Construct the {@link CompositeFood} instance which represents a finished
          * dish object.
