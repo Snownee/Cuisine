@@ -65,7 +65,7 @@ public class CTMortar
         @Override
         public void apply()
         {
-            Processing.GRINDING.add(new Grinding(inputs, output, step));
+            Processing.GRINDING.add(new Grinding(this.locator, inputs, output, step));
         }
 
         @Override
