@@ -12,7 +12,7 @@ public interface CookingStrategy
      * @param dish The incoming {@code CompositeFood} object at its initial
      *             state
      */
-    void beginCook(final CompositeFood.Builder<?> dish);
+    void beginCook(final CompositeFood.Builder<? extends CompositeFood> dish);
 
     /**
      * Manipulate each {@code Seasoning} objects.
@@ -44,7 +44,7 @@ public interface CookingStrategy
      *                               {@link #cook} is called, or after
      *                               this has been already called
      */
-    void postCook(final CompositeFood.Builder<?> dish, final CookingVessel vessel);
+    void postCook(final CompositeFood.Builder<? extends CompositeFood> dish, final CookingVessel vessel);
 
     /**
      * Finish the cooking by executing all necessary procedures left.
@@ -61,5 +61,53 @@ public interface CookingStrategy
     static CookingStrategy identity()
     {
         return NoOperationCookingStrategy.INSTANCE;
+    }
+
+    interface Specialized<F extends CompositeFood> extends CookingStrategy
+    {
+        Class<F> getType();
+
+        @Override
+        @SuppressWarnings("unchecked")
+        default void beginCook(final CompositeFood.Builder<? extends CompositeFood> dish)
+        {
+            if (this.getType().isAssignableFrom(dish.getType()))
+            {
+                this.beginCookSpecialized((CompositeFood.Builder<F>) dish);
+            }
+            else
+            {
+                this.rejectBeginCook(dish);
+            }
+        }
+
+        void beginCookSpecialized(final CompositeFood.Builder<F> dish);
+
+        default void rejectBeginCook(final CompositeFood.Builder<? extends CompositeFood> rejected)
+        {
+
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        default void postCook(final CompositeFood.Builder<? extends CompositeFood> dish, final CookingVessel vessel)
+        {
+            if (this.getType().isAssignableFrom(dish.getType()))
+            {
+                this.postCookSpecialized((CompositeFood.Builder<F>) dish, vessel);
+            }
+            else
+            {
+                this.rejectPostCook(dish, vessel);
+            }
+        }
+
+        void postCookSpecialized(final CompositeFood.Builder<F> dish, final CookingVessel vessel);
+
+        default void rejectPostCook(final CompositeFood.Builder<? extends CompositeFood> dish, final CookingVessel vessel)
+        {
+
+        }
+
     }
 }
