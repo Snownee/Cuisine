@@ -39,7 +39,7 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
         @Override
         public void preCook(Seasoning seasoning, CookingVessel vessel)
         {
-            if (seasoning.getSpice() == CulinaryHub.CommonSpices.EDIBLE_OIL || seasoning.getSpice() == CulinaryHub.CommonSpices.SESAME_OIL)
+            if (seasoning.getSpice().getKeywords().contains("oil"))
             {
                 this.oilAmount += seasoning.getSize();
             }

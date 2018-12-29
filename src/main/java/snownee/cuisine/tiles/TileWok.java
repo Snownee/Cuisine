@@ -23,7 +23,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingStrategy;
 import snownee.cuisine.api.CookingStrategyProvider;
 import snownee.cuisine.api.CookingVessel;
@@ -67,7 +66,6 @@ public class TileWok extends TileFirePit implements CookingVessel
     private Status status = Status.IDLE;
     private Dish.Builder builder;
     private transient Dish completedDish;
-    private int water, oil;
     public byte actionCycle = 0;
     final transient Map<Ingredient, ItemStack> ingredientsForRendering = new LinkedHashMap<>(8);
     public SeasoningInfo seasoningInfo;
@@ -98,16 +96,6 @@ public class TileWok extends TileFirePit implements CookingVessel
     public Status getStatus()
     {
         return status;
-    }
-
-    public int getWaterAmount()
-    {
-        return this.water;
-    }
-
-    public int getOilAmount()
-    {
-        return this.oil;
     }
 
     public void onActivated(EntityPlayerMP playerIn, EnumHand hand, EnumFacing facing)
@@ -299,7 +287,7 @@ public class TileWok extends TileFirePit implements CookingVessel
             {
                 seasoningInfo.volume = 0;
             }
-            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.WATER && seasoning.getSize() == size)
+            else if (seasoning.getSpice().getKeywords().contains("water") && seasoning.getSize() == size)
             {
                 seasoningInfo.volume = size;
                 seasoningInfo.color = 0xFF4C57D1;

@@ -216,6 +216,7 @@ public class Dish extends CompositeFood
     public static final class Builder extends CompositeFood.Builder<Dish>
     {
         private Dish completed;
+        private int water, oil;
 
         private Builder()
         {
@@ -248,6 +249,44 @@ public class Dish extends CompositeFood
             {
                 return getIngredients().size() < getMaxIngredientLimit() * 0.75 && ingredient.getMaterial().canAddInto(this, ingredient);
             }
+        }
+
+        @Override
+        public boolean addSeasoning(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
+        {
+            boolean result = super.addSeasoning(cook, seasoning, vessel);
+            if (result)
+            {
+                if (seasoning.getSpice().getKeywords().contains("water"))
+                {
+                    water += seasoning.getSize() * 100;
+                }
+                if (seasoning.getSpice().getKeywords().contains("oil"))
+                {
+                    oil += seasoning.getSize() * 100;
+                }
+            }
+            return result;
+        }
+
+        public int getWaterAmount()
+        {
+            return this.water;
+        }
+
+        public int getOilAmount()
+        {
+            return this.oil;
+        }
+
+        public void setWaterAmount(int water)
+        {
+            this.water = water;
+        }
+
+        public void setOilAmount(int oil)
+        {
+            this.oil = oil;
         }
 
         @Override
@@ -289,11 +328,11 @@ public class Dish extends CompositeFood
                 {
                     Spice spice = seasoning.getSpice();
                     spice.onCooked(this, seasoning, vessel, collector);
-                    if (spice == CulinaryHub.CommonSpices.WATER)
+                    if (spice.getKeywords().contains("water"))
                     {
                         waterSize += seasoning.getSize();
                     }
-                    else if (spice != CulinaryHub.CommonSpices.EDIBLE_OIL && spice != CulinaryHub.CommonSpices.SESAME_OIL)
+                    else if (!spice.getKeywords().contains("oil"))
                     {
                         seasoningSize += seasoning.getSize();
                     }
@@ -387,7 +426,18 @@ public class Dish extends CompositeFood
                 }
             }
 
-            return new Dish.Builder(ingredients, seasonings, effects);
+            Dish.Builder builder = new Dish.Builder(ingredients, seasonings, effects);
+
+            if (data.hasKey("water", Constants.NBT.TAG_INT))
+            {
+                builder.setWaterAmount(data.getInteger("water"));
+            }
+            if (data.hasKey("oil", Constants.NBT.TAG_INT))
+            {
+                builder.setWaterAmount(data.getInteger("oil"));
+            }
+
+            return builder;
         }
     }
 }

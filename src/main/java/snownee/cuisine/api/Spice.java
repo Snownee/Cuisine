@@ -1,5 +1,9 @@
 package snownee.cuisine.api;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -51,5 +55,10 @@ public interface Spice
     default void onCooked(final CompositeFood.Builder<?> dish, final Seasoning seasoning, final CookingVessel vessel, final EffectCollector collector)
     {
         // NO-OP
+    }
+
+    default Collection<String> getKeywords()
+    {
+        return Collections.EMPTY_SET;
     }
 }
