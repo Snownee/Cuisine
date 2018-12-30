@@ -18,6 +18,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -407,6 +409,14 @@ public class TileWok extends TileFirePit implements CookingVessel
                     {
                         entry.getValue().getTagCompound().setInteger(CuisineSharedSecrets.KEY_DONENESS, donenesses[i]);
                     }
+                    if (seasoningInfo.volume < 2 && donenesses[i] > 130 && world.rand.nextInt(10) == 0)
+                    {
+                        float f = (float) (world.rand.nextFloat() * Math.PI * 2);
+                        double x = MathHelper.sin(f) * 0.1D;
+                        double y = pos.getY() + 0.2D + world.rand.nextDouble() * 0.05D;
+                        double z = MathHelper.cos(f) * 0.1D;
+                        world.spawnAlwaysVisibleParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pos.getX() + 0.5D + x, y, pos.getZ() + 0.5D + z, 0D, 0D, 0D);
+                    }
                     ++i;
                 }
             }
@@ -418,6 +428,7 @@ public class TileWok extends TileFirePit implements CookingVessel
     {
         private int heatLevel;
         private int count = 0;
+        private Dish.Builder builder;
 
         Heating(int heatLevel)
         {
@@ -427,6 +438,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         @Override
         public void beginCook(Dish.Builder food)
         {
+            builder = food;
         }
 
         @Override
@@ -441,7 +453,12 @@ public class TileWok extends TileFirePit implements CookingVessel
             {
                 return;
             }
-            ingredient.setDoneness(ingredient.getDoneness() + heatLevel);
+            boolean enoughWater = builder.getWaterAmount() >= 200 || builder.getWaterAmount() / builder.getIngredients().size() >= 100;
+            int newDoneness = ingredient.getDoneness() + heatLevel;
+            if (enoughWater && newDoneness > 110)
+            {
+                ingredient.setDoneness(newDoneness);
+            }
             if (++count > 1)
             {
                 count = 0;
