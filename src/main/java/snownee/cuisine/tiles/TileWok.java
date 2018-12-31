@@ -409,7 +409,7 @@ public class TileWok extends TileFirePit implements CookingVessel
                     {
                         entry.getValue().getTagCompound().setInteger(CuisineSharedSecrets.KEY_DONENESS, donenesses[i]);
                     }
-                    if (seasoningInfo.volume < 2 && donenesses[i] > 130 && world.rand.nextInt(10) == 0)
+                    if (seasoningInfo != null && seasoningInfo.volume < 2 && donenesses[i] > 130 && world.rand.nextInt(10) == 0)
                     {
                         float f = (float) (world.rand.nextFloat() * Math.PI * 2);
                         double x = MathHelper.sin(f) * 0.1D;
