@@ -69,12 +69,15 @@ public class BlockPlacedDish extends BlockMod
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        TileEntity te = worldIn.getTileEntity(pos);
-        if (te instanceof TileDish)
+        if (!world.isRemote)
         {
-            return ((TileDish) te).onEatenBy(playerIn);
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof TileDish)
+            {
+                return ((TileDish) te).onEatenBy(playerIn);
+            }
         }
         return false;
     }

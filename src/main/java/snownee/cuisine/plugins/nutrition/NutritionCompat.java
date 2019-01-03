@@ -1,8 +1,6 @@
 package snownee.cuisine.plugins.nutrition;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import ca.wescook.nutrition.capabilities.INutrientManager;
@@ -11,7 +9,9 @@ import ca.wescook.nutrition.nutrients.NutrientList;
 import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -19,11 +19,9 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.api.CompositeFood;
-import snownee.cuisine.api.CulinaryCapabilities;
-import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
+import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
@@ -74,6 +72,37 @@ public class NutritionCompat implements IModule
         }
     }
 
+    @SubscribeEvent
+    public void onEatStuff(ConsumeCompositeFoodEvent.Post event)
+    {
+        EntityPlayer consumer = event.getConsumer();
+        INutrientManager manager = consumer.getCapability(NUTRITION_CAPABILITY, null);
+        if (manager == null)
+        {
+            Cuisine.logger.debug("Entity {} has no INutrientManager. Skip nutrition calculation.", consumer);
+            return;
+        }
+        Object2DoubleMap<MaterialCategory> map = new Object2DoubleArrayMap<>();
+        for (Ingredient ingredient : event.getFood().getIngredients())
+        {
+            for (MaterialCategory category : ingredient.getMaterial().getCategories())
+            {
+                map.put(category, map.getOrDefault(category, 0D) + ingredient.getSize());
+            }
+        }
+        for (Object2DoubleMap.Entry<MaterialCategory> entry : map.object2DoubleEntrySet())
+        {
+            if (entry.getKey() == MaterialCategory.SUPERNATURAL)
+            {
+                manager.add(NutrientList.get(), (float) (entry.getDoubleValue() * 0.1F));
+            }
+            else if (materialCategoryToNutrient.containsKey(entry.getKey()))
+            {
+                manager.add(materialCategoryToNutrient.get(entry.getKey()), (float) (entry.getDoubleValue() * 0.5));
+            }
+        }
+    }
+
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
@@ -88,45 +117,27 @@ public class NutritionCompat implements IModule
             Cuisine.logger.debug("Entity {} has no INutrientManager. Skip nutrition calculation.", entity);
             return;
         }
-        ItemStack stack = event.getItem();
-        if (stack.getItem() == CuisineRegistry.INGREDIENT || stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null)) // TODO (Snownee): code reuse
+        ItemStack item = event.getItem();
+        if (item.getItem() == CuisineRegistry.INGREDIENT)
         {
-            List<Ingredient> ingredients;
-            if (stack.getItem() == CuisineRegistry.INGREDIENT)
+            NBTTagCompound data = item.getTagCompound();
+            if (data == null)
             {
-                if (stack.getTagCompound() == null)
-                {
-                    return;
-                }
-                ingredients = Collections.singletonList(CuisinePersistenceCenter.deserializeIngredient(stack.getTagCompound()));
+                return;
             }
-            else
-            {
-                FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-                CompositeFood composite;
-                if ((composite = container.get()) == null)
-                {
-                    return;
-                }
-                ingredients = composite.getIngredients();
-            }
-            Object2DoubleMap<MaterialCategory> map = new Object2DoubleArrayMap<>();
-            for (Ingredient ingredient : ingredients)
+            Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
+            if (ingredient != null)
             {
                 for (MaterialCategory category : ingredient.getMaterial().getCategories())
                 {
-                    map.put(category, map.getOrDefault(category, 0D) + ingredient.getSize());
-                }
-            }
-            for (Object2DoubleMap.Entry<MaterialCategory> entry : map.object2DoubleEntrySet())
-            {
-                if (entry.getKey() == MaterialCategory.SUPERNATURAL)
-                {
-                    manager.add(NutrientList.get(), (float) (entry.getDoubleValue() * 0.1F));
-                }
-                else if (materialCategoryToNutrient.containsKey(entry.getKey()))
-                {
-                    manager.add(materialCategoryToNutrient.get(entry.getKey()), (float) (entry.getDoubleValue() * 0.5F));
+                    if (category == MaterialCategory.SUPERNATURAL)
+                    {
+                        manager.add(NutrientList.get(), (float) ingredient.getSize() * 0.1F);
+                    }
+                    else
+                    {
+                        manager.add(materialCategoryToNutrient.get(category), (float) ingredient.getSize() * 0.5F);
+                    }
                 }
             }
         }
