@@ -250,7 +250,6 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
                     // we can't remove this input here because we don't know
                     // if it build successfully
                     featureSlot = i;
-                    builder.drinkType = type;
                     break;
                 }
             }
@@ -262,6 +261,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
             // as it is redstone-powered, so we may need a `lastError` variable
             return;
         }
+        builder.drinkType = type;
         // add all inputs
         for (int i = 0; i < inputs.getSlots(); i++)
         {
