@@ -215,7 +215,11 @@ public class BlockFirePit extends BlockModHorizontal
                         {
                             if (!stack.isEmpty())
                             {
-                                playerIn.setHeldItem(hand, teBR.stacks.insertItem(result, stack, false));
+                                ItemStack remain = teBR.stacks.insertItem(result, playerIn.isCreative() ? stack.copy() : stack, false);
+                                if (!playerIn.isCreative())
+                                {
+                                    playerIn.setHeldItem(hand, remain);
+                                }
                             }
                         }
                         else

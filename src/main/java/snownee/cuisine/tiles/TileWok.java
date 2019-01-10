@@ -456,7 +456,7 @@ public class TileWok extends TileFirePit implements CookingVessel
             }
             boolean enoughWater = builder.getWaterAmount() >= 200 || builder.getWaterAmount() / builder.getIngredients().size() >= 100;
             int newDoneness = ingredient.getDoneness() + heatLevel;
-            if (enoughWater && newDoneness > 110)
+            if (!(enoughWater && newDoneness > 110))
             {
                 ingredient.setDoneness(newDoneness);
             }

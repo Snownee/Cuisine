@@ -188,9 +188,4 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
             this.doneness = doneness;
         }
     }
-
-    private static void renderProgress()
-    {
-
-    }
 }

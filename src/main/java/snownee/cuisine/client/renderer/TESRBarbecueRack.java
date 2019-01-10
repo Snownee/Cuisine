@@ -94,7 +94,7 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
                     }
                     else
                     {
-                        doneness = tile.burnTime[i] / 8;
+                        doneness = tile.completed[i] ? 100 : tile.burnTime[i] / 8;
                     }
                     infos.add(new IngredientInfo(stack, doneness));
                 }
