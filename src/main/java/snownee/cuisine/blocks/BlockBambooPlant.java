@@ -58,6 +58,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
         setHardness(0.25F);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean hasItem()
     {
@@ -202,6 +203,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
         return super.canPlaceBlockAt(worldIn, pos) && !(state.getBlock() instanceof IFluidBlock) && !(state.getBlock() instanceof IFluidBlock) && state.getBlock().canSustainPlant(state, worldIn, pos.down(), EnumFacing.UP, this);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
@@ -265,6 +267,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
         return state.getValue(TYPE).ordinal();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -297,24 +300,28 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
         return getDefaultState();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return face != EnumFacing.UP && face != EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.CENTER;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
@@ -351,6 +358,7 @@ public class BlockBambooPlant extends BlockMod implements IPlantable, IGrowable
         return blockState.getValue(TYPE).ordinal() < 2 ? NULL_AABB : super.getCollisionBoundingBox(blockState, worldIn, pos);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {

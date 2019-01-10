@@ -3,7 +3,6 @@ package snownee.cuisine.client;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.util.Constants;

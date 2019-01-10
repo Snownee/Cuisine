@@ -18,7 +18,7 @@ import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.library.RarityManager;
 
-@SuppressWarnings("deprecation")
+@Deprecated
 public class DropHandler
 {
     private static final Random RAND = new Random();

@@ -184,7 +184,6 @@ public final class CuisineInternalGateway implements CuisineAPI
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <F extends CompositeFood> NBTTagCompound serialize(F dishObject)
     {
         String identifier = dishObject.getIdentifier().toString();
@@ -203,7 +202,6 @@ public final class CuisineInternalGateway implements CuisineAPI
 
     @Nullable
     @Override
-    @SuppressWarnings("unchecked")
     public <F extends CompositeFood> F deserialize(ResourceLocation identifier, NBTTagCompound data)
     {
         ResourceLocation rl = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));

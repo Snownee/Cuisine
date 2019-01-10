@@ -92,6 +92,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(CORE).ignore(BlockLeaves.CHECK_DECAY).build());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean hasItem()
     {
@@ -119,6 +120,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         return meta;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -194,6 +196,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
@@ -221,18 +224,21 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean causesSuffocation(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullBlock(IBlockState state)
     {
@@ -245,6 +251,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -518,6 +525,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {

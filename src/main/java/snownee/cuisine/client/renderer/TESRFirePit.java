@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -28,7 +27,6 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
     {
         super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
         Minecraft mc = Minecraft.getMinecraft();
-        RenderItem renderItem = mc.getRenderItem();
 
         HoloProfile profile = HoloProfiles.get(tile);
         // int heat = (int) (mc.getSystemTime() % 15000 / 5);

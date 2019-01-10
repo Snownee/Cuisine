@@ -51,6 +51,7 @@ public class BlockModDoor extends BlockDoor implements IModBlock
         setTranslationKey(modid + "." + getName());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean hasItem()
     {
