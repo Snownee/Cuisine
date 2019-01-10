@@ -1,5 +1,7 @@
 package snownee.cuisine.events;
 
+import java.util.Arrays;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -17,6 +19,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockCuisineCrops;
 import snownee.cuisine.blocks.BlockDoubleCrops;
@@ -36,6 +39,10 @@ public class BetterHarvest
         if (!flag)
         {
             flag = block instanceof BlockCuisineCrops && ((BlockCuisineCrops) block).isMaxAge(state, world, pos);
+        }
+        if (flag && Arrays.asList(CuisineConfig.GENERAL.betterHarvestBlacklist).contains(block.getRegistryName().toString()))
+        {
+            return;
         }
         if (!world.isRemote && flag)
         {
