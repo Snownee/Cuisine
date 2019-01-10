@@ -4,7 +4,6 @@
   "name": "Cuisine",
   "description": "Customize your food",
   "version": "${version}",
-  "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Snownee", "3TUSK", "YurisCat", "WZD"],

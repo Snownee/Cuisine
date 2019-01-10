@@ -2,12 +2,16 @@
   "type": "forge:ore_shaped",
   "conditions": [
     {
-      "type": "forge:or",
-      "values": [
-        { "type": "forge:mod_loaded", "modid": "techreborn" },
-        { "type": "forge:mod_loaded", "modid": "immersiveengineering" },
-        { "type": "forge:mod_loaded", "modid": "thermalfoundation" }
-      ]
+      "type": "forge:not",
+      "value": {
+        "type": "forge:or",
+        "values": [
+          { "type": "forge:mod_loaded", "modid": "ic2" },
+          { "type": "forge:mod_loaded", "modid": "immersiveengineering" },
+          { "type": "forge:mod_loaded", "modid": "techreborn" },
+          { "type": "forge:mod_loaded", "modid": "thermalfoundation" }
+        ]
+      }
     }
   ],
   "result": {
@@ -23,7 +27,7 @@
       "ore": "handleWood"
     },
     "i": {
-      "ore" : "plateIron",
+      "ore" : "ingotIron",
       "type": "forge:ore_dict"
     }
   }

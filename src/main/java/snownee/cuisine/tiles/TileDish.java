@@ -8,12 +8,15 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
+import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
 import snownee.cuisine.internal.food.Dish;
 import snownee.kiwi.tile.TileBase;
 
@@ -99,17 +102,24 @@ public class TileDish extends TileBase
         CompositeFood dish;
         if (container != null && (dish = container.get()) != null)
         {
-            if (!(player instanceof FakePlayer) && hasWorld() && player.canEat(dish.alwaysEdible()))
+            ConsumeCompositeFoodEvent.Pre pre = new ConsumeCompositeFoodEvent.Pre(dish, player, this.pos);
+            if (!MinecraftForge.EVENT_BUS.post(pre) && pre.getResult() != Event.Result.DENY)
             {
-                dish.setServes(dish.getServes() - 1);
-                getWorld().playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.9F);
-                dish.onEaten(this.dishContainer, getWorld(), player);
-
-                if (dish.getServes() <= 0)
+                if (!(player instanceof FakePlayer) && hasWorld() && player.canEat(dish.alwaysEdible()))
                 {
-                    world.removeTileEntity(pos);
+                    dish.setServes(dish.getServes() - 1);
+                    getWorld().playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.9F);
+                    dish.onEaten(this.dishContainer, getWorld(), player);
+
+                    ConsumeCompositeFoodEvent.Post post = new ConsumeCompositeFoodEvent.Post(dish, player, this.pos);
+                    MinecraftForge.EVENT_BUS.post(post);
+
+                    if (dish.getServes() <= 0)
+                    {
+                        world.removeTileEntity(pos);
+                    }
+                    return true;
                 }
-                return true;
             }
         }
         return false;

@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -42,6 +44,7 @@ import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
+import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.util.I18nUtil;
@@ -86,23 +89,33 @@ public abstract class ItemAbstractComposite extends ItemMod
                 stack.setCount(0);
                 return stack;
             }
-
-            if (!player.isCreative())
+            ConsumeCompositeFoodEvent.Pre pre = new ConsumeCompositeFoodEvent.Pre(dish, player, null);
+            if (!MinecraftForge.EVENT_BUS.post(pre) && pre.getResult() != Event.Result.DENY)
             {
-                dish.setServes(dish.getServes() - 1);
+                if (!player.isCreative())
+                {
+                    dish.setServes(dish.getServes() - 1);
+                }
+                worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+                dish.onEaten(stack, worldIn, player);
+                player.addStat(StatList.getObjectUseStats(this));
+
+                ConsumeCompositeFoodEvent.Post post = new ConsumeCompositeFoodEvent.Post(dish, player, null);
+                MinecraftForge.EVENT_BUS.post(post);
+
+                if (player instanceof EntityPlayerMP)
+                {
+                    CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, stack);
+                }
+
+                if (dish.getServes() < 1)
+                {
+                    return foodContainer.getEmptyContainer(stack); // Return the container back
+                }
             }
-            worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-            dish.onEaten(stack, worldIn, player);
-            player.addStat(StatList.getObjectUseStats(this));
-
-            if (player instanceof EntityPlayerMP)
+            else
             {
-                CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, stack);
-            }
-
-            if (dish.getServes() < 1)
-            {
-                return foodContainer.getEmptyContainer(stack); // Return the container back
+                return stack;
             }
         }
 

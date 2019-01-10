@@ -6,10 +6,13 @@ import java.util.stream.Collectors;
 
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.crafting.input.ProcessingInput;
@@ -21,14 +24,15 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CTMortar
 {
     @ZenMethod
-    public static void add(IOreDictEntry inputs[], IItemStack output, int step)
+    public static void add(String identifier, IIngredient[] inputs, IItemStack output, int step)
     {
-        List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList());
-        CTSupport.DELAYED_ACTIONS.add(new Addition(list, CraftTweakerMC.getItemStack(output), step));
+        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, inputs);
+        List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromIngredient).collect(Collectors.toList());
+        CTSupport.DELAYED_ACTIONS.add(new Addition(id, list, CraftTweakerMC.getItemStack(output), step));
     }
 
     @ZenMethod
-    public static void remove(IOreDictEntry inputs[])
+    public static void remove(IOreDictEntry[] inputs)
     {
         CTSupport.DELAYED_ACTIONS.add(new Removal(Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList())));
     }
@@ -36,18 +40,23 @@ public class CTMortar
     @ZenMethod
     public static void removeAll()
     {
-        CTSupport.DELAYED_ACTIONS.add(new BulkRemoval());
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTMortar::getManager));
     }
 
-    private static final class Addition implements IAction
+    private static CuisineProcessingRecipeManager<Grinding> getManager()
     {
+        return Processing.GRINDING;
+    }
 
+    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    {
         final List<ProcessingInput> inputs;
         final ItemStack output;
         final int step;
 
-        Addition(List<ProcessingInput> inputs, ItemStack output, int step)
+        Addition(ResourceLocation id, List<ProcessingInput> inputs, ItemStack output, int step)
         {
+            super(id);
             this.inputs = inputs;
             this.output = output;
             this.step = step;
@@ -56,13 +65,13 @@ public class CTMortar
         @Override
         public void apply()
         {
-            Processing.GRINDING.add(new Grinding(inputs, output, step));
+            Processing.GRINDING.add(new Grinding(this.locator, inputs, output, step));
         }
 
         @Override
         public String describe()
         {
-            return String.format("Add Cuisine Mortar recipe: input %s -> output %s", inputs, output);
+            return String.format("Add Cuisine Mortar recipe: %s -> %s", inputs, output);
         }
     }
 
@@ -88,18 +97,4 @@ public class CTMortar
         }
     }
 
-    private static final class BulkRemoval implements IAction
-    {
-        @Override
-        public void apply()
-        {
-            Processing.GRINDING.removeAll();
-        }
-
-        @Override
-        public String describe()
-        {
-            return "Remove all Cuisine Mortar recipes";
-        }
-    }
 }
