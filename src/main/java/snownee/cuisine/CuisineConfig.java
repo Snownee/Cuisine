@@ -106,6 +106,10 @@ public final class CuisineConfig
         @Config.Name("BasicSeedsWeight")
         @Config.RequiresMcRestart
         public int basicSeedsWeight = 5;
+
+        @Config.Name("RightClickingHarvest")
+        @Config.RequiresMcRestart
+        public boolean betterHarvest = true;
     }
 
     @Config.Comment("Config options of Cuisine Hardcore Mode.")

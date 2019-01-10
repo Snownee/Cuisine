@@ -96,7 +96,10 @@ public class Cuisine
         {
             MinecraftForge.EVENT_BUS.register(new SpawnHandler());
         }
-        MinecraftForge.EVENT_BUS.register(new BetterHarvest());
+        if (CuisineConfig.GENERAL.betterHarvest)
+        {
+            MinecraftForge.EVENT_BUS.register(new BetterHarvest());
+        }
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.MATERIAL, new BehaviourArmDispense());
         BehaviorWokInteraction behaviorWokInteraction = new BehaviorWokInteraction();
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(CuisineRegistry.PLACED_DISH), behaviorWokInteraction);
