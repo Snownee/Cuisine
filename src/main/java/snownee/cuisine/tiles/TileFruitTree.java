@@ -13,9 +13,20 @@ import snownee.kiwi.tile.TileBase;
 public class TileFruitTree extends TileBase
 {
     public BlockModSapling.Type type = BlockModSapling.Type.CITRON;
+    private int deathRate = 0;
 
     public TileFruitTree()
     {
+    }
+
+    public TileFruitTree(BlockModSapling.Type type)
+    {
+        this.type = type;
+    }
+
+    public int updateDeathRate()
+    {
+        return ++deathRate;
     }
 
     @Override
@@ -34,15 +45,12 @@ public class TileFruitTree extends TileBase
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return data;
     }
 
     @Override
@@ -53,6 +61,10 @@ public class TileFruitTree extends TileBase
             BlockModSapling.Type[] types = BlockModSapling.Type.values();
             type = types[MathHelper.clamp(compound.getInteger("type"), 0, types.length)];
         }
+        if (compound.hasKey("death", Constants.NBT.TAG_INT))
+        {
+            deathRate = compound.getInteger("death");
+        }
         super.readFromNBT(compound);
     }
 
@@ -61,6 +73,7 @@ public class TileFruitTree extends TileBase
     {
         super.writeToNBT(compound);
         compound.setInteger("type", type.ordinal());
+        compound.setInteger("death", deathRate);
         return compound;
     }
 

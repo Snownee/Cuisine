@@ -21,8 +21,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
@@ -30,6 +32,7 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
 import snownee.cuisine.client.CuisineItemRendering;
 import snownee.cuisine.client.model.DishMeshDefinition;
 import snownee.cuisine.internal.capabilities.DrinkContainer;
@@ -169,22 +172,22 @@ public class ItemDrink extends ItemAbstractComposite
                 stack.setCount(0);
                 return stack;
             }
-
-            if (!player.isCreative())
+            ConsumeCompositeFoodEvent.Pre pre = new ConsumeCompositeFoodEvent.Pre(drink, player, null);
+            if (!MinecraftForge.EVENT_BUS.post(pre) && pre.getResult() != Event.Result.DENY)
             {
                 drink.setServes(drink.getServes() - 1);
-            }
-            drink.onEaten(stack, worldIn, player);
-            player.addStat(StatList.getObjectUseStats(this));
+                drink.onEaten(stack, worldIn, player);
+                player.addStat(StatList.getObjectUseStats(this));
 
-            if (player instanceof EntityPlayerMP)
-            {
-                CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, stack);
-            }
+                if (player instanceof EntityPlayerMP)
+                {
+                    CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, stack);
+                }
 
-            if (drink.getServes() < 1)
-            {
-                return foodContainer.getEmptyContainer(stack); // Return the container back
+                if (drink.getServes() < 1)
+                {
+                    return foodContainer.getEmptyContainer(stack); // Return the container back
+                }
             }
         }
 
