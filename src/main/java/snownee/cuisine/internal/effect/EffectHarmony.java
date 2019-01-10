@@ -10,10 +10,4 @@ public class EffectHarmony extends SimpleEffectImpl
         super("harmony", 0xFFC0CB);
     }
 
-    @Override
-    public int getPriority()
-    {
-        return 5;
-    }
-
 }

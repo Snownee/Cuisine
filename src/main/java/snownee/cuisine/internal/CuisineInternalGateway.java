@@ -41,6 +41,7 @@ import snownee.cuisine.internal.effect.EffectExperienced;
 import snownee.cuisine.internal.effect.EffectHarmony;
 import snownee.cuisine.internal.effect.EffectHeatResistance;
 import snownee.cuisine.internal.effect.EffectPotions;
+import snownee.cuisine.internal.effect.EffectSustainedRelease;
 import snownee.cuisine.internal.effect.EffectTeleport;
 import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.internal.food.Drink;
@@ -49,6 +50,7 @@ import snownee.cuisine.internal.material.MaterialChili;
 import snownee.cuisine.internal.material.MaterialChorusFruit;
 import snownee.cuisine.internal.material.MaterialPufferfish;
 import snownee.cuisine.internal.material.MaterialRice;
+import snownee.cuisine.internal.material.MaterialTofu;
 import snownee.cuisine.internal.material.MaterialTomato;
 import snownee.cuisine.internal.material.MaterialWithEffect;
 import snownee.cuisine.internal.spice.SpiceChiliPowder;
@@ -430,6 +432,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new EffectPotions("pufferfish_poison").addPotionEffect(new PotionEffect(MobEffects.POISON, 1200, 3)).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 300, 2)).addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 300, 1)));
         api.register(new EffectPotions("water_breathing").addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 1500, 0)));
         api.register(new EffectHeatResistance());
+        api.register(new EffectSustainedRelease());
         // api.register(new EffectHeatResistance()); // TODO
 
         // As mentioned above, Material registration will trigger class loading of the class
@@ -463,7 +466,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("onion", -17409, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("eggplant", 0xDCD295, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         api.register(new MaterialWithEffect("spinach", CulinaryHub.CommonEffects.POWER, -15831787, 0, 1, 1, 1, 0.1F, MaterialCategory.VEGETABLES).setValidForms(EnumSet.of(Form.SLICED, Form.SHREDDED, Form.MINCED, Form.PASTE, Form.JUICE)));
-        api.register(new MaterialWithEffect("tofu", CulinaryHub.CommonEffects.HARMONY, -2311026, 0, 1, 1, 1, 0.4F, MaterialCategory.PROTEIN, MaterialCategory.GRAIN).setValidForms(EnumSet.of(Form.CUBED, Form.SLICED, Form.DICED, Form.MINCED)));
+        api.register(new MaterialTofu("tofu"));
         api.register(new MaterialChorusFruit("chorus_fruit"));
         api.register(new MaterialApple("apple"));
         api.register(new MaterialWithEffect("golden_apple", CulinaryHub.CommonEffects.GOLDEN_APPLE, -1782472, 0, 1, 1, 1, 0.3F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
@@ -503,7 +506,13 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("lemon", 0xEBCA4B, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("grapefruit", 0xF4502B, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("lime", 0xCADA76, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("empowered_citron", 0xE6B701, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(Form.JUICE_ONLY));
+        api.register(new SimpleMaterialImpl("empowered_citron", 0xE6B701, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL){
+            @Override
+            public boolean hasGlowingOverlay(Ingredient ingredient)
+            {
+                return true;
+            }
+        }.setValidForms(Form.JUICE_ONLY));
 
         api.register(new SimpleSpiceImpl("edible_oil", 0x99D1A71A, true, Collections.singleton("oil")));
         api.register(new SimpleSpiceImpl("sesame_oil", 0x99CE8600, true, Collections.singleton("oil")));
