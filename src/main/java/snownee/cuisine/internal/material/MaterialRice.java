@@ -10,9 +10,9 @@ import snownee.cuisine.api.prefab.SimpleMaterialImpl;
 
 public class MaterialRice extends SimpleMaterialImpl
 {
-    public MaterialRice(String id, int rawColor, int cookedColor, int waterValue, int oilValue, int heatValue, float saturationModifier, MaterialCategory... categories)
+    public MaterialRice(String id)
     {
-        super(id, rawColor, cookedColor, waterValue, oilValue, heatValue, saturationModifier, categories);
+        super(id, -4671304, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN);
     }
 
     @Override

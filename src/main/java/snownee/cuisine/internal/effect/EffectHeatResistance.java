@@ -16,9 +16,9 @@ import snownee.kiwi.Kiwi;
 public class EffectHeatResistance extends EffectPotions
 {
 
-    public EffectHeatResistance(String name)
+    public EffectHeatResistance()
     {
-        super(name);
+        super("heat_resistance");
         if (Loader.isModLoaded("toughasnails") && !Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") && TANCompat.heat_resistance != null)
         {
             addPotionEffect(new PotionEffect(TANCompat.heat_resistance, 600));

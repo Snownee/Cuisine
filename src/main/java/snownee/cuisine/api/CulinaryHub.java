@@ -131,7 +131,8 @@ public final class CulinaryHub
         public static final Effect WATER_BREATHING = find("water_breathing");
         public static final Effect CURE_POTIONS = find("cure_potions");
         public static final Effect HEAT_RESISTANCE = find("heat_resistance");
-        public static final Effect COLD_RESISTANCE = find("cold_resistance");
+        public static final Effect SUSTAINED_RELEASE = find("sustained_release");
+        // public static final Effect COLD_RESISTANCE = find("cold_resistance");
 
         private static Effect find(final String uniqueName)
         {

@@ -43,4 +43,9 @@ public final class Seasoning
     {
         this.quantity -= decrement;
     }
+
+    public final boolean hasKeyword(String keyword)
+    {
+        return spice.getKeywords().contains(keyword);
+    }
 }

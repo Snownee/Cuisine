@@ -259,11 +259,11 @@ public class Dish extends CompositeFood
             boolean result = super.addSeasoning(cook, seasoning, vessel);
             if (result)
             {
-                if (seasoning.getSpice().getKeywords().contains("water"))
+                if (seasoning.hasKeyword("water"))
                 {
                     water += seasoning.getSize() * 100;
                 }
-                if (seasoning.getSpice().getKeywords().contains("oil"))
+                if (seasoning.hasKeyword("oil"))
                 {
                     oil += seasoning.getSize() * 100;
                 }
@@ -340,11 +340,11 @@ public class Dish extends CompositeFood
                 {
                     Spice spice = seasoning.getSpice();
                     spice.onCooked(this, seasoning, vessel, collector);
-                    if (spice.getKeywords().contains("water"))
+                    if (seasoning.hasKeyword("water"))
                     {
                         waterSize += seasoning.getSize();
                     }
-                    else if (!spice.getKeywords().contains("oil"))
+                    else if (!seasoning.hasKeyword("oil"))
                     {
                         seasoningSize += seasoning.getSize();
                     }

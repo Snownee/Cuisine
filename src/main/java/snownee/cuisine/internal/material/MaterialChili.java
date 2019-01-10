@@ -1,9 +1,12 @@
 package snownee.cuisine.internal.material;
 
+import java.util.EnumSet;
+
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.EffectCollector;
+import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.api.prefab.SimpleMaterialImpl;
@@ -11,9 +14,10 @@ import snownee.cuisine.api.prefab.SimpleMaterialImpl;
 public class MaterialChili extends SimpleMaterialImpl
 {
 
-    public MaterialChili(String id, int rawColor, int cookedColor, int waterValue, int oilValue, int heatValue, float foodSaturationModifier, MaterialCategory... categories)
+    public MaterialChili(String id)
     {
-        super(id, rawColor, cookedColor, waterValue, oilValue, heatValue, foodSaturationModifier, categories);
+        super(id, -2878173, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES);
+        setValidForms(EnumSet.of(Form.CUBED, Form.SHREDDED, Form.MINCED));
     }
 
     @Override
