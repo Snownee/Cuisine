@@ -21,11 +21,10 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
-import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
-import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
 import snownee.cuisine.api.events.SpiceBottleContentConsumedEvent;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
@@ -87,39 +86,40 @@ public class TANCompat implements IModule
     }
 
     @SubscribeEvent
+    public void onDrinkingSomething(ConsumeCompositeFoodEvent.Post event)
+    {
+        CompositeFood food = event.getFood();
+        if (food.getKeywords().contains("drink"))
+        {
+            if (enableThirst() && event.getConsumer().hasCapability(TANCapabilities.THIRST, null))
+            {
+                IThirst handler = event.getConsumer().getCapability(TANCapabilities.THIRST, null);
+                handler.setExhaustion(0);
+                handler.addStats(food.getFoodLevel() * 4, food.getSaturationModifier());
+            }
+            if (enableTemperature() && event.getConsumer().hasCapability(TANCapabilities.TEMPERATURE, null))
+            {
+                if (food.getClass() == Drink.class && ((Drink) food).getDrinkType() == DrinkType.SMOOTHIE)
+                {
+                    ITemperature handler = event.getConsumer().getCapability(TANCapabilities.TEMPERATURE, null);
+                    handler.addTemperature(new Temperature(-4));
+                    if (TANPotions.heat_resistance != null)
+                    {
+                        event.getConsumer().addPotionEffect(new PotionEffect(TANPotions.heat_resistance, 300));
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onItemUseFinish(LivingEntityUseItemEvent.Finish event)
     {
         if (!(event.getEntityLiving() instanceof EntityPlayer))
         {
             return;
         }
-        if (event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
-        {
-            FoodContainer container = event.getItem().getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-            CompositeFood food = container.get(); // Null-safety is guaranteed by the hasCapability check
-            if (food != null && food.getKeywords().contains("drink"))
-            {
-                if (enableThirst() && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null))
-                {
-                    IThirst handler = event.getEntityLiving().getCapability(TANCapabilities.THIRST, null);
-                    handler.setExhaustion(0);
-                    handler.addStats(food.getFoodLevel() * 4, food.getSaturationModifier());
-                }
-                if (enableTemperature() && event.getEntityLiving().hasCapability(TANCapabilities.TEMPERATURE, null))
-                {
-                    if (food.getClass() == Drink.class && ((Drink) food).getDrinkType() == DrinkType.SMOOTHIE)
-                    {
-                        ITemperature handler = event.getEntityLiving().getCapability(TANCapabilities.TEMPERATURE, null);
-                        handler.addTemperature(new Temperature(-4));
-                        if (TANPotions.heat_resistance != null)
-                        {
-                            event.getEntityLiving().addPotionEffect(new PotionEffect(TANPotions.heat_resistance, 300));
-                        }
-                    }
-                }
-            }
-        }
-        else if (event.getItem().getItem() == CuisineRegistry.BOTTLE && enableThirst() && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null))
+        if (event.getItem().getItem() == CuisineRegistry.BOTTLE && enableThirst() && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null))
         {
             IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(event.getItem());
             if (fluidHandlerItem != null)
