@@ -70,6 +70,7 @@ public class TileWok extends TileFirePit implements CookingVessel
     private transient Dish completedDish;
     public byte actionCycle = 0;
     final transient Map<Ingredient, ItemStack> ingredientsForRendering = new LinkedHashMap<>(8);
+    @Nullable
     public SeasoningInfo seasoningInfo;
     private boolean shouldRefresh = false;
 
