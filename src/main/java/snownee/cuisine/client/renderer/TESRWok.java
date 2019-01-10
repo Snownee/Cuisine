@@ -1,7 +1,6 @@
 package snownee.cuisine.client.renderer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,13 +13,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.client.CulinaryRenderHelper;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.tiles.TileWok.SeasoningInfo;
@@ -41,8 +40,8 @@ public class TESRWok extends TESRFirePit<TileWok>
         GlStateManager.enableAlpha();
         GlStateManager.translate(x, y, z);
 
-        Collection<ItemStack> list = tile.getWokContents().values();
-        if (!list.isEmpty())
+        Map<Ingredient, ItemStack> contents = tile.getWokContents();
+        if (!contents.isEmpty())
         {
             GlStateManager.pushMatrix();
             RenderItem renderItem = mc.getRenderItem();
@@ -52,9 +51,10 @@ public class TESRWok extends TESRFirePit<TileWok>
             GlStateManager.translate(0.5, 0.1, 0.5);
             int count = 0;
 
-            for (ItemStack stack : list)
+            for (Entry<Ingredient, ItemStack> entry : contents.entrySet())
             {
                 GlStateManager.pushMatrix();
+                ItemStack stack = entry.getValue();
                 int seed = stack.hashCode() + tile.actionCycle * 439;
 
                 GlStateManager.scale(0.5, 0.5, 0.5);
@@ -63,7 +63,7 @@ public class TESRWok extends TESRFirePit<TileWok>
                 GlStateManager.rotate(90, 1, 0, 0);
 
                 RenderHelper.enableStandardItemLighting();
-                renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+                CulinaryRenderHelper.renderIngredient(mc, stack, entry.getKey().getDoneness());
                 RenderHelper.disableStandardItemLighting();
                 GlStateManager.popMatrix();
 

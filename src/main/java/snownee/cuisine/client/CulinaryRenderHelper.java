@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -25,6 +25,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.client.gui.CuisineGUI;
 
@@ -111,7 +113,19 @@ public class CulinaryRenderHelper
         }
     }
 
-    public static void renderColoredGuiItem(Minecraft mc, ItemStack stack, int color, float x, float y)
+    public static void renderIngredient(Minecraft mc, ItemStack stack, int doneness)
+    {
+        if (stack.getItem() == CuisineRegistry.INGREDIENT || doneness <= 100)
+        {
+            renderColoredItem(mc, stack, TransformType.NONE, 0xFFFFFFFF, 0, 0);
+        }
+        else
+        {
+            renderColoredItem(mc, stack, TransformType.NONE, Material.mixColor(0xFFFFFFFF, 0xFF000000, (doneness - 100) / 100f), 0, 0);
+        }
+    }
+
+    public static void renderColoredItem(Minecraft mc, ItemStack stack, TransformType transformType, int color, float x, float y)
     {
         RenderItem renderItem = mc.getRenderItem();
 
@@ -128,7 +142,7 @@ public class CulinaryRenderHelper
 
         GlStateManager.scale(1.0F, 1.0F, 1.0F);
 
-        if (bakedmodel.isGui3d())
+        if (transformType != TransformType.GUI || bakedmodel.isGui3d())
         {
             GlStateManager.enableLighting();
         }
@@ -137,7 +151,7 @@ public class CulinaryRenderHelper
             GlStateManager.disableLighting();
         }
 
-        bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, ItemCameraTransforms.TransformType.GUI, false);
+        bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, transformType, false);
 
         if (!stack.isEmpty())
         {
@@ -170,6 +184,7 @@ public class CulinaryRenderHelper
 
                 if (stack.hasEffect())
                 {
+                    GlStateManager.color(1, 1, 1, 1);
                     renderItem.renderEffect(bakedmodel);
                 }
             }
