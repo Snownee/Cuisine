@@ -32,6 +32,7 @@ import snownee.cuisine.items.ItemDish;
 import snownee.cuisine.items.ItemDrink;
 import snownee.cuisine.items.ItemDrinkro;
 import snownee.cuisine.items.ItemEmptyPlate;
+import snownee.cuisine.items.ItemFan;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.items.ItemIronSpatula;
 import snownee.cuisine.items.ItemKitchenKnife;
@@ -132,6 +133,8 @@ public class CuisineRegistry implements IModule
     public static final BlockModFenceGate FENCE_GATE = new BlockModFenceGate("fence_gate", PLANKS.getDefaultState());
 
     public static final ItemIronSpatula IRON_SPATULA = new ItemIronSpatula("iron_spatula");
+
+    public static final ItemFan FAN = new ItemFan("fan");
 
     public static final ItemDish DISH = new ItemDish("dish");
 
