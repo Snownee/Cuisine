@@ -316,9 +316,16 @@ public class BlockFirePit extends BlockModHorizontal
                     worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.FLAME.getParticleID(), pos.getX() + 0.5D + x, y, pos.getZ() + 0.5D + z, 0D, 0D, 0D);
                 }
             }
-            else if (rand.nextInt(5) == 0)
+            else
             {
-                worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pos.getX() + 0.5D + x * rand.nextDouble() * 0.5D, y + 0.2D, pos.getZ() + 0.5D + z * rand.nextDouble() * 0.5D, 0, 0, 0);
+                if (heatLevel > 1)
+                {
+                    worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.FLAME.getParticleID(), pos.getX() + 0.5D + x, y, pos.getZ() + 0.5D + z, x * 0.2 * (heatLevel - 0.5), 0.005, z * 0.2 * (heatLevel - 1));
+                }
+                if (rand.nextInt(5) == 0)
+                {
+                    worldIn.spawnAlwaysVisibleParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pos.getX() + 0.5D + x * rand.nextDouble() * 0.5D, y + 0.2D, pos.getZ() + 0.5D + z * rand.nextDouble() * 0.5D, 0, 0, 0);
+                }
             }
         }
     }

@@ -9,11 +9,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.items.ItemBasicFood.Variants.SubItem;
 import snownee.cuisine.items.ItemCrops;
+import snownee.cuisine.items.ItemCrops.Variant;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
-import snownee.kiwi.util.VariantsHolder.Variant;
 
 @KiwiModule(modid = Cuisine.MODID, name = "farmingforblockheads", dependency = "farmingforblockheads", optional = true)
 public class FarmingForBlockheadsCompat implements IModule
@@ -21,9 +20,9 @@ public class FarmingForBlockheadsCompat implements IModule
     @Override
     public void init()
     {
-        for (Variant<? extends SubItem> variant : CuisineRegistry.CROPS.getVariants())
+        for (Variant variant : CuisineRegistry.CROPS.getVariants())
         {
-            addTrade(variant == ItemCrops.Variants.BAMBOO_SHOOT ? MarketCategory.SAPLINGS : MarketCategory.SEEDS, new ItemStack(CuisineRegistry.CROPS, 1, variant.getMeta()));
+            addTrade(variant == ItemCrops.Variant.BAMBOO_SHOOT ? MarketCategory.SAPLINGS : MarketCategory.SEEDS, new ItemStack(CuisineRegistry.CROPS, 1, variant.getMeta()));
         }
         NonNullList<ItemStack> stacks = NonNullList.create();
         CuisineRegistry.SAPLING.getSubBlocks(Cuisine.CREATIVE_TAB, stacks);

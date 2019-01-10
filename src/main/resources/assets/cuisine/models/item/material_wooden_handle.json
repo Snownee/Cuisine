@@ -1,6 +1,13 @@
 {
-  "parent": "item/generated",
-  "textures": { 
-    "layer0": "cuisine:item/wooden_handle"
-  }
+	"credit": "Made by Snownee",
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "cuisine:item/wooden_handle"
+	},
+	"display": {
+		"head": {
+			"rotation": [90, 90, 40],
+			"translation": [0, -2, -4.25]
+		}
+	}
 }

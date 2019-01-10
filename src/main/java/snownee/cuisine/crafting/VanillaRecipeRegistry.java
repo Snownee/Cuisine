@@ -54,7 +54,7 @@ public final class VanillaRecipeRegistry
             Loader.instance().setActiveModContainer(cuisineModContainer);
         }
 
-        GameRegistry.addSmelting(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.DOUGH), new ItemStack(Items.BREAD), 0.35F);
+        GameRegistry.addSmelting(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.DOUGH), new ItemStack(Items.BREAD), 0.35F);
         GameRegistry.addSmelting(CuisineRegistry.IRON_SPATULA, new ItemStack(Items.IRON_INGOT), 0.1F);
         GameRegistry.addSmelting(CuisineRegistry.KITCHEN_KNIFE, new ItemStack(Items.IRON_INGOT), 0.1F);
         GameRegistry.addSmelting(CuisineRegistry.WOK, new ItemStack(Items.IRON_INGOT, 3), 0.1F);

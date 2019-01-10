@@ -77,7 +77,7 @@ public class BlockBasin extends BlockMod
                 {
                     entityIn.attackEntityFrom(DamageSource.CACTUS, 1);
                 }
-                else if (input.getItem() == CuisineRegistry.BASIC_FOOD && input.getMetadata() == ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta() && entityIn instanceof EntityPlayer && tileBasin.tank.getFluidAmount() == 0)
+                else if (input.getItem() == CuisineRegistry.BASIC_FOOD && input.getMetadata() == ItemBasicFood.Variant.EMPOWERED_CITRON.getMeta() && entityIn instanceof EntityPlayer && tileBasin.tank.getFluidAmount() == 0)
                 {
                     ItemBasicFood.citronSays((EntityLivingBase) entityIn, "squeeze");
                 }

@@ -4,17 +4,19 @@ import blusunrize.immersiveengineering.api.tool.BelljarHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.process.Chopping;
 import snownee.cuisine.api.process.Processing;
-import snownee.cuisine.items.ItemBasicFood.Variants.SubItem;
-import snownee.cuisine.items.ItemCrops.Variants.SubCrop;
+import snownee.cuisine.api.process.prefab.SimpleThrowing;
+import snownee.cuisine.items.ItemCrops.Variant;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
-import snownee.kiwi.util.VariantsHolder.Variant;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
 @KiwiModule(
@@ -32,15 +34,20 @@ public class ImmersiveEngineeringCompat implements IModule
             Item stick = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "material"));
             if (stick != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "treated_stick"), OreDictDefinition.of("plankTreatedWood"), new ItemStack(stick, 4)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "treated_stick"), OreDictDefinition.of("plankTreatedWood"), new ItemStack(stick, CuisineConfig.GENERAL.axeChoppingStickOutput)));
             }
         }
 
-        // I have to say design of Kiwi is a failure.
-        for (Variant<? extends SubItem> variant : CuisineRegistry.CROPS.getVariants())
+        Fluid creosote = FluidRegistry.getFluid("creosote");
+        Item treated_wood = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "treated_wood"));
+        if (creosote != null && treated_wood != null)
         {
-            Variant<SubCrop> variantCasted = (Variant<SubCrop>) variant;
-            BelljarHandler.registerHandler(new CuisinePlantHandler(variantCasted));
+            Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(MODID, "treated_wood"), OreDictDefinition.of("plankWood"), new FluidStack(creosote, 125), new ItemStack(treated_wood)));
+        }
+
+        for (Variant variant : CuisineRegistry.CROPS.getVariants())
+        {
+            BelljarHandler.registerHandler(new CuisinePlantHandler(variant));
         }
 
     }

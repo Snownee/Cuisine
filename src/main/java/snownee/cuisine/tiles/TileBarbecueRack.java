@@ -60,7 +60,7 @@ public class TileBarbecueRack extends TileFirePit
                 }
                 else
                 {
-                    return FuelHeatHandler.isFuel(stack);
+                    return FuelHeatHandler.isFuel(stack, true);
                 }
             }
 

@@ -31,49 +31,50 @@ public class TBLCompat implements IModule
 
         if (CuisineConfig.GENERAL.axeChopping)
         {
+            int amount = CuisineConfig.GENERAL.axeChoppingPlanksOutput;
             Item material = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "items_misc"));
             Item log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "log_weedwood"));
             Item planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "weedwood_planks"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "weedwood_planks"), ItemDefinition.of(log, OreDictionary.WILDCARD_VALUE), new ItemStack(planks, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "weedwood_planks"), ItemDefinition.of(log, OreDictionary.WILDCARD_VALUE), new ItemStack(planks, amount)));
             }
             log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "weedwood"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "weedwood_planks"), ItemDefinition.of(log), new ItemStack(planks, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "weedwood_planks"), ItemDefinition.of(log), new ItemStack(planks, amount)));
             }
             if (material != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "weedwood_stick"), ItemDefinition.of(planks), new ItemStack(material, 4, 20)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "weedwood_stick"), ItemDefinition.of(planks), new ItemStack(material, CuisineConfig.GENERAL.axeChoppingStickOutput, 20)));
             }
 
             log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "log_rubber"));
             planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "rubber_tree_planks"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "rubber_tree_planks"), ItemDefinition.of(log), new ItemStack(planks, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "rubber_tree_planks"), ItemDefinition.of(log), new ItemStack(planks, amount)));
             }
 
             log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "log_hearthgrove"));
             planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "hearthgrove_planks"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "hearthgrove_planks"), ItemDefinition.of(log, OreDictionary.WILDCARD_VALUE), new ItemStack(planks, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "hearthgrove_planks"), ItemDefinition.of(log, OreDictionary.WILDCARD_VALUE), new ItemStack(planks, amount)));
             }
 
             log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "log_nibbletwig"));
             planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "nibbletwig_planks"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "nibbletwig_planks"), ItemDefinition.of(log, OreDictionary.WILDCARD_VALUE), new ItemStack(planks, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "nibbletwig_planks"), ItemDefinition.of(log, OreDictionary.WILDCARD_VALUE), new ItemStack(planks, amount)));
             }
 
             log = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "giant_root"));
             planks = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MODID, "giant_root_planks"));
             if (log != null && planks != null)
             {
-                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "giant_root_planks"), ItemDefinition.of(log), new ItemStack(planks, 6)));
+                Processing.CHOPPING.add(new Chopping(new ResourceLocation(MODID, "giant_root_planks"), ItemDefinition.of(log), new ItemStack(planks, amount)));
             }
 
         }

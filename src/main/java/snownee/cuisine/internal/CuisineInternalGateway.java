@@ -506,12 +506,12 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("lime", 0xCADA76, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("empowered_citron", 0xE6B701, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL).setValidForms(Form.JUICE_ONLY));
 
-        api.register(new SimpleSpiceImpl("edible_oil", 0x99D1A71A, true));
-        api.register(new SimpleSpiceImpl("sesame_oil", 0x99CE8600, true));
-        api.register(new SimpleSpiceImpl("soy_sauce", 0xDD100000, true));
-        api.register(new SimpleSpiceImpl("rice_vinegar", 0xCC100000, true));
-        api.register(new SimpleSpiceImpl("fruit_vinegar", 0xBB100000, true));
-        api.register(new SimpleSpiceImpl("water", 0x55FFFFFF, true));
+        api.register(new SimpleSpiceImpl("edible_oil", 0x99D1A71A, true, Collections.singleton("oil")));
+        api.register(new SimpleSpiceImpl("sesame_oil", 0x99CE8600, true, Collections.singleton("oil")));
+        api.register(new SimpleSpiceImpl("soy_sauce", 0xDD100000, true, Collections.singleton("sauce")));
+        api.register(new SimpleSpiceImpl("rice_vinegar", 0xCC100000, true, Collections.singleton("vinegar")));
+        api.register(new SimpleSpiceImpl("fruit_vinegar", 0xBB100000, true, Collections.singleton("vinegar")));
+        api.register(new SimpleSpiceImpl("water", 0x55FFFFFF, true, Collections.singleton("water")));
         api.register(new SpiceChiliPowder("chili_powder", 11546150));
         api.register(new SimpleSpiceImpl("sichuan_pepper_powder", 8606770, false));
         api.register(new SimpleSpiceImpl("crude_salt", 4673362, false));
@@ -529,8 +529,8 @@ public final class CuisineInternalGateway implements CuisineAPI
     public static void deferredInit()
     {
         CuisineInternalGateway api = CuisineInternalGateway.INSTANCE;
-        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variants.RED_PEPPER.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.RED_PEPPER, Form.FULL));
-        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.EMPOWERED_CITRON, Form.FULL));
+        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.CROPS, ItemCrops.Variant.RED_PEPPER.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.RED_PEPPER, Form.FULL));
+        api.itemIngredients.put(ItemDefinition.of(CuisineRegistry.BASIC_FOOD, ItemBasicFood.Variant.EMPOWERED_CITRON.getMeta()), new Ingredient(CulinaryHub.CommonMaterials.EMPOWERED_CITRON, Form.FULL));
 
         api.itemIngredients.put(ItemDefinition.of(Items.GOLDEN_APPLE), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_APPLE, Form.FULL));
         api.itemIngredients.put(ItemDefinition.of(Items.GOLDEN_APPLE, 1), new Ingredient(CulinaryHub.CommonMaterials.GOLDEN_APPLE_ENCHANTED, Form.FULL));

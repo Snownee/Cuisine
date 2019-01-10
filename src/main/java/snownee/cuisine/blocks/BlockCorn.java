@@ -18,7 +18,7 @@ public class BlockCorn extends BlockDoubleCrops
 
     public BlockCorn(String name)
     {
-        super(name, ItemDefinition.of(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.CORN)));
+        super(name, ItemDefinition.of(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.CORN)));
         MinecraftForge.EVENT_BUS.register(this);
     }
 

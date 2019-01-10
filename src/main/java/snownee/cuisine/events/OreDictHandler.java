@@ -15,23 +15,23 @@ import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
 import snownee.cuisine.items.ItemMortar;
-import snownee.kiwi.util.VariantsHolder.Variant;
+import snownee.kiwi.item.IVariant;
 
 public class OreDictHandler
 {
     public static void init()
     {
         // NUT
-        OreDictionary.registerOre("cropPeanut", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.PEANUT));
+        OreDictionary.registerOre("cropPeanut", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.PEANUT));
 
         // GRAIN
         OreDictionary.registerOre("cropWheat", Items.WHEAT);
         OreDictionary.registerOre("listAllgrain", Items.WHEAT);
-        OreDictionary.registerOre("cropSesame", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SESAME));
-        OreDictionary.registerOre("cropRice", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.RICE));
-        OreDictionary.registerOre("cropSoybean", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SOYBEAN));
-        OreDictionary.registerOre("cropCorn", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.CORN));
-        OreDictionary.registerOre("foodRice", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.WHITE_RICE));
+        OreDictionary.registerOre("cropSesame", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SESAME));
+        OreDictionary.registerOre("cropRice", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.RICE));
+        OreDictionary.registerOre("cropSoybean", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SOYBEAN));
+        OreDictionary.registerOre("cropCorn", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.CORN));
+        OreDictionary.registerOre("foodRice", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.WHITE_RICE));
 
         // VEGGIE
         OreDictionary.registerOre("cropBeetroot", Items.BEETROOT);
@@ -44,22 +44,22 @@ public class OreDictHandler
         OreDictionary.registerOre("listAllveggie", Blocks.PUMPKIN);
         OreDictionary.registerOre("foodMushroom", Blocks.BROWN_MUSHROOM);
         OreDictionary.registerOre("foodMushroom", Blocks.RED_MUSHROOM);
-        OreDictionary.registerOre("cropTomato", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.TOMATO));
-        OreDictionary.registerOre("cropChilipepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.CHILI));
-        OreDictionary.registerOre("cropGarlic", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.GARLIC));
-        OreDictionary.registerOre("cropGinger", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.GINGER));
-        OreDictionary.registerOre("cropScallion", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SCALLION));
-        OreDictionary.registerOre("cropTurnip", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.TURNIP));
-        OreDictionary.registerOre("cropCabbage", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.CHINESE_CABBAGE));
-        OreDictionary.registerOre("cropLettuce", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.LETTUCE));
-        OreDictionary.registerOre("cropCucumber", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.CUCUMBER));
-        OreDictionary.registerOre("cropBellpepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.RED_PEPPER));
-        OreDictionary.registerOre("cropBellpepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.GREEN_PEPPER));
-        OreDictionary.registerOre("cropLeek", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.LEEK));
-        OreDictionary.registerOre("cropOnion", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.ONION));
-        OreDictionary.registerOre("cropEggplant", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.EGGPLANT));
-        OreDictionary.registerOre("cropSpinach", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SPINACH));
-        OreDictionary.registerOre("cropBambooshoot", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.BAMBOO_SHOOT));
+        OreDictionary.registerOre("cropTomato", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.TOMATO));
+        OreDictionary.registerOre("cropChilipepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.CHILI));
+        OreDictionary.registerOre("cropGarlic", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.GARLIC));
+        OreDictionary.registerOre("cropGinger", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.GINGER));
+        OreDictionary.registerOre("cropScallion", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SCALLION));
+        OreDictionary.registerOre("cropTurnip", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.TURNIP));
+        OreDictionary.registerOre("cropCabbage", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.CHINESE_CABBAGE));
+        OreDictionary.registerOre("cropLettuce", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.LETTUCE));
+        OreDictionary.registerOre("cropCucumber", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.CUCUMBER));
+        OreDictionary.registerOre("cropBellpepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.RED_PEPPER));
+        OreDictionary.registerOre("cropBellpepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.GREEN_PEPPER));
+        OreDictionary.registerOre("cropLeek", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.LEEK));
+        OreDictionary.registerOre("cropOnion", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.ONION));
+        OreDictionary.registerOre("cropEggplant", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.EGGPLANT));
+        OreDictionary.registerOre("cropSpinach", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SPINACH));
+        OreDictionary.registerOre("cropBambooshoot", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.BAMBOO_SHOOT));
 
         // SPICE
         OreDictionary.registerOre("dustSalt", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT));
@@ -71,8 +71,8 @@ public class OreDictHandler
         OreDictionary.registerOre("listAllsugar", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR));
         OreDictionary.registerOre("listAllsugar", Items.SUGAR);
         OreDictionary.registerOre("listAllspice", Items.SUGAR);
-        OreDictionary.registerOre("cropSichuanpepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SICHUAN_PEPPER));
-        OreDictionary.registerOre("listAllspice", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variants.SICHUAN_PEPPER));
+        OreDictionary.registerOre("cropSichuanpepper", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SICHUAN_PEPPER));
+        OreDictionary.registerOre("listAllspice", CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SICHUAN_PEPPER));
 
         // MEAT
         OreDictionary.registerOre("listAllbeefraw", Items.BEEF);
@@ -93,28 +93,28 @@ public class OreDictHandler
         OreDictionary.registerOre("listAllfruit", Items.MELON);
         OreDictionary.registerOre("cropChorusfruit", Items.CHORUS_FRUIT);
         OreDictionary.registerOre("listAllfruit", Items.CHORUS_FRUIT);
-        OreDictionary.registerOre("cropMandarin", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.MANDARIN));
-        OreDictionary.registerOre("cropCitron", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.CITRON));
-        OreDictionary.registerOre("cropPomelo", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.POMELO));
-        OreDictionary.registerOre("cropOrange", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.ORANGE));
-        OreDictionary.registerOre("cropLemon", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LEMON));
-        OreDictionary.registerOre("cropLime", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LIME));
-        OreDictionary.registerOre("cropGrapefruit", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.GRAPEFRUIT));
-        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.MANDARIN));
-        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.CITRON));
-        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.POMELO));
-        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.ORANGE));
-        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LEMON));
-        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.LIME));
-        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.GRAPEFRUIT));
+        OreDictionary.registerOre("cropMandarin", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.MANDARIN));
+        OreDictionary.registerOre("cropCitron", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.CITRON));
+        OreDictionary.registerOre("cropPomelo", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.POMELO));
+        OreDictionary.registerOre("cropOrange", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.ORANGE));
+        OreDictionary.registerOre("cropLemon", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.LEMON));
+        OreDictionary.registerOre("cropLime", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.LIME));
+        OreDictionary.registerOre("cropGrapefruit", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.GRAPEFRUIT));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.MANDARIN));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.CITRON));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.POMELO));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.ORANGE));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.LEMON));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.LIME));
+        OreDictionary.registerOre("listAllcitrus", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.GRAPEFRUIT));
 
         // MISC
-        OreDictionary.registerOre("foodFirmtofu", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.TOFU));
-        OreDictionary.registerOre("listAllwater", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.WATER));
+        OreDictionary.registerOre("foodFirmtofu", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.TOFU));
+        OreDictionary.registerOre("listAllwater", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variant.WATER));
         OreDictionary.registerOre("listAllwater", Items.WATER_BUCKET);
-        OreDictionary.registerOre("portionWaterLarge", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.WATER));
-        OreDictionary.registerOre("foodFlour", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.FLOUR));
-        OreDictionary.registerOre("foodDough", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.DOUGH));
+        OreDictionary.registerOre("portionWaterLarge", CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variant.WATER));
+        OreDictionary.registerOre("foodFlour", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.FLOUR));
+        OreDictionary.registerOre("foodDough", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.DOUGH));
         OreDictionary.registerOre("itemFoodCutter", CuisineRegistry.KITCHEN_KNIFE);
         OreDictionary.registerOre("logWood", CuisineRegistry.LOG);
         OreDictionary.registerOre("plankWood", CuisineRegistry.PLANKS);
@@ -130,10 +130,10 @@ public class OreDictHandler
         OreDictionary.registerOre("toolBakeware", CuisineRegistry.PLACED_DISH);
 
         // foodPickles
-        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_CABBAGE));
-        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_CUCUMBER));
-        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_PEPPER));
-        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.PICKLED_TURNIP));
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.PICKLED_CABBAGE));
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.PICKLED_CUCUMBER));
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.PICKLED_PEPPER));
+        OreDictionary.registerOre("foodPickles", CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.PICKLED_TURNIP));
 
         // The wood handle
         OreDictionary.registerOre("handleWood", CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.WOODEN_HANDLE));
@@ -145,7 +145,7 @@ public class OreDictHandler
     public static class ActionFactory
     {
 
-        public static Consumer<Variant> create(ItemBasicFood item)
+        public static Consumer<IVariant> create(ItemBasicFood item)
         {
             return v -> {
                 boolean loaded = Loader.isModLoaded("vanillafoodpantry");

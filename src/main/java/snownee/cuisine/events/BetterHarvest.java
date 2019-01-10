@@ -21,7 +21,6 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockCuisineCrops;
 import snownee.cuisine.blocks.BlockDoubleCrops;
 import snownee.cuisine.items.ItemCrops;
-import snownee.cuisine.items.ItemCrops.Variants.SubCrop;
 
 public class BetterHarvest
 {
@@ -86,7 +85,7 @@ public class BetterHarvest
         IBlockState state;
         if (stack.getItem() instanceof ItemCrops)
         {
-            state = ((SubCrop) CuisineRegistry.CROPS.getVariants().get(stack.getMetadata()).getValue()).getBlock().getDefaultState();
+            state = CuisineRegistry.CROPS.getVariants().get(stack.getMetadata()).getValue().getBlock().getDefaultState();
         }
         else
         {

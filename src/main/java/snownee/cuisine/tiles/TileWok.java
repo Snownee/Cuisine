@@ -18,12 +18,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingStrategy;
 import snownee.cuisine.api.CookingStrategyProvider;
 import snownee.cuisine.api.CookingVessel;
@@ -67,9 +68,9 @@ public class TileWok extends TileFirePit implements CookingVessel
     private Status status = Status.IDLE;
     private Dish.Builder builder;
     private transient Dish completedDish;
-    private int water, oil;
     public byte actionCycle = 0;
     final transient Map<Ingredient, ItemStack> ingredientsForRendering = new LinkedHashMap<>(8);
+    @Nullable
     public SeasoningInfo seasoningInfo;
     private boolean shouldRefresh = false;
 
@@ -100,16 +101,6 @@ public class TileWok extends TileFirePit implements CookingVessel
         return status;
     }
 
-    public int getWaterAmount()
-    {
-        return this.water;
-    }
-
-    public int getOilAmount()
-    {
-        return this.oil;
-    }
-
     public void onActivated(EntityPlayerMP playerIn, EnumHand hand, EnumFacing facing)
     {
         ItemStack heldThing = playerIn.getHeldItem(hand);
@@ -118,7 +109,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         case IDLE:
         {
             boolean isIngredient = heldThing.getItem() instanceof ItemSpiceBottle || CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null;
-            if (isIngredient || FuelHeatHandler.isFuel(heldThing))
+            if (isIngredient || FuelHeatHandler.isFuel(heldThing, true))
             {
                 if (isIngredient)
                 {
@@ -239,7 +230,7 @@ public class TileWok extends TileFirePit implements CookingVessel
                 return false;
             }
         }
-        else if (FuelHeatHandler.isFuel(heldThing))
+        else if (FuelHeatHandler.isFuel(heldThing, true))
         {
             ItemStack remain = heatHandler.addFuel(heldThing);
             if (!player.isCreative())
@@ -299,7 +290,7 @@ public class TileWok extends TileFirePit implements CookingVessel
             {
                 seasoningInfo.volume = 0;
             }
-            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.WATER && seasoning.getSize() == size)
+            else if (seasoning.getSpice().getKeywords().contains("water") && seasoning.getSize() == size)
             {
                 seasoningInfo.volume = size;
                 seasoningInfo.color = 0xFF4C57D1;
@@ -419,6 +410,14 @@ public class TileWok extends TileFirePit implements CookingVessel
                     {
                         entry.getValue().getTagCompound().setInteger(CuisineSharedSecrets.KEY_DONENESS, donenesses[i]);
                     }
+                    if (seasoningInfo != null && seasoningInfo.volume < 2 && donenesses[i] > 130 && world.rand.nextInt(10) == 0)
+                    {
+                        float f = (float) (world.rand.nextFloat() * Math.PI * 2);
+                        double x = MathHelper.sin(f) * 0.1D;
+                        double y = pos.getY() + 0.2D + world.rand.nextDouble() * 0.05D;
+                        double z = MathHelper.cos(f) * 0.1D;
+                        world.spawnAlwaysVisibleParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pos.getX() + 0.5D + x, y, pos.getZ() + 0.5D + z, 0D, 0D, 0D);
+                    }
                     ++i;
                 }
             }
@@ -426,10 +425,11 @@ public class TileWok extends TileFirePit implements CookingVessel
         super.readPacketData(data);
     }
 
-    static final class Heating implements CookingStrategy
+    static final class Heating implements CookingStrategy<Dish.Builder>
     {
         private int heatLevel;
         private int count = 0;
+        private Dish.Builder builder;
 
         Heating(int heatLevel)
         {
@@ -437,8 +437,9 @@ public class TileWok extends TileFirePit implements CookingVessel
         }
 
         @Override
-        public void beginCook(CompositeFood.Builder<?> dish)
+        public void beginCook(Dish.Builder food)
         {
+            builder = food;
         }
 
         @Override
@@ -453,7 +454,12 @@ public class TileWok extends TileFirePit implements CookingVessel
             {
                 return;
             }
-            ingredient.setDoneness(ingredient.getDoneness() + heatLevel);
+            boolean enoughWater = builder.getWaterAmount() >= 200 || builder.getWaterAmount() / builder.getIngredients().size() >= 100;
+            int newDoneness = ingredient.getDoneness() + heatLevel;
+            if (enoughWater && newDoneness > 110)
+            {
+                ingredient.setDoneness(newDoneness);
+            }
             if (++count > 1)
             {
                 count = 0;
@@ -462,7 +468,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         }
 
         @Override
-        public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
+        public void postCook(Dish.Builder food, CookingVessel vessel)
         {
         }
 

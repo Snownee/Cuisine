@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -216,6 +217,8 @@ public class Dish extends CompositeFood
     public static final class Builder extends CompositeFood.Builder<Dish>
     {
         private Dish completed;
+        private int water, oil, temperature;
+        private Random rand = new Random();
 
         private Builder()
         {
@@ -248,6 +251,54 @@ public class Dish extends CompositeFood
             {
                 return getIngredients().size() < getMaxIngredientLimit() * 0.75 && ingredient.getMaterial().canAddInto(this, ingredient);
             }
+        }
+
+        @Override
+        public boolean addSeasoning(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
+        {
+            boolean result = super.addSeasoning(cook, seasoning, vessel);
+            if (result)
+            {
+                if (seasoning.getSpice().getKeywords().contains("water"))
+                {
+                    water += seasoning.getSize() * 100;
+                }
+                if (seasoning.getSpice().getKeywords().contains("oil"))
+                {
+                    oil += seasoning.getSize() * 100;
+                }
+            }
+            return result;
+        }
+
+        public int getWaterAmount()
+        {
+            return this.water;
+        }
+
+        public int getOilAmount()
+        {
+            return this.oil;
+        }
+
+        public int getTemperature()
+        {
+            return temperature;
+        }
+
+        public void setWaterAmount(int water)
+        {
+            this.water = water;
+        }
+
+        public void setOilAmount(int oil)
+        {
+            this.oil = oil;
+        }
+
+        public void setTemperature(int temperature)
+        {
+            this.temperature = temperature;
         }
 
         @Override
@@ -289,11 +340,11 @@ public class Dish extends CompositeFood
                 {
                     Spice spice = seasoning.getSpice();
                     spice.onCooked(this, seasoning, vessel, collector);
-                    if (spice == CulinaryHub.CommonSpices.WATER)
+                    if (spice.getKeywords().contains("water"))
                     {
                         waterSize += seasoning.getSize();
                     }
-                    else if (spice != CulinaryHub.CommonSpices.EDIBLE_OIL && spice != CulinaryHub.CommonSpices.SESAME_OIL)
+                    else if (!spice.getKeywords().contains("oil"))
                     {
                         seasoningSize += seasoning.getSize();
                     }
@@ -304,9 +355,16 @@ public class Dish extends CompositeFood
                 {
                     Material material = ingredient.getMaterial();
                     Set<MaterialCategory> categories = material.getCategories();
-                    if (isPlain && !categories.contains(MaterialCategory.SEAFOOD) && !categories.contains(MaterialCategory.FRUIT))
+                    if (!categories.contains(MaterialCategory.SEAFOOD) && !categories.contains(MaterialCategory.FRUIT))
                     {
-                        ingredient.addTrait(IngredientTrait.PLAIN);
+                        if (isPlain)
+                        {
+                            ingredient.addTrait(IngredientTrait.PLAIN);
+                        }
+                        if (!ingredient.hasTrait(IngredientTrait.OVERCOOKED) && rand.nextFloat() > 0.35F * (ingredient.getForm().ordinal() + 1))
+                        {
+                            ingredient.addTrait(IngredientTrait.UNDERCOOKED);
+                        }
                     }
                     material.onCooked(this, ingredient, vessel, collector);
                 }
@@ -347,6 +405,9 @@ public class Dish extends CompositeFood
                 effectList.appendTag(new NBTTagString(effect.getID()));
             }
             data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
+            data.setInteger(CuisineSharedSecrets.KEY_WATER, builder.getWaterAmount());
+            data.setInteger(CuisineSharedSecrets.KEY_OIL, builder.getOilAmount());
+            data.setInteger("temperature", builder.getTemperature());
 
             return data;
         }
@@ -387,7 +448,22 @@ public class Dish extends CompositeFood
                 }
             }
 
-            return new Dish.Builder(ingredients, seasonings, effects);
+            Dish.Builder builder = new Dish.Builder(ingredients, seasonings, effects);
+
+            if (data.hasKey(CuisineSharedSecrets.KEY_WATER, Constants.NBT.TAG_INT))
+            {
+                builder.setWaterAmount(data.getInteger(CuisineSharedSecrets.KEY_WATER));
+            }
+            if (data.hasKey(CuisineSharedSecrets.KEY_OIL, Constants.NBT.TAG_INT))
+            {
+                builder.setOilAmount(data.getInteger(CuisineSharedSecrets.KEY_OIL));
+            }
+            if (data.hasKey("temperature", Constants.NBT.TAG_INT))
+            {
+                builder.setTemperature(data.getInteger("temperature"));
+            }
+
+            return builder;
         }
     }
 }

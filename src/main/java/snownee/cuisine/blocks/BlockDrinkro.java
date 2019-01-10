@@ -24,6 +24,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -56,6 +57,8 @@ public class BlockDrinkro extends BlockModHorizontal
     public static final PropertyBool NORMAL = PropertyBool.create("normal");
     public static final PropertyBool BASE = PropertyBool.create("base");
     public static final PropertyBool WORKING = PropertyBool.create("working");
+    private static final AxisAlignedBB LOWER_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 2.0D, 1.0D);
+    private static final AxisAlignedBB UPPER_BLOCK_AABB = new AxisAlignedBB(0.0D, -1.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockDrinkro(String name)
     {
@@ -83,6 +86,12 @@ public class BlockDrinkro extends BlockModHorizontal
     public boolean hasItem()
     {
         return false;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return state.getValue(BASE) ? LOWER_BLOCK_AABB : UPPER_BLOCK_AABB;
     }
 
     @Override

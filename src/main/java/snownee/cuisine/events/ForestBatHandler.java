@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.items.ItemBasicFood;
-import snownee.cuisine.items.ItemBasicFood.Variants;
+import snownee.cuisine.items.ItemBasicFood.Variant;
 
 @EventBusSubscriber(modid = Cuisine.MODID)
 public class ForestBatHandler
@@ -26,7 +26,7 @@ public class ForestBatHandler
             for (int i = 0; i < inventory.getSizeInventory(); ++i)
             {
                 ItemStack stack2 = inventory.getStackInSlot(i);
-                if (stack2.getItem() == CuisineRegistry.BASIC_FOOD && stack2.getMetadata() == Variants.EMPOWERED_CITRON.getMeta())
+                if (stack2.getItem() == CuisineRegistry.BASIC_FOOD && stack2.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
                 {
                     ItemBasicFood.citronSays(player, "torch");
                     event.setCanceled(true);
@@ -34,7 +34,7 @@ public class ForestBatHandler
                 }
             }
         }
-        else if (stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta())
+        else if (stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
         {
             ItemBasicFood.citronSays(player, "pickup" + player.world.rand.nextInt(4));
         }
