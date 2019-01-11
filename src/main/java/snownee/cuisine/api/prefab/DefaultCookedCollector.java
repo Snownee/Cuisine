@@ -25,6 +25,16 @@ public class DefaultCookedCollector implements EffectCollector
     }
 
     @Override
+    public <T> T getEffect(EffectType<T> type)
+    {
+        if (type == DefaultTypes.USE_DURATION_MODIFIER)
+        {
+            return DefaultTypes.USE_DURATION_MODIFIER.cast(durationModifier);
+        }
+        return null;
+    }
+
+    @Override
     public <T> void clear(EffectType<T> type)
     {
         durationModifier = 0F;

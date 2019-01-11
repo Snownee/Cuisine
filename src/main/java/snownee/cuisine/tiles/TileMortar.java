@@ -63,7 +63,9 @@ public class TileMortar extends TileInventoryBase
                 Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stacks.getStackInSlot(0));
                 if (ingredient != null && ingredient.getForm() != Form.PASTE && ingredient.getForm() != Form.JUICE && ingredient.getMaterial().isValidForm(Form.PASTE))
                 {
-                    ItemStack output = ItemIngredient.make(ingredient.getMaterial(), Form.PASTE);
+                    Ingredient newIngredient = ingredient.copy();
+                    newIngredient.setForm(Form.PASTE);
+                    ItemStack output = ItemIngredient.make(newIngredient);
                     StacksUtil.spawnItemStack(world, getPos(), output, true);
                     this.recipe = null; // Stop things from happening
                     input.shrink(1);

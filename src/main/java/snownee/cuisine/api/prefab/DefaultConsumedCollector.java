@@ -94,12 +94,22 @@ public class DefaultConsumedCollector implements EffectCollector
         }
         else if (type == DefaultTypes.FOOD_LEVEL)
         {
-            foodLevel = (Integer) effect;
+            foodLevel += (Integer) effect;
         }
         else
         {
             Cuisine.logger.error("Try to add an uncaught effect: ", effect);
         }
+    }
+
+    @Override
+    public <T> T getEffect(EffectType<T> type)
+    {
+        if (type == DefaultTypes.FOOD_LEVEL)
+        {
+            return DefaultTypes.FOOD_LEVEL.cast(foodLevel);
+        }
+        return null;
     }
 
     @Override

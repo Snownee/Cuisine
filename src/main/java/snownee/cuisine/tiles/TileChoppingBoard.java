@@ -267,8 +267,8 @@ public class TileChoppingBoard extends TileInventoryBase
             {
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
             }
-            boolean fewerLosses = playerIn instanceof EntityPlayerMP && SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.FEWER_LOSSES);
-            stacks.setStackInSlot(0, craftMaterial(stack, processingIngredient, actions, fewerLosses, world.rand));
+            // boolean fewerLosses = playerIn instanceof EntityPlayerMP && SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.FEWER_LOSSES);
+            stacks.setStackInSlot(0, craftMaterial(stack, processingIngredient, actions, world.rand));
         }
         else if (isAxe)
         {
@@ -325,7 +325,7 @@ public class TileChoppingBoard extends TileInventoryBase
         }
     }
 
-    private static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, boolean fewerLosses, Random rand)
+    private static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, Random rand)
     {
         Form form = Form.byActions(actions[0], actions[1]);
         if (ingredient.getMaterial().isValidForm(form))

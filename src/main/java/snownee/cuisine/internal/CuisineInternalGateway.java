@@ -10,6 +10,8 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -41,6 +43,7 @@ import snownee.cuisine.internal.effect.EffectExperienced;
 import snownee.cuisine.internal.effect.EffectHarmony;
 import snownee.cuisine.internal.effect.EffectHeatResistance;
 import snownee.cuisine.internal.effect.EffectPotions;
+import snownee.cuisine.internal.effect.EffectRare;
 import snownee.cuisine.internal.effect.EffectSpooky;
 import snownee.cuisine.internal.effect.EffectSustainedRelease;
 import snownee.cuisine.internal.effect.EffectTeleport;
@@ -58,6 +61,7 @@ import snownee.cuisine.internal.material.MaterialWithEffect;
 import snownee.cuisine.internal.spice.SpiceChiliPowder;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
+import snownee.cuisine.library.RarityManager;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 
@@ -290,7 +294,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         Ingredient ingredient = this.itemIngredients.get(itemDefinition);
         if (ingredient != null)
         {
-            return ingredient.copy();
+            ingredient = ingredient.copy();
         }
         else
         {
@@ -299,11 +303,16 @@ public final class CuisineInternalGateway implements CuisineAPI
             {
                 if ((ingredient = this.oreDictIngredients.get(entry)) != null)
                 {
-                    return ingredient.copy();
+                    ingredient = ingredient.copy();
+                    break;
                 }
             }
-            return null;
         }
+        if (ingredient != null && RarityManager.getRarity(item).ordinal() > 0)
+        {
+            ingredient.addEffect(CulinaryHub.CommonEffects.RARE);
+        }
+        return ingredient;
     }
 
     @Override
@@ -436,6 +445,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new EffectHeatResistance());
         api.register(new EffectSustainedRelease());
         api.register(new EffectSpooky());
+        api.register(new EffectRare());
         // api.register(new EffectHeatResistance()); // TODO
 
         // As mentioned above, Material registration will trigger class loading of the class
@@ -509,7 +519,8 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleMaterialImpl("lemon", 0xEBCA4B, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("grapefruit", 0xF4502B, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
         api.register(new SimpleMaterialImpl("lime", 0xCADA76, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT).setValidForms(Form.JUICE_ONLY));
-        api.register(new SimpleMaterialImpl("empowered_citron", 0xE6B701, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL){
+        api.register(new SimpleMaterialImpl("empowered_citron", 0xE6B701, 0, 1, 1, 1, -0.1F, MaterialCategory.FRUIT, MaterialCategory.SUPERNATURAL)
+        {
             @Override
             public boolean hasGlowingOverlay(Ingredient ingredient)
             {
@@ -524,11 +535,11 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new SimpleSpiceImpl("fruit_vinegar", 0xBB100000, true, Collections.singleton("vinegar")));
         api.register(new SimpleSpiceImpl("water", 0x55FFFFFF, true, Collections.singleton("water")));
         api.register(new SpiceChiliPowder("chili_powder", 11546150));
-        api.register(new SimpleSpiceImpl("sichuan_pepper_powder", 8606770, false));
-        api.register(new SimpleSpiceImpl("crude_salt", 4673362, false));
-        api.register(new SimpleSpiceImpl("salt", 0xE3E3E3, false));
-        api.register(new SimpleSpiceImpl("sugar", 16383998, false));
-        api.register(new SimpleSpiceImpl("unrefined_sugar", 0xB35400, false));
+        api.register(new SimpleSpiceImpl("sichuan_pepper_powder", 8606770, false, Collections.singleton("spicy")));
+        api.register(new SimpleSpiceImpl("crude_salt", 4673362, false, ImmutableSet.of("salt", "unrefined")));
+        api.register(new SimpleSpiceImpl("salt", 0xE3E3E3, false, Collections.singleton("salt")));
+        api.register(new SimpleSpiceImpl("sugar", 16383998, false, Collections.singleton("sugar")));
+        api.register(new SimpleSpiceImpl("unrefined_sugar", 0xB35400, false, ImmutableSet.of("sugar", "unrefined")));
 
         CulinaryHub.CommonSkills.init();
     }

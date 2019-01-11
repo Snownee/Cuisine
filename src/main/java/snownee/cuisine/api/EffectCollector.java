@@ -16,5 +16,10 @@ public interface EffectCollector
         }
     }
 
+    default <T> T getEffect(EffectType<T> type)
+    {
+        return null;
+    }
+
     <T> void clear(EffectType<T> type);
 }
