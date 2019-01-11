@@ -94,7 +94,7 @@ public class DefaultConsumedCollector implements EffectCollector
         }
         else if (type == DefaultTypes.FOOD_LEVEL)
         {
-            foodLevel = (int) effect;
+            foodLevel = (Integer) effect;
         }
         else
         {
