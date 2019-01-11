@@ -9,7 +9,7 @@ public class PotionSustainedRelease extends PotionMod
 
     public PotionSustainedRelease(String name)
     {
-        super(name, false, -1, false, 0xF82423, 20, false, false);
+        super(name, false, -1, false, 0xF82423, 100, false, false);
     }
 
     @Override
