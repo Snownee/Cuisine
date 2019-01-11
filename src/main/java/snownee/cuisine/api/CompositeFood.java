@@ -307,7 +307,7 @@ public abstract class CompositeFood
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
         Collection<EffectBinding> bindings = getEffectBindings();
-        EffectCollector collector = new DefaultConsumedCollector();
+        DefaultConsumedCollector collector = new DefaultConsumedCollector(getFoodLevel());
 
         // And then apply them
         for (EffectBinding binding : bindings)
@@ -323,7 +323,7 @@ public abstract class CompositeFood
 
         collector.apply(this, player);
 
-        player.getFoodStats().addStats(getFoodLevel(), getSaturationModifier());
+        player.getFoodStats().addStats(collector.getNewFoodLevel(), getSaturationModifier());
     }
 
     protected Collection<EffectBinding> getEffectBindings()

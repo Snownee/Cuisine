@@ -159,6 +159,11 @@ cuisine.effect.water_breathing.name=水肺
 cuisine.effect.water_breathing.tip=水肺
 cuisine.effect.fermented_saltwort.name=盐麦芽汁
 cuisine.effect.fermented_saltwort.tip=盐麦芽汁
+cuisine.effect.sustained_release.name=缓释
+cuisine.effect.cure_potions.name=解毒
+cuisine.effect.heat_resistance.name=炎热抗性
+cuisine.effect.cold_resistance.name=严寒抗性
+cuisine.effect.spooky.name=惊悚
 
 cuisine.shape.full=%s
 cuisine.shape.cubed=%s块

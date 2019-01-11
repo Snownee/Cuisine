@@ -41,6 +41,7 @@ import snownee.cuisine.internal.effect.EffectExperienced;
 import snownee.cuisine.internal.effect.EffectHarmony;
 import snownee.cuisine.internal.effect.EffectHeatResistance;
 import snownee.cuisine.internal.effect.EffectPotions;
+import snownee.cuisine.internal.effect.EffectSpooky;
 import snownee.cuisine.internal.effect.EffectSustainedRelease;
 import snownee.cuisine.internal.effect.EffectTeleport;
 import snownee.cuisine.internal.food.Dish;
@@ -49,6 +50,7 @@ import snownee.cuisine.internal.material.MaterialApple;
 import snownee.cuisine.internal.material.MaterialChili;
 import snownee.cuisine.internal.material.MaterialChorusFruit;
 import snownee.cuisine.internal.material.MaterialPufferfish;
+import snownee.cuisine.internal.material.MaterialPumpkin;
 import snownee.cuisine.internal.material.MaterialRice;
 import snownee.cuisine.internal.material.MaterialTofu;
 import snownee.cuisine.internal.material.MaterialTomato;
@@ -433,6 +435,7 @@ public final class CuisineInternalGateway implements CuisineAPI
         api.register(new EffectPotions("water_breathing").addPotionEffect(new PotionEffect(MobEffects.WATER_BREATHING, 1500, 0)));
         api.register(new EffectHeatResistance());
         api.register(new EffectSustainedRelease());
+        api.register(new EffectSpooky());
         // api.register(new EffectHeatResistance()); // TODO
 
         // As mentioned above, Material registration will trigger class loading of the class
@@ -479,7 +482,7 @@ public final class CuisineInternalGateway implements CuisineAPI
             }
         }.setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("melon", -769226, 0, 1, 1, 1, 0F, MaterialCategory.FRUIT).setValidForms(EnumSet.of(Form.CUBED, Form.SLICED, Form.DICED, Form.MINCED, Form.PASTE, Form.JUICE)));
-        api.register(new SimpleMaterialImpl("pumpkin", -663885, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        api.register(new MaterialPumpkin("pumpkin"));
         api.register(new MaterialWithEffect("carrot", CulinaryHub.CommonEffects.NIGHT_VISION, -1538531, 0, 1, 1, 1, 0.1F, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new MaterialWithEffect("golden_carrot", CulinaryHub.CommonEffects.LONGER_NIGHT_VISION, 0xDBA213, 0, 1, 1, 1, 0F, MaterialCategory.VEGETABLES, MaterialCategory.SUPERNATURAL).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         api.register(new SimpleMaterialImpl("potato", -3764682, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN).setValidForms(Form.ALL_FORMS));

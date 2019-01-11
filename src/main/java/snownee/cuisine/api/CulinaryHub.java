@@ -133,6 +133,7 @@ public final class CulinaryHub
         public static final Effect HEAT_RESISTANCE = find("heat_resistance");
         public static final Effect SUSTAINED_RELEASE = find("sustained_release");
         // public static final Effect COLD_RESISTANCE = find("cold_resistance");
+        public static final Effect SPOOKY = find("spooky");
 
         private static Effect find(final String uniqueName)
         {
