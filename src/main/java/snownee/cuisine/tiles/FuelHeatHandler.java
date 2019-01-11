@@ -75,15 +75,22 @@ public class FuelHeatHandler implements HeatHandler
     }
 
     private float heat = 0;
+    private float encouragement = 0;
 
     @Override
     public void update(float bonusRate)
     {
         if (heat > 0)
         {
-            heat -= 1 + bonusRate;
+            heat -= (1 + bonusRate) * (1 + encouragement);
+            encouragement = Math.max(encouragement - 0.01F, 0);
             heat = MathHelper.clamp(heat, 0, getMaxHeat());
         }
+    }
+
+    public void encourage()
+    {
+        encouragement = MathHelper.clamp(encouragement + 0.5F, 0, 1);
     }
 
     @Override
@@ -104,7 +111,7 @@ public class FuelHeatHandler implements HeatHandler
         {
             return 0;
         }
-        return (int) (heat - 1) / 1000 + 1;
+        return (int) (heat - 1) / 1000 + encouragement > 0 ? 2 : 1;
     }
 
     @Override

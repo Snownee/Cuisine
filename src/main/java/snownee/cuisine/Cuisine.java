@@ -24,7 +24,7 @@ import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.internal.capabilities.CulinarySkillCapability;
 import snownee.cuisine.internal.capabilities.FoodContainerCapability;
 import snownee.cuisine.items.BehaviorWokInteraction;
-import snownee.cuisine.items.BehaviourArmDispense;
+import snownee.cuisine.items.BehaviorArmDispense;
 import snownee.cuisine.items.ItemCrops;
 import snownee.cuisine.network.CuisineGuiHandler;
 import snownee.cuisine.network.PacketCustomEvent;
@@ -100,7 +100,7 @@ public class Cuisine
         {
             MinecraftForge.EVENT_BUS.register(new BetterHarvest());
         }
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.MATERIAL, new BehaviourArmDispense());
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.MATERIAL, new BehaviorArmDispense());
         BehaviorWokInteraction behaviorWokInteraction = new BehaviorWokInteraction();
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(Item.getItemFromBlock(CuisineRegistry.PLACED_DISH), behaviorWokInteraction);
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.SPICE_BOTTLE, behaviorWokInteraction);
