@@ -3,6 +3,10 @@
   "landing_text": "cuisine.manual.subtitle",
   "edition": -1,
   "creative_tab": "cuisine",
+  "dont_generate_book": true,
+  "show_progress": false,
+  "custom_book_item": "cuisine:manual",
+  "book_texture": "cuisine:textures/gui/patchouli.png",
   "advancement_namespaces": [
     "cuisine"
   ]

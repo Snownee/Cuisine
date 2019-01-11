@@ -1,6 +1,6 @@
 {
   "name": "加工设备",
   "description": "食材往往需要一定精加工。这里则有 Cuisine 中所有加工设备的使用说明。",
-  "icon": "cuisine:kitchen_knife",
+  "icon": "cuisine:mortar",
   "sortnum": 1
 }

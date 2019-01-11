@@ -1,6 +1,6 @@
 {
   "name": "Processing Devices",
   "description": "Raw ingredients often require refinement. Here are manuals of all of processing devices featured in Cuisine.",
-  "icon": "cuisine:kitchen_knife",
+  "icon": "cuisine:mortar",
   "sortnum": 1
 }
