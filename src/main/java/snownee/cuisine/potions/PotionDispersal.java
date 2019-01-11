@@ -8,7 +8,7 @@ public class PotionDispersal extends PotionMod
 {
     public PotionDispersal(String name, int icon)
     {
-        super(name, true, icon, false, 0xCCB89C, 0, true);
+        super(name, true, icon, false, 0xCCB89C, 25, true);
     }
 
     @Override
@@ -18,11 +18,5 @@ public class PotionDispersal extends PotionMod
         {
             living.attackEntityFrom(DamageSource.MAGIC, 1.0F);
         }
-    }
-
-    @Override
-    public boolean isReady(int duration, int amplifier)
-    {
-        return duration % 25 == 0;
     }
 }
