@@ -366,7 +366,10 @@ public class Dish extends CompositeFood
                             ingredient.addTrait(IngredientTrait.UNDERCOOKED);
                         }
                     }
-                    material.onCooked(this, ingredient, vessel, collector);
+                }
+                for (Ingredient ingredient : this.getIngredients())
+                {
+                    ingredient.getMaterial().onCooked(this, ingredient, vessel, collector);
                 }
 
                 this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects(), foodLevel, saturationModifier);
