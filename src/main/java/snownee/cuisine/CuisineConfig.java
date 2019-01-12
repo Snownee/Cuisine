@@ -58,20 +58,10 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean bambooBlowpipe = false;
 
-        @Config.LangKey("cuisine.config.general.always_render_drinkro")
-        @Config.Name("AlwaysRenderDrinkro")
-        public boolean alwaysRenderDrinkro = false;
-
         @Config.Comment("Allow axes to chop things on chopping board. Provided for mod pack creators.")
         @Config.LangKey("cuisine.config.progression.axe_chopping")
         @Config.Name("AxeChopping")
         public boolean axeChopping = true;
-
-        @Config.Comment("List of axes that will show in JEI recipes. Does not affect chopping board behavior.")
-        @Config.LangKey("cuisine.config.progression.axe_list")
-        @Config.Name("AxeList")
-        @Config.RequiresMcRestart
-        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
 
         @Config.Name("AxeChoppingPlanksOutput")
         @Config.RequiresMcRestart
@@ -192,7 +182,7 @@ public final class CuisineConfig
 
     public static final class WorldGen
     {
-
+        @Config.Comment("Generation rate of fruit trees; larger value means larger generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
         @Config.Name("FruitTreesGenRate")
         @Config.RangeInt(min = 0, max = 100)
@@ -214,4 +204,20 @@ public final class CuisineConfig
         public int cropsGenRate = 4;
     }
 
+    @Config.Name("Client")
+    public static final Client CLIENT = new Client();
+
+    public static final class Client
+    {
+        @Config.Comment("List of axes that will show in JEI recipes. Does not affect chopping board behavior.")
+        @Config.LangKey("cuisine.config.progression.axe_list")
+        @Config.Name("AxeList")
+        @Config.RequiresMcRestart
+        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
+
+        @Config.LangKey("cuisine.config.general.always_render_drinkro")
+        @Config.Comment("Rendering contents in all directions. WIP feature.")
+        @Config.Name("AlwaysRenderDrinkro")
+        public boolean alwaysRenderDrinkro = false;
+    }
 }

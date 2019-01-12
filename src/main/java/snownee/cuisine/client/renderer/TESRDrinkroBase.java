@@ -18,7 +18,7 @@ public class TESRDrinkroBase extends TileEntitySpecialRenderer<TileDrinkroBase>
     {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
         Minecraft mc = Minecraft.getMinecraft();
-        if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && y > mc.player.eyeHeight)
+        if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && y > mc.player.eyeHeight)
         {
             return;
         }
@@ -32,7 +32,7 @@ public class TESRDrinkroBase extends TileEntitySpecialRenderer<TileDrinkroBase>
         int rot = 0;
         if (meta == 0)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z > 0)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && z > 0)
             {
                 return;
             }
@@ -40,7 +40,7 @@ public class TESRDrinkroBase extends TileEntitySpecialRenderer<TileDrinkroBase>
         }
         else if (meta == 1)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x < -1)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && x < -1)
             {
                 return;
             }
@@ -48,14 +48,14 @@ public class TESRDrinkroBase extends TileEntitySpecialRenderer<TileDrinkroBase>
         }
         else if (meta == 2)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z < -1)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && z < -1)
             {
                 return;
             }
         }
         else if (meta == 3)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x > 0)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && x > 0)
             {
                 return;
             }

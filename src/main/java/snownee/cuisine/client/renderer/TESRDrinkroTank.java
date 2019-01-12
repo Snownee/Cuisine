@@ -33,7 +33,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         int rot = 0;
         if (meta == 0)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z > 0)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && z > 0)
             {
                 return;
             }
@@ -41,7 +41,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         }
         else if (meta == 1)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x < -1)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && x < -1)
             {
                 return;
             }
@@ -49,14 +49,14 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         }
         else if (meta == 2)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z < -1)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && z < -1)
             {
                 return;
             }
         }
         else if (meta == 3)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x > 0)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && x > 0)
             {
                 return;
             }

@@ -71,7 +71,7 @@ public class JEICompat implements IModPlugin
     {
         if (CuisineConfig.GENERAL.axeChopping)
         {
-            AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+            AXES = Arrays.stream(CuisineConfig.CLIENT.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
         }
 
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
