@@ -5,7 +5,6 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.Boiling;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -26,12 +25,11 @@ public final class CTBasinHeating
     }
 
     @ZenMethod
-    public static void add(String identifier, ILiquidStack input, IItemStack output, @Optional(valueLong = 1L) int heatValue)
+    public static void add(ILiquidStack input, IItemStack output, @Optional(valueLong = 1L) int heatValue)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input);
         FluidStack actualInput = CTSupport.toNative(input);
         ItemStack actualOutput = CTSupport.toNative(output);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualOutput, heatValue));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualOutput, heatValue));
     }
 
     @ZenMethod
@@ -58,9 +56,9 @@ public final class CTBasinHeating
         private final ItemStack output;
         private final int heatValue;
 
-        private Addition(ResourceLocation id, FluidStack input, ItemStack output, int heatValue)
+        private Addition(FluidStack input, ItemStack output, int heatValue)
         {
-            super(id);
+            super(input, output, heatValue);
             this.input = input;
             this.output = output;
             this.heatValue = heatValue;

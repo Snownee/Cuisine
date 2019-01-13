@@ -7,7 +7,6 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -29,13 +28,12 @@ public final class CTBasinThrowing
     }
 
     @ZenMethod
-    public static void add(String identifier, IIngredient input, ILiquidStack inputFluid, IItemStack output)
+    public static void add(IIngredient input, ILiquidStack inputFluid, IItemStack output)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input, inputFluid);
         ProcessingInput actualInput = CTSupport.fromIngredient(input);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         ItemStack actualOutput = CTSupport.toNative(output);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualInputFluid, actualOutput));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualOutput));
     }
 
     @ZenMethod
@@ -67,9 +65,9 @@ public final class CTBasinThrowing
         private final FluidStack inputFluid;
         private final ItemStack output;
 
-        private Addition(ResourceLocation identifier, ProcessingInput input, FluidStack inputFluid, ItemStack output)
+        private Addition(ProcessingInput input, FluidStack inputFluid, ItemStack output)
         {
-            super(identifier);
+            super(input, inputFluid, output);
             this.input = input;
             this.inputFluid = inputFluid;
             this.output = output;

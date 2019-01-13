@@ -11,7 +11,6 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Processing;
@@ -24,11 +23,10 @@ import stanhebben.zenscript.annotations.ZenMethod;
 public class CTMortar
 {
     @ZenMethod
-    public static void add(String identifier, IIngredient[] inputs, IItemStack output, int step)
+    public static void add(IIngredient[] inputs, IItemStack output, int step)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, inputs);
         List<ProcessingInput> list = Arrays.stream(inputs).map(CTSupport::fromIngredient).collect(Collectors.toList());
-        CTSupport.DELAYED_ACTIONS.add(new Addition(id, list, CraftTweakerMC.getItemStack(output), step));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(list, CraftTweakerMC.getItemStack(output), step));
     }
 
     @ZenMethod
@@ -54,9 +52,9 @@ public class CTMortar
         final ItemStack output;
         final int step;
 
-        Addition(ResourceLocation id, List<ProcessingInput> inputs, ItemStack output, int step)
+        Addition(List<ProcessingInput> inputs, ItemStack output, int step)
         {
-            super(id);
+            super(inputs, output, step);
             this.inputs = inputs;
             this.output = output;
             this.step = step;

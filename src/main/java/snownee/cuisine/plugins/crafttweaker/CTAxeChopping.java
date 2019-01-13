@@ -87,7 +87,7 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.add(new Chopping(new ResourceLocation("crafttweaker", Integer.toString(System.identityHashCode(input))), RegularItemStackInput.of(input), output));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), RegularItemStackInput.of(input), output));
         }
 
         @Override
@@ -111,7 +111,7 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.add(new Chopping(new ResourceLocation("crafttweaker", Integer.toString(System.identityHashCode(input))), input, output));
+            Processing.CHOPPING.add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), input, output));
         }
 
         @Override

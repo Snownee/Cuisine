@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
 import crafttweaker.api.item.IIngredient;
@@ -22,11 +24,10 @@ import snownee.kiwi.KiwiModule;
 import snownee.kiwi.crafting.input.ProcessingInput;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
-import javax.annotation.Nullable;
-
 @KiwiModule(modid = Cuisine.MODID, name = "crafttweaker", dependency = "crafttweaker")
 public final class CTSupport implements IModule
 {
+    static final String MODID = "crafttweaker";
     static ArrayList<IAction> DELAYED_ACTIONS = new ArrayList<>(16);
 
     @Override
@@ -36,9 +37,9 @@ public final class CTSupport implements IModule
         DELAYED_ACTIONS.clear();
     }
 
-    static ResourceLocation fromUserInputOrGenerate(@Nullable String name, Object... inputs)
+    static ResourceLocation fromUserInputOrGenerate(Object... inputs)
     {
-        return new ResourceLocation("crafttweaker", isEmpty(name) ? Integer.toString(Objects.hash(inputs)) : name);
+        return new ResourceLocation(MODID, Integer.toString(Objects.hash(inputs)));
     }
 
     static ProcessingInput fromIngredient(IIngredient ingredient)
@@ -61,18 +62,13 @@ public final class CTSupport implements IModule
         return CraftTweakerMC.getLiquidStack(ctDefinition);
     }
 
-    private static boolean isEmpty(@Nullable String s)
-    {
-        return s == null || s.isEmpty();
-    }
-
     static abstract class ActionWithLocator implements IAction
     {
         final ResourceLocation locator;
 
-        ActionWithLocator(ResourceLocation locator)
+        ActionWithLocator(Object input0, Object... moreInputs)
         {
-            this.locator = locator;
+            this.locator = CTSupport.fromUserInputOrGenerate(input0, moreInputs);
         }
     }
 
