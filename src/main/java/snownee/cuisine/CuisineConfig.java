@@ -219,5 +219,8 @@ public final class CuisineConfig
         @Config.Comment("Rendering contents in all directions. WIP feature.")
         @Config.Name("AlwaysRenderDrinkro")
         public boolean alwaysRenderDrinkro = false;
+
+        @Config.Name("ShowHoloGui")
+        public boolean showHoloGui = true;
     }
 }
