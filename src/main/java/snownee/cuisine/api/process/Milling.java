@@ -16,28 +16,28 @@ public final class Milling extends AbstractCuisineProcessingRecipe implements Cu
     private final ItemStack output;
     private final FluidStack inputFluid, outputFluid;
 
-    public Milling(ItemStack input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
+    public Milling(ResourceLocation identifier, ItemStack input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
     {
-        this(RegularItemStackInput.of(input), output, inputFluid, outputFluid);
+        this(identifier, RegularItemStackInput.of(input), output, inputFluid, outputFluid);
     }
 
-    public Milling(ProcessingInput input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
+    public Milling(ResourceLocation identifier, ProcessingInput input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
     {
-        super(new ResourceLocation("cuisine", Integer.toString(System.identityHashCode(System.in)) + "&" + System.identityHashCode(inputFluid)));
+        super(identifier);
         this.input = input;
         this.output = output;
         this.inputFluid = inputFluid;
         this.outputFluid = outputFluid;
     }
 
-    public Milling(ItemStack input, ItemStack output)
+    public Milling(ResourceLocation identifier, ItemStack input, ItemStack output)
     {
-        this(input, output, null, null);
+        this(identifier, input, output, null, null);
     }
 
-    public Milling(ProcessingInput input, ItemStack output)
+    public Milling(ResourceLocation identifier, ProcessingInput input, ItemStack output)
     {
-        this(input, output, null, null);
+        this(identifier, input, output, null, null);
     }
 
     @Nonnull

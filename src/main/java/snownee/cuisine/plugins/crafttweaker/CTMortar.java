@@ -63,7 +63,7 @@ public class CTMortar
         @Override
         public void apply()
         {
-            Processing.GRINDING.add(new Grinding(this.locator, inputs, output, step));
+            getManager().add(new Grinding(this.locator, inputs, output, step));
         }
 
         @Override
@@ -85,7 +85,7 @@ public class CTMortar
         @Override
         public void apply()
         {
-            Processing.GRINDING.remove(new Grinding(inputs, ItemStack.EMPTY, 0));
+            getManager().remove(new Grinding(inputs, ItemStack.EMPTY, 0));
         }
 
         @Override

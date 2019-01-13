@@ -77,7 +77,7 @@ public final class CTBasinSqueezing
         @Override
         public void apply()
         {
-            Processing.SQUEEZING.add(new SimpleSqueezing(this.locator, input, output, extraOutput));
+            getManager().add(new SimpleSqueezing(this.locator, input, output, extraOutput));
         }
 
         @Override
@@ -99,7 +99,7 @@ public final class CTBasinSqueezing
         @Override
         public void apply()
         {
-            Processing.SQUEEZING.remove(this.input);
+            getManager().remove(this.input);
         }
 
         @Override
@@ -121,7 +121,7 @@ public final class CTBasinSqueezing
         @Override
         public void apply()
         {
-            Processing.SQUEEZING.remove(this.input);
+            getManager().remove(this.input);
         }
 
         @Override

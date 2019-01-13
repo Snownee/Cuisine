@@ -76,7 +76,7 @@ public final class CTBasinThrowing
         @Override
         public void apply()
         {
-            Processing.BASIN_THROWING.add(new SimpleThrowing(this.locator, input, inputFluid, output));
+            getManager().add(new SimpleThrowing(this.locator, input, inputFluid, output));
         }
 
         @Override
@@ -100,7 +100,7 @@ public final class CTBasinThrowing
         @Override
         public void apply()
         {
-            Processing.BASIN_THROWING.remove(this.input, this.inputFluid);
+            getManager().remove(this.input, this.inputFluid);
         }
 
         @Override
@@ -124,7 +124,7 @@ public final class CTBasinThrowing
         @Override
         public void apply()
         {
-            Processing.BASIN_THROWING.remove(this.input, this.inputFluid);
+            getManager().remove(this.input, this.inputFluid);
         }
 
         @Override

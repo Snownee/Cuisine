@@ -67,7 +67,7 @@ public final class CTBasinHeating
         @Override
         public void apply()
         {
-            Processing.BOILING.add(new DistillationBoiling(this.locator, input, output, heatValue));
+            getManager().add(new DistillationBoiling(this.locator, input, output, heatValue));
         }
 
         @Override
@@ -90,7 +90,7 @@ public final class CTBasinHeating
         @Override
         public void apply()
         {
-            Processing.BOILING.remove(this.input);
+            getManager().remove(this.input);
         }
 
         @Override

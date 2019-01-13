@@ -169,7 +169,7 @@ public class CTVessel
         @Override
         public void apply()
         {
-            Processing.VESSEL.add(new Vessel(actualInput, actualInputFluid, actualOutput, actualOutputFluid, actualExtra));
+            getManager().add(new Vessel(actualInput, actualInputFluid, actualOutput, actualOutputFluid, actualExtra));
         }
 
         @Override
@@ -195,7 +195,7 @@ public class CTVessel
         @Override
         public void apply()
         {
-            Processing.VESSEL.remove(new Vessel(actualInput, actualInputFluid, ItemDefinition.EMPTY, null, actualExtra));
+            getManager().remove(new Vessel(actualInput, actualInputFluid, ItemDefinition.EMPTY, null, actualExtra));
         }
 
         @Override
