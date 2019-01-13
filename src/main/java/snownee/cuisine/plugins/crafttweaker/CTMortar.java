@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -11,6 +13,7 @@ import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Processing;
@@ -32,7 +35,14 @@ public class CTMortar
     @ZenMethod
     public static void remove(IOreDictEntry[] inputs)
     {
-        CTSupport.DELAYED_ACTIONS.add(new Removal(Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList())));
+        // FIXME
+        CTSupport.DELAYED_ACTIONS.add(new IngredientBasedRemoval(Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList())));
+    }
+
+    @ZenMethod
+    public static void remove(@Nonnull String identifier)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new Removal(new ResourceLocation(identifier)));
     }
 
     @ZenMethod
@@ -73,11 +83,11 @@ public class CTMortar
         }
     }
 
-    private static final class Removal implements IAction
+    private static final class IngredientBasedRemoval implements IAction
     {
         final List<ProcessingInput> inputs;
 
-        Removal(List<ProcessingInput> inputs)
+        IngredientBasedRemoval(List<ProcessingInput> inputs)
         {
             this.inputs = inputs;
         }
@@ -85,13 +95,35 @@ public class CTMortar
         @Override
         public void apply()
         {
-            getManager().remove(new Grinding(inputs, ItemStack.EMPTY, 0));
+            getManager().remove(new Grinding(new ResourceLocation(CTSupport.MODID), inputs, ItemStack.EMPTY, 0));
         }
 
         @Override
         public String describe()
         {
             return String.format("Remove Cuisine Mortar recipe that has input of %s", inputs);
+        }
+    }
+
+    private static final class Removal implements IAction
+    {
+        private final ResourceLocation identifier;
+
+        private Removal(ResourceLocation identifier)
+        {
+            this.identifier = identifier;
+        }
+
+        @Override
+        public void apply()
+        {
+            getManager().remove(identifier);
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
         }
     }
 

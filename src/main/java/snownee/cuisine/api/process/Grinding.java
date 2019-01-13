@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
-import snownee.cuisine.Cuisine;
 import snownee.kiwi.crafting.input.ProcessingInput;
 
 public final class Grinding extends AbstractCuisineProcessingRecipe implements CuisineProcessingRecipe
@@ -16,11 +15,6 @@ public final class Grinding extends AbstractCuisineProcessingRecipe implements C
     private final List<ProcessingInput> ingredients;
     private final ItemStack output;
     private final int step, totalCount;
-
-    public Grinding(List<ProcessingInput> inputs, ItemStack output, int step)
-    {
-        this(new ResourceLocation(Cuisine.MODID, Integer.toString(System.identityHashCode(inputs))), inputs, output, step);
-    }
 
     public Grinding(ResourceLocation id, List<ProcessingInput> inputs, ItemStack output, int step)
     {

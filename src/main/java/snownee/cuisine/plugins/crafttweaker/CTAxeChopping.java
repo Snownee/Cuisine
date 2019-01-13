@@ -87,7 +87,7 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), RegularItemStackInput.of(input), output));
+            getManager().add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), RegularItemStackInput.of(input), output));
         }
 
         @Override
@@ -111,7 +111,7 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), input, output));
+            getManager().add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), input, output));
         }
 
         @Override
@@ -133,7 +133,7 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.remove(identifier);
+            getManager().remove(identifier);
         }
 
         @Override
@@ -155,7 +155,7 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.remove(input);
+            getManager().remove(input);
         }
 
         @Override
