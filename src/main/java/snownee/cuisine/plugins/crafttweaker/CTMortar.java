@@ -42,7 +42,7 @@ public class CTMortar
     @ZenMethod
     public static void remove(@Nonnull String identifier)
     {
-        CTSupport.DELAYED_ACTIONS.add(new Removal(new ResourceLocation(identifier)));
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
     }
 
     @ZenMethod
@@ -56,7 +56,7 @@ public class CTMortar
         return Processing.GRINDING;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    private static final class Addition extends CTSupport.Addition implements IAction
     {
         final List<ProcessingInput> inputs;
         final ItemStack output;
@@ -102,28 +102,6 @@ public class CTMortar
         public String describe()
         {
             return String.format("Remove Cuisine Mortar recipe that has input of %s", inputs);
-        }
-    }
-
-    private static final class Removal implements IAction
-    {
-        private final ResourceLocation identifier;
-
-        private Removal(ResourceLocation identifier)
-        {
-            this.identifier = identifier;
-        }
-
-        @Override
-        public void apply()
-        {
-            getManager().remove(identifier);
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
         }
     }
 

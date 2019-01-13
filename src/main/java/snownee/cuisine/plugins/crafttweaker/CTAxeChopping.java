@@ -47,7 +47,7 @@ public class CTAxeChopping
     @ZenMethod
     public static void remove(@Nonnull String identifier)
     {
-        CTSupport.DELAYED_ACTIONS.add(new Removal(new ResourceLocation(identifier)));
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
     }
 
     @ZenMethod
@@ -118,28 +118,6 @@ public class CTAxeChopping
         public String describe()
         {
             return String.format("Add Cuisine Axe-Chopping recipe: input %s -> output %s", input, output);
-        }
-    }
-
-    private static final class Removal implements IAction
-    {
-        private final ResourceLocation identifier;
-
-        private Removal(ResourceLocation identifier)
-        {
-            this.identifier = identifier;
-        }
-
-        @Override
-        public void apply()
-        {
-            getManager().remove(identifier);
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
         }
     }
 

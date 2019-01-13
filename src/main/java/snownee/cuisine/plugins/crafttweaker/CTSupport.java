@@ -62,13 +62,37 @@ public final class CTSupport implements IModule
         return CraftTweakerMC.getLiquidStack(ctDefinition);
     }
 
-    static abstract class ActionWithLocator implements IAction
+    static abstract class Addition implements IAction
     {
         final ResourceLocation locator;
 
-        ActionWithLocator(Object input0, Object... moreInputs)
+        Addition(Object input0, Object... moreInputs)
         {
             this.locator = CTSupport.fromUserInputOrGenerate(input0, moreInputs);
+        }
+    }
+
+    static class RemovalByIdentifier implements IAction
+    {
+        final CuisineProcessingRecipeManager<?> manager;
+        final ResourceLocation locator;
+
+        RemovalByIdentifier(CuisineProcessingRecipeManager<?> manager, ResourceLocation locator)
+        {
+            this.manager = manager;
+            this.locator = locator;
+        }
+
+        @Override
+        public void apply()
+        {
+            manager.remove(locator);
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
         }
     }
 

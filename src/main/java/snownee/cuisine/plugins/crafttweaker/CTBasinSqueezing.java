@@ -1,19 +1,20 @@
 package snownee.cuisine.plugins.crafttweaker;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.prefab.SimpleSqueezing;
 import snownee.kiwi.crafting.input.ProcessingInput;
-import snownee.kiwi.util.definition.OreDictDefinition;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -44,9 +45,9 @@ public final class CTBasinSqueezing
     }
 
     @ZenMethod
-    public static void remove(IOreDictEntry input)
+    public static void remove(@Nonnull String identifier)
     {
-        CTSupport.DELAYED_ACTIONS.add(new RemovalByOre(CTSupport.fromOreEntry(input)));
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
     }
 
     @ZenMethod
@@ -60,7 +61,7 @@ public final class CTBasinSqueezing
         return Processing.SQUEEZING;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    private static final class Addition extends CTSupport.Addition implements IAction
     {
         private final ProcessingInput input;
         private final FluidStack output;
@@ -92,28 +93,6 @@ public final class CTBasinSqueezing
         private final ItemStack input;
 
         private RemovalByItem(ItemStack input)
-        {
-            this.input = input;
-        }
-
-        @Override
-        public void apply()
-        {
-            getManager().remove(this.input);
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
-        }
-    }
-
-    private static final class RemovalByOre implements IAction
-    {
-        private final OreDictDefinition input;
-
-        private RemovalByOre(OreDictDefinition input)
         {
             this.input = input;
         }

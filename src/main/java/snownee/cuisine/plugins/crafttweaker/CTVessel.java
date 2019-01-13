@@ -1,5 +1,7 @@
 package snownee.cuisine.plugins.crafttweaker;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
@@ -139,6 +141,12 @@ public class CTVessel
     }
 
     @ZenMethod
+    public static void remove(@Nonnull String identifier)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
+    }
+
+    @ZenMethod
     public static void removeAll()
     {
         CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTVessel::getManager));
@@ -149,7 +157,7 @@ public class CTVessel
         return Processing.VESSEL;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator
+    private static final class Addition extends CTSupport.Addition
     {
 
         private final ProcessingInput actualInput;

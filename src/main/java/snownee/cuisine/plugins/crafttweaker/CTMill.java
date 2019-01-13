@@ -53,7 +53,7 @@ public class CTMill
     @ZenMethod
     public static void remove(@Nonnull String identifier)
     {
-        CTSupport.DELAYED_ACTIONS.add(new Removal(new ResourceLocation(identifier)));
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
     }
 
     @ZenMethod
@@ -67,7 +67,7 @@ public class CTMill
         return Processing.MILLING;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator
+    private static final class Addition extends CTSupport.Addition
     {
         private final ProcessingInput actualInput;
         private final FluidStack actualInputFluid;
@@ -135,28 +135,6 @@ public class CTMill
         public void apply()
         {
             getManager().remove(new Milling(new ResourceLocation(CTSupport.MODID), actualInput, ItemStack.EMPTY, actualInputFluid, null));
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
-        }
-    }
-    
-    private static final class Removal implements IAction
-    {
-        private final ResourceLocation identifier;
-
-        private Removal(ResourceLocation identifier)
-        {
-            this.identifier = identifier;
-        }
-
-        @Override
-        public void apply()
-        {
-            getManager().remove(identifier);
         }
 
         @Override

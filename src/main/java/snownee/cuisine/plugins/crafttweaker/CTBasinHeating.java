@@ -1,10 +1,13 @@
 package snownee.cuisine.plugins.crafttweaker;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.Boiling;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -39,6 +42,12 @@ public final class CTBasinHeating
     }
 
     @ZenMethod
+    public static void remove(@Nonnull String identifier)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
+    }
+
+    @ZenMethod
     public static void removeAll()
     {
         CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTBasinHeating::getManager));
@@ -49,7 +58,7 @@ public final class CTBasinHeating
         return Processing.BOILING;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    private static final class Addition extends CTSupport.Addition implements IAction
     {
 
         private final FluidStack input;
