@@ -23,6 +23,7 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.util.ItemNBTUtil;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
 public final class CuisineItemRendering
@@ -100,6 +101,7 @@ public final class CuisineItemRendering
                         return fluid.getFluid().getColor(fluid);
                     }
                 }
+                return ItemNBTUtil.getInt(stack, "liquidColor", -1);
             }
             return -1;
         }, CuisineRegistry.BOTTLE);
@@ -113,6 +115,7 @@ public final class CuisineItemRendering
                 {
                     return ((Drink) food).getColor();
                 }
+                return ItemNBTUtil.getInt(stack, "liquidColor", -1);
             }
             return -1;
         }, CuisineRegistry.DRINK);

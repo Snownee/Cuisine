@@ -13,6 +13,7 @@ item.cuisine.spice_bottle.tip=Right click to pick fluid up, or dump seasonings i
 item.cuisine.spice_bottle.filled.name=%s
 item.cuisine.glass_bottle.name=Bottle of %s
 item.cuisine.dish.name=Dish
+item.cuisine.drink.name=Drink
 item.cuisine.manual.name=Culinary Manual
 
 item.cuisine.material.wooden_arm.name=Wooden Arm

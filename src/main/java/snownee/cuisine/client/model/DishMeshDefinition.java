@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
@@ -27,6 +28,10 @@ public final class DishMeshDefinition implements ItemMeshDefinition
         if (container != null && (food = container.get()) != null)
         {
             return new ModelResourceLocation(new ResourceLocation(Cuisine.MODID, "dish/" + food.getOrComputeModelType()), "inventory");
+        }
+        else if (stack.hasTagCompound() && stack.getTagCompound().hasKey("model", Constants.NBT.TAG_STRING))
+        {
+            return new ModelResourceLocation(new ResourceLocation(Cuisine.MODID, "dish/" + stack.getTagCompound().getString("model")), "inventory");
         }
         else
         {

@@ -199,7 +199,10 @@ public abstract class ItemAbstractComposite extends ItemMod
         CompositeFood dish;
         if (container == null || (dish = container.get()) == null)
         {
-            tooltip.add(I18nUtil.translate("tip.empty_dish"));
+            if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("model", Constants.NBT.TAG_STRING))
+            {
+                tooltip.add(I18nUtil.translate("tip.empty_dish"));
+            }
             return;
         }
 
@@ -274,7 +277,7 @@ public abstract class ItemAbstractComposite extends ItemMod
     public boolean showDurabilityBar(ItemStack stack)
     {
         // Your capability.
-        return stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null) && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+        return stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null) && stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null).get() != null && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
     }
 
     @Override

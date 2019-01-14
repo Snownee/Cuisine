@@ -13,6 +13,7 @@ item.cuisine.spice_bottle.tip=右击液体或地上的物品可以装瓶，也�
 item.cuisine.spice_bottle.filled.name=%s
 item.cuisine.glass_bottle.name=%s瓶
 item.cuisine.dish.name=菜品
+item.cuisine.drink.name=饮品
 item.cuisine.manual.name=烹饪笔记
 
 item.cuisine.material.wooden_arm.name=木手臂
@@ -305,8 +306,8 @@ cuisine.smoothie.name=冰沙
 cuisine.smoothie.specific=%s冰沙
 cuisine.gelo.name=凝胶球
 cuisine.gelo.specific=%s凝胶球
-cuisine.soda.name=苏打水
-cuisine.soda.specific=%s苏打水
+cuisine.soda.name=汽水
+cuisine.soda.specific=%s汽水
 # Easter egg, don't translate.
 cuisine.snownee.name=雪泥
 cuisine.snownee.specific=%s雪泥
