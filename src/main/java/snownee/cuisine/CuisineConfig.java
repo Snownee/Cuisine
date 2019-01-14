@@ -173,6 +173,9 @@ public final class CuisineConfig
         @Config.RangeDouble(min = 0, max = 1)
         public double skillPointsRetainRatio = 1.0;
 
+        @Config.Name("BadSkillPunishment")
+        public boolean badSkillPunishment = true;
+
     }
 
     @Config.Comment("Configurable variables related to world generation")

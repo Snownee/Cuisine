@@ -9,14 +9,19 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
@@ -106,6 +111,29 @@ public class Dish extends CompositeFood
     public ItemStack getBaseItem()
     {
         return new ItemStack(CuisineRegistry.DISH);
+    }
+
+    @Override
+    public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
+    {
+        super.onEaten(stack, worldIn, player);
+
+        if (!worldIn.isRemote && CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.badSkillPunishment)
+        {
+            int countPlain = (int) getIngredients().stream().filter(i -> i.getAllTraits().contains(IngredientTrait.PLAIN) || i.getAllTraits().contains(IngredientTrait.UNDERCOOKED)).count();
+            int countOvercooked = (int) getIngredients().stream().filter(i -> i.getAllTraits().contains(IngredientTrait.OVERCOOKED)).count();
+
+            if (countPlain / (float) getIngredients().size() > 0.8F)
+            {
+                Potion potion = worldIn.rand.nextBoolean() ? MobEffects.MINING_FATIGUE : MobEffects.WEAKNESS;
+                player.addPotionEffect(new PotionEffect(potion, 300 * getIngredients().size()));
+            }
+            if (countOvercooked / (float) getIngredients().size() > 0.8F)
+            {
+                Potion potion = worldIn.rand.nextBoolean() ? MobEffects.POISON : MobEffects.NAUSEA;
+                player.addPotionEffect(new PotionEffect(potion, 100 * getIngredients().size()));
+            }
+        }
     }
 
     public static NBTTagCompound serialize(Dish dish)
