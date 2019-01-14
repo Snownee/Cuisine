@@ -182,26 +182,26 @@ public final class CuisineConfig
 
     public static final class WorldGen
     {
-        @Config.Comment("Generation rate of fruit trees; larger value means larger generation rate; set to 0 to disable.")
+        @Config.Comment("Generation rate of fruit trees; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
-        @Config.Name("FruitTreesGenRate")
+        @Config.Name("FruitTreesGenWeight")
         @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
         public int fruitTreesGenRate = 50;
 
-        @Config.Comment("Generation rate of bamboo; larger value means lower generation rate; set to 0 to disable.")
+        @Config.Comment("Generation rate of bamboo; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
-        @Config.Name("BamboosGenRate")
-        @Config.RangeInt(min = 0)
+        @Config.Name("BamboosGenWeight")
+        @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
-        public int bamboosGenRate = 35;
+        public int bamboosGenRate = 6;
 
-        @Config.Comment("Generation rate of wild crops; larger value means lower generation rate; set to 0 to disable.")
+        @Config.Comment("Generation rate of wild crops; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
-        @Config.Name("CropsGenRate")
-        @Config.RangeInt(min = 0)
+        @Config.Name("CropsGenWeight")
+        @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
-        public int cropsGenRate = 4;
+        public int cropsGenRate = 40;
     }
 
     @Config.Name("Client")
