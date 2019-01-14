@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
@@ -54,7 +55,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
     {
         if (ItemNBTUtil.verifyExistence(stack, "potion"))
         {
-            PotionUtils.addPotionTooltip(DrinkBrewingRecipe.makeDummyPotionItem(stack), tooltip, 1.0F);
+            PotionUtils.addPotionTooltip(DrinkBrewingRecipe.makeDummyPotionItem(stack), tooltip, CuisineConfig.GENERAL.winePotionDurationModifier);
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -141,14 +142,16 @@ public class ItemBottle extends ItemMod implements CookingVessel
         result.get().onEaten(copy, worldIn, entityplayer);
         if (!worldIn.isRemote)
         {
-            for (PotionEffect potioneffect : PotionUtils.getEffectsFromStack(stack))
+            ItemStack dummy = DrinkBrewingRecipe.makeDummyPotionItem(stack);
+            for (PotionEffect potioneffect : PotionUtils.getEffectsFromStack(dummy))
             {
                 if (potioneffect.getPotion().isInstant())
                 {
-                    potioneffect.getPotion().affectEntity(entityplayer, entityplayer, entityLiving, potioneffect.getAmplifier(), 1.0D);
+                    potioneffect.getPotion().affectEntity(entityplayer, entityplayer, entityLiving, potioneffect.getAmplifier(), CuisineConfig.GENERAL.winePotionDurationModifier);
                 }
                 else
                 {
+                    potioneffect.duration *= CuisineConfig.GENERAL.winePotionDurationModifier;
                     entityLiving.addPotionEffect(new PotionEffect(potioneffect));
                 }
             }

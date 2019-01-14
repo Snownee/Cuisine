@@ -104,6 +104,9 @@ public final class CuisineConfig
         @Config.Name("BetterHarvestBlacklist")
         @Config.RequiresMcRestart
         public String[] betterHarvestBlacklist = {};
+
+        @Config.Name("WinePotionDurationModifier")
+        public float winePotionDurationModifier = 1F;
     }
 
     @Config.Comment("Config options of Cuisine Hardcore Mode.")
