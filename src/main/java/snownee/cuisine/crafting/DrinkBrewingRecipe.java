@@ -1,5 +1,8 @@
 package snownee.cuisine.crafting;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
@@ -7,17 +10,49 @@ import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.oredict.DyeUtils;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Material;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.util.ItemNBTUtil;
 
 public class DrinkBrewingRecipe implements IBrewingRecipe
 {
+    public static final Set<String> BREWABLE_MATERIALS = new HashSet<>();
+
+    public static void add(Material material)
+    {
+        if (material.isValidForm(Form.JUICE))
+        {
+            DrinkBrewingRecipe.BREWABLE_MATERIALS.add(material.getID());
+        }
+    }
 
     @Override
     public boolean isInput(ItemStack input)
     {
-        return input.getItem() == CuisineRegistry.BOTTLE;
+        if (input.getItem() != CuisineRegistry.BOTTLE)
+        {
+            return false;
+        }
+        if (ItemNBTUtil.verifyExistence(input, "potion"))
+        {
+            return true;
+        }
+        if (input.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
+        {
+            IFluidHandlerItem handler = input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+            FluidStack fluid = handler.drain(Integer.MAX_VALUE, false);
+            if (fluid.tag != null && fluid.tag.hasKey(CuisineSharedSecrets.KEY_MATERIAL, Constants.NBT.TAG_STRING))
+            {
+                return BREWABLE_MATERIALS.contains(fluid.tag.getString(CuisineSharedSecrets.KEY_MATERIAL));
+            }
+        }
+        return false;
     }
 
     @Override

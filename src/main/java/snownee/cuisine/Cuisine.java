@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -85,7 +86,6 @@ public class Cuisine
         CuisineInternalGateway.init();
         CulinarySkillCapability.init();
         FoodContainerCapability.init();
-        RecipeRegistry.preInit();
     }
 
     @Mod.EventHandler
@@ -133,6 +133,12 @@ public class Cuisine
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenCitrusTrees());
         }
         BrewingRecipeRegistry.addRecipe(new DrinkBrewingRecipe());
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event)
+    {
+        RecipeRegistry.postInit();
     }
 
     public static enum Materials implements IVariant<Void>

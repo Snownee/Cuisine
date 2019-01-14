@@ -31,8 +31,13 @@ import snownee.kiwi.util.definition.OreDictDefinition;
 
 public class RecipeRegistry
 {
-    public static void preInit()
+    public static void postInit()
     {
+        DrinkBrewingRecipe.add(CulinaryHub.CommonMaterials.CORN);
+        DrinkBrewingRecipe.add(CulinaryHub.CommonMaterials.CUCUMBER);
+        DrinkBrewingRecipe.add(CulinaryHub.CommonMaterials.TOMATO);
+        DrinkBrewingRecipe.add(CulinaryHub.CommonMaterials.PUMPKIN);
+        DrinkBrewingRecipe.add(CulinaryHub.CommonMaterials.GINGER);
     }
 
     public static void init()
@@ -96,7 +101,7 @@ public class RecipeRegistry
 
         Processing.SQUEEZING.add(new SimpleSqueezing(new ResourceLocation(Cuisine.MODID, "sugarcane_squeezing"), OreDictDefinition.of("sugarcane"), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
 
-        CulinaryHub.API_INSTANCE.getKnownMaterials().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
+        CulinaryHub.API_INSTANCE.getKnownMaterials().stream().filter(m -> m.isValidForm(Form.JUICE)).filter(m -> m.isUnderCategoryOf(MaterialCategory.FRUIT) || m.isUnderCategoryOf(MaterialCategory.VEGETABLES) || m.isUnderCategoryOf(MaterialCategory.GRAIN)).forEach(m -> Processing.SQUEEZING.add(new MaterialSqueezing(m)));
 
     }
 }

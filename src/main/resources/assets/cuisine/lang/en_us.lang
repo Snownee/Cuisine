@@ -303,6 +303,8 @@ cuisine.gelo.name=Gelo
 cuisine.gelo.specific=%s Gelo
 cuisine.soda.name=Soda
 cuisine.soda.specific=%s Soda
+cuisine.wine.name=Wine
+cuisine.wine.specific=%s Wine
 # Easter egg, don't translate.
 cuisine.snownee.name=Snownee
 cuisine.snownee.specific=%s Snownee
@@ -412,6 +414,9 @@ cuisine.toast.skill.upgrade=Culinary Level Up!
 cuisine.toast.skill.get=New skill get!
 cuisine.toast.skill.description=%s up to %d!
 
+# Easter egg. Do not have to translate:
+cuisine.bourbon=My lover is this country.
+cuisine.curasao=Prepare for your five-color cards yet?
 cuisine.command.culinaryskill=/culinaryskill <Player> get <SkillPoint> or /culinaryskill <Player> set <SkillPoint> <value>
 
 ## Special override - can be used when combined name is either grammatrically incorrect or not following convention

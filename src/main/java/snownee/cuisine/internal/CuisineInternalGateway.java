@@ -37,6 +37,7 @@ import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.prefab.SimpleEffectImpl;
 import snownee.cuisine.api.prefab.SimpleMaterialImpl;
 import snownee.cuisine.api.prefab.SimpleSpiceImpl;
+import snownee.cuisine.crafting.DrinkBrewingRecipe;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.internal.effect.EffectCurePotions;
 import snownee.cuisine.internal.effect.EffectExperienced;
@@ -155,7 +156,12 @@ public final class CuisineInternalGateway implements CuisineAPI
     @Override
     public Material register(Material material)
     {
-        return materialRegistry.register(material.getID(), material);
+        Material actualMaterial = materialRegistry.register(material.getID(), material);
+        if (actualMaterial == material && actualMaterial.isUnderCategoryOf(MaterialCategory.FRUIT))
+        {
+            DrinkBrewingRecipe.add(material);
+        }
+        return actualMaterial;
     }
 
     @Override

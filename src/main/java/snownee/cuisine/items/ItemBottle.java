@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +23,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -36,8 +38,10 @@ import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.crafting.DrinkBrewingRecipe;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.capabilities.GlassBottleWrapper;
 import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.util.I18nUtil;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.item.ItemMod;
 
@@ -56,6 +60,15 @@ public class ItemBottle extends ItemMod implements CookingVessel
         if (ItemNBTUtil.verifyExistence(stack, "potion"))
         {
             PotionUtils.addPotionTooltip(DrinkBrewingRecipe.makeDummyPotionItem(stack), tooltip, CuisineConfig.GENERAL.winePotionDurationModifier);
+            String id = getMaterial(stack);
+            if ("corn".equals(id))
+            {
+                tooltip.add(I18nUtil.translate("bourbon"));
+            }
+            else if ("orange".equals(id) || "lime".equals(id) || "mandarin".equals(id))
+            {
+                tooltip.add(I18nUtil.translate("curasao"));
+            }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -75,6 +88,19 @@ public class ItemBottle extends ItemMod implements CookingVessel
     @Override
     public String getItemStackDisplayName(ItemStack stack)
     {
+        if (ItemNBTUtil.verifyExistence(stack, "potion"))
+        {
+            String id = getMaterial(stack);
+            if (id != null)
+            {
+                Material material = CulinaryHub.API_INSTANCE.findMaterial(id);
+                if (material != null)
+                {
+                    return I18nUtil.translate("wine.specific", I18n.format(material.getTranslationKey()));
+                }
+            }
+            return I18nUtil.translate("wine.name");
+        }
         stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
         IFluidHandlerItem handler = FluidUtil.getFluidHandler(stack);
         if (handler != null)
@@ -86,6 +112,21 @@ public class ItemBottle extends ItemMod implements CookingVessel
             }
         }
         return super.getItemStackDisplayName(stack);
+    }
+
+    @Nullable
+    private static String getMaterial(ItemStack stack)
+    {
+        NBTTagCompound compound = ItemNBTUtil.getCompound(stack, "Fluid", true);
+        if (compound != null && compound.hasKey("Tag", Constants.NBT.TAG_COMPOUND))
+        {
+            NBTTagCompound tag = compound.getCompoundTag("Tag");
+            if (tag.hasKey(CuisineSharedSecrets.KEY_MATERIAL, Constants.NBT.TAG_STRING))
+            {
+                return tag.getString(CuisineSharedSecrets.KEY_MATERIAL);
+            }
+        }
+        return null;
     }
 
     @Override
