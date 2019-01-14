@@ -1,10 +1,12 @@
 package snownee.cuisine.crafting;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionUtils;
@@ -39,6 +41,8 @@ public class DrinkBrewingRecipe implements IBrewingRecipe
         {
             return false;
         }
+        // Why not "Potion":
+        // in order not to be caught by VanillaBrewingRecipe, it will drop item NBT
         if (ItemNBTUtil.verifyExistence(input, "potion"))
         {
             return true;
@@ -64,6 +68,31 @@ public class DrinkBrewingRecipe implements IBrewingRecipe
     @Override
     public ItemStack getOutput(ItemStack input, ItemStack ingredient)
     {
+        if (!isInput(input) || !isIngredient(ingredient))
+        {
+            return ItemStack.EMPTY;
+        }
+        if (DyeUtils.isDye(ingredient))
+        {
+            if (!ItemNBTUtil.verifyExistence(input, "potion"))
+            {
+                return ItemStack.EMPTY;
+            }
+            ItemStack output = input.copy();
+            Optional<EnumDyeColor> result = DyeUtils.colorFromStack(ingredient);
+            if (!result.isPresent())
+            {
+                return ItemStack.EMPTY;
+            }
+            int color = result.get().getColorValue();
+            if (ItemNBTUtil.verifyExistence(output, "liquidColor")) // has color already
+            {
+                int colorBefore = ItemNBTUtil.getInt(output, "liquidColor", -1);
+                color = Material.mixColor(colorBefore, color, 0.5F);
+            }
+            ItemNBTUtil.setInt(output, "liquidColor", color);
+            return output;
+        }
         ItemStack dummy = makeDummyPotionItem(input);
         if (PotionHelper.hasTypeConversions(dummy, ingredient))
         {

@@ -76,6 +76,10 @@ public class ItemBottle extends ItemMod implements CookingVessel
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack)
     {
+        if (ItemNBTUtil.verifyExistence(stack, "liquidColor"))
+        {
+            return false;
+        }
         return super.hasEffect(stack) || ItemNBTUtil.verifyExistence(stack, "potion");
     }
 
