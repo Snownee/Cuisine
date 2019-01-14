@@ -8,6 +8,7 @@ import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import snownee.cuisine.command.CommandRegistry;
+import snownee.cuisine.crafting.DrinkBrewingRecipe;
 import snownee.cuisine.crafting.RecipeRegistry;
 import snownee.cuisine.events.BetterHarvest;
 import snownee.cuisine.events.OreDictHandler;
@@ -130,6 +132,7 @@ public class Cuisine
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenCitrusTrees());
         }
+        BrewingRecipeRegistry.addRecipe(new DrinkBrewingRecipe());
     }
 
     public static enum Materials implements IVariant<Void>

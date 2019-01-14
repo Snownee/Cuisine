@@ -1,8 +1,12 @@
 package snownee.cuisine.items;
 
+import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -10,6 +14,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -19,6 +25,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CookingVessel;
@@ -26,8 +34,10 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
+import snownee.cuisine.crafting.DrinkBrewingRecipe;
 import snownee.cuisine.internal.capabilities.GlassBottleWrapper;
 import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.item.ItemMod;
 
 public class ItemBottle extends ItemMod implements CookingVessel
@@ -37,6 +47,22 @@ public class ItemBottle extends ItemMod implements CookingVessel
     {
         super(name);
         setContainerItem(Items.GLASS_BOTTLE);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        if (ItemNBTUtil.verifyExistence(stack, "potion"))
+        {
+            PotionUtils.addPotionTooltip(DrinkBrewingRecipe.makeDummyPotionItem(stack), tooltip, 1.0F);
+        }
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack)
+    {
+        return super.hasEffect(stack) || ItemNBTUtil.verifyExistence(stack, "potion");
     }
 
     @Override
@@ -113,6 +139,20 @@ public class ItemBottle extends ItemMod implements CookingVessel
             return stack;
         }
         result.get().onEaten(copy, worldIn, entityplayer);
+        if (!worldIn.isRemote)
+        {
+            for (PotionEffect potioneffect : PotionUtils.getEffectsFromStack(stack))
+            {
+                if (potioneffect.getPotion().isInstant())
+                {
+                    potioneffect.getPotion().affectEntity(entityplayer, entityplayer, entityLiving, potioneffect.getAmplifier(), 1.0D);
+                }
+                else
+                {
+                    entityLiving.addPotionEffect(new PotionEffect(potioneffect));
+                }
+            }
+        }
 
         if (!entityplayer.capabilities.isCreativeMode)
         {
