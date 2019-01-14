@@ -5,16 +5,20 @@ import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemGlassBottle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.fluids.CuisineFluids;
+import snownee.cuisine.util.ItemNBTUtil;
 
 @EventBusSubscriber(modid = Cuisine.MODID)
 public class GlassBottleWrapper extends FluidHandlerItemStackSimple
@@ -62,5 +66,25 @@ public class GlassBottleWrapper extends FluidHandlerItemStackSimple
             GlassBottleWrapper fluidHandler = new GlassBottleWrapper(stack);
             event.addCapability(resourceLocation, fluidHandler);
         }
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY && ItemNBTUtil.verifyExistence(container, "potion"))
+        {
+            return false;
+        }
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY && ItemNBTUtil.verifyExistence(container, "potion"))
+        {
+            return null;
+        }
+        return super.getCapability(capability, facing);
     }
 }
