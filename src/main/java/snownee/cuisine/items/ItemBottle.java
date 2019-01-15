@@ -32,6 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
+import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
@@ -44,6 +45,7 @@ import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.util.I18nUtil;
 import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.item.ItemMod;
+import snownee.kiwi.util.NBTHelper;
 
 public class ItemBottle extends ItemMod implements CookingVessel
 {
@@ -161,18 +163,8 @@ public class ItemBottle extends ItemMod implements CookingVessel
         }
         EntityPlayer entityplayer = (EntityPlayer) entityLiving;
 
-        ItemStack copy = ItemHandlerHelper.copyStackWithSize(stack, 1);
-        IFluidHandlerItem handler = FluidUtil.getFluidHandler(copy);
-        if (handler == null)
-        {
-            return stack;
-        }
-        FluidStack fluid = handler.drain(Integer.MAX_VALUE, false);
-        if (fluid == null)
-        {
-            return stack;
-        }
-        Material material = CulinaryHub.API_INSTANCE.findMaterial(fluid);
+        String id = NBTHelper.of(stack).getString("Fluid.Tag.material", "");
+        Material material = CulinaryHub.API_INSTANCE.findMaterial(id);
         if (material == null || !material.isValidForm(Form.JUICE))
         {
             return stack;
@@ -184,21 +176,38 @@ public class ItemBottle extends ItemMod implements CookingVessel
         {
             return stack;
         }
-        result.get().onEaten(copy, worldIn, entityplayer);
+        result.get().onEaten(stack, worldIn, entityplayer);
         if (!worldIn.isRemote)
         {
             ItemStack dummy = DrinkBrewingRecipe.makeDummyPotionItem(stack);
+            int duration = 0;
             for (PotionEffect potioneffect : PotionUtils.getEffectsFromStack(dummy))
             {
+                potioneffect.duration *= CuisineConfig.GENERAL.winePotionDurationModifier;
+                duration += potioneffect.duration;
                 if (potioneffect.getPotion().isInstant())
                 {
                     potioneffect.getPotion().affectEntity(entityplayer, entityplayer, entityLiving, potioneffect.getAmplifier(), CuisineConfig.GENERAL.winePotionDurationModifier);
                 }
                 else
                 {
-                    potioneffect.duration *= CuisineConfig.GENERAL.winePotionDurationModifier;
                     entityLiving.addPotionEffect(new PotionEffect(potioneffect));
                 }
+            }
+            if (duration > 0)
+            {
+                int amplifier = 0;
+                PotionEffect potionEffect = entityLiving.getActivePotionEffect(CuisineRegistry.DRUNK);
+                if (potionEffect != null)
+                {
+                    duration += potionEffect.duration;
+                    amplifier = potionEffect.getAmplifier() + 1;
+                    if (amplifier > 2)
+                    {
+                        amplifier = 2;
+                    }
+                }
+                entityLiving.addPotionEffect(new PotionEffect(CuisineRegistry.DRUNK, duration, amplifier, true, true));
             }
         }
 
