@@ -50,9 +50,9 @@ import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.IngredientFood;
 import snownee.cuisine.util.I18nUtil;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.IModItem;
+import snownee.kiwi.util.NBTHelper;
 import snownee.kiwi.util.Util;
 
 public final class ItemIngredient extends ItemFood implements IModItem, CookingVessel
@@ -232,7 +232,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
         itemStack.setTagCompound(CuisinePersistenceCenter.serialize(ingredient));
         if (ingredient.getEffects().contains(CulinaryHub.CommonEffects.RARE))
         {
-            ItemNBTUtil.setBoolean(itemStack, CuisineSharedSecrets.KEY_RARE, true);
+            NBTHelper.of(itemStack).setBoolean(CuisineSharedSecrets.KEY_RARE, true);
         }
         return itemStack;
     }
@@ -287,7 +287,7 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
     @Override
     public EnumRarity getRarity(ItemStack stack)
     {
-        return ItemNBTUtil.getBoolean(stack, CuisineSharedSecrets.KEY_RARE, false) ? EnumRarity.UNCOMMON : EnumRarity.COMMON;
+        return NBTHelper.of(stack).getBoolean(CuisineSharedSecrets.KEY_RARE) ? EnumRarity.UNCOMMON : EnumRarity.COMMON;
     }
 
     /**

@@ -5,10 +5,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.blocks.BlockModLeaves;
 import snownee.cuisine.blocks.BlockModSapling;
 import snownee.kiwi.tile.TileBase;
+import snownee.kiwi.util.NBTHelper;
 
 public class TileFruitTree extends TileBase
 {
@@ -56,15 +56,10 @@ public class TileFruitTree extends TileBase
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
-        if (compound.hasKey("type", Constants.NBT.TAG_INT))
-        {
-            BlockModSapling.Type[] types = BlockModSapling.Type.values();
-            type = types[MathHelper.clamp(compound.getInteger("type"), 0, types.length)];
-        }
-        if (compound.hasKey("death", Constants.NBT.TAG_INT))
-        {
-            deathRate = compound.getInteger("death");
-        }
+        NBTHelper helper = NBTHelper.of(compound);
+        BlockModSapling.Type[] types = BlockModSapling.Type.values();
+        type = types[MathHelper.clamp(helper.getInt("type"), 0, types.length)];
+        deathRate = helper.getInt("death");
         super.readFromNBT(compound);
     }
 

@@ -17,6 +17,7 @@ import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.kiwi.tile.TileInventoryBase;
+import snownee.kiwi.util.NBTHelper.Tag;
 
 public class TileBasin extends TileInventoryBase
 {
@@ -131,7 +132,7 @@ public class TileBasin extends TileInventoryBase
     {
         super.readPacketData(data);
         tank.readFromNBT(data.getCompoundTag("tank"));
-        if (data.hasKey("squeezingFailed"))
+        if (data.hasKey("squeezingFailed", Tag.BYTE))
         {
             squeezingFailed = data.getBoolean("squeezingFailed");
         }

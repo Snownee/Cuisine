@@ -16,8 +16,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.tiles.TileBarbecueRack;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.util.AABBUtil;
+import snownee.kiwi.util.NBTHelper;
 
 public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
 {
@@ -90,7 +90,7 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
                     int doneness = 0;
                     if (stack.getItem() == CuisineRegistry.INGREDIENT)
                     {
-                        doneness = ItemNBTUtil.getInt(stack, CuisineSharedSecrets.KEY_DONENESS, 0);
+                        doneness = NBTHelper.of(stack).getInt(CuisineSharedSecrets.KEY_DONENESS);
                     }
                     else
                     {

@@ -3,8 +3,6 @@ package snownee.cuisine.tiles;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -152,13 +150,6 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         }
         heat = BLOCK_HEAT_SOURCES.get(state.getBlock());
         return heat != null ? heat : 0;
-    }
-
-    @Nonnull
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
-        return super.writeToNBT(compound);
     }
 
     @Override
