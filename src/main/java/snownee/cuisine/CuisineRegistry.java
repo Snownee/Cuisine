@@ -42,6 +42,7 @@ import snownee.cuisine.items.ItemModDoor;
 import snownee.cuisine.items.ItemMortar;
 import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.potions.PotionDispersal;
+import snownee.cuisine.potions.PotionDrunk;
 import snownee.cuisine.potions.PotionSustainedRelease;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
@@ -170,6 +171,8 @@ public class CuisineRegistry implements IModule
     public static final PotionMod TOUGHNESS = new PotionMod("toughness", true, 4, false, 0x943943, -1, true);
 
     public static final PotionSustainedRelease SUSTAINED_RELEASE = new PotionSustainedRelease("sustained_release");
+
+    public static final PotionDrunk DRUNK = new PotionDrunk("drunk", 5);
 
     @Override
     public void init()

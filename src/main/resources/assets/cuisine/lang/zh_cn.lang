@@ -348,7 +348,7 @@ cuisine.potion.hot=麻辣
 cuisine.potion.effect_resistance=效果抗性
 cuisine.potion.cold_blood=冷血
 cuisine.potion.toughness=不动如山
-cuisine.potion.drunk=醉酒
+cuisine.potion.drunk=微醺
 
 potion.effect.cuisine.dispersal=驱散药水
 splash_potion.effect.cuisine.dispersal=喷溅型驱散药水
