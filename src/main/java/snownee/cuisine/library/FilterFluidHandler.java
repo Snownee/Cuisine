@@ -25,10 +25,15 @@ public class FilterFluidHandler implements IFluidHandler
     @Override
     public IFluidTankProperties[] getTankProperties()
     {
-        IFluidTankProperties properties[] = parent.getTankProperties();
+        IFluidTankProperties[] properties = parent.getTankProperties();
         for (int i = 0; i < properties.length; i++)
         {
-            properties[i] = new FilterFluidTankProperties(properties[i]);
+            // TODO (3TUSK): I am not exactly sure what's going on, but FluidTank somehow manages to cache
+            //   the wrapped version of IFluidTankProperties. This is the workaround.
+            if (!(properties[i] instanceof FilterFluidTankProperties))
+            {
+                properties[i] = new FilterFluidTankProperties(properties[i]);
+            }
         }
         return properties;
     }
