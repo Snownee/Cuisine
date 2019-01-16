@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -44,7 +43,6 @@ public class TESRWok extends TESRFirePit<TileWok>
         if (!contents.isEmpty())
         {
             GlStateManager.pushMatrix();
-            RenderItem renderItem = mc.getRenderItem();
             RenderHelper.disableStandardItemLighting();
             GlStateManager.disableLighting();
 
