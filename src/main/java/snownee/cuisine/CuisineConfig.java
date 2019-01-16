@@ -106,6 +106,14 @@ public final class CuisineConfig
         @Config.Name("BasicSeedsWeight")
         @Config.RequiresMcRestart
         public int basicSeedsWeight = 5;
+
+        @Config.Name("BetterHarvest")
+        @Config.RequiresMcRestart
+        public boolean betterHarvest = true;
+
+        @Config.Name("BetterHarvestBlacklist")
+        @Config.RequiresMcRestart
+        public String[] betterHarvestBlacklist = {};
     }
 
     @Config.Comment("Config options of Cuisine Hardcore Mode.")

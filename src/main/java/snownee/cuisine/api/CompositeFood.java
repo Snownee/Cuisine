@@ -16,7 +16,10 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import snownee.cuisine.api.CulinaryHub.CommonEffects;
@@ -307,7 +310,7 @@ public abstract class CompositeFood
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
         Collection<EffectBinding> bindings = getEffectBindings();
-        EffectCollector collector = new DefaultConsumedCollector();
+        DefaultConsumedCollector collector = new DefaultConsumedCollector(getFoodLevel());
 
         // And then apply them
         for (EffectBinding binding : bindings)
@@ -323,7 +326,26 @@ public abstract class CompositeFood
 
         collector.apply(this, player);
 
-        player.getFoodStats().addStats(getFoodLevel(), getSaturationModifier());
+        int countOvercooked = (int) getIngredients().stream().filter(i -> i.getAllTraits().contains(IngredientTrait.OVERCOOKED)).count();
+        int countPlain = (int) getIngredients().stream().filter(i -> i.getAllTraits().contains(IngredientTrait.PLAIN) || i.getAllTraits().contains(IngredientTrait.UNDERCOOKED)).count();
+        int newFoodLevel = collector.getNewFoodLevel() - countOvercooked;
+        if (newFoodLevel > 0)
+        {
+            player.getFoodStats().addStats(newFoodLevel, getSaturationModifier());
+        }
+        if (!worldIn.isRemote)
+        {
+            if (countPlain / (float) getIngredients().size() > 0.8F)
+            {
+                Potion potion = worldIn.rand.nextBoolean() ? MobEffects.MINING_FATIGUE : MobEffects.WEAKNESS;
+                player.addPotionEffect(new PotionEffect(potion, 300 * getIngredients().size()));
+            }
+            if (countOvercooked / (float) getIngredients().size() > 0.8F)
+            {
+                Potion potion = worldIn.rand.nextBoolean() ? MobEffects.POISON : MobEffects.NAUSEA;
+                player.addPotionEffect(new PotionEffect(potion, 100 * getIngredients().size()));
+            }
+        }
     }
 
     protected Collection<EffectBinding> getEffectBindings()

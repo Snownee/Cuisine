@@ -1,5 +1,7 @@
 package snownee.cuisine.network;
 
+import java.util.Random;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -15,11 +17,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.api.HeatHandler;
+import snownee.cuisine.tiles.FuelHeatHandler;
 import snownee.cuisine.tiles.TileJar;
 import snownee.cuisine.tiles.TileWok;
 import snownee.kiwi.network.PacketMod;
-
-import java.util.Random;
 
 public class PacketCustomEvent implements PacketMod
 {
@@ -103,19 +105,22 @@ public class PacketCustomEvent implements PacketMod
             if (te instanceof TileWok)
             {
                 ++((TileWok) te).actionCycle;
-                for (int k = 0; k < 4; ++k)
+                HeatHandler handler = ((TileWok) te).getHeatHandler();
+                if (handler instanceof FuelHeatHandler)
                 {
-                    double x = posX + 0.5D + rand.nextGaussian() * 0.2D;
-                    double z = posZ + 0.5D + rand.nextGaussian() * 0.2D;
-                    world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, x, posY + 0.25, z, 0D, 0.1D, 0D);
+                    int level = ((FuelHeatHandler) handler).getLevel();
+                    for (int k = 0; k < level * 2; ++k)
+                    {
+                        double x = posX + 0.5D + rand.nextGaussian() * 0.2D;
+                        double z = posZ + 0.5D + rand.nextGaussian() * 0.2D;
+                        world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, x, posY + 0.25, z, 0D, 0.1D, 0D);
+                    }
+                    if (level > 0)
+                    {
+                        world.playSound(posX + 0.5, posY + 0.25, posZ + 0.5, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, 0.4F + rand.nextFloat() * 0.2F * level, 0.7F + rand.nextFloat() * 0.1F * level, false);
+                    }
                 }
-                world.playSound(posX + 0.5D + rand.nextGaussian() * 0.2D, posY + 0.25, posZ + 0.5D + rand.nextGaussian() * 0.2D, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.PLAYERS, 1F, 1F, true);
             }
-        }
-        case 4:
-        {
-            // TODO: Ingredients put in wok
-            break;
         }
         case 5:
         {

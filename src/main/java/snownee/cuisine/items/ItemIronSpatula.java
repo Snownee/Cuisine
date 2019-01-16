@@ -7,11 +7,9 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingStrategy;
 import snownee.cuisine.api.CookingStrategyProvider;
 import snownee.cuisine.api.CookingVessel;
-import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
@@ -39,7 +37,7 @@ public class ItemIronSpatula extends ItemMod implements CookingStrategyProvider
         @Override
         public void preCook(Seasoning seasoning, CookingVessel vessel)
         {
-            if (seasoning.getSpice().getKeywords().contains("oil"))
+            if (seasoning.hasKeyword("oil"))
             {
                 this.oilAmount += seasoning.getSize();
             }

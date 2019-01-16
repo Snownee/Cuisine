@@ -54,12 +54,14 @@ public class BlockBasinColored extends BlockBasin
         return state.getValue(BlockColored.COLOR).getMetadata();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return MapColor.getBlockColor(state.getValue(BlockColored.COLOR));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {

@@ -32,6 +32,7 @@ import snownee.cuisine.api.Spice;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
+import snownee.kiwi.handler.Battery;
 import snownee.kiwi.tile.TileBase;
 
 public class TileDrinkroTank extends TileBase implements CookingVessel
@@ -417,6 +418,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         return working;
     }
 
+    @Override
     protected void refresh()
     {
         if (hasWorld() && !world.isRemote)

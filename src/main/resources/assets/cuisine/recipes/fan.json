@@ -1,17 +1,15 @@
 {
   "type": "forge:ore_shaped",
   "result": {
-    "item": "cuisine:material",
-    "data": 0
+    "item": "cuisine:fan"
   },
   "pattern": [
-    " b",
+    " w",
     "s "
   ],
   "key": {
-    "b": {
-      "ore" : "slimeball",
-      "type": "forge:ore_dict"
+    "w": {
+      "item": "minecraft:waterlily"
     },
     "s": {
       "type": "forge:ore_dict",

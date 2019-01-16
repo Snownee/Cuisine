@@ -290,7 +290,7 @@ public class TileWok extends TileFirePit implements CookingVessel
             {
                 seasoningInfo.volume = 0;
             }
-            else if (seasoning.getSpice().getKeywords().contains("water") && seasoning.getSize() == size)
+            else if (seasoning.hasKeyword("water") && seasoning.getSize() == size)
             {
                 seasoningInfo.volume = size;
                 seasoningInfo.color = 0xFF4C57D1;
@@ -456,7 +456,7 @@ public class TileWok extends TileFirePit implements CookingVessel
             }
             boolean enoughWater = builder.getWaterAmount() >= 200 || builder.getWaterAmount() / builder.getIngredients().size() >= 100;
             int newDoneness = ingredient.getDoneness() + heatLevel;
-            if (enoughWater && newDoneness > 110)
+            if (!(enoughWater && newDoneness > 110))
             {
                 ingredient.setDoneness(newDoneness);
             }

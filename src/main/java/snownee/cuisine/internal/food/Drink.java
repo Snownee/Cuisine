@@ -31,7 +31,6 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
-import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Material;
@@ -393,7 +392,7 @@ public class Drink extends CompositeFood
                 break;
             }
         }
-        EffectCollector collector = new DefaultConsumedCollector(modifier);
+        DefaultConsumedCollector collector = new DefaultConsumedCollector(getFoodLevel(), modifier);
 
         // And then apply them
         for (EffectBinding binding : bindings)

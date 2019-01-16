@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,6 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
     {
         super.render(tile, x, y, z, partialTicks, destroyStage, alpha);
         Minecraft mc = Minecraft.getMinecraft();
-        RenderItem renderItem = mc.getRenderItem();
 
         HoloProfile profile = HoloProfiles.get(tile);
         // int heat = (int) (mc.getSystemTime() % 15000 / 5);
@@ -155,7 +154,7 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
                 tessellator.draw();
                 GlStateManager.enableTexture2D();
 
-                CulinaryRenderHelper.renderColoredGuiItem(mc, info.stack, (int) (transparency * 255) << 24 | 0x00FFFFFF, xList * 1.5F, -1.5F + yList * 1.5F);
+                CulinaryRenderHelper.renderColoredItem(mc, info.stack, TransformType.GUI, (int) (transparency * 255) << 24 | 0x00FFFFFF, xList * 1.5F, -1.5F + yList * 1.5F);
                 // GlStateManager.pushMatrix();
                 // GlStateManager.rotate(180, 1, 0, 0);
                 // GlStateManager.scale(scale, scale, scale);
@@ -189,10 +188,5 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
             this.stack = stack;
             this.doneness = doneness;
         }
-    }
-
-    private static void renderProgress()
-    {
-
     }
 }

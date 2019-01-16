@@ -51,10 +51,9 @@ public class EffectPotions extends SimpleEffectImpl
             modifier = 1;
         }
         // TODO: Fine tuning
-        System.out.println(size * 4 / modifier);
         for (PotionEffect effect : effects)
         {
-            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size / (modifier + 1) / 4)), effect.getAmplifier() + modifier, effect.getIsAmbient(), effect.doesShowParticles()));
+            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size * 2 / (modifier + 1) / 4)), effect.getAmplifier() + modifier, effect.getIsAmbient(), effect.doesShowParticles()));
         }
     }
 

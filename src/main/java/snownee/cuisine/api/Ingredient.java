@@ -154,6 +154,7 @@ public final class Ingredient
         theCopy.water = this.water;
         theCopy.oil = this.oil;
         theCopy.doneness = this.doneness;
+        theCopy.effects.addAll(effects);
         return theCopy;
     }
 

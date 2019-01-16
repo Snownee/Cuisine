@@ -84,9 +84,9 @@ public class RecipeRegistry
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Items.MELON), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 5)));
         Processing.VESSEL.add(new Vessel(ItemDefinition.of(Blocks.MELON_BLOCK), FluidRegistry.WATER, ItemDefinition.EMPTY, new FluidStack(CuisineFluids.FRUIT_VINEGAR, 50)));
 
-        Processing.BOILING.add(new DistillationBoiling(new FluidStack(FluidRegistry.WATER, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), 0));
-        Processing.BOILING.add(new DistillationBoiling(new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
-        Processing.BOILING.add(new DistillationBoiling(FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
+        Processing.BOILING.add(new DistillationBoiling(new ResourceLocation(Cuisine.MODID, "crude_salt"), new FluidStack(FluidRegistry.WATER, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.CRUDE_SALT), 0));
+        Processing.BOILING.add(new DistillationBoiling(new ResourceLocation(Cuisine.MODID, "unfined_sugar_from_sugarcane"), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
+        Processing.BOILING.add(new DistillationBoiling(new ResourceLocation(Cuisine.MODID, "unfined_sugar_from_beet"), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.UNREFINED_SUGAR), 2));
 
         ItemStack sugar = new ItemStack(Items.SUGAR);
         Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_bamboo_and_sugarcane"), ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));

@@ -172,6 +172,10 @@ public class BlockFirePit extends BlockModHorizontal
             return true;
         }
         TileEntity tile = worldIn.getTileEntity(pos);
+        if (stack.getItem() == CuisineRegistry.FAN)
+        {
+            return false;
+        }
         if (hand == EnumHand.MAIN_HAND && hasComponent(state, Component.WOK)) // You cannot use off-hand to control wok. Simply can't.
         {
             if (tile instanceof TileWok)
@@ -215,7 +219,11 @@ public class BlockFirePit extends BlockModHorizontal
                         {
                             if (!stack.isEmpty())
                             {
-                                playerIn.setHeldItem(hand, teBR.stacks.insertItem(result, stack, false));
+                                ItemStack remain = teBR.stacks.insertItem(result, playerIn.isCreative() ? stack.copy() : stack, false);
+                                if (!playerIn.isCreative())
+                                {
+                                    playerIn.setHeldItem(hand, remain);
+                                }
                             }
                         }
                         else

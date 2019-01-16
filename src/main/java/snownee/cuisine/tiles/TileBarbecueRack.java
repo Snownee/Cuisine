@@ -119,7 +119,7 @@ public class TileBarbecueRack extends TileFirePit
                         if (!result.isEmpty())
                         {
                             stacks.setStackInSlot(i, result.copy());
-                            if (!stacks.isItemValid(0, stack))
+                            if (!stacks.isItemValid(0, result))
                             {
                                 completed[i] = true;
                             }
@@ -144,6 +144,17 @@ public class TileBarbecueRack extends TileFirePit
                 this.burnTime = burnTime;
             }
         }
+        if (compound.hasKey("completed", Constants.NBT.TAG_INT_ARRAY))
+        {
+            int[] arr = compound.getIntArray("completed");
+            if (arr.length == 3)
+            {
+                for (int i = 0; i < arr.length; i++)
+                {
+                    completed[i] = arr[i] > 0;
+                }
+            }
+        }
     }
 
     @Nonnull
@@ -152,12 +163,12 @@ public class TileBarbecueRack extends TileFirePit
     {
         NBTTagCompound tag = super.writeToNBT(compound);
         tag.setIntArray("burnTime", burnTime);
-        //        int[] arr = new int[3];
-        //        for (int i = 0; i < completed.length; i++)
-        //        {
-        //            arr[i] = completed[i] ? 1 : 0;
-        //        }
-        //        tag.setIntArray("completed", arr);
+        int[] arr = new int[3];
+        for (int i = 0; i < completed.length; i++)
+        {
+            arr[i] = completed[i] ? 1 : 0;
+        }
+        tag.setIntArray("completed", arr);
         tag.setTag("Items", this.stacks.serializeNBT());
         return tag;
     }
@@ -166,16 +177,13 @@ public class TileBarbecueRack extends TileFirePit
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        super.writePacketData(data);
-        data.setTag("Items", this.stacks.serializeNBT());
-        return data;
+        return writeToNBT(data);
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        super.readPacketData(data);
-        stacks.deserializeNBT(data.getCompoundTag("Items"));
+        readFromNBT(data);
         refreshEmpty();
     }
 
