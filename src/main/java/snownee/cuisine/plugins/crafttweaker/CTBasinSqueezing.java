@@ -39,9 +39,9 @@ public final class CTBasinSqueezing
     }
 
     @ZenMethod
-    public static void remove(IItemStack input)
+    public static void remove(IItemStack input, ILiquidStack inputFluid)
     {
-        CTSupport.DELAYED_ACTIONS.add(new RemovalByItem(CTSupport.toNative(input)));
+        CTSupport.DELAYED_ACTIONS.add(new RemovalByItem(CTSupport.toNative(input), CTSupport.toNative(inputFluid)));
     }
 
     @ZenMethod
@@ -91,16 +91,18 @@ public final class CTBasinSqueezing
     private static final class RemovalByItem implements IAction
     {
         private final ItemStack input;
+        private final FluidStack inputFluid;
 
-        private RemovalByItem(ItemStack input)
+        RemovalByItem(ItemStack input, FluidStack inputFluid)
         {
             this.input = input;
+            this.inputFluid = inputFluid;
         }
 
         @Override
         public void apply()
         {
-            getManager().remove(this.input);
+            getManager().remove(this.input, this.inputFluid);
         }
 
         @Override
