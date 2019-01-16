@@ -1,6 +1,12 @@
 {
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "cuisine:item/kitchen_knife"
-  }
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "cuisine:item/kitchen_knife"
+	},
+	"display": {
+		"head": {
+			"translation": [-3.5, 11.5, -4.5],
+			"rotation": [180, 24, 0]
+		}
+	}
 }

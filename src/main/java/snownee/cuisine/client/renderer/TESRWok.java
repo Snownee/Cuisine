@@ -1,6 +1,9 @@
 package snownee.cuisine.client.renderer;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.lwjgl.opengl.GL11;
 
@@ -8,20 +11,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.client.CulinaryRenderHelper;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.TileWok;
 import snownee.cuisine.tiles.TileWok.SeasoningInfo;
 
-public class TESRWok extends TileEntitySpecialRenderer<TileWok>
+public class TESRWok extends TESRFirePit<TileWok>
 {
     @Override
     public void render(TileWok tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
@@ -34,22 +36,23 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
         }
 
         GlStateManager.pushMatrix();
+        GlStateManager.enableAlpha();
         GlStateManager.translate(x, y, z);
 
-        List<ItemStack> list = tile.getWokContents();
-        if (!list.isEmpty())
+        Map<Ingredient, ItemStack> contents = tile.getWokContents();
+        if (!contents.isEmpty())
         {
             GlStateManager.pushMatrix();
-            RenderItem renderItem = mc.getRenderItem();
             RenderHelper.disableStandardItemLighting();
             GlStateManager.disableLighting();
 
             GlStateManager.translate(0.5, 0.1, 0.5);
             int count = 0;
 
-            for (ItemStack stack : list)
+            for (Entry<Ingredient, ItemStack> entry : contents.entrySet())
             {
                 GlStateManager.pushMatrix();
+                ItemStack stack = entry.getValue();
                 int seed = stack.hashCode() + tile.actionCycle * 439;
 
                 GlStateManager.scale(0.5, 0.5, 0.5);
@@ -58,7 +61,7 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
                 GlStateManager.rotate(90, 1, 0, 0);
 
                 RenderHelper.enableStandardItemLighting();
-                renderItem.renderItem(stack, ItemCameraTransforms.TransformType.FIXED);
+                CulinaryRenderHelper.renderIngredient(mc, stack, entry.getKey().getDoneness());
                 RenderHelper.disableStandardItemLighting();
                 GlStateManager.popMatrix();
 
@@ -104,5 +107,17 @@ public class TESRWok extends TileEntitySpecialRenderer<TileWok>
             GlStateManager.popMatrix();
         }
         GlStateManager.popMatrix();
+    }
+
+    @Override
+    protected List<IngredientInfo> getIngredientInfo(TileWok tile)
+    {
+        Map<Ingredient, ItemStack> contents = tile.getWokContents();
+        List<IngredientInfo> infos = new ArrayList<>(contents.size());
+        for (Entry<Ingredient, ItemStack> entry : contents.entrySet())
+        {
+            infos.add(new IngredientInfo(entry.getValue(), entry.getKey().getDoneness()));
+        }
+        return infos;
     }
 }

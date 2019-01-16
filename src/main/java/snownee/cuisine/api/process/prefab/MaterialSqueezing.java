@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
@@ -47,21 +46,13 @@ public class MaterialSqueezing extends AbstractCuisineProcessingRecipe implement
     @Override
     public Output getOutput(ItemStack item, @Nullable FluidStack fluid, Random rand)
     {
-        Ingredient ingredient;
-        if (item.getItem() == CuisineRegistry.INGREDIENT)
-        {
-            ingredient = CulinaryHub.API_INSTANCE.findIngredient(item);
-        }
-        else
-        {
-            ingredient = Ingredient.make(item, 0.5F);
-        }
+        Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(item);
         if (ingredient == null)
         {
             return new Output(fluid, ItemStack.EMPTY);
         }
         int amount = fluid == null ? 0 : fluid.amount;
-        amount += ingredient.getSize() * 500;
+        amount += 500;
         FluidStack outputFluid = FluidJuice.make(material, amount);
         return new Output(outputFluid, ItemStack.EMPTY);
     }

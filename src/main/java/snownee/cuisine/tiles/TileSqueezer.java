@@ -21,6 +21,8 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.Processing;
+import snownee.kiwi.handler.Battery;
+import snownee.kiwi.tile.TileBase;
 
 public class TileSqueezer extends TileBase implements ITickable
 {

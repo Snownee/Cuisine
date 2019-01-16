@@ -12,15 +12,13 @@ public class SpiceBottleContentConsumedEvent extends LivingEvent
     private final World world;
     private final ItemStack stack;
     private final Object content;
-    private int amount;
 
-    public SpiceBottleContentConsumedEvent(World world, EntityLivingBase entity, ItemStack stack, Object content, int amount)
+    public SpiceBottleContentConsumedEvent(World world, EntityLivingBase entity, ItemStack stack, Object content)
     {
         super(entity);
         this.world = world;
         this.stack = stack;
         this.content = content;
-        this.amount = amount;
     }
 
     public World getWorld()
@@ -36,10 +34,5 @@ public class SpiceBottleContentConsumedEvent extends LivingEvent
     public Object getContent()
     {
         return content;
-    }
-
-    public int getAmount()
-    {
-        return amount;
     }
 }

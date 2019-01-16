@@ -1,5 +1,6 @@
 package snownee.cuisine.client;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -7,10 +8,25 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.client.gui.CuisineGUI;
 
@@ -97,5 +113,142 @@ public class CulinaryRenderHelper
         }
     }
 
-    // TODO: width measure method? or icons should not wrap line?
+    public static void renderIngredient(Minecraft mc, ItemStack stack, int doneness)
+    {
+        if (stack.getItem() == CuisineRegistry.INGREDIENT || doneness <= 100)
+        {
+            renderColoredItem(mc, stack, TransformType.NONE, 0xFFFFFFFF, 0, 0);
+        }
+        else
+        {
+            renderColoredItem(mc, stack, TransformType.NONE, Material.mixColor(0xFFFFFFFF, 0xFF000000, (doneness - 100) / 100f), 0, 0);
+        }
+    }
+
+    public static void renderColoredItem(Minecraft mc, ItemStack stack, TransformType transformType, int color, float x, float y)
+    {
+        RenderItem renderItem = mc.getRenderItem();
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, 0);
+        mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.enableAlpha();
+        GlStateManager.alphaFunc(516, 0.1F);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        IBakedModel bakedmodel = renderItem.getItemModelWithOverrides(stack, mc.player.getEntityWorld(), null);
+
+        GlStateManager.scale(1.0F, 1.0F, 1.0F);
+
+        if (transformType != TransformType.GUI || bakedmodel.isGui3d())
+        {
+            GlStateManager.enableLighting();
+        }
+        else
+        {
+            GlStateManager.disableLighting();
+        }
+
+        bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, transformType, false);
+
+        if (!stack.isEmpty())
+        {
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+
+            if (bakedmodel.isBuiltInRenderer())
+            {
+                float a = (color >> 24 & 255) / 255.0F;
+                float r = (color >> 16 & 255) / 255.0F;
+                float g = (color >> 8 & 255) / 255.0F;
+                float b = (color & 255) / 255.0F;
+                GlStateManager.color(r, g, b, a);
+                GlStateManager.enableRescaleNormal();
+                stack.getItem().getTileEntityItemStackRenderer().renderByItem(stack);
+            }
+            else
+            {
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder bufferbuilder = tessellator.getBuffer();
+                bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
+
+                ItemColors itemColors = mc.getItemColors();
+                for (EnumFacing enumfacing : EnumFacing.values())
+                {
+                    renderQuads(bufferbuilder, bakedmodel.getQuads(null, enumfacing, 0), color, itemColors, stack);
+                }
+                renderQuads(bufferbuilder, bakedmodel.getQuads(null, null, 0), color, itemColors, stack);
+                tessellator.draw();
+
+                if (stack.hasEffect())
+                {
+                    GlStateManager.color(1, 1, 1, 1);
+                    renderItem.renderEffect(bakedmodel);
+                }
+            }
+
+            GlStateManager.popMatrix();
+        }
+
+        GlStateManager.disableAlpha();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.disableLighting();
+        GlStateManager.popMatrix();
+        mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
+
+        GlStateManager.enableLighting();
+    }
+
+    private static void renderQuads(BufferBuilder buffer, List<BakedQuad> quads, int color, ItemColors itemColors, ItemStack stack)
+    {
+        int i = 0;
+
+        for (int j = quads.size(); i < j; ++i)
+        {
+            BakedQuad bakedquad = quads.get(i);
+            int k;
+
+            if (!stack.isEmpty() && bakedquad.hasTintIndex())
+            {
+                k = itemColors.colorMultiplier(stack, bakedquad.getTintIndex());
+                if (EntityRenderer.anaglyphEnable)
+                {
+                    k = TextureUtil.anaglyphColor(k);
+                }
+                float a = (color >> 24 & 255) / 255.0F;
+                float r = (color >> 16 & 255) / 255.0F * (k >> 16 & 255) / 255.0F;
+                float g = (color >> 8 & 255) / 255.0F * (k >> 8 & 255) / 255.0F;
+                float b = (color & 255) / 255.0F * (k & 255) / 255.0F;
+                k = (int) (a * 255) << 24 | (int) (r * 255) << 16 | (int) (g * 255) << 8 | (int) (b * 255);
+            }
+            else
+            {
+                k = color;
+            }
+
+            net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(buffer, bakedquad, k);
+        }
+    }
+
+    public static void drawModalRect(float x, float y, float u, float v, float width, float height, float textureWidth, float textureHeight)
+    {
+        drawModalRect(x, y, u, v, width, height, textureWidth, textureHeight, 0);
+    }
+
+    public static void drawModalRect(float x, float y, float u, float v, float width, float height, float textureWidth, float textureHeight, float z)
+    {
+        float f = 1.0F / textureWidth;
+        float f1 = 1.0F / textureHeight;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        bufferbuilder.pos(x, y + height, z).tex(u * f, (v + height) * f1).endVertex();
+        bufferbuilder.pos(x + width, y + height, z).tex((u + width) * f, (v + height) * f1).endVertex();
+        bufferbuilder.pos(x + width, y, z).tex((u + width) * f, v * f1).endVertex();
+        bufferbuilder.pos(x, y, z).tex(u * f, v * f1).endVertex();
+        tessellator.draw();
+    }
 }

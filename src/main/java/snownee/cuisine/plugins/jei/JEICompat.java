@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import mezz.jei.api.IGuiHelper;
@@ -46,6 +47,8 @@ import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemMortar;
+import snownee.cuisine.tiles.FuelHeatHandler;
+import snownee.cuisine.tiles.FuelHeatHandler.FuelInfo;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
@@ -68,7 +71,7 @@ public class JEICompat implements IModPlugin
     {
         if (CuisineConfig.GENERAL.axeChopping)
         {
-            AXES = Arrays.stream(CuisineConfig.GENERAL.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+            AXES = Arrays.stream(CuisineConfig.CLIENT.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
         }
 
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
@@ -82,7 +85,7 @@ public class JEICompat implements IModPlugin
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.INGREDIENT));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.DRINK));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.BOTTLE));
-        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.EMPOWERED_CITRON));
+        registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.EMPOWERED_CITRON));
 
         registry.addRecipes(BlockChoppingBoard.getSuitableCovers().stream().map(RecipeChoppingBoardWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(CuisineInternalGateway.INSTANCE.itemToSpiceMapping.keySet().stream().map(RecipeSpiceBottleFillingWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
@@ -138,7 +141,7 @@ public class JEICompat implements IModPlugin
         registry.addRecipes(recipes, ChoppingBoardRecipeCategory.UID);
 
         recipes.clear();
-        registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY), MortarRecipeCategory.UID);
+        registry.addRecipeCatalyst(CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variant.EMPTY), MortarRecipeCategory.UID);
         Processing.GRINDING.preview().forEach(recipe -> recipes.add(new MortarGenericRecipe(recipe)));
         CuisineInternalGateway.INSTANCE.itemIngredients.forEach((k, v) -> {
             if (v.getForm() != Form.PASTE && v.getForm() != Form.JUICE && v.getMaterial().isValidForm(Form.PASTE) && Processing.GRINDING.findRecipe(k.getItemStack()) == null)
@@ -206,6 +209,26 @@ public class JEICompat implements IModPlugin
         }
         registry.addRecipes(recipes, BoilingRecipeCategory.UID);
         recipes.clear();
+
+        registry.addRecipeCatalyst(new ItemStack(CuisineRegistry.FIRE_PIT, 1, 1), FirepitFuelCategory.UID);
+        registry.addRecipeCatalyst(new ItemStack(CuisineRegistry.FIRE_PIT, 1, 2), FirepitFuelCategory.UID);
+        for (Entry<ItemDefinition, FuelInfo> entry : FuelHeatHandler.ITEM_FUELS.entrySet())
+        {
+            recipes.add(new FirepitFuelRecipe(guiHelper, entry.getKey(), entry.getValue()));
+        }
+        for (Entry<OreDictDefinition, FuelInfo> entry : FuelHeatHandler.ORE_FUELS.entrySet())
+        {
+            recipes.add(new FirepitFuelRecipe(guiHelper, entry.getKey(), entry.getValue()));
+        }
+        for (ItemStack stack : registry.getIngredientRegistry().getFuels())
+        {
+            if (!stack.isEmpty() && stack.getItem().getContainerItem(stack).isEmpty() && !FuelHeatHandler.isFuel(stack, false))
+            {
+                recipes.add(new FirepitFuelRecipe(guiHelper, ItemDefinition.of(stack), FuelHeatHandler.getFuel(stack)));
+            }
+        }
+        registry.addRecipes(recipes, FirepitFuelCategory.UID);
+        recipes.clear();
     }
 
     @Override
@@ -220,6 +243,7 @@ public class JEICompat implements IModPlugin
         registry.addRecipeCategories(new BoilingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinSqueezingRecipeCategory(guiHelper, basin));
         registry.addRecipeCategories(new BasinThrowingRecipeCategory(guiHelper, basin));
+        registry.addRecipeCategories(new FirepitFuelCategory(guiHelper));
     }
 
     static <T> ITooltipCallback<T> identifierTooltip(ResourceLocation locator)

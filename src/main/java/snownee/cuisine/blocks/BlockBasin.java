@@ -77,7 +77,7 @@ public class BlockBasin extends BlockMod
                 {
                     entityIn.attackEntityFrom(DamageSource.CACTUS, 1);
                 }
-                else if (input.getItem() == CuisineRegistry.BASIC_FOOD && input.getMetadata() == ItemBasicFood.Variants.EMPOWERED_CITRON.getMeta() && entityIn instanceof EntityPlayer && tileBasin.tank.getFluidAmount() == 0)
+                else if (input.getItem() == CuisineRegistry.BASIC_FOOD && input.getMetadata() == ItemBasicFood.Variant.EMPOWERED_CITRON.getMeta() && entityIn instanceof EntityPlayer && tileBasin.tank.getFluidAmount() == 0)
                 {
                     ItemBasicFood.citronSays((EntityLivingBase) entityIn, "squeeze");
                 }
@@ -190,12 +190,14 @@ public class BlockBasin extends BlockMod
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean hasComparatorInputOverride(IBlockState state)
     {
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
@@ -217,6 +219,7 @@ public class BlockBasin extends BlockMod
         neighborChanged(state, worldIn, pos, this, pos.up());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
@@ -255,24 +258,28 @@ public class BlockBasin extends BlockMod
         return BlockRenderLayer.CUTOUT;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return AABB;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
@@ -285,6 +292,7 @@ public class BlockBasin extends BlockMod
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {

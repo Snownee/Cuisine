@@ -78,7 +78,7 @@ public class BlockTofu extends BlockMod
         Random rand = world instanceof World ? ((World) world).rand : RANDOM;
 
         int count = quantityDropped(state, fortune, rand);
-        ItemStack stack = CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.TOFU);
+        ItemStack stack = CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.TOFU);
         for (int i = 0; i < count; i++)
         {
             drops.add(stack.copy());

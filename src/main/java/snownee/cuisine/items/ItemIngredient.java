@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -18,6 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -26,6 +29,7 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.Constants;
@@ -34,15 +38,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CookingVessel;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.client.CuisineItemRendering;
 import snownee.cuisine.client.model.IngredientMeshDefinition;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.IngredientFood;
 import snownee.cuisine.util.I18nUtil;
+import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.IModItem;
 import snownee.kiwi.util.Util;
@@ -139,12 +147,23 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
             Ingredient ingredient = CuisinePersistenceCenter.deserializeIngredient(data);
             if (ingredient != null)
             {
-                for (Effect effect : ingredient.getEffects())
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
                 {
-                    if (effect.showInTooltips())
+                    for (IngredientTrait trait : ingredient.getAllTraits())
                     {
-                        tooltip.add(Util.color(effect.getColor()) + I18n.format(effect.getName()));
+                        tooltip.add(TextFormatting.ITALIC + I18n.format(trait.getTranslationKey()));
                     }
+                }
+                else
+                {
+                    for (Effect effect : ingredient.getEffects())
+                    {
+                        if (effect.showInTooltips())
+                        {
+                            tooltip.add(Util.color(effect.getColor()) + I18n.format(effect.getName()));
+                        }
+                    }
+                    tooltip.add(TextFormatting.WHITE + TextFormatting.ITALIC.toString() + I18nUtil.translate("tip.shift_ingredients"));
                 }
             }
         }
@@ -187,20 +206,15 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
 
     public static ItemStack make(Material material, Form form)
     {
-        return ItemIngredient.make(material, form, 1);
+        return ItemIngredient.make(material, form, 1, form.getStandardActions());
     }
 
-    public static ItemStack make(Material material, Form form, float size)
-    {
-        return ItemIngredient.make(material, form, size, 1, form.getStandardActions());
-    }
-
-    public static ItemStack make(Material material, Form form, float size, int amount, int[] actions)
+    public static ItemStack make(Material material, Form form, int amount, int[] actions)
     {
         if (material.isValidForm(form))
         {
             ItemStack stack = new ItemStack(CuisineRegistry.INGREDIENT, amount);
-            Ingredient ingredient = new Ingredient(material, form, size);
+            Ingredient ingredient = new Ingredient(material, form);
             NBTTagCompound data = CuisinePersistenceCenter.serialize(ingredient);
             data.setIntArray(KEY_ACTIONS, actions);
             stack.setTagCompound(data);
@@ -216,6 +230,10 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
     {
         ItemStack itemStack = new ItemStack(CuisineRegistry.INGREDIENT);
         itemStack.setTagCompound(CuisinePersistenceCenter.serialize(ingredient));
+        if (ingredient.getEffects().contains(CulinaryHub.CommonEffects.RARE))
+        {
+            ItemNBTUtil.setBoolean(itemStack, CuisineSharedSecrets.KEY_RARE, true);
+        }
         return itemStack;
     }
 
@@ -264,6 +282,12 @@ public final class ItemIngredient extends ItemFood implements IModItem, CookingV
         EnumSet<Form> forms = range.clone();
         forms.retainAll(material.getValidForms());
         return forms.stream().map(form -> make(material, form)).collect(Collectors.toList());
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack)
+    {
+        return ItemNBTUtil.getBoolean(stack, CuisineSharedSecrets.KEY_RARE, false) ? EnumRarity.UNCOMMON : EnumRarity.COMMON;
     }
 
     /**

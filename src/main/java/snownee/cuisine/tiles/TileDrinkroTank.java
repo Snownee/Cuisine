@@ -32,6 +32,8 @@ import snownee.cuisine.api.Spice;
 import snownee.cuisine.blocks.BlockDrinkro;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
+import snownee.kiwi.handler.Battery;
+import snownee.kiwi.tile.TileBase;
 
 public class TileDrinkroTank extends TileBase implements CookingVessel
 {
@@ -53,31 +55,30 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         @Override
         public int fill(FluidStack resource, boolean doFill)
         {
-            if (resource == null || tile.isWorking())
+            // 1 size = 250mB, fine-tuning needed
+            if (resource == null || resource.amount < 250 || tile.isWorking())
             {
                 return 0;
             }
-            // 1 size = 500mB, fine-tuning needed
-
-            if (((int) tile.builder.getMaxSize() - tile.builder.getCurrentSize()) <= 0)
-            {
-                return 0;
-            }
-            int amountAdded = (int) Math.min(resource.amount, (tile.builder.getMaxSize() - tile.builder.getCurrentSize()) * 500);
 
             Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(resource);
-            if (ingredient == null || ingredient.getForm() != Form.JUICE)
+            if (ingredient == null || ingredient.getForm() != Form.JUICE || !tile.builder.canAddIntoThis(null, ingredient, tile))
             {
                 return 0;
             }
-            ingredient.setSize(amountAdded / 500D);
-            if (!tile.builder.canAddIntoThis(null, ingredient, tile))
+
+            int i = tile.builder.getMaxIngredientLimit() - tile.builder.getIngredients().size();
+            int amount = resource.amount;
+            int amountAdded = 0;
+
+            while (amount >= 250 && i-- > 0)
             {
-                return 0;
-            }
-            if (doFill && !tile.builder.addIngredient(null, ingredient, tile))
-            {
-                return 0;
+                if (doFill && !tile.builder.addIngredient(null, ingredient.copy(), tile))
+                {
+                    break;
+                }
+                amount -= 250;
+                amountAdded += 250;
             }
             return amountAdded;
         }
@@ -250,7 +251,6 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
                     // we can't remove this input here because we don't know
                     // if it build successfully
                     featureSlot = i;
-                    builder.drinkType = type;
                     break;
                 }
             }
@@ -262,6 +262,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
             // as it is redstone-powered, so we may need a `lastError` variable
             return;
         }
+        builder.drinkType = type;
         // add all inputs
         for (int i = 0; i < inputs.getSlots(); i++)
         {
@@ -417,6 +418,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         return working;
     }
 
+    @Override
     protected void refresh()
     {
         if (hasWorld() && !world.isRemote)

@@ -1,5 +1,7 @@
 package snownee.cuisine.plugins.crafttweaker;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
@@ -50,6 +52,12 @@ public class CTMill
     }
 
     @ZenMethod
+    public static void remove(@Nonnull String identifier)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
+    }
+
+    @ZenMethod
     public static void removeAll()
     {
         CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTMill::getManager));
@@ -60,7 +68,7 @@ public class CTMill
         return Processing.MILLING;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    private static final class Addition extends CTSupport.Addition
     {
         private final ProcessingInput actualInput;
         private final FluidStack actualInputFluid;
@@ -69,7 +77,7 @@ public class CTMill
 
         Addition(ResourceLocation id, ProcessingInput actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
         {
-            super(id);
+            super(actualInput, actualInputFluid, actualOutput, actualOutputFluid);
             this.actualInput = actualInput;
             this.actualInputFluid = actualInputFluid;
             this.actualOutput = actualOutput;
@@ -79,7 +87,7 @@ public class CTMill
         @Override
         public void apply()
         {
-            Processing.MILLING.add(new Milling(this.locator, actualInput, actualOutput, actualInputFluid, actualOutputFluid));
+            getManager().add(new Milling(this.locator, actualInput, actualOutput, actualInputFluid, actualOutputFluid));
         }
 
         @Override
@@ -103,7 +111,7 @@ public class CTMill
         @Override
         public void apply()
         {
-            Processing.MILLING.remove(new Milling(actualInput, ItemStack.EMPTY, actualInputFluid, null));
+            getManager().remove(new Milling(new ResourceLocation(CTSupport.MODID), actualInput, ItemStack.EMPTY, actualInputFluid, null));
         }
 
         @Override
@@ -127,7 +135,7 @@ public class CTMill
         @Override
         public void apply()
         {
-            Processing.MILLING.remove(new Milling(actualInput, ItemStack.EMPTY, actualInputFluid, null));
+            getManager().remove(new Milling(new ResourceLocation(CTSupport.MODID), actualInput, ItemStack.EMPTY, actualInputFluid, null));
         }
 
         @Override

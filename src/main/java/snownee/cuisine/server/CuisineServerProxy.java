@@ -1,12 +1,14 @@
 package snownee.cuisine.server;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.animation.ITimeValue;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import snownee.cuisine.CuisineSidedProxy;
 
+@SuppressWarnings("deprecation")
 public final class CuisineServerProxy extends CuisineSidedProxy
 {
 
@@ -36,7 +38,6 @@ public final class CuisineServerProxy extends CuisineSidedProxy
      * ported to Minecraft 1.13 Release or onward.
      */
     @Override
-    @SuppressWarnings("deprecation") // net.minecraft.util.text.translation.I18n is deprecated.
     public final String translate(String translationKey)
     {
         return I18n.translateToLocal(translationKey);
@@ -53,7 +54,6 @@ public final class CuisineServerProxy extends CuisineSidedProxy
      * ported to Minecraft 1.13 Release or onward.
      */
     @Override
-    @SuppressWarnings("deprecation") // net.minecraft.util.text.translation.I18n is deprecated.
     public final String translate(String translationKey, Object... params)
     {
         return I18n.translateToLocalFormatted(translationKey, params);
@@ -70,7 +70,6 @@ public final class CuisineServerProxy extends CuisineSidedProxy
      * Minecraft 1.13 Release or onward.
      */
     @Override
-    @SuppressWarnings("deprecation")
     public final boolean canTranslate(String translationKey)
     {
         return I18n.canTranslate(translationKey);

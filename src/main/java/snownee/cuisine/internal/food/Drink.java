@@ -31,7 +31,6 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
-import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Material;
@@ -127,23 +126,23 @@ public class Drink extends CompositeFood
 
         protected void calculateColor()
         {
-            double size = 0;
+            int size = 0;
             float r = 0;
             float g = 0;
             float b = 0;
             for (Ingredient ingredient : getIngredients())
             {
                 int color = ingredient.getMaterial().getRawColorCode();
-                r += ingredient.getSize() * (color >> 16 & 255) / 255.0F;
-                g += ingredient.getSize() * (color >> 8 & 255) / 255.0F;
-                b += ingredient.getSize() * (color & 255) / 255.0F;
-                size += ingredient.getSize();
+                r += (color >> 16 & 255) / 255.0F;
+                g += (color >> 8 & 255) / 255.0F;
+                b += (color & 255) / 255.0F;
+                ++size;
             }
             if (size > 0)
             {
-                r = (float) (r / size * 255.0F);
-                g = (float) (g / size * 255.0F);
-                b = (float) (b / size * 255.0F);
+                r = r / size * 255.0F;
+                g = g / size * 255.0F;
+                b = b / size * 255.0F;
                 color = (int) r << 16 | (int) g << 8 | (int) b;
             }
         }
@@ -157,12 +156,6 @@ public class Drink extends CompositeFood
         public Class<Drink> getType()
         {
             return Drink.class;
-        }
-
-        @Override
-        public double getMaxSize()
-        {
-            return 2;
         }
 
         @Override
@@ -373,7 +366,7 @@ public class Drink extends CompositeFood
     @Override
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
-        Collection<IngredientBinding> bindings = getEffectBindings();
+        Collection<EffectBinding> bindings = getEffectBindings();
         float modifier = 1;
         for (Seasoning seasoning : seasonings)
         {
@@ -399,12 +392,12 @@ public class Drink extends CompositeFood
                 break;
             }
         }
-        EffectCollector collector = new DefaultConsumedCollector(modifier);
+        DefaultConsumedCollector collector = new DefaultConsumedCollector(getFoodLevel(), modifier);
 
         // And then apply them
-        for (IngredientBinding binding : bindings)
+        for (EffectBinding binding : bindings)
         {
-            binding.effect.onEaten(stack, player, this, binding.ingredient, collector);
+            binding.effect.onEaten(stack, player, this, binding.ingredients, collector);
         }
 
         // And finally, consume seasonings
@@ -428,15 +421,15 @@ public class Drink extends CompositeFood
             Material material = ingredient.getMaterial();
             if (material.isUnderCategoryOf(MaterialCategory.VEGETABLES))
             {
-                vege += ingredient.getSize();
+                ++vege;
             }
             if (material.isUnderCategoryOf(MaterialCategory.FRUIT))
             {
-                fruit += ingredient.getSize();
+                ++fruit;
             }
             if (!material.isUnderCategoryOf(MaterialCategory.VEGETABLES) && !material.isUnderCategoryOf(MaterialCategory.FRUIT))
             {
-                others += ingredient.getSize();
+                ++others;
             }
         }
         if (vege != 0 || fruit != 0)

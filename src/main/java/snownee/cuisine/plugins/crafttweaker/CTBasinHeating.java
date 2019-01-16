@@ -1,5 +1,7 @@
 package snownee.cuisine.plugins.crafttweaker;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
@@ -26,18 +28,23 @@ public final class CTBasinHeating
     }
 
     @ZenMethod
-    public static void add(String identifier, ILiquidStack input, IItemStack output, @Optional(valueLong = 1L) int heatValue)
+    public static void add(ILiquidStack input, IItemStack output, @Optional(valueLong = 1L) int heatValue)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input);
         FluidStack actualInput = CTSupport.toNative(input);
         ItemStack actualOutput = CTSupport.toNative(output);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualOutput, heatValue));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualOutput, heatValue));
     }
 
     @ZenMethod
     public static void remove(ILiquidStack input)
     {
         CTSupport.DELAYED_ACTIONS.add(new Removal(CTSupport.toNative(input)));
+    }
+
+    @ZenMethod
+    public static void remove(@Nonnull String identifier)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
     }
 
     @ZenMethod
@@ -51,16 +58,16 @@ public final class CTBasinHeating
         return Processing.BOILING;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    private static final class Addition extends CTSupport.Addition implements IAction
     {
 
         private final FluidStack input;
         private final ItemStack output;
         private final int heatValue;
 
-        private Addition(ResourceLocation id, FluidStack input, ItemStack output, int heatValue)
+        private Addition(FluidStack input, ItemStack output, int heatValue)
         {
-            super(id);
+            super(input, output, heatValue);
             this.input = input;
             this.output = output;
             this.heatValue = heatValue;
@@ -69,7 +76,7 @@ public final class CTBasinHeating
         @Override
         public void apply()
         {
-            Processing.BOILING.add(new DistillationBoiling(this.locator, input, output, heatValue));
+            getManager().add(new DistillationBoiling(this.locator, input, output, heatValue));
         }
 
         @Override
@@ -92,7 +99,7 @@ public final class CTBasinHeating
         @Override
         public void apply()
         {
-            Processing.BOILING.remove(this.input);
+            getManager().remove(this.input);
         }
 
         @Override

@@ -77,6 +77,7 @@ public class BlockShearedLeaves extends BlockMod implements IShearable, IGrowabl
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
@@ -110,6 +111,7 @@ public class BlockShearedLeaves extends BlockMod implements IShearable, IGrowabl
         return new BlockStateContainer(this, FLOWER, BlockModSapling.VARIANT);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
@@ -168,18 +170,21 @@ public class BlockShearedLeaves extends BlockMod implements IShearable, IGrowabl
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean causesSuffocation(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullBlock(IBlockState state)
     {

@@ -29,9 +29,9 @@ public class VFPCompat implements IModule
         {
             juice.setContainerItem(Items.GLASS_BOTTLE);
             // Oh no! look at these magic numbers! and VFP is not open source!
-            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 201), new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE, 1));
-            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 202), new Ingredient(CulinaryHub.CommonMaterials.CARROT, Form.JUICE, 1));
-            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 204), new Ingredient(CulinaryHub.CommonMaterials.CACTUS, Form.JUICE, 1));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 201), new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 202), new Ingredient(CulinaryHub.CommonMaterials.CARROT, Form.JUICE));
+            CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 204), new Ingredient(CulinaryHub.CommonMaterials.CACTUS, Form.JUICE));
         }
     }
 
@@ -45,7 +45,7 @@ public class VFPCompat implements IModule
             Material grape = CulinaryHub.API_INSTANCE.findMaterial("grape");
             if (grape != null)
             {
-                CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 212), new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE, 1));
+                CulinaryHub.API_INSTANCE.registerMapping(ItemDefinition.of(juice, 212), new Ingredient(CulinaryHub.CommonMaterials.APPLE, Form.JUICE));
             }
         }
         Item soda = ForgeRegistries.ITEMS.getValue(new ResourceLocation("vanillafoodpantry", "baking_soda"));

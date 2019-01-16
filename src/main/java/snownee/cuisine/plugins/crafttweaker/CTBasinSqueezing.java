@@ -1,11 +1,12 @@
 package snownee.cuisine.plugins.crafttweaker;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,7 +15,6 @@ import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.process.prefab.SimpleSqueezing;
 import snownee.kiwi.crafting.input.ProcessingInput;
-import snownee.kiwi.util.definition.OreDictDefinition;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -30,25 +30,24 @@ public final class CTBasinSqueezing
     }
 
     @ZenMethod
-    public static void add(String identifier, IIngredient input, ILiquidStack output, @Optional IItemStack extraOutput)
+    public static void add(IIngredient input, ILiquidStack output, @Optional IItemStack extraOutput)
     {
-        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input);
         ProcessingInput actualInput = CTSupport.fromIngredient(input);
         FluidStack actualOutput = CTSupport.toNative(output);
         ItemStack extra = CTSupport.toNative(extraOutput);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualOutput, extra));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualOutput, extra));
     }
 
     @ZenMethod
-    public static void remove(IItemStack input)
+    public static void remove(IItemStack input, ILiquidStack inputFluid)
     {
-        CTSupport.DELAYED_ACTIONS.add(new RemovalByItem(CTSupport.toNative(input)));
+        CTSupport.DELAYED_ACTIONS.add(new RemovalByItem(CTSupport.toNative(input), CTSupport.toNative(inputFluid)));
     }
 
     @ZenMethod
-    public static void remove(IOreDictEntry input)
+    public static void remove(@Nonnull String identifier)
     {
-        CTSupport.DELAYED_ACTIONS.add(new RemovalByOre(CTSupport.fromOreEntry(input)));
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
     }
 
     @ZenMethod
@@ -62,15 +61,15 @@ public final class CTBasinSqueezing
         return Processing.SQUEEZING;
     }
 
-    private static final class Addition extends CTSupport.ActionWithLocator implements IAction
+    private static final class Addition extends CTSupport.Addition implements IAction
     {
         private final ProcessingInput input;
         private final FluidStack output;
         private final ItemStack extraOutput;
 
-        private Addition(ResourceLocation identifier, ProcessingInput input, FluidStack output, ItemStack extraOutput)
+        private Addition(ProcessingInput input, FluidStack output, ItemStack extraOutput)
         {
-            super(identifier);
+            super(input, output, extraOutput);
             this.input = input;
             this.extraOutput = extraOutput;
             this.output = output;
@@ -79,7 +78,7 @@ public final class CTBasinSqueezing
         @Override
         public void apply()
         {
-            Processing.SQUEEZING.add(new SimpleSqueezing(this.locator, input, output, extraOutput));
+            getManager().add(new SimpleSqueezing(this.locator, input, output, extraOutput));
         }
 
         @Override
@@ -92,38 +91,18 @@ public final class CTBasinSqueezing
     private static final class RemovalByItem implements IAction
     {
         private final ItemStack input;
+        private final FluidStack inputFluid;
 
-        private RemovalByItem(ItemStack input)
+        RemovalByItem(ItemStack input, FluidStack inputFluid)
         {
             this.input = input;
+            this.inputFluid = inputFluid;
         }
 
         @Override
         public void apply()
         {
-            Processing.SQUEEZING.remove(this.input);
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
-        }
-    }
-
-    private static final class RemovalByOre implements IAction
-    {
-        private final OreDictDefinition input;
-
-        private RemovalByOre(OreDictDefinition input)
-        {
-            this.input = input;
-        }
-
-        @Override
-        public void apply()
-        {
-            Processing.SQUEEZING.remove(this.input);
+            getManager().remove(this.input, this.inputFluid);
         }
 
         @Override

@@ -84,6 +84,7 @@ public class BlockBamboo extends BlockMod
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
@@ -149,6 +150,7 @@ public class BlockBamboo extends BlockMod
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState)
     {
@@ -174,6 +176,7 @@ public class BlockBamboo extends BlockMod
         return BlockRenderLayer.CUTOUT;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
@@ -229,6 +232,7 @@ public class BlockBamboo extends BlockMod
         return state;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
@@ -267,18 +271,21 @@ public class BlockBamboo extends BlockMod
         return BlockFaceShape.UNDEFINED;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
@@ -300,7 +307,7 @@ public class BlockBamboo extends BlockMod
             {
                 return;
             }
-            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variants.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variants.PEANUT.getMeta())))
+            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variant.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variant.PEANUT.getMeta())))
             {
                 event.setCanceled(true);
                 event.setCancellationResult(EnumActionResult.FAIL);
@@ -319,7 +326,7 @@ public class BlockBamboo extends BlockMod
             {
                 return;
             }
-            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variants.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variants.PEANUT.getMeta())))
+            if (stack.getItem() instanceof ItemSeeds || (stack.getItem() == Items.DYE && stack.getMetadata() == 3) || (stack.getItem() == CuisineRegistry.CROPS && (stack.getMetadata() == ItemCrops.Variant.SOYBEAN.getMeta() || stack.getMetadata() == ItemCrops.Variant.PEANUT.getMeta())))
             {
                 if (!event.getWorld().isRemote)
                 {
@@ -330,7 +337,7 @@ public class BlockBamboo extends BlockMod
 
                 player.getCooldownTracker().setCooldown(Item.getItemFromBlock(CuisineRegistry.BAMBOO), 20);
                 event.getWorld().playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_EGG_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (event.getWorld().rand.nextFloat() * 0.4F + 0.8F));
-                if (!player.capabilities.isCreativeMode)
+                if (!player.isCreative())
                 {
                     stack.shrink(1);
                 }

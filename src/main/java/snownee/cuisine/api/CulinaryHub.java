@@ -131,7 +131,10 @@ public final class CulinaryHub
         public static final Effect WATER_BREATHING = find("water_breathing");
         public static final Effect CURE_POTIONS = find("cure_potions");
         public static final Effect HEAT_RESISTANCE = find("heat_resistance");
-        public static final Effect COLD_RESISTANCE = find("cold_resistance");
+        public static final Effect SUSTAINED_RELEASE = find("sustained_release");
+        // public static final Effect COLD_RESISTANCE = find("cold_resistance");
+        public static final Effect SPOOKY = find("spooky");
+        public static final Effect RARE = find("rare");
 
         private static Effect find(final String uniqueName)
         {
@@ -143,7 +146,7 @@ public final class CulinaryHub
     {
         public static final CulinarySkill DOUBLE_CHOPPING = CulinarySkillManager.register(new SimpleCulinarySkillImpl("double_chopping", CulinarySkillPoint.PROFICIENCY, 1));
         public static final CulinarySkill SKILLED_CHOPPING = CulinarySkillManager.register(new SimpleCulinarySkillImpl("skilled_chopping", CulinarySkillPoint.EXPERTISE, 1));
-        public static final CulinarySkill FEWER_LOSSES = CulinarySkillManager.register(new SimpleCulinarySkillImpl("fewer_losses", CulinarySkillPoint.PROFICIENCY, 2));
+        // public static final CulinarySkill FEWER_LOSSES = CulinarySkillManager.register(new SimpleCulinarySkillImpl("fewer_losses", CulinarySkillPoint.PROFICIENCY, 2));
         public static final CulinarySkill BIGGER_SIZE = CulinarySkillManager.register(new SimpleCulinarySkillImpl("bigger_size", CulinarySkillPoint.EXPERTISE, 2));
 
         public static void init()

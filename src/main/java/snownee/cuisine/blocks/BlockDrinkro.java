@@ -24,6 +24,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -56,6 +57,8 @@ public class BlockDrinkro extends BlockModHorizontal
     public static final PropertyBool NORMAL = PropertyBool.create("normal");
     public static final PropertyBool BASE = PropertyBool.create("base");
     public static final PropertyBool WORKING = PropertyBool.create("working");
+    private static final AxisAlignedBB LOWER_BLOCK_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 2.0D, 1.0D);
+    private static final AxisAlignedBB UPPER_BLOCK_AABB = new AxisAlignedBB(0.0D, -1.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockDrinkro(String name)
     {
@@ -79,10 +82,18 @@ public class BlockDrinkro extends BlockModHorizontal
         items.add(new ItemStack(this));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean hasItem()
     {
         return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return state.getValue(BASE) ? LOWER_BLOCK_AABB : UPPER_BLOCK_AABB;
     }
 
     @Override
@@ -169,8 +180,11 @@ public class BlockDrinkro extends BlockModHorizontal
                 {
                     tileDrinkro.builder.addIngredient(playerIn, ingredient, tileDrinkro);
                     ItemStack container = held.getItem().getContainerItem(held);
-                    held.shrink(1);
-                    if (!container.isEmpty())
+                    if (!playerIn.isCreative())
+                    {
+                        held.shrink(1);
+                    }
+                    else if (!container.isEmpty())
                     {
                         PlayerUtil.mergeItemStack(container, playerIn, hand);
                     }
@@ -207,7 +221,11 @@ public class BlockDrinkro extends BlockModHorizontal
                 {
                     if (inv.getStackInSlot(i).isEmpty())
                     {
-                        playerIn.setHeldItem(hand, inv.insertItem(i, held, false));
+                        ItemStack ramain = inv.insertItem(i, held, false);
+                        if (!playerIn.isCreative())
+                        {
+                            playerIn.setHeldItem(hand, ramain);
+                        }
                         break;
                     }
                 }
@@ -224,6 +242,7 @@ public class BlockDrinkro extends BlockModHorizontal
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
@@ -239,6 +258,7 @@ public class BlockDrinkro extends BlockModHorizontal
         return state;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int color)
     {
@@ -277,6 +297,7 @@ public class BlockDrinkro extends BlockModHorizontal
         return state.getValue(BASE) ? new TileDrinkroBase() : new TileDrinkroTank();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
@@ -319,6 +340,7 @@ public class BlockDrinkro extends BlockModHorizontal
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @SideOnly(Side.CLIENT)
     public EnumBlockRenderType getRenderType(IBlockState state)
@@ -360,18 +382,21 @@ public class BlockDrinkro extends BlockModHorizontal
         return new BlockStateContainer(this, BlockHorizontal.FACING, NORMAL, WORKING, BASE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @SideOnly(Side.CLIENT)
     public boolean isTranslucent(IBlockState state)
@@ -379,12 +404,14 @@ public class BlockDrinkro extends BlockModHorizontal
         return state.getValue(BASE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isNormalCube(IBlockState state)
     {
         return !state.getValue(BASE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {

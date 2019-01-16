@@ -1,24 +1,36 @@
 package snownee.cuisine.tiles;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Ingredient;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.kiwi.network.PacketMod;
 
 public class PacketIncrementalWokUpdate implements PacketMod
 {
 
     private BlockPos pos;
+    @Nullable
+    private Ingredient ingredient;
     private ItemStack diff;
 
     public PacketIncrementalWokUpdate()
@@ -33,9 +45,10 @@ public class PacketIncrementalWokUpdate implements PacketMod
      * @param diff
      *            The incremental update content
      */
-    PacketIncrementalWokUpdate(BlockPos pos, ItemStack diff)
+    PacketIncrementalWokUpdate(BlockPos pos, @Nullable Ingredient ingredient, ItemStack diff)
     {
         this.pos = pos;
+        this.ingredient = ingredient;
         this.diff = diff;
     }
 
@@ -44,6 +57,10 @@ public class PacketIncrementalWokUpdate implements PacketMod
     {
         buffer.writeLong(pos.toLong());
         ByteBufUtils.writeItemStack(buffer, diff);
+        if (ingredient != null)
+        {
+            ByteBufUtils.writeTag(buffer, CuisinePersistenceCenter.serialize(ingredient));
+        }
     }
 
     @Override
@@ -51,6 +68,10 @@ public class PacketIncrementalWokUpdate implements PacketMod
     {
         this.pos = BlockPos.fromLong(buffer.readLong());
         this.diff = ByteBufUtils.readItemStack(buffer);
+        if (!diff.isEmpty())
+        {
+            this.ingredient = CuisinePersistenceCenter.deserializeIngredient(ByteBufUtils.readTag(buffer));
+        }
     }
 
     @Override
@@ -66,7 +87,14 @@ public class PacketIncrementalWokUpdate implements PacketMod
         {
             if (CulinaryHub.API_INSTANCE.isKnownIngredient(diff))
             {
-                ((TileWok) tile).ingredientsForRendering.add(diff);
+                if (Cuisine.aprilFools)
+                {
+                    ((TileWok) tile).ingredientsForRendering.put(ingredient, getRandomItem(tile.getWorld().rand));
+                }
+                else
+                {
+                    ((TileWok) tile).ingredientsForRendering.put(ingredient, diff);
+                }
                 for (int k = 0; k < 4; ++k)
                 {
                     double x = tile.getPos().getX() + 0.5D + tile.getWorld().rand.nextGaussian() * 0.2D;
@@ -81,6 +109,24 @@ public class PacketIncrementalWokUpdate implements PacketMod
                 ((TileWok) tile).seasoningInfo = null;
             }
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    @SideOnly(Side.CLIENT)
+    public ItemStack getRandomItem(Random rand)
+    {
+        List<Item> items = ForgeRegistries.ITEMS.getValues();
+        if (items.isEmpty())
+        {
+            return ItemStack.EMPTY;
+        }
+        Item item;
+        do
+        {
+            item = items.get(rand.nextInt(items.size()));
+        }
+        while (item.getCreativeTab() == null);
+        return new ItemStack(item);
     }
 
     @Override

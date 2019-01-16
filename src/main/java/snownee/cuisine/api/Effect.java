@@ -1,11 +1,10 @@
 package snownee.cuisine.api;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import java.util.Comparator;
+import java.util.List;
 
 public interface Effect
 {
@@ -14,7 +13,7 @@ public interface Effect
 
     Comparator<Effect> INVERSE_PRIORITY_COMPARATOR = PRIORITY_COMPARATOR.reversed();
 
-    void onEaten(ItemStack stack, EntityPlayer player, CompositeFood compositeFood, @Nullable Ingredient ingredient, EffectCollector collector);
+    void onEaten(ItemStack stack, EntityPlayer player, CompositeFood compositeFood, List<Ingredient> ingredients, EffectCollector collector);
 
     int getPriority();
 

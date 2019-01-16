@@ -4,10 +4,13 @@ import javax.annotation.Nonnull;
 
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.Chopping;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
@@ -46,7 +49,13 @@ public class CTAxeChopping
     @ZenMethod
     public static void remove(@Nonnull String identifier)
     {
-        CTSupport.DELAYED_ACTIONS.add(new Removal(new ResourceLocation(identifier)));
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
+    }
+
+    @ZenMethod
+    public static void removeByOutput(@Nonnull IIngredient output)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new RemovalByOutput(output));
     }
 
     @ZenMethod
@@ -58,6 +67,18 @@ public class CTAxeChopping
     private static CuisineProcessingRecipeManager<Chopping> getManager()
     {
         return Processing.CHOPPING;
+    }
+
+    @ZenMethod
+    public static int getDefaultPlanksOutput()
+    {
+        return CuisineConfig.GENERAL.axeChoppingPlanksOutput;
+    }
+
+    @ZenMethod
+    public static int getDefaultStickOutput()
+    {
+        return CuisineConfig.GENERAL.axeChoppingStickOutput;
     }
 
     private static final class ItemBasedAddition implements IAction
@@ -74,7 +95,7 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.add(new Chopping(new ResourceLocation("crafttweaker", Integer.toString(System.identityHashCode(input))), RegularItemStackInput.of(input), output));
+            getManager().add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), RegularItemStackInput.of(input), output));
         }
 
         @Override
@@ -98,35 +119,13 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.add(new Chopping(new ResourceLocation("crafttweaker", Integer.toString(System.identityHashCode(input))), input, output));
+            getManager().add(new Chopping(new ResourceLocation(CTSupport.MODID, Integer.toString(System.identityHashCode(input))), input, output));
         }
 
         @Override
         public String describe()
         {
             return String.format("Add Cuisine Axe-Chopping recipe: input %s -> output %s", input, output);
-        }
-    }
-
-    private static final class Removal implements IAction
-    {
-        private final ResourceLocation identifier;
-
-        private Removal(ResourceLocation identifier)
-        {
-            this.identifier = identifier;
-        }
-
-        @Override
-        public void apply()
-        {
-            Processing.CHOPPING.remove(identifier);
-        }
-
-        @Override
-        public String describe()
-        {
-            return null;
         }
     }
 
@@ -142,13 +141,35 @@ public class CTAxeChopping
         @Override
         public void apply()
         {
-            Processing.CHOPPING.remove(input);
+            getManager().remove(input);
         }
 
         @Override
         public String describe()
         {
             return String.format("Remove all Cuisine Axe-Chopping recipes that has input of %s", input);
+        }
+    }
+
+    private static final class RemovalByOutput implements IAction
+    {
+        final IIngredient output;
+
+        RemovalByOutput(IIngredient output)
+        {
+            this.output = output;
+        }
+
+        @Override
+        public void apply()
+        {
+            getManager().removeIf(r -> output.matches(CraftTweakerMC.getIItemStack(r.getOutput())));
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
         }
     }
 

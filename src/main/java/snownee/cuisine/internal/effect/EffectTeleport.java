@@ -1,6 +1,6 @@
 package snownee.cuisine.internal.effect;
 
-import javax.annotation.Nullable;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -29,7 +29,7 @@ public class EffectTeleport extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, List<Ingredient> ingredients, EffectCollector collector)
     {
         World world = player.getEntityWorld();
         if (!world.isRemote)
@@ -40,9 +40,9 @@ public class EffectTeleport extends SimpleEffectImpl
 
             for (int i = 0; i < 16; ++i)
             {
-                double d3 = player.posX + (player.getRNG().nextDouble() - 0.5D) * 16.0D * ingredient.getSize();
+                double d3 = player.posX + (player.getRNG().nextDouble() - 0.5D) * 16.0D * ingredients.size();
                 double d4 = MathHelper.clamp(player.posY + (player.getRNG().nextInt(16) - 8), 0.0D, world.getActualHeight() - 1);
-                double d5 = player.posZ + (player.getRNG().nextDouble() - 0.5D) * 16.0D * ingredient.getSize();
+                double d5 = player.posZ + (player.getRNG().nextDouble() - 0.5D) * 16.0D * ingredients.size();
 
                 if (player.isRiding())
                 {

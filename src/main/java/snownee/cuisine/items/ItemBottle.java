@@ -106,7 +106,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
             return stack;
         }
         Drink.Builder builder = Drink.Builder.create();
-        builder.addIngredient(entityplayer, new Ingredient(material, Form.JUICE, 0.5), this);
+        builder.addIngredient(entityplayer, new Ingredient(material, Form.JUICE), this);
         Optional<Drink> result = builder.build(this, entityplayer);
         if (!result.isPresent())
         {

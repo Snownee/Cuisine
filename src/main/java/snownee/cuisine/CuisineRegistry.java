@@ -32,6 +32,7 @@ import snownee.cuisine.items.ItemDish;
 import snownee.cuisine.items.ItemDrink;
 import snownee.cuisine.items.ItemDrinkro;
 import snownee.cuisine.items.ItemEmptyPlate;
+import snownee.cuisine.items.ItemFan;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.items.ItemIronSpatula;
 import snownee.cuisine.items.ItemKitchenKnife;
@@ -41,13 +42,14 @@ import snownee.cuisine.items.ItemModDoor;
 import snownee.cuisine.items.ItemMortar;
 import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.potions.PotionDispersal;
+import snownee.cuisine.potions.PotionSustainedRelease;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.block.BlockModFence;
 import snownee.kiwi.block.BlockModFenceGate;
 import snownee.kiwi.item.ItemMod;
-import snownee.kiwi.item.ItemModVariants;
+import snownee.kiwi.item.ItemModVariantsNew;
 import snownee.kiwi.potion.PotionMod;
 import snownee.kiwi.util.definition.ItemDefinition;
 
@@ -62,27 +64,27 @@ public class CuisineRegistry implements IModule
 
     public static final ItemCrops CROPS = new ItemCrops("crops");
 
-    public static final BlockCuisineCrops PEANUT = new BlockCuisineCrops("peanut", ItemDefinition.of(CROPS, ItemCrops.Variants.PEANUT.getMeta()));
-    public static final BlockCuisineCrops SESAME = new BlockCuisineCrops("sesame", ItemDefinition.of(CROPS, ItemCrops.Variants.SESAME.getMeta()));
-    public static final BlockCuisineCrops SOYBEAN = new BlockCuisineCrops("soybean", ItemDefinition.of(CROPS, ItemCrops.Variants.SOYBEAN.getMeta()));
-    public static final BlockCuisineCrops RICE = new BlockCuisineCrops("rice", EnumPlantType.Water, ItemDefinition.of(CROPS, ItemCrops.Variants.RICE.getMeta()));
-    public static final BlockCuisineCrops TOMATO = new BlockCuisineCrops("tomato", ItemDefinition.of(CROPS, ItemCrops.Variants.TOMATO.getMeta()));
-    public static final BlockCuisineCrops CHILI = new BlockCuisineCrops("chili", EnumPlantType.Nether, ItemDefinition.of(CROPS, ItemCrops.Variants.CHILI.getMeta()));
-    public static final BlockCuisineCrops GARLIC = new BlockCuisineCrops("garlic", ItemDefinition.of(CROPS, ItemCrops.Variants.GARLIC.getMeta()));
-    public static final BlockCuisineCrops GINGER = new BlockCuisineCrops("ginger", ItemDefinition.of(CROPS, ItemCrops.Variants.GINGER.getMeta()));
-    public static final BlockCuisineCrops SICHUAN_PEPPER = new BlockCuisineCrops("sichuan_pepper", ItemDefinition.of(CROPS, ItemCrops.Variants.SICHUAN_PEPPER.getMeta()));
-    public static final BlockCuisineCrops SCALLION = new BlockCuisineCrops("scallion", ItemDefinition.of(CROPS, ItemCrops.Variants.SCALLION.getMeta()));
-    public static final BlockCuisineCrops TURNIP = new BlockCuisineCrops("turnip", ItemDefinition.of(CROPS, ItemCrops.Variants.TURNIP.getMeta()));
-    public static final BlockCuisineCrops CHINESE_CABBAGE = new BlockCuisineCrops("chinese_cabbage", ItemDefinition.of(CROPS, ItemCrops.Variants.CHINESE_CABBAGE.getMeta()));
-    public static final BlockCuisineCrops LETTUCE = new BlockCuisineCrops("lettuce", ItemDefinition.of(CROPS, ItemCrops.Variants.LETTUCE.getMeta()));
+    public static final BlockCuisineCrops PEANUT = new BlockCuisineCrops("peanut", ItemDefinition.of(CROPS, ItemCrops.Variant.PEANUT.getMeta()));
+    public static final BlockCuisineCrops SESAME = new BlockCuisineCrops("sesame", ItemDefinition.of(CROPS, ItemCrops.Variant.SESAME.getMeta()));
+    public static final BlockCuisineCrops SOYBEAN = new BlockCuisineCrops("soybean", ItemDefinition.of(CROPS, ItemCrops.Variant.SOYBEAN.getMeta()));
+    public static final BlockCuisineCrops RICE = new BlockCuisineCrops("rice", EnumPlantType.Water, ItemDefinition.of(CROPS, ItemCrops.Variant.RICE.getMeta()));
+    public static final BlockCuisineCrops TOMATO = new BlockCuisineCrops("tomato", ItemDefinition.of(CROPS, ItemCrops.Variant.TOMATO.getMeta()));
+    public static final BlockCuisineCrops CHILI = new BlockCuisineCrops("chili", EnumPlantType.Nether, ItemDefinition.of(CROPS, ItemCrops.Variant.CHILI.getMeta()));
+    public static final BlockCuisineCrops GARLIC = new BlockCuisineCrops("garlic", ItemDefinition.of(CROPS, ItemCrops.Variant.GARLIC.getMeta()));
+    public static final BlockCuisineCrops GINGER = new BlockCuisineCrops("ginger", ItemDefinition.of(CROPS, ItemCrops.Variant.GINGER.getMeta()));
+    public static final BlockCuisineCrops SICHUAN_PEPPER = new BlockCuisineCrops("sichuan_pepper", ItemDefinition.of(CROPS, ItemCrops.Variant.SICHUAN_PEPPER.getMeta()));
+    public static final BlockCuisineCrops SCALLION = new BlockCuisineCrops("scallion", ItemDefinition.of(CROPS, ItemCrops.Variant.SCALLION.getMeta()));
+    public static final BlockCuisineCrops TURNIP = new BlockCuisineCrops("turnip", ItemDefinition.of(CROPS, ItemCrops.Variant.TURNIP.getMeta()));
+    public static final BlockCuisineCrops CHINESE_CABBAGE = new BlockCuisineCrops("chinese_cabbage", ItemDefinition.of(CROPS, ItemCrops.Variant.CHINESE_CABBAGE.getMeta()));
+    public static final BlockCuisineCrops LETTUCE = new BlockCuisineCrops("lettuce", ItemDefinition.of(CROPS, ItemCrops.Variant.LETTUCE.getMeta()));
     public static final BlockCuisineCrops CORN = new BlockCorn("corn");
-    public static final BlockDoubleCrops CUCUMBER = new BlockDoubleCrops("cucumber", ItemDefinition.of(CROPS, ItemCrops.Variants.CUCUMBER.getMeta()));
-    public static final BlockCuisineCrops GREEN_PEPPER = new BlockCuisineCrops("green_pepper", ItemDefinition.of(CROPS, ItemCrops.Variants.GREEN_PEPPER.getMeta()));
-    public static final BlockCuisineCrops RED_PEPPER = new BlockCuisineCrops("red_pepper", ItemDefinition.of(CROPS, ItemCrops.Variants.RED_PEPPER.getMeta()));
-    public static final BlockCuisineCrops LEEK = new BlockCuisineCrops("leek", ItemDefinition.of(CROPS, ItemCrops.Variants.LEEK.getMeta()));
-    public static final BlockCuisineCrops ONION = new BlockCuisineCrops("onion", ItemDefinition.of(CROPS, ItemCrops.Variants.ONION.getMeta()));
-    public static final BlockCuisineCrops EGGPLANT = new BlockCuisineCrops("eggplant", ItemDefinition.of(CROPS, ItemCrops.Variants.EGGPLANT.getMeta()));
-    public static final BlockCuisineCrops SPINACH = new BlockCuisineCrops("spinach", ItemDefinition.of(CROPS, ItemCrops.Variants.SPINACH.getMeta()));
+    public static final BlockDoubleCrops CUCUMBER = new BlockDoubleCrops("cucumber", ItemDefinition.of(CROPS, ItemCrops.Variant.CUCUMBER.getMeta()));
+    public static final BlockCuisineCrops GREEN_PEPPER = new BlockCuisineCrops("green_pepper", ItemDefinition.of(CROPS, ItemCrops.Variant.GREEN_PEPPER.getMeta()));
+    public static final BlockCuisineCrops RED_PEPPER = new BlockCuisineCrops("red_pepper", ItemDefinition.of(CROPS, ItemCrops.Variant.RED_PEPPER.getMeta()));
+    public static final BlockCuisineCrops LEEK = new BlockCuisineCrops("leek", ItemDefinition.of(CROPS, ItemCrops.Variant.LEEK.getMeta()));
+    public static final BlockCuisineCrops ONION = new BlockCuisineCrops("onion", ItemDefinition.of(CROPS, ItemCrops.Variant.ONION.getMeta()));
+    public static final BlockCuisineCrops EGGPLANT = new BlockCuisineCrops("eggplant", ItemDefinition.of(CROPS, ItemCrops.Variant.EGGPLANT.getMeta()));
+    public static final BlockCuisineCrops SPINACH = new BlockCuisineCrops("spinach", ItemDefinition.of(CROPS, ItemCrops.Variant.SPINACH.getMeta()));
 
     public static final BlockMortar MORTAR = new BlockMortar("mortar");
 
@@ -108,18 +110,18 @@ public class CuisineRegistry implements IModule
     public static final BlockDrinkro DRINKRO = new BlockDrinkro("drinkro");
     public static final ItemDrinkro ITEM_DRINKRO = new ItemDrinkro(DRINKRO);
 
-    public static final ItemBasicFood BASIC_FOOD = new ItemBasicFood("food");
+    public static final ItemBasicFood<Void, ItemBasicFood.Variant> BASIC_FOOD = new ItemBasicFood<Void, ItemBasicFood.Variant>("food", ItemBasicFood.Variant.values());
 
     public static final BlockModLog LOG = new BlockModLog("log");
     public static final BlockMod PLANKS = new BlockMod("planks", Material.WOOD);
     public static final BlockModSapling SAPLING = new BlockModSapling("sapling");
-    public static final BlockModLeaves LEAVES_CITRON = new BlockModLeaves("leaves_citron", ItemBasicFood.Variants.CITRON);
-    public static final BlockModLeaves LEAVES_GRAPEFRUIT = new BlockModLeaves("leaves_grapefruit", ItemBasicFood.Variants.GRAPEFRUIT);
-    public static final BlockModLeaves LEAVES_LEMON = new BlockModLeaves("leaves_lemon", ItemBasicFood.Variants.LEMON);
-    public static final BlockModLeaves LEAVES_LIME = new BlockModLeaves("leaves_lime", ItemBasicFood.Variants.LIME);
-    public static final BlockModLeaves LEAVES_MANDARIN = new BlockModLeaves("leaves_mandarin", ItemBasicFood.Variants.MANDARIN);
-    public static final BlockModLeaves LEAVES_ORANGE = new BlockModLeaves("leaves_orange", ItemBasicFood.Variants.ORANGE);
-    public static final BlockModLeaves LEAVES_POMELO = new BlockModLeaves("leaves_pomelo", ItemBasicFood.Variants.POMELO);
+    public static final BlockModLeaves LEAVES_CITRON = new BlockModLeaves("leaves_citron", ItemBasicFood.Variant.CITRON);
+    public static final BlockModLeaves LEAVES_GRAPEFRUIT = new BlockModLeaves("leaves_grapefruit", ItemBasicFood.Variant.GRAPEFRUIT);
+    public static final BlockModLeaves LEAVES_LEMON = new BlockModLeaves("leaves_lemon", ItemBasicFood.Variant.LEMON);
+    public static final BlockModLeaves LEAVES_LIME = new BlockModLeaves("leaves_lime", ItemBasicFood.Variant.LIME);
+    public static final BlockModLeaves LEAVES_MANDARIN = new BlockModLeaves("leaves_mandarin", ItemBasicFood.Variant.MANDARIN);
+    public static final BlockModLeaves LEAVES_ORANGE = new BlockModLeaves("leaves_orange", ItemBasicFood.Variant.ORANGE);
+    public static final BlockModLeaves LEAVES_POMELO = new BlockModLeaves("leaves_pomelo", ItemBasicFood.Variant.POMELO);
 
     public static final BlockShearedLeaves SHEARED_LEAVES = new BlockShearedLeaves("sheared_leaves");
 
@@ -132,6 +134,8 @@ public class CuisineRegistry implements IModule
     public static final BlockModFenceGate FENCE_GATE = new BlockModFenceGate("fence_gate", PLANKS.getDefaultState());
 
     public static final ItemIronSpatula IRON_SPATULA = new ItemIronSpatula("iron_spatula");
+
+    public static final ItemFan FAN = new ItemFan("fan");
 
     public static final ItemDish DISH = new ItemDish("dish");
 
@@ -153,7 +157,7 @@ public class CuisineRegistry implements IModule
 
     public static final ItemModBoat BOAT = new ItemModBoat("boat");
 
-    public static final ItemModVariants MATERIAL = (ItemModVariants) new ItemModVariants("material", Cuisine.Materials.INSTANCE).setCreativeTab(Cuisine.CREATIVE_TAB);
+    public static final ItemModVariantsNew MATERIAL = new ItemModVariantsNew("material", Cuisine.Materials.values());
 
     public static final PotionDispersal DISPERSAL = new PotionDispersal("dispersal", 0);
 
@@ -165,6 +169,8 @@ public class CuisineRegistry implements IModule
 
     public static final PotionMod TOUGHNESS = new PotionMod("toughness", true, 4, false, 0x943943, -1, true);
 
+    public static final PotionSustainedRelease SUSTAINED_RELEASE = new PotionSustainedRelease("sustained_release");
+
     @Override
     public void init()
     {
@@ -174,5 +180,6 @@ public class CuisineRegistry implements IModule
         TRAPDOOR.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(3.0F);
         FENCE.setCreativeTab(Cuisine.CREATIVE_TAB);
         FENCE_GATE.setCreativeTab(Cuisine.CREATIVE_TAB);
+        MATERIAL.setCreativeTab(Cuisine.CREATIVE_TAB);
     }
 }

@@ -1,10 +1,13 @@
 package snownee.cuisine.plugins.crafttweaker;
 
+import javax.annotation.Nonnull;
+
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.oredict.IOreDictEntry;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -138,6 +141,12 @@ public class CTVessel
     }
 
     @ZenMethod
+    public static void remove(@Nonnull String identifier)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
+    }
+
+    @ZenMethod
     public static void removeAll()
     {
         CTSupport.DELAYED_ACTIONS.add(new CTSupport.BulkRemoval(CTVessel::getManager));
@@ -148,7 +157,7 @@ public class CTVessel
         return Processing.VESSEL;
     }
 
-    private static final class Addition implements IAction
+    private static final class Addition extends CTSupport.Addition
     {
 
         private final ProcessingInput actualInput;
@@ -159,6 +168,7 @@ public class CTVessel
 
         Addition(ProcessingInput actualInput, Fluid actualInputFluid, ProcessingInput actualExtra, ItemDefinition actualOutput, FluidStack actualOutputFluid)
         {
+            super(actualInput, actualInputFluid, actualExtra, actualOutput, actualOutputFluid);
             this.actualInput = actualInput;
             this.actualInputFluid = actualInputFluid;
             this.actualExtra = actualExtra;
@@ -169,7 +179,7 @@ public class CTVessel
         @Override
         public void apply()
         {
-            Processing.VESSEL.add(new Vessel(actualInput, actualInputFluid, actualOutput, actualOutputFluid, actualExtra));
+            getManager().add(new Vessel(this.locator, actualInput, actualInputFluid, actualOutput, actualOutputFluid, actualExtra));
         }
 
         @Override
@@ -195,7 +205,7 @@ public class CTVessel
         @Override
         public void apply()
         {
-            Processing.VESSEL.remove(new Vessel(actualInput, actualInputFluid, ItemDefinition.EMPTY, null, actualExtra));
+            getManager().remove(new Vessel(new ResourceLocation(CTSupport.MODID), actualInput, actualInputFluid, ItemDefinition.EMPTY, null, actualExtra));
         }
 
         @Override

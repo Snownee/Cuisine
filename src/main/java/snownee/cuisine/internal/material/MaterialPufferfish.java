@@ -4,15 +4,17 @@ import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.EffectCollector;
+import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
 
 public class MaterialPufferfish extends MaterialWithEffect
 {
 
-    public MaterialPufferfish(String id, int rawColor, int cookedColor, int waterValue, int oilValue, int heatValue, float foodSaturationModifier, MaterialCategory... categories)
+    public MaterialPufferfish(String id)
     {
-        super(id, CulinaryHub.CommonEffects.ALWAYS_EDIBLE, rawColor, cookedColor, waterValue, oilValue, heatValue, foodSaturationModifier, categories);
+        super(id, CulinaryHub.CommonEffects.ALWAYS_EDIBLE, 0xFFFFE1C4, 0, 1, 1, 1, 0.2F, MaterialCategory.FISH);
+        setValidForms(Form.ALL_FORMS);
     }
 
     @Override

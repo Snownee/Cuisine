@@ -3,14 +3,13 @@ package snownee.cuisine.internal.effect;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.EffectCollector;
+import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.prefab.DefaultTypes;
 import snownee.cuisine.api.prefab.SimpleEffectImpl;
@@ -31,14 +30,30 @@ public class EffectPotions extends SimpleEffectImpl
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, @Nullable CompositeFood food, @Nullable Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, List<Ingredient> ingredients, EffectCollector collector)
     {
-        double size = ingredient == null ? 1 : ingredient.getSize();
-        int modifier = ingredient == null || ingredient.getForm().ordinal() > 3 ? 1 : 2;
+        double size = ingredients.size();
+        int modifier = 0;
+        int count = 0;
+        for (Ingredient ingredient : ingredients)
+        {
+            if (ingredient == null)
+            {
+                count += Form.JUICE.ordinal();
+            }
+            else
+            {
+                count += ingredient.getForm().ordinal();
+            }
+        }
+        if (count / size > 4)
+        {
+            modifier = 1;
+        }
         // TODO: Fine tuning
         for (PotionEffect effect : effects)
         {
-            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size * 4 / modifier)), effect.getAmplifier() + modifier - 1, effect.getIsAmbient(), effect.doesShowParticles()));
+            collector.addEffect(DefaultTypes.POTION, new PotionEffect(effect.getPotion(), Math.max(0, (int) (effect.getDuration() * size * 2 / (modifier + 1) / 4)), effect.getAmplifier() + modifier, effect.getIsAmbient(), effect.doesShowParticles()));
         }
     }
 

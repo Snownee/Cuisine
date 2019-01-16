@@ -15,7 +15,7 @@ public class DebuggingCookingStrategy implements CookingStrategy
 {
 
     @Override
-    public void beginCook(CompositeFood.Builder<?> dish)
+    public void beginCook(CompositeFood.Builder dish)
     {
         Cuisine.logger.debug("Inspecting CompositeFood@{}", System.identityHashCode(dish));
     }
@@ -33,7 +33,7 @@ public class DebuggingCookingStrategy implements CookingStrategy
     }
 
     @Override
-    public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
+    public void postCook(CompositeFood.Builder dish, CookingVessel vessel)
     {
 
     }

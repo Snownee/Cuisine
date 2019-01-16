@@ -5,17 +5,23 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
@@ -105,6 +111,29 @@ public class Dish extends CompositeFood
     public ItemStack getBaseItem()
     {
         return new ItemStack(CuisineRegistry.DISH);
+    }
+
+    @Override
+    public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
+    {
+        super.onEaten(stack, worldIn, player);
+
+        if (!worldIn.isRemote && CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.badSkillPunishment)
+        {
+            int countPlain = (int) getIngredients().stream().filter(i -> i.getAllTraits().contains(IngredientTrait.PLAIN) || i.getAllTraits().contains(IngredientTrait.UNDERCOOKED)).count();
+            int countOvercooked = (int) getIngredients().stream().filter(i -> i.getAllTraits().contains(IngredientTrait.OVERCOOKED)).count();
+
+            if (countPlain / (float) getIngredients().size() > 0.8F)
+            {
+                Potion potion = worldIn.rand.nextBoolean() ? MobEffects.MINING_FATIGUE : MobEffects.WEAKNESS;
+                player.addPotionEffect(new PotionEffect(potion, 300 * getIngredients().size()));
+            }
+            if (countOvercooked / (float) getIngredients().size() > 0.8F)
+            {
+                Potion potion = worldIn.rand.nextBoolean() ? MobEffects.POISON : MobEffects.NAUSEA;
+                player.addPotionEffect(new PotionEffect(potion, 100 * getIngredients().size()));
+            }
+        }
     }
 
     public static NBTTagCompound serialize(Dish dish)
@@ -216,6 +245,8 @@ public class Dish extends CompositeFood
     public static final class Builder extends CompositeFood.Builder<Dish>
     {
         private Dish completed;
+        private int water, oil, temperature;
+        private Random rand = new Random();
 
         private Builder()
         {
@@ -242,12 +273,60 @@ public class Dish extends CompositeFood
             }
             if (SkillUtil.hasPlayerLearnedSkill(cook, CulinaryHub.CommonSkills.BIGGER_SIZE))
             {
-                return this.getCurrentSize() + ingredient.getSize() <= this.getMaxSize() && ingredient.getMaterial().canAddInto(this, ingredient);
+                return getIngredients().size() < getMaxIngredientLimit() && ingredient.getMaterial().canAddInto(this, ingredient);
             }
             else
             {
-                return this.getCurrentSize() + ingredient.getSize() < this.getMaxSize() * 0.75 && ingredient.getMaterial().canAddInto(this, ingredient);
+                return getIngredients().size() < getMaxIngredientLimit() * 0.75 && ingredient.getMaterial().canAddInto(this, ingredient);
             }
+        }
+
+        @Override
+        public boolean addSeasoning(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
+        {
+            boolean result = super.addSeasoning(cook, seasoning, vessel);
+            if (result)
+            {
+                if (seasoning.hasKeyword("water"))
+                {
+                    water += seasoning.getSize() * 100;
+                }
+                if (seasoning.hasKeyword("oil"))
+                {
+                    oil += seasoning.getSize() * 100;
+                }
+            }
+            return result;
+        }
+
+        public int getWaterAmount()
+        {
+            return this.water;
+        }
+
+        public int getOilAmount()
+        {
+            return this.oil;
+        }
+
+        public int getTemperature()
+        {
+            return temperature;
+        }
+
+        public void setWaterAmount(int water)
+        {
+            this.water = water;
+        }
+
+        public void setOilAmount(int oil)
+        {
+            this.oil = oil;
+        }
+
+        public void setTemperature(int temperature)
+        {
+            this.temperature = temperature;
         }
 
         @Override
@@ -289,26 +368,36 @@ public class Dish extends CompositeFood
                 {
                     Spice spice = seasoning.getSpice();
                     spice.onCooked(this, seasoning, vessel, collector);
-                    if (spice == CulinaryHub.CommonSpices.WATER)
+                    if (seasoning.hasKeyword("water"))
                     {
                         waterSize += seasoning.getSize();
                     }
-                    else if (spice != CulinaryHub.CommonSpices.EDIBLE_OIL && spice != CulinaryHub.CommonSpices.SESAME_OIL)
+                    else if (!seasoning.hasKeyword("oil"))
                     {
                         seasoningSize += seasoning.getSize();
                     }
                 }
-                boolean isPlain = seasoningSize == 0 || (this.getCurrentSize() / seasoningSize) / (1 + waterSize / 3) > 3;
+                boolean isPlain = seasoningSize == 0 || (getIngredients().size() / seasoningSize) / (1 + waterSize / 3) > 3;
 
                 for (Ingredient ingredient : this.getIngredients())
                 {
                     Material material = ingredient.getMaterial();
                     Set<MaterialCategory> categories = material.getCategories();
-                    if (isPlain && !categories.contains(MaterialCategory.SEAFOOD) && !categories.contains(MaterialCategory.FRUIT))
+                    if (!categories.contains(MaterialCategory.SEAFOOD) && !categories.contains(MaterialCategory.FRUIT))
                     {
-                        ingredient.addTrait(IngredientTrait.PLAIN);
+                        if (isPlain)
+                        {
+                            ingredient.addTrait(IngredientTrait.PLAIN);
+                        }
+                        if (!ingredient.hasTrait(IngredientTrait.OVERCOOKED) && rand.nextFloat() > 0.35F * (ingredient.getForm().ordinal() + 1))
+                        {
+                            ingredient.addTrait(IngredientTrait.UNDERCOOKED);
+                        }
                     }
-                    material.onCooked(this, ingredient, vessel, collector);
+                }
+                for (Ingredient ingredient : this.getIngredients())
+                {
+                    ingredient.getMaterial().onCooked(this, ingredient, vessel, collector);
                 }
 
                 this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects(), foodLevel, saturationModifier);
@@ -347,6 +436,9 @@ public class Dish extends CompositeFood
                 effectList.appendTag(new NBTTagString(effect.getID()));
             }
             data.setTag(CuisineSharedSecrets.KEY_EFFECT_LIST, effectList);
+            data.setInteger(CuisineSharedSecrets.KEY_WATER, builder.getWaterAmount());
+            data.setInteger(CuisineSharedSecrets.KEY_OIL, builder.getOilAmount());
+            data.setInteger("temperature", builder.getTemperature());
 
             return data;
         }
@@ -387,7 +479,22 @@ public class Dish extends CompositeFood
                 }
             }
 
-            return new Dish.Builder(ingredients, seasonings, effects);
+            Dish.Builder builder = new Dish.Builder(ingredients, seasonings, effects);
+
+            if (data.hasKey(CuisineSharedSecrets.KEY_WATER, Constants.NBT.TAG_INT))
+            {
+                builder.setWaterAmount(data.getInteger(CuisineSharedSecrets.KEY_WATER));
+            }
+            if (data.hasKey(CuisineSharedSecrets.KEY_OIL, Constants.NBT.TAG_INT))
+            {
+                builder.setOilAmount(data.getInteger(CuisineSharedSecrets.KEY_OIL));
+            }
+            if (data.hasKey("temperature", Constants.NBT.TAG_INT))
+            {
+                builder.setTemperature(data.getInteger("temperature"));
+            }
+
+            return builder;
         }
     }
 }

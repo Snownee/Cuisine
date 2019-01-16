@@ -1,5 +1,11 @@
 # Cuisine
 
+### License
+
+#### For models, textures and sounds: All Rights Reserved
+
+#### For other things: MIT
+
 ### FAQs
 
 #### Modpack?

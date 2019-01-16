@@ -1,14 +1,15 @@
 package snownee.cuisine.tiles;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,14 +18,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingStrategy;
 import snownee.cuisine.api.CookingStrategyProvider;
 import snownee.cuisine.api.CookingVessel;
@@ -33,19 +33,19 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.CulinarySkillPoint;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
-import snownee.cuisine.api.IngredientTrait;
 import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.util.SkillUtil;
-import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.client.gui.CuisineGUI;
+import snownee.cuisine.internal.CuisinePersistenceCenter;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.network.NetworkChannel;
 
-public class TileWok extends TileBase implements CookingVessel, ITickable
+public class TileWok extends TileFirePit implements CookingVessel
 {
 
     public enum Status
@@ -68,37 +68,31 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     private Status status = Status.IDLE;
     private Dish.Builder builder;
     private transient Dish completedDish;
-    private int temperature, water, oil;
     public byte actionCycle = 0;
-    final transient List<ItemStack> ingredientsForRendering = new ArrayList<>(8);
+    final transient Map<Ingredient, ItemStack> ingredientsForRendering = new LinkedHashMap<>(8);
+    @Nullable
     public SeasoningInfo seasoningInfo;
+    private boolean shouldRefresh = false;
 
     @Override
     public void update()
     {
+        super.update();
         if (!world.isRemote && status == Status.WORKING)
         {
-            if (temperature < 300 && this.world.rand.nextInt(5) == 0)
+            if (builder != null && this.world.getTotalWorldTime() % 20 == 0)
             {
-                this.temperature += this.world.rand.nextInt(10);
+                builder.apply(new Heating(heatHandler.getLevel()), this);
+                if (!builder.getIngredients().isEmpty())
+                {
+                    requiresRefresh();
+                }
             }
-            if (builder != null && this.world.getWorldTime() % 20 == 0)
+            if (shouldRefresh && this.world.getTotalWorldTime() % 5 == 0)
             {
-                builder.apply(new Heating(this), this);
+                refresh();
+                shouldRefresh = false;
             }
-        }
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
-        if (oldState.getBlock() != CuisineRegistry.FIRE_PIT || newState.getBlock() != CuisineRegistry.FIRE_PIT)
-        {
-            return true;
-        }
-        else
-        {
-            return oldState.getValue(BlockFirePit.COMPONENT) != newState.getValue(BlockFirePit.COMPONENT);
         }
     }
 
@@ -107,34 +101,22 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         return status;
     }
 
-    public int getTemperature()
-    {
-        return this.temperature;
-    }
-
-    public int getWaterAmount()
-    {
-        return this.water;
-    }
-
-    public int getOilAmount()
-    {
-        return this.oil;
-    }
-
     public void onActivated(EntityPlayerMP playerIn, EnumHand hand, EnumFacing facing)
     {
+        ItemStack heldThing = playerIn.getHeldItem(hand);
         switch (status)
         {
         case IDLE:
         {
-            ItemStack heldThing = playerIn.getHeldItem(hand);
-            if (CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null || heldThing.getItem() instanceof ItemSpiceBottle)
+            boolean isIngredient = heldThing.getItem() instanceof ItemSpiceBottle || CulinaryHub.API_INSTANCE.findIngredient(heldThing) != null;
+            if (isIngredient || FuelHeatHandler.isFuel(heldThing, true))
             {
-                this.builder = Dish.Builder.create();
-                this.temperature = 0;
+                if (isIngredient)
+                {
+                    this.builder = Dish.Builder.create();
+                }
                 boolean result = cook(playerIn, hand, heldThing, facing);
-                if (result)
+                if (isIngredient && result)
                 {
                     this.status = Status.WORKING;
                 }
@@ -146,7 +128,6 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             break;
         }
         case WORKING:
-            ItemStack heldThing = playerIn.getHeldItem(hand);
             if (cook(playerIn, hand, heldThing, facing))
             {
                 break;
@@ -164,7 +145,10 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.EXPERTISE, (int) (completedDish.getFoodLevel() * completedDish.getSaturationModifier()));
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
 
-                heldThing.shrink(1);
+                if (!playerIn.isCreative())
+                {
+                    heldThing.shrink(1);
+                }
                 playerIn.openGui(Cuisine.getInstance(), CuisineGUI.NAME_FOOD, world, pos.getX(), pos.getY(), pos.getZ());
 
                 break;
@@ -176,12 +160,12 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 {
                     return;
                 }
-                double limit = builder.getMaxSize();
+                double limit = builder.getMaxIngredientLimit();
                 if (!SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.BIGGER_SIZE))
                 {
                     limit *= 0.75;
                 }
-                if (builder.getCurrentSize() > limit)
+                if (builder.getIngredients().size() > limit)
                 {
                     playerIn.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.wok_size_too_large")), true);
                     return;
@@ -206,7 +190,10 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(heldThing);
             if (spice != null)
             {
-                CuisineRegistry.SPICE_BOTTLE.consume(heldThing, 1);
+                if (!player.isCreative())
+                {
+                    CuisineRegistry.SPICE_BOTTLE.consume(heldThing, 1);
+                }
                 Seasoning seasoning = new Seasoning(spice);
                 this.builder.addSeasoning(player, seasoning, this);
                 refreshSeasoningInfo();
@@ -219,11 +206,22 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         }
         else if ((ingredient = CulinaryHub.API_INSTANCE.findIngredient(heldThing)) != null)
         {
+            if (!SkillUtil.hasPlayerLearnedSkill(player, CulinaryHub.CommonSkills.BIGGER_SIZE))
+            {
+                if (this.builder.getIngredients().size() + 1 > this.builder.getMaxIngredientLimit() * 0.75)
+                {
+                    return false;
+                }
+            }
             if (this.builder.addIngredient(player, ingredient, this))
             {
-                ItemStack newStack = heldThing.splitStack(1);
-                this.ingredientsForRendering.add(newStack);
-                NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), newStack));
+                ItemStack newStack = ItemHandlerHelper.copyStackWithSize(heldThing, 1);
+                if (!player.isCreative())
+                {
+                    heldThing.shrink(1);
+                }
+                this.ingredientsForRendering.put(ingredient, newStack);
+                NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), ingredient, newStack));
                 return true;
             }
             else
@@ -231,6 +229,16 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
                 player.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.cannot_add_more")), true);
                 return false;
             }
+        }
+        else if (FuelHeatHandler.isFuel(heldThing, true))
+        {
+            ItemStack remain = heatHandler.addFuel(heldThing);
+            if (!player.isCreative())
+            {
+                player.setHeldItem(hand, remain);
+            }
+            refresh();
+            return true;
         }
 
         return false;
@@ -241,9 +249,9 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
      *
      * @return View of ingredients that added into this TileWok
      */
-    public List<ItemStack> getWokContents()
+    public Map<Ingredient, ItemStack> getWokContents()
     {
-        return Collections.unmodifiableList(this.ingredientsForRendering);
+        return Collections.unmodifiableMap(this.ingredientsForRendering);
     }
 
     public void refreshSeasoningInfo()
@@ -282,7 +290,7 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
             {
                 seasoningInfo.volume = 0;
             }
-            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.WATER && seasoning.getSize() == size)
+            else if (seasoning.hasKeyword("water") && seasoning.getSize() == size)
             {
                 seasoningInfo.volume = size;
                 seasoningInfo.color = 0xFF4C57D1;
@@ -327,7 +335,6 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.temperature = compound.getInteger("temperature");
         this.status = compound.getBoolean("status") ? Status.WORKING : Status.IDLE;
         if (compound.hasKey("dish", Constants.NBT.TAG_COMPOUND))
         {
@@ -339,7 +346,11 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         {
             if (tag instanceof NBTTagCompound)
             {
-                this.ingredientsForRendering.add(new ItemStack((NBTTagCompound) tag));
+                NBTTagCompound tagCompound = (NBTTagCompound) tag;
+                if (tagCompound.hasKey("ingredient", Constants.NBT.TAG_COMPOUND))
+                {
+                    this.ingredientsForRendering.put(CuisinePersistenceCenter.deserializeIngredient(tagCompound.getCompoundTag("ingredient")), new ItemStack(tagCompound.getCompoundTag("item")));
+                }
             }
         }
     }
@@ -348,18 +359,20 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        compound.setInteger("temperature", this.temperature);
         compound.setBoolean("status", this.status == Status.WORKING);
         if (builder != null)
         {
             compound.setTag("dish", Dish.Builder.toNBT(this.builder));
         }
-        NBTTagList items = new NBTTagList();
-        for (ItemStack item : this.ingredientsForRendering)
+        NBTTagList map = new NBTTagList();
+        for (Entry<Ingredient, ItemStack> entry : this.ingredientsForRendering.entrySet())
         {
-            items.appendTag(item.serializeNBT());
+            NBTTagCompound tagEntry = new NBTTagCompound();
+            tagEntry.setTag("ingredient", CuisinePersistenceCenter.serialize(entry.getKey()));
+            tagEntry.setTag("item", entry.getValue().serializeNBT());
+            map.appendTag(tagEntry);
         }
-        compound.setTag("rendering", items);
+        compound.setTag("rendering", map);
         return super.writeToNBT(compound);
     }
 
@@ -367,76 +380,101 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        return data;
+        if (builder != null && !builder.getIngredients().isEmpty())
+        {
+            int[] donenesses = new int[builder.getIngredients().size()];
+            int i = 0;
+            for (Ingredient ingredient : builder.getIngredients())
+            {
+                donenesses[i] = ingredient.getDoneness();
+                ++i;
+            }
+            data.setIntArray("donenesses", donenesses);
+        }
+        return super.writePacketData(data);
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        // No-op
+        if (data.hasKey("donenesses", Constants.NBT.TAG_INT_ARRAY))
+        {
+            int[] donenesses = data.getIntArray("donenesses");
+            if (donenesses.length == ingredientsForRendering.size())
+            {
+                int i = 0;
+                for (Entry<Ingredient, ItemStack> entry : ingredientsForRendering.entrySet())
+                {
+                    entry.getKey().setDoneness(donenesses[i]);
+                    if (entry.getValue().getItem() == CuisineRegistry.INGREDIENT)
+                    {
+                        entry.getValue().getTagCompound().setInteger(CuisineSharedSecrets.KEY_DONENESS, donenesses[i]);
+                    }
+                    if (seasoningInfo != null && seasoningInfo.volume < 2 && donenesses[i] > 130 && world.rand.nextInt(10) == 0)
+                    {
+                        float f = (float) (world.rand.nextFloat() * Math.PI * 2);
+                        double x = MathHelper.sin(f) * 0.1D;
+                        double y = pos.getY() + 0.2D + world.rand.nextDouble() * 0.05D;
+                        double z = MathHelper.cos(f) * 0.1D;
+                        world.spawnAlwaysVisibleParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pos.getX() + 0.5D + x, y, pos.getZ() + 0.5D + z, 0D, 0D, 0D);
+                    }
+                    ++i;
+                }
+            }
+        }
+        super.readPacketData(data);
     }
 
-    static final class Heating implements CookingStrategy
+    static final class Heating implements CookingStrategy<Dish.Builder>
     {
-        private final TileWok wok;
+        private int heatLevel;
+        private int count = 0;
+        private Dish.Builder builder;
 
-        Heating(TileWok wok)
+        Heating(int heatLevel)
         {
-            this.wok = wok;
+            this.heatLevel = heatLevel;
         }
 
-        // TODO This is just a prototype, we need further refinement
-
-        private int ingredientSize = 0;
-        private int initialTemp = -1;
-        private int decrement = 0;
-
         @Override
-        public void beginCook(CompositeFood.Builder<?> dish)
+        public void beginCook(Dish.Builder food)
         {
-            this.ingredientSize = dish.getIngredients().size();
+            builder = food;
         }
 
         @Override
         public void preCook(Seasoning seasoning, CookingVessel vessel)
         {
-            if (ingredientSize < 1)
-            {
-                return;
-            }
-            initialTemp = this.wok.getTemperature();
-            decrement = initialTemp / ingredientSize;
         }
 
         @Override
         public void cook(Ingredient ingredient, CookingVessel vessel)
         {
-            if (ingredientSize < 1)
+            if (heatLevel == 0)
             {
                 return;
             }
-            int increment = Math.max(0, initialTemp / 4);
-            ingredient.setHeat(ingredient.getHeat() + increment);
-            if (ingredient.getHeat() > 250 && Math.random() < 0.01)
+            boolean enoughWater = builder.getWaterAmount() >= 200 || builder.getWaterAmount() / builder.getIngredients().size() >= 100;
+            int newDoneness = ingredient.getDoneness() + heatLevel;
+            if (!(enoughWater && newDoneness > 110))
             {
-                // Unconditionally remove the undercooked trait, so that
-                // we won't see both co-exist together
-                ingredient.removeTrait(IngredientTrait.UNDERCOOKED);
-                ingredient.addTrait(IngredientTrait.OVERCOOKED);
+                ingredient.setDoneness(newDoneness);
             }
-            initialTemp -= decrement;
+            if (++count > 1)
+            {
+                count = 0;
+                --heatLevel;
+            }
         }
 
         @Override
-        public void postCook(CompositeFood.Builder<?> dish, CookingVessel vessel)
+        public void postCook(Dish.Builder food, CookingVessel vessel)
         {
-
         }
 
         @Override
         public void endCook()
         {
-
         }
 
     }
@@ -463,8 +501,13 @@ public class TileWok extends TileBase implements CookingVessel, ITickable
         this.completedDish = null;
         this.status = Status.IDLE;
         this.ingredientsForRendering.clear();
-        NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), ItemStack.EMPTY));
+        NetworkChannel.INSTANCE.sendToAll(new PacketIncrementalWokUpdate(this.getPos(), null, ItemStack.EMPTY));
 
         return Optional.of(stack);
+    }
+
+    public void requiresRefresh()
+    {
+        shouldRefresh = true;
     }
 }

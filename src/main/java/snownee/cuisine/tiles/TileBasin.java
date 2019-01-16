@@ -16,6 +16,7 @@ import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.cuisine.api.process.Processing;
+import snownee.kiwi.tile.TileInventoryBase;
 
 public class TileBasin extends TileInventoryBase
 {

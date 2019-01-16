@@ -43,6 +43,7 @@ public class BlockSqueezer extends BlockMod
         setDefaultState(blockState.getBaseState().withProperty(BlockDispenser.TRIGGERED, false));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean hasItem()
     {
@@ -55,6 +56,7 @@ public class BlockSqueezer extends BlockMod
         neighborChanged(state, worldIn, pos, Blocks.AIR, pos.down());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
@@ -81,18 +83,21 @@ public class BlockSqueezer extends BlockMod
         return new TileSqueezer();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
@@ -111,6 +116,7 @@ public class BlockSqueezer extends BlockMod
         return Item.getItemFromBlock(Blocks.PISTON);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta)
     {

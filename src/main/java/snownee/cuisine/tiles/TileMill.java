@@ -42,6 +42,7 @@ import snownee.cuisine.library.FilterFluidHandler;
 import snownee.cuisine.library.FilterItemHandler;
 import snownee.cuisine.library.SingleSlotItemHandler;
 import snownee.cuisine.util.StacksUtil;
+import snownee.kiwi.tile.TileBase;
 
 public class TileMill extends TileBase implements ITickable
 {

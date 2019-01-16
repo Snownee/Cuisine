@@ -18,7 +18,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.util.CuisineFakePlayer;
 
-public class BehaviourArmDispense extends BehaviorDefaultDispenseItem
+public class BehaviorArmDispense extends BehaviorDefaultDispenseItem
 {
 
     @Override

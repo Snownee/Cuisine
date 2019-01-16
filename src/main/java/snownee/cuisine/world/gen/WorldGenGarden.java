@@ -33,7 +33,7 @@ public class WorldGenGarden
 
             Biome biome = worldIn.getBiome(position);
 
-            if (!biome.canRain() || biome.isSnowyBiome() || biome.getBaseHeight() > 0.4F || biome.decorator.flowersPerChunk < 1 || biome.topBlock.getMaterial() != Material.GRASS || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(CuisineConfig.WORLD_GEN.cropsGenRate) > 0)
+            if (!biome.canRain() || biome.isSnowyBiome() || biome.getBaseHeight() > 0.4F || biome.decorator.flowersPerChunk < 1 || biome.topBlock.getMaterial() != Material.GRASS || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(200) >= CuisineConfig.WORLD_GEN.cropsGenRate)
             {
                 return;
             }

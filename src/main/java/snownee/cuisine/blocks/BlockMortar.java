@@ -42,7 +42,7 @@ public class BlockMortar extends BlockModHorizontal
     {
         super(name, Material.ROCK);
         setCreativeTab(Cuisine.CREATIVE_TAB);
-        setHardness(1.0F);
+        setHardness(0.2F);
         setDefaultState(super.getDefaultState().withProperty(PESTLE_DOWN, Boolean.FALSE));
     }
 
@@ -50,6 +50,12 @@ public class BlockMortar extends BlockModHorizontal
     public boolean hasItem()
     {
         return false;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        return true;
     }
 
     @Override
@@ -169,7 +175,7 @@ public class BlockMortar extends BlockModHorizontal
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variants.EMPTY);
+        return CuisineRegistry.ITEM_MORTAR.getItemStack(ItemMortar.Variant.EMPTY);
     }
 
     @Override

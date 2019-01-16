@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -22,6 +23,7 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Drink;
+import snownee.cuisine.util.ItemNBTUtil;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
 public final class CuisineItemRendering
@@ -37,8 +39,7 @@ public final class CuisineItemRendering
     public static void onItemColorsInit(ColorHandlerEvent.Item event)
     {
         ItemColors itemColors = event.getItemColors();
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 0)
             {
                 NBTTagCompound data = stack.getTagCompound();
@@ -47,15 +48,23 @@ public final class CuisineItemRendering
                     Material material = CulinaryHub.API_INSTANCE.findMaterial(data.getString(CuisineSharedSecrets.KEY_MATERIAL));
                     if (material != null)
                     {
-                        return material.getRawColorCode();
+                        int doneness = 0;
+                        if (data.hasKey(CuisineSharedSecrets.KEY_DONENESS, Constants.NBT.TAG_INT))
+                        {
+                            doneness = data.getInteger(CuisineSharedSecrets.KEY_DONENESS);
+                        }
+
+                        //debug code
+                        //doneness = (int) (Minecraft.getSystemTime() / 10 % 200);
+
+                        return material.getColorCode(doneness);
                     }
                 }
             }
             return -1;
         }, CuisineRegistry.INGREDIENT);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 0 && CuisineRegistry.SPICE_BOTTLE.hasItem(stack))
             {
                 Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(stack);
@@ -79,8 +88,7 @@ public final class CuisineItemRendering
             return -1;
         }, CuisineRegistry.SPICE_BOTTLE);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 0)
             {
                 stack = ItemHandlerHelper.copyStackWithSize(stack, 1);
@@ -93,12 +101,12 @@ public final class CuisineItemRendering
                         return fluid.getFluid().getColor(fluid);
                     }
                 }
+                return ItemNBTUtil.getInt(stack, "liquidColor", -1);
             }
             return -1;
         }, CuisineRegistry.BOTTLE);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) ->
-        {
+        itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 1 && stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
             {
                 FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
@@ -107,10 +115,13 @@ public final class CuisineItemRendering
                 {
                     return ((Drink) food).getColor();
                 }
+                return ItemNBTUtil.getInt(stack, "liquidColor", -1);
             }
             return -1;
         }, CuisineRegistry.DRINK);
 
-        itemColors.registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ColorizerFoliage.getFoliageColorBasic() : -1, CuisineRegistry.SHEARED_LEAVES);
+        itemColors.registerItemColorHandler((
+                stack, tintIndex
+        ) -> tintIndex == 0 ? ColorizerFoliage.getFoliageColorBasic() : -1, CuisineRegistry.SHEARED_LEAVES);
     }
 }

@@ -1,8 +1,8 @@
 {
   "type": "forge:ore_shaped",
   "result": {
-      "item" : "cuisine:material",
-      "data": 0
+    "item": "cuisine:material",
+    "data": 0
   },
   "pattern": [
     " b",

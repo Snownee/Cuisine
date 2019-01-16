@@ -19,15 +19,17 @@ public class DefaultConsumedCollector implements EffectCollector
 {
     private final Map<Potion, PotionEffectInfo> mapPotions = new HashMap<>();
     private final float durationModifier;
+    private int foodLevel;
 
-    public DefaultConsumedCollector()
+    public DefaultConsumedCollector(int foodLevel)
     {
-        this(1);
+        this(foodLevel, 1);
     }
 
-    public DefaultConsumedCollector(float durationModifier)
+    public DefaultConsumedCollector(int foodLevel, float durationModifier)
     {
         this.durationModifier = Math.max(durationModifier, 0);
+        this.foodLevel = Math.max(foodLevel, 0);
     }
 
     @Override
@@ -57,7 +59,11 @@ public class DefaultConsumedCollector implements EffectCollector
         {
             player.addPotionEffect(new PotionEffect(CuisineRegistry.EFFECT_RESISTANCE, (int) (maxDuration * durationModifier * 2), 0, true, false));
         }
+    }
 
+    public int getNewFoodLevel()
+    {
+        return foodLevel;
     }
 
     @Override
@@ -86,10 +92,24 @@ public class DefaultConsumedCollector implements EffectCollector
                 mapPotions.put(potionEffect.getPotion(), info);
             }
         }
+        else if (type == DefaultTypes.FOOD_LEVEL)
+        {
+            foodLevel += (Integer) effect;
+        }
         else
         {
             Cuisine.logger.error("Try to add an uncaught effect: ", effect);
         }
+    }
+
+    @Override
+    public <T> T getEffect(EffectType<T> type)
+    {
+        if (type == DefaultTypes.FOOD_LEVEL)
+        {
+            return DefaultTypes.FOOD_LEVEL.cast(foodLevel);
+        }
+        return null;
     }
 
     @Override

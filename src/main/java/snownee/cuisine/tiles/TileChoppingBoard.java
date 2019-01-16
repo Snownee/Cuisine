@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,13 +14,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
@@ -29,9 +34,11 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.process.Chopping;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.util.SkillUtil;
+import snownee.cuisine.client.particle.ParticleQuad;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.items.ItemIngredient;
 import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.tile.TileInventoryBase;
 import snownee.kiwi.util.OreUtil;
 
 public class TileChoppingBoard extends TileInventoryBase
@@ -40,6 +47,7 @@ public class TileChoppingBoard extends TileInventoryBase
     private EnumFacing facing = EnumFacing.NORTH;
     private boolean isAxe = false;
     private int chopped = 0;
+    public long tickLastChop;
 
     public static final ItemStack DEFAULT_COVER = new ItemStack(Blocks.LOG);
     private ItemStack cover = ItemStack.EMPTY;
@@ -190,12 +198,13 @@ public class TileChoppingBoard extends TileInventoryBase
     public void process(EntityPlayer playerIn, ItemStack tool, ProcessionType type, @Nullable Integer harvestlevel)
     {
         world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 0.3F, 0.5F);
-        if (world.isRemote)
+        ItemStack stack = stacks.getStackInSlot(0);
+        if (world.isRemote && !stack.isEmpty())
         {
+            updateTick(stack);
             return;
         }
 
-        ItemStack stack = stacks.getStackInSlot(0);
         if (ProcessionType.AXE != type)
         {
             Ingredient processingIngredient = tryConvert(stack);
@@ -258,8 +267,8 @@ public class TileChoppingBoard extends TileInventoryBase
             {
                 SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
             }
-            boolean fewerLosses = playerIn instanceof EntityPlayerMP && SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.FEWER_LOSSES);
-            stacks.setStackInSlot(0, craftMaterial(stack, processingIngredient, actions, fewerLosses, world.rand));
+            // boolean fewerLosses = playerIn instanceof EntityPlayerMP && SkillUtil.hasPlayerLearnedSkill(playerIn, CulinaryHub.CommonSkills.FEWER_LOSSES);
+            stacks.setStackInSlot(0, craftMaterial(stack, processingIngredient, actions, world.rand));
         }
         else if (isAxe)
         {
@@ -285,7 +294,38 @@ public class TileChoppingBoard extends TileInventoryBase
         }
     }
 
-    private static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, boolean fewerLosses, Random rand)
+    @SideOnly(Side.CLIENT)
+    private void updateTick(ItemStack stack)
+    {
+        if (stack.getItem() == CuisineRegistry.KITCHEN_KNIFE)
+        {
+            return;
+        }
+        tickLastChop = Minecraft.getSystemTime();
+        Minecraft mc = Minecraft.getMinecraft();
+        if (stack.getItem() == CuisineRegistry.INGREDIENT)
+        {
+            Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack);
+            if (ingredient == null)
+            {
+                return;
+            }
+            int color = ingredient.getMaterial().getColorCode(ingredient.getDoneness());
+            for (int i = 0; i < 4; i++)
+            {
+                mc.effectRenderer.addEffect(new ParticleQuad(world, pos, color));
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                world.spawnParticle(EnumParticleTypes.ITEM_CRACK, false, pos.getX() + 0.5, pos.getY() + 0.3, pos.getZ() + 0.5, (world.rand.nextDouble() - 0.5) * 0.2, 0.1, (world.rand.nextDouble() - 0.5) * 0.2, Item.getIdFromItem(stack.getItem()), stack.getMetadata());
+            }
+        }
+    }
+
+    private static ItemStack craftMaterial(ItemStack raw, Ingredient ingredient, int[] actions, Random rand)
     {
         Form form = Form.byActions(actions[0], actions[1]);
         if (ingredient.getMaterial().isValidForm(form))
@@ -298,10 +338,6 @@ public class TileChoppingBoard extends TileInventoryBase
             tag.setIntArray(ItemIngredient.KEY_ACTIONS, actions);
             raw.setTagCompound(tag);
             return raw;
-        }
-        if (ingredient.getSize() > 0.5)
-        {
-            ingredient.decreaseSizeBy(rand.nextFloat() * (fewerLosses ? 0.02F : 0.05F));
         }
         ItemStack itemIngredient = ItemIngredient.make(ingredient);
         itemIngredient.setCount(raw.getCount());
@@ -325,7 +361,7 @@ public class TileChoppingBoard extends TileInventoryBase
         }
         else
         {
-            return Ingredient.make(stack, 1);
+            return CulinaryHub.API_INSTANCE.findIngredient(stack);
         }
     }
 

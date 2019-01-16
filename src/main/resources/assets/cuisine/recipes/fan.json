@@ -1,0 +1,19 @@
+{
+  "type": "forge:ore_shaped",
+  "result": {
+    "item": "cuisine:fan"
+  },
+  "pattern": [
+    " w",
+    "s "
+  ],
+  "key": {
+    "w": {
+      "item": "minecraft:waterlily"
+    },
+    "s": {
+      "type": "forge:ore_dict",
+      "ore": "handleWood"
+    }
+  }
+}

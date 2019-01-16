@@ -1,5 +1,7 @@
 package snownee.cuisine.internal.effect;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -14,9 +16,9 @@ import snownee.kiwi.Kiwi;
 public class EffectHeatResistance extends EffectPotions
 {
 
-    public EffectHeatResistance(String name)
+    public EffectHeatResistance()
     {
-        super(name);
+        super("heat_resistance");
         if (Loader.isModLoaded("toughasnails") && !Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") && TANCompat.heat_resistance != null)
         {
             addPotionEffect(new PotionEffect(TANCompat.heat_resistance, 600));
@@ -24,10 +26,10 @@ public class EffectHeatResistance extends EffectPotions
     }
 
     @Override
-    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, Ingredient ingredient, EffectCollector collector)
+    public void onEaten(ItemStack stack, EntityPlayer player, CompositeFood food, List<Ingredient> ingredients, EffectCollector collector)
     {
         player.extinguish();
-        super.onEaten(stack, player, food, ingredient, collector);
+        super.onEaten(stack, player, food, ingredients, collector);
     }
 
 }

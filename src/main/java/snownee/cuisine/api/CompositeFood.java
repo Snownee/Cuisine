@@ -7,9 +7,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -159,6 +163,13 @@ public abstract class CompositeFood
         return Collections.unmodifiableList(this.effects);
     }
 
+    public final Set<Effect> getMergedEffects()
+    {
+        Set<Effect> effects = getIngredients().stream().map(Ingredient::getEffects).flatMap(Set::stream).collect(Collectors.toSet());
+        effects.addAll(getEffects());
+        return effects;
+    }
+
     /**
      * Determine whether this is consumed entirely.
      * @return <code>true</code> if this is already eaten up; <code>false</code> otherwise.
@@ -177,12 +188,6 @@ public abstract class CompositeFood
      * 2. Durability 是一道菜可被食用的次数，默认为6次（待定），会受到食材特性和烹饪技巧的
      * 影响。（3TUSK: 这个现在叫 Serves，大约是“例”的意思，想想下馆子的时候怎么点菜的就知道了）
      */
-
-    @Deprecated // TODO Merge into CompositeFood.Builder#addIngredient, as a pre-check
-    public boolean canAdd(final Ingredient ingredient)
-    {
-        return this.getSize() + ingredient.getSize() <= this.getMaxSize() /*&& ingredient.getMaterial().canAddInto(this, ingredient)*/;
-    }
 
     /**
      * @param material The material to lookup
@@ -252,11 +257,6 @@ public abstract class CompositeFood
         return contains(CommonEffects.ALWAYS_EDIBLE);
     }
 
-    public double getSize()
-    {
-        return this.ingredients.stream().mapToDouble(Ingredient::getSize).sum();
-    }
-
     public double getMaxSize()
     {
         return DEFAULT_MAX_SIZE;
@@ -306,13 +306,13 @@ public abstract class CompositeFood
 
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
-        Collection<IngredientBinding> bindings = getEffectBindings();
-        EffectCollector collector = new DefaultConsumedCollector();
+        Collection<EffectBinding> bindings = getEffectBindings();
+        DefaultConsumedCollector collector = new DefaultConsumedCollector(getFoodLevel());
 
         // And then apply them
-        for (IngredientBinding binding : bindings)
+        for (EffectBinding binding : bindings)
         {
-            binding.effect.onEaten(stack, player, this, binding.ingredient, collector);
+            binding.effect.onEaten(stack, player, this, binding.ingredients, collector);
         }
 
         // And finally, consume seasonings
@@ -323,21 +323,25 @@ public abstract class CompositeFood
 
         collector.apply(this, player);
 
-        player.getFoodStats().addStats(getFoodLevel(), getSaturationModifier());
+        int countOvercooked = (int) getIngredients().stream().filter(i -> i.getAllTraits().contains(IngredientTrait.OVERCOOKED)).count();
+        int newFoodLevel = collector.getNewFoodLevel() - countOvercooked;
+        if (newFoodLevel > 0)
+        {
+            player.getFoodStats().addStats(newFoodLevel, getSaturationModifier());
+        }
     }
 
-    protected Collection<IngredientBinding> getEffectBindings()
+    protected Collection<EffectBinding> getEffectBindings()
     {
-        List<IngredientBinding> bindings = new ArrayList<>();
-
-        effects.forEach(effect -> bindings.add(new IngredientBinding(effect)));
+        Multimap<Effect, Ingredient> effectMap = HashMultimap.create();
         for (Ingredient ingredient : ingredients)
         {
-            for (Effect effect : ingredient.getEffects())
-            {
-                bindings.add(new IngredientBinding(ingredient, effect));
-            }
+            ingredient.getEffects().forEach(effect -> effectMap.put(effect, ingredient));
         }
+        effects.forEach(effect -> effectMap.put(effect, null));
+
+        List<EffectBinding> bindings = new ArrayList<>();
+        effectMap.keySet().forEach(effect -> bindings.add(new EffectBinding(effectMap.get(effect).stream().collect(Collectors.toList()), effect)));
 
         // Sort the list of effects based on priority
         Collections.sort(bindings);
@@ -345,24 +349,19 @@ public abstract class CompositeFood
         return bindings;
     }
 
-    public static class IngredientBinding implements Comparable<IngredientBinding>
+    public static class EffectBinding implements Comparable<EffectBinding>
     {
-        public final Ingredient ingredient;
         public final Effect effect;
+        public final List<Ingredient> ingredients; // element can be null
 
-        public IngredientBinding(@Nullable Ingredient ingredient, @Nonnull Effect effect)
+        public EffectBinding(List<Ingredient> ingredients, @Nonnull Effect effect)
         {
-            this.ingredient = ingredient;
+            this.ingredients = ingredients;
             this.effect = effect;
         }
 
-        public IngredientBinding(@Nonnull Effect effect)
-        {
-            this(null, effect);
-        }
-
         @Override
-        public int compareTo(@Nonnull IngredientBinding another)
+        public int compareTo(@Nonnull EffectBinding another)
         {
             return Integer.compare(another.effect.getPriority(), this.effect.getPriority());
         }
@@ -547,16 +546,6 @@ public abstract class CompositeFood
             return false;
         }
 
-        public double getCurrentSize()
-        {
-            return this.ingredients.stream().mapToDouble(Ingredient::getSize).sum();
-        }
-
-        public double getMaxSize()
-        {
-            return CompositeFood.DEFAULT_MAX_SIZE;
-        }
-
         public int getMaxIngredientLimit()
         {
             return 6;
@@ -566,7 +555,7 @@ public abstract class CompositeFood
 
         public boolean canAddIntoThis(EntityPlayer cook, Ingredient ingredient, CookingVessel vessel)
         {
-            return ingredient.getMaterial().canAddInto(this, ingredient);
+            return ingredients.size() >= getMaxIngredientLimit() || ingredient.getMaterial().canAddInto(this, ingredient);
         }
 
         public boolean canAddIntoThis(EntityPlayer cook, Seasoning seasoning, CookingVessel vessel)
@@ -591,24 +580,12 @@ public abstract class CompositeFood
         {
             if (this.canAddIntoThis(cook, ingredient, vessel))
             {
-                boolean merged = false;
-                for (Ingredient i : ingredients)
+                if (ingredients.size() >= getMaxIngredientLimit())
                 {
-                    if (i.equalsIgnoreSize(ingredient))
-                    {
-                        i.increaseSizeBy(ingredient.getSize());
-                        merged = true;
-                        break;
-                    }
+                    return false;
                 }
-                if (!merged)
-                {
-                    if (ingredients.size() >= getMaxIngredientLimit())
-                    {
-                        return false;
-                    }
-                    ingredients.add(ingredient);
-                }
+                ingredients.add(ingredient);
+
                 ingredient.getMaterial().onAddedInto(this, ingredient, vessel);
                 return true;
             }
@@ -670,23 +647,7 @@ public abstract class CompositeFood
 
         public boolean removeIngredient(Ingredient ingredient)
         {
-            boolean changed = false;
-            for (Iterator<Ingredient> itr = this.ingredients.iterator(); itr.hasNext();)
-            {
-                Ingredient i = itr.next();
-                if (ingredient.equalsIgnoreSize(i))
-                {
-                    i.decreaseSizeBy(ingredient.getSize());
-                    if (i.getSize() <= 0)
-                    {
-                        // i.getMaterial().onRemovedFrom(this, i, cookingVessel???); // TODO (3TUSK): callback
-                        itr.remove();
-                    }
-                    changed = true;
-                    break;
-                }
-            }
-            return changed;
+            return ingredients.remove(ingredient);
         }
 
         public boolean removeSeasoning(Seasoning seasoning)

@@ -1,5 +1,6 @@
 package snownee.cuisine.items;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -11,28 +12,30 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.ModelUtil;
 import snownee.kiwi.item.IModItem;
-import snownee.kiwi.util.VariantsHolder;
-import snownee.kiwi.util.VariantsHolder.Variant;
+import snownee.kiwi.item.IVariant;
 
 // extends ItemFood to support Spice of Life and Nutrition
-public class ItemBasicFood extends ItemFood implements IModItem
+public class ItemBasicFood<T, E extends IVariant<T> & IRarityGetter> extends ItemFood implements IModItem
 {
     private final String name;
+    private final E[] values;
     private static int forestbatLastWords;
 
-    public ItemBasicFood(String name)
+    public ItemBasicFood(String name, E[] values)
     {
         super(1, false);
         this.name = name;
+        this.values = values;
         setCreativeTab(Cuisine.CREATIVE_TAB);
         setHasSubtypes(true);
     }
@@ -56,52 +59,17 @@ public class ItemBasicFood extends ItemFood implements IModItem
         return this;
     }
 
-    @Override
-    public void mapModel()
-    {
-        ModelUtil.mapItemVariantsModel(this, "food_", Variants.INSTANCE, "");
-    }
-
     @Nonnull
     @Override
     public EnumRarity getRarity(ItemStack stack)
     {
-        if (stack.getMetadata() < getVariants().size())
+        if (stack.getMetadata() < values.length)
         {
-            return getVariants().get(stack.getMetadata()).getValue().getRarity();
+            return getVariants().get(stack.getMetadata()).getRarity();
         }
         else
         {
             return super.getRarity(stack);
-        }
-    }
-
-    public List<? extends Variant<? extends Variants.SubItem>> getVariants()
-    {
-        return Variants.INSTANCE;
-    }
-
-    public ItemStack getItemStack(Variant variant)
-    {
-        return getItemStack(variant, 1);
-    }
-
-    public ItemStack getItemStack(Variant variant, int amount)
-    {
-        return new ItemStack(this, amount, variant.getMeta());
-    }
-
-    @Nonnull
-    @Override
-    public String getTranslationKey(ItemStack stack)
-    {
-        if (stack.getMetadata() < getVariants().size())
-        {
-            return super.getTranslationKey(stack) + "." + getVariants().get(stack.getMetadata()).getValue().getName();
-        }
-        else
-        {
-            return super.getTranslationKey(stack);
         }
     }
 
@@ -111,7 +79,7 @@ public class ItemBasicFood extends ItemFood implements IModItem
         if (this.isInCreativeTab(tab))
         {
             getVariants().stream()
-                    .filter(v -> !(this == CuisineRegistry.BASIC_FOOD && v.getMeta() == Variants.EMPOWERED_CITRON.getMeta()))
+                    .filter(v -> !(this == CuisineRegistry.BASIC_FOOD && v.getMeta() == Variant.EMPOWERED_CITRON.getMeta()))
                     .map(this::getItemStack)
                     .forEach(items::add);
         }
@@ -120,13 +88,13 @@ public class ItemBasicFood extends ItemFood implements IModItem
     @Override
     public boolean hasEffect(ItemStack stack)
     {
-        return this == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta();
+        return stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta();
     }
 
     @Override
-    public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player)
+    public boolean onDroppedByPlayer(ItemStack stack, EntityPlayer player)
     {
-        if (this == CuisineRegistry.BASIC_FOOD && item.getMetadata() == Variants.EMPOWERED_CITRON.getMeta())
+        if (stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
         {
             if (player.world.rand.nextInt(4) == 0)
             {
@@ -144,7 +112,7 @@ public class ItemBasicFood extends ItemFood implements IModItem
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        if (this == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variants.EMPOWERED_CITRON.getMeta())
+        if (stack.getItem() == CuisineRegistry.BASIC_FOOD && stack.getMetadata() == Variant.EMPOWERED_CITRON.getMeta())
         {
             if (attacker.world.rand.nextInt(5) == 0)
             {
@@ -173,54 +141,89 @@ public class ItemBasicFood extends ItemFood implements IModItem
         }
     }
 
-    public static class Variants extends VariantsHolder<Variants.SubItem>
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void mapModel()
     {
-        static final Variants INSTANCE = new Variants();
+        ModelUtil.mapItemVariantsModelNew(this, "food_", this.values, "");
+    }
 
-        public static final Variant<SubItem> TOFU = INSTANCE.addVariant(new SubItem("tofu"));
-        public static final Variant<SubItem> FLOUR = INSTANCE.addVariant(new SubItem("flour"));
-        public static final Variant<SubItem> DOUGH = INSTANCE.addVariant(new SubItem("dough"));
-        public static final Variant<SubItem> RICE_POWDER = INSTANCE.addVariant(new SubItem("rice_powder"));
-        public static final Variant<SubItem> WHITE_RICE = INSTANCE.addVariant(new SubItem("white_rice"));
-        public static final Variant<SubItem> PICKLED_CABBAGE = INSTANCE.addVariant(new SubItem("pickled_cabbage"));
-        public static final Variant<SubItem> PICKLED_CUCUMBER = INSTANCE.addVariant(new SubItem("pickled_cucumber"));
-        public static final Variant<SubItem> PICKLED_PEPPER = INSTANCE.addVariant(new SubItem("pickled_pepper"));
-        public static final Variant<SubItem> PICKLED_TURNIP = INSTANCE.addVariant(new SubItem("pickled_turnip"));
-        public static final Variant<SubItem> MANDARIN = INSTANCE.addVariant(new SubItem("mandarin"));
-        public static final Variant<SubItem> CITRON = INSTANCE.addVariant(new SubItem("citron"));
-        public static final Variant<SubItem> POMELO = INSTANCE.addVariant(new SubItem("pomelo"));
-        public static final Variant<SubItem> ORANGE = INSTANCE.addVariant(new SubItem("orange"));
-        public static final Variant<SubItem> LEMON = INSTANCE.addVariant(new SubItem("lemon"));
-        public static final Variant<SubItem> GRAPEFRUIT = INSTANCE.addVariant(new SubItem("grapefruit"));
-        public static final Variant<SubItem> LIME = INSTANCE.addVariant(new SubItem("lime"));
-        public static final Variant<SubItem> EMPOWERED_CITRON = INSTANCE.addVariant(new SubItem("empowered_citron", EnumRarity.RARE));
+    public List<E> getVariants()
+    {
+        return Arrays.asList(values);
+    }
 
-        public static class SubItem implements IStringSerializable
+    public ItemStack getItemStack(E variant)
+    {
+        return getItemStack(variant, 1);
+    }
+
+    public ItemStack getItemStack(E variant, int amount)
+    {
+        return new ItemStack(this, amount, variant.getMeta());
+    }
+
+    @Override
+    public String getTranslationKey(ItemStack stack)
+    {
+        if (stack.getMetadata() < values.length)
         {
-            private final String name;
-            private final EnumRarity rarity; // TODO (Snownee): rarity should be based on CulinaryHub?
+            return super.getTranslationKey(stack) + "." + values[stack.getMetadata()].getName();
+        }
+        else
+        {
+            return super.getTranslationKey(stack);
+        }
+    }
 
-            protected SubItem(String name)
-            {
-                this(name, EnumRarity.COMMON);
-            }
+    public static enum Variant implements IVariant<Void>, IRarityGetter
+    {
+        TOFU,
+        FLOUR,
+        DOUGH,
+        RICE_POWDER,
+        WHITE_RICE,
+        PICKLED_CABBAGE,
+        PICKLED_CUCUMBER,
+        PICKLED_PEPPER,
+        PICKLED_TURNIP,
+        MANDARIN,
+        CITRON,
+        POMELO,
+        ORANGE,
+        LEMON,
+        GRAPEFRUIT,
+        LIME,
+        EMPOWERED_CITRON(EnumRarity.RARE);
 
-            protected SubItem(String name, EnumRarity rarity)
-            {
-                this.name = name;
-                this.rarity = rarity;
-            }
+        private final EnumRarity rarity;
 
-            @Override
-            public String getName()
-            {
-                return name;
-            }
+        Variant()
+        {
+            this(EnumRarity.COMMON);
+        }
 
-            public EnumRarity getRarity()
-            {
-                return rarity;
-            }
+        Variant(EnumRarity rarity)
+        {
+            this.rarity = rarity;
+        }
+
+        @Override
+        public int getMeta()
+        {
+            return ordinal();
+        }
+
+        @Override
+        public EnumRarity getRarity()
+        {
+            return rarity;
+        }
+
+        @Override
+        public Void getValue()
+        {
+            return null;
         }
     }
 }

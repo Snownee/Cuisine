@@ -18,7 +18,6 @@ public class WorldGenCitrusTrees
 {
     private static final Type[] TYPES = new Type[] { Type.CITRON, Type.CITRON, Type.CITRON, Type.LIME, Type.LIME, Type.LIME, Type.MANDARIN, Type.MANDARIN, Type.MANDARIN, Type.LIME, Type.LIME, Type.LEMON, Type.LEMON, Type.ORANGE, Type.ORANGE, Type.GRAPEFRUIT };
 
-    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void decorateEvent(Decorate event)
     {

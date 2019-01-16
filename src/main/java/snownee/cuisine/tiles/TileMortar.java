@@ -3,7 +3,6 @@ package snownee.cuisine.tiles;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -15,8 +14,8 @@ import snownee.cuisine.api.process.Grinding;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.items.ItemIngredient;
-import snownee.cuisine.library.RarityManager;
 import snownee.cuisine.util.StacksUtil;
+import snownee.kiwi.tile.TileInventoryBase;
 
 public class TileMortar extends TileInventoryBase
 {
@@ -64,7 +63,9 @@ public class TileMortar extends TileInventoryBase
                 Ingredient ingredient = CulinaryHub.API_INSTANCE.findIngredient(stacks.getStackInSlot(0));
                 if (ingredient != null && ingredient.getForm() != Form.PASTE && ingredient.getForm() != Form.JUICE && ingredient.getMaterial().isValidForm(Form.PASTE))
                 {
-                    ItemStack output = ItemIngredient.make(ingredient.getMaterial(), Form.PASTE, RarityManager.getRarity(input) == EnumRarity.COMMON ? 0.8F : 1.2F);
+                    Ingredient newIngredient = ingredient.copy();
+                    newIngredient.setForm(Form.PASTE);
+                    ItemStack output = ItemIngredient.make(newIngredient);
                     StacksUtil.spawnItemStack(world, getPos(), output, true);
                     this.recipe = null; // Stop things from happening
                     input.shrink(1);

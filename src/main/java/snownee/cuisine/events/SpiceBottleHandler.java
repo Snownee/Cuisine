@@ -80,7 +80,8 @@ public class SpiceBottleHandler
                     return;
                 }
                 Drink.Builder builder = Drink.Builder.create();
-                builder.addIngredient(null, new Ingredient(material, Form.JUICE, 2), CuisineRegistry.BOTTLE);
+                builder.addIngredient(null, new Ingredient(material, Form.JUICE), CuisineRegistry.BOTTLE);
+                builder.addIngredient(null, new Ingredient(material, Form.JUICE), CuisineRegistry.BOTTLE);
                 Optional<Drink> result = builder.build(CuisineRegistry.BOTTLE, null);
                 if (!result.isPresent())
                 {

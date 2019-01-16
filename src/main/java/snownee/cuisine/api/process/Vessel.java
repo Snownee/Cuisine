@@ -18,9 +18,9 @@ public final class Vessel extends AbstractCuisineProcessingRecipe implements Cui
     private final FluidStack outputFluid;
     private final ProcessingInput extraRequirement;
 
-    public Vessel(ProcessingInput input, Fluid solvent, ItemDefinition output, @Nullable FluidStack outputFluid, ProcessingInput extraRequirement)
+    public Vessel(ResourceLocation identifier, ProcessingInput input, Fluid solvent, ItemDefinition output, @Nullable FluidStack outputFluid, ProcessingInput extraRequirement)
     {
-        super(new ResourceLocation("cuisine", Integer.toString(System.identityHashCode(input))));
+        super(identifier);
         this.input = input;
         this.solvent = solvent;
         this.output = output;
@@ -28,9 +28,9 @@ public final class Vessel extends AbstractCuisineProcessingRecipe implements Cui
         this.extraRequirement = extraRequirement;
     }
 
-    public Vessel(ProcessingInput input, Fluid solvent, ItemDefinition output, @Nullable FluidStack outputFluid)
+    public Vessel(ResourceLocation identifier, ProcessingInput input, Fluid solvent, ItemDefinition output, @Nullable FluidStack outputFluid)
     {
-        this(input, solvent, output, outputFluid, ItemDefinition.of(ItemStack.EMPTY));
+        this(identifier, input, solvent, output, outputFluid, ItemDefinition.of(ItemStack.EMPTY));
     }
 
     public ProcessingInput getInput()

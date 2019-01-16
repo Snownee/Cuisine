@@ -58,20 +58,20 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean bambooBlowpipe = false;
 
-        @Config.LangKey("cuisine.config.general.always_render_drinkro")
-        @Config.Name("AlwaysRenderDrinkro")
-        public boolean alwaysRenderDrinkro = false;
-
         @Config.Comment("Allow axes to chop things on chopping board. Provided for mod pack creators.")
         @Config.LangKey("cuisine.config.progression.axe_chopping")
         @Config.Name("AxeChopping")
         public boolean axeChopping = true;
 
-        @Config.Comment("List of axes that will show in JEI recipes. Does not affect chopping board behavior.")
-        @Config.LangKey("cuisine.config.progression.axe_list")
-        @Config.Name("AxeList")
+        @Config.Name("AxeChoppingPlanksOutput")
         @Config.RequiresMcRestart
-        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
+        @Config.RangeInt(min=1, max=64)
+        public int axeChoppingPlanksOutput = 6;
+
+        @Config.Name("AxeChoppingStickOutput")
+        @Config.RequiresMcRestart
+        @Config.RangeInt(min=1, max=64)
+        public int axeChoppingStickOutput = 4;
 
         @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
         @Config.LangKey("cuisine.config.general.mill_work_cycle")
@@ -96,6 +96,14 @@ public final class CuisineConfig
         @Config.Name("BasicSeedsWeight")
         @Config.RequiresMcRestart
         public int basicSeedsWeight = 5;
+
+        @Config.Name("BetterHarvest")
+        @Config.RequiresMcRestart
+        public boolean betterHarvest = true;
+
+        @Config.Name("BetterHarvestBlacklist")
+        @Config.RequiresMcRestart
+        public String[] betterHarvestBlacklist = {};
     }
 
     @Config.Comment("Config options of Cuisine Hardcore Mode.")
@@ -165,6 +173,9 @@ public final class CuisineConfig
         @Config.RangeDouble(min = 0, max = 1)
         public double skillPointsRetainRatio = 1.0;
 
+        @Config.Name("BadSkillPunishment")
+        public boolean badSkillPunishment = true;
+
     }
 
     @Config.Comment("Configurable variables related to world generation")
@@ -174,26 +185,45 @@ public final class CuisineConfig
 
     public static final class WorldGen
     {
-
+        @Config.Comment("Generation rate of fruit trees; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
-        @Config.Name("FruitTreesGenRate")
+        @Config.Name("FruitTreesGenWeight")
         @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
         public int fruitTreesGenRate = 50;
 
-        @Config.Comment("Generation rate of bamboo; larger value means lower generation rate; set to 0 to disable.")
+        @Config.Comment("Generation rate of bamboo; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
-        @Config.Name("BamboosGenRate")
-        @Config.RangeInt(min = 0)
+        @Config.Name("BamboosGenWeight")
+        @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
-        public int bamboosGenRate = 35;
+        public int bamboosGenRate = 6;
 
-        @Config.Comment("Generation rate of wild crops; larger value means lower generation rate; set to 0 to disable.")
+        @Config.Comment("Generation rate of wild crops; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
-        @Config.Name("CropsGenRate")
-        @Config.RangeInt(min = 0)
+        @Config.Name("CropsGenWeight")
+        @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
-        public int cropsGenRate = 4;
+        public int cropsGenRate = 40;
     }
 
+    @Config.Name("Client")
+    public static final Client CLIENT = new Client();
+
+    public static final class Client
+    {
+        @Config.Comment("List of axes that will show in JEI recipes. Does not affect chopping board behavior.")
+        @Config.LangKey("cuisine.config.progression.axe_list")
+        @Config.Name("AxeList")
+        @Config.RequiresMcRestart
+        public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
+
+        @Config.LangKey("cuisine.config.general.always_render_drinkro")
+        @Config.Comment("Rendering contents in all directions. WIP feature.")
+        @Config.Name("AlwaysRenderDrinkro")
+        public boolean alwaysRenderDrinkro = false;
+
+        @Config.Name("ShowHoloGui")
+        public boolean showHoloGui = true;
+    }
 }

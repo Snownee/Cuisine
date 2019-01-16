@@ -29,7 +29,7 @@ public class WorldGenBamboo
 
             Biome biome = worldIn.getBiome(position);
 
-            if (biome.getBaseHeight() > 0.4F || biome.isSnowyBiome() || biome.getRainfall() < 0.5F || biome instanceof BiomeOcean || biome instanceof BiomeSwamp || rand.nextInt(CuisineConfig.WORLD_GEN.bamboosGenRate) > 0 || rand.nextDouble() > biome.getDefaultTemperature())
+            if (biome.getBaseHeight() > 0.4F || biome.isSnowyBiome() || biome.getRainfall() < 0.5F || biome instanceof BiomeOcean || biome instanceof BiomeSwamp || rand.nextInt(200) >= CuisineConfig.WORLD_GEN.bamboosGenRate || rand.nextDouble() > biome.getDefaultTemperature())
             {
                 return;
             }

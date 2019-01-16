@@ -16,59 +16,28 @@ public final class Milling extends AbstractCuisineProcessingRecipe implements Cu
     private final ItemStack output;
     private final FluidStack inputFluid, outputFluid;
 
-    @Deprecated
-    public Milling(ItemStack input, ItemStack output)
+    public Milling(ResourceLocation identifier, ItemStack input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
     {
-        this(input, output, null, null);
+        this(identifier, RegularItemStackInput.of(input), output, inputFluid, outputFluid);
     }
 
-    @Deprecated
-    public Milling(ProcessingInput input, ItemStack output)
+    public Milling(ResourceLocation identifier, ProcessingInput input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
     {
-        this(input, output, null, null);
-    }
-
-    @Deprecated
-    public Milling(ItemStack input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
-    {
-        this(RegularItemStackInput.of(input), output, inputFluid, outputFluid);
-    }
-
-    /**
-     * @deprecated Identifier shall be explicitly specified for easier use in manual
-     * @param input input item
-     * @param output output item
-     * @param inputFluid optional input fluid
-     * @param outputFluid optional output fluid
-     */
-    @Deprecated
-    public Milling(ProcessingInput input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
-    {
-        this(new ResourceLocation(INTERNAL_NAMESPACE, System.identityHashCode(System.in) + "&" + System.identityHashCode(inputFluid)), input, output, inputFluid, outputFluid);
-    }
-
-    public Milling(ResourceLocation id, ItemStack input, ItemStack output)
-    {
-        this(id, RegularItemStackInput.of(input), output);
-    }
-
-    public Milling(ResourceLocation id, ProcessingInput input, ItemStack output)
-    {
-        this(id, input, output, null, null);
-    }
-
-    public Milling(ResourceLocation id, ItemStack input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
-    {
-        this(id, RegularItemStackInput.of(input), output, inputFluid, outputFluid);
-    }
-
-    public Milling(ResourceLocation id, ProcessingInput input, ItemStack output, @Nullable FluidStack inputFluid, @Nullable FluidStack outputFluid)
-    {
-        super(id);
+        super(identifier);
         this.input = input;
         this.output = output;
         this.inputFluid = inputFluid;
         this.outputFluid = outputFluid;
+    }
+
+    public Milling(ResourceLocation identifier, ItemStack input, ItemStack output)
+    {
+        this(identifier, input, output, null, null);
+    }
+
+    public Milling(ResourceLocation identifier, ProcessingInput input, ItemStack output)
+    {
+        this(identifier, input, output, null, null);
     }
 
     @Nonnull

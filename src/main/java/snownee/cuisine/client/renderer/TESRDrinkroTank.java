@@ -33,7 +33,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         int rot = 0;
         if (meta == 0)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z > 0)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && z > 0)
             {
                 return;
             }
@@ -41,7 +41,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         }
         else if (meta == 1)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x < -1)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && x < -1)
             {
                 return;
             }
@@ -49,14 +49,14 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
         }
         else if (meta == 2)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && z < -1)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && z < -1)
             {
                 return;
             }
         }
         else if (meta == 3)
         {
-            if (!CuisineConfig.GENERAL.alwaysRenderDrinkro && x > 0)
+            if (!CuisineConfig.CLIENT.alwaysRenderDrinkro && x > 0)
             {
                 return;
             }
@@ -79,7 +79,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
             }
         }
 
-        double size = te.builder.getCurrentSize();
+        int size = te.builder.getIngredients().size();
         if (itemCount == 0 && size == 0)
         {
             return;
@@ -149,7 +149,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
                 flowing = mc.getTextureMapBlocks().getMissingSprite();
             }
 
-            double height = 0.125 - 0.5 + size / te.builder.getMaxSize() * 0.75;
+            double height = 0.125 - 0.5 + ((double) size / te.builder.getMaxIngredientLimit()) * 0.75;
 
             int color = te.builder.getColor();
             int r = color >> 16 & 0xFF;
@@ -157,7 +157,7 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
             int b = color & 0xFF;
             int a = color >> 24 & 0xFF;
 
-            if (size < te.builder.getMaxSize())
+            if (size < te.builder.getMaxIngredientLimit())
             {
                 TextureAtlasSprite still = mc.getTextureMapBlocks().getTextureExtry(CuisineFluids.JUICE.getStill().toString());
                 if (still == null)
@@ -172,8 +172,9 @@ public class TESRDrinkroTank extends TileEntitySpecialRenderer<TileDrinkroTank>
 
             buffer.pos(+0.375, height, -0.3125).tex(flowing.getInterpolatedU(8), flowing.getMinV()).color(r, g, b, a).endVertex();
             buffer.pos(-0.375, height, -0.3125).tex(flowing.getMinU(), flowing.getMinV()).color(r, g, b, a).endVertex();
-            buffer.pos(-0.375, 0.125 - 0.5, -0.3125).tex(flowing.getMinU(), flowing.getInterpolatedV(size / te.builder.getMaxSize() * 16)).color(r, g, b, a).endVertex();
-            buffer.pos(+0.375, 0.125 - 0.5, -0.3125).tex(flowing.getInterpolatedU(8), flowing.getInterpolatedV(size / te.builder.getMaxSize() * 16)).color(r, g, b, a).endVertex();
+            double d = (double) size / te.builder.getMaxIngredientLimit() * 16;
+            buffer.pos(-0.375, 0.125 - 0.5, -0.3125).tex(flowing.getMinU(), flowing.getInterpolatedV(d)).color(r, g, b, a).endVertex();
+            buffer.pos(+0.375, 0.125 - 0.5, -0.3125).tex(flowing.getInterpolatedU(8), flowing.getInterpolatedV(d)).color(r, g, b, a).endVertex();
 
             tessellator.draw();
             GlStateManager.popMatrix();

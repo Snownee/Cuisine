@@ -1,66 +1,132 @@
 package snownee.cuisine.tiles;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.blocks.BlockFirePit;
+import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.util.ItemNBTUtil;
 
-public class TileBarbecueRack extends TileInventoryBase implements ITickable
+public class TileBarbecueRack extends TileFirePit
 {
-    private int[] burnTime = new int[3];
+    public final ItemStackHandler stacks;
+    public int[] burnTime = new int[3];
+    public boolean[] completed = new boolean[3];
+    private boolean isEmpty;
 
     public TileBarbecueRack()
     {
-        super(3, 1);
-    }
+        stacks = new ItemStackHandler(4)
+        {
+            @Override
+            public int getSlotLimit(int slot)
+            {
+                return 1;
+            }
 
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
-        return FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood;
+            @Override
+            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
+            {
+                if (!isItemValid(slot, stack))
+                {
+                    return stack;
+                }
+                if (slot == 3)
+                {
+                    return heatHandler.addFuel(stack);
+                }
+                return super.insertItem(slot, stack, simulate);
+            }
+
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack)
+            {
+                if (slot < 3)
+                {
+                    return stack.getItem() == CuisineRegistry.INGREDIENT || FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood;
+                }
+                else
+                {
+                    return FuelHeatHandler.isFuel(stack, true);
+                }
+            }
+
+            @Override
+            protected void onContentsChanged(int slot)
+            {
+                for (int i = 0; i < 3; ++i)
+                {
+                    ItemStack stack = getStackInSlot(i);
+                    if (stack.isEmpty())
+                    {
+                        burnTime[i] = 0;
+                        completed[i] = false;
+                    }
+                }
+                refreshEmpty();
+                refresh();
+            }
+        };
     }
 
     @Override
     public void update()
     {
+        super.update();
         if (world.isRemote)
         {
             return;
         }
-        for (int i = 0; i < 3; ++i)
+        int heatLevel = heatHandler.getLevel();
+        if (heatLevel > 0)
         {
-            ItemStack stack = stacks.getStackInSlot(i);
-            if (!stack.isEmpty() && ++burnTime[i] == 400)
+            for (int i = 0; i < 3; ++i)
             {
-                burnTime[i] = 0;
-                ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
-                if (!result.isEmpty())
+                ItemStack stack = stacks.getStackInSlot(i);
+                if (stack.isEmpty())
                 {
-                    stacks.setStackInSlot(i, result.copy());
+                    continue;
+                }
+                burnTime[i] += heatLevel;
+                if (stack.getItem() == CuisineRegistry.INGREDIENT)
+                {
+                    if (burnTime[i] >= 6)
+                    {
+                        burnTime[i] = 0;
+                        int doneness = ItemNBTUtil.getInt(stack, CuisineSharedSecrets.KEY_DONENESS, 0);
+                        ItemNBTUtil.setInt(stack, CuisineSharedSecrets.KEY_DONENESS, ++doneness);
+                    }
+                }
+                else
+                {
+                    if (burnTime[i] >= 800)
+                    {
+                        burnTime[i] = 0;
+                        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
+                        if (!result.isEmpty())
+                        {
+                            stacks.setStackInSlot(i, result.copy());
+                            if (!stacks.isItemValid(0, result))
+                            {
+                                completed[i] = true;
+                            }
+                        }
+                    }
                 }
             }
-        }
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-    {
-        if (oldState.getBlock() != CuisineRegistry.FIRE_PIT || newSate.getBlock() != CuisineRegistry.FIRE_PIT)
-        {
-            return true;
-        }
-        else
-        {
-            return oldState.getValue(BlockFirePit.COMPONENT) != newSate.getValue(BlockFirePit.COMPONENT);
         }
     }
 
@@ -68,12 +134,25 @@ public class TileBarbecueRack extends TileInventoryBase implements ITickable
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
+        stacks.deserializeNBT(compound.getCompoundTag("Items"));
+        refreshEmpty();
         if (compound.hasKey("burnTime", Constants.NBT.TAG_INT_ARRAY))
         {
             int[] burnTime = compound.getIntArray("burnTime");
             if (burnTime.length == 3)
             {
                 this.burnTime = burnTime;
+            }
+        }
+        if (compound.hasKey("completed", Constants.NBT.TAG_INT_ARRAY))
+        {
+            int[] arr = compound.getIntArray("completed");
+            if (arr.length == 3)
+            {
+                for (int i = 0; i < arr.length; i++)
+                {
+                    completed[i] = arr[i] > 0;
+                }
             }
         }
     }
@@ -84,6 +163,13 @@ public class TileBarbecueRack extends TileInventoryBase implements ITickable
     {
         NBTTagCompound tag = super.writeToNBT(compound);
         tag.setIntArray("burnTime", burnTime);
+        int[] arr = new int[3];
+        for (int i = 0; i < completed.length; i++)
+        {
+            arr[i] = completed[i] ? 1 : 0;
+        }
+        tag.setIntArray("completed", arr);
+        tag.setTag("Items", this.stacks.serializeNBT());
         return tag;
     }
 
@@ -91,32 +177,55 @@ public class TileBarbecueRack extends TileInventoryBase implements ITickable
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        data.setIntArray("burnTime", burnTime);
-        return super.writePacketData(data);
+        return writeToNBT(data);
     }
 
     @Override
     protected void readPacketData(NBTTagCompound data)
     {
-        super.readPacketData(data);
-        int[] burnTime = data.getIntArray("burnTime");
-        if (burnTime.length == 3)
-        {
-            this.burnTime = burnTime;
-        }
+        readFromNBT(data);
+        refreshEmpty();
     }
 
     @Override
-    public void onContentsChanged(int slot)
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
     {
-        for (int i = 0; i < 3; ++i)
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
-            ItemStack stack = stacks.getStackInSlot(i);
-            if (stack.isEmpty())
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(stacks);
+        }
+        return super.getCapability(capability, facing);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        return Block.FULL_BLOCK_AABB.offset(pos);
+    }
+
+    public boolean isEmpty()
+    {
+        return isEmpty;
+    }
+
+    private void refreshEmpty()
+    {
+        isEmpty = true;
+        for (int i = 0; i < 3; i++)
+        {
+            if (!stacks.getStackInSlot(i).isEmpty())
             {
-                burnTime[i] = 0;
+                isEmpty = false;
+                break;
             }
         }
-        refresh();
+
     }
 }

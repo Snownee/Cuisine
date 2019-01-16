@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -47,6 +48,12 @@ public final class ProcessingManagerImpl<R extends CuisineProcessingRecipe> impl
     public boolean remove(ResourceLocation identifier)
     {
         return recipes.removeIf(r -> r.getIdentifier().equals(identifier));
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super R> filter)
+    {
+        return recipes.removeIf(filter);
     }
 
     @Override

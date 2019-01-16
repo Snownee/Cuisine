@@ -1,5 +1,7 @@
 package snownee.cuisine.internal.spice;
 
+import java.util.Collections;
+
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
 import snownee.cuisine.api.CulinaryHub;
@@ -12,7 +14,7 @@ public class SpiceChiliPowder extends SimpleSpiceImpl
 
     public SpiceChiliPowder(String id, int color)
     {
-        super(id, color, false);
+        super(id, color, false, Collections.singleton("spicy"));
     }
 
     @Override

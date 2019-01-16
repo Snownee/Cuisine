@@ -54,7 +54,7 @@ public final class VanillaRecipeRegistry
             Loader.instance().setActiveModContainer(cuisineModContainer);
         }
 
-        GameRegistry.addSmelting(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variants.DOUGH), new ItemStack(Items.BREAD), 0.35F);
+        GameRegistry.addSmelting(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.DOUGH), new ItemStack(Items.BREAD), 0.35F);
         GameRegistry.addSmelting(CuisineRegistry.IRON_SPATULA, new ItemStack(Items.IRON_INGOT), 0.1F);
         GameRegistry.addSmelting(CuisineRegistry.KITCHEN_KNIFE, new ItemStack(Items.IRON_INGOT), 0.1F);
         GameRegistry.addSmelting(CuisineRegistry.WOK, new ItemStack(Items.IRON_INGOT, 3), 0.1F);
@@ -69,6 +69,10 @@ public final class VanillaRecipeRegistry
         if (stack.getItem() == Item.getItemFromBlock(CuisineRegistry.BAMBOO))
         {
             event.setBurnTime(200);
+        }
+        else if (stack.getItem() == Item.getItemFromBlock(CuisineRegistry.SAPLING))
+        {
+            event.setBurnTime(100);
         }
         else if (stack.getItem() == CuisineRegistry.MATERIAL && stack.getItemDamage() == Cuisine.Materials.WOODEN_HANDLE.getMeta())
         {

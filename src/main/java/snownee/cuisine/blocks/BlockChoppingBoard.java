@@ -129,7 +129,7 @@ public class BlockChoppingBoard extends BlockMod
                 }
                 teCB.process(playerIn, held, ProcessionType.KNIFE_VERTICAL, null);
             }
-            else if (empty && teCB.isItemValidForSlot(0, held))
+            else if (empty)
             {
                 if (hand == EnumHand.MAIN_HAND && teCB.isItemValidForSlot(0, playerIn.getHeldItemOffhand()))
                 {
@@ -139,12 +139,15 @@ public class BlockChoppingBoard extends BlockMod
                 if (!worldIn.isRemote)
                 {
                     held = teCB.insertItem(playerIn, held);
-                    playerIn.setHeldItem(hand, held);
+                    if (!playerIn.isCreative())
+                    {
+                        playerIn.setHeldItem(hand, held);
+                    }
                     //return !teCB.stacks.getStackInSlot(0).isEmpty();
                 }
                 worldIn.notifyBlockUpdate(pos, state, state, 11);
             }
-            else if (!empty)
+            else
             {
                 StacksUtil.dropInventoryItems(worldIn, pos, teCB.stacks, false);
                 teCB.resetProcess();
