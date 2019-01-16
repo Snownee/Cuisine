@@ -1,5 +1,7 @@
 package snownee.cuisine.api.process.prefab;
 
+import java.util.Random;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -60,7 +62,7 @@ public class DistillationBoiling extends AbstractCuisineProcessingRecipe impleme
     }
 
     @Override
-    public Output getOutputAndConsumeInput(ItemStack item, @Nonnull FluidStack fluid, int heatValue)
+    public Output getOutputAndConsumeInput(ItemStack item, @Nonnull FluidStack fluid, int heatValue, Random rand)
     {
         FluidStack outputFluid = fluid.copy();
         outputFluid.amount -= input.amount;
