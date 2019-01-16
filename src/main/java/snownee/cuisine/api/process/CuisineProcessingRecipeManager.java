@@ -2,6 +2,7 @@ package snownee.cuisine.api.process;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -47,6 +48,8 @@ public interface CuisineProcessingRecipeManager<R extends CuisineProcessingRecip
      * @return <code>true</code> if the recipe has been successfully remove.
      */
     boolean remove(R recipe);
+
+    boolean removeIf(Predicate<? super R> filter);
 
     /**
      * Remove all existent recipes

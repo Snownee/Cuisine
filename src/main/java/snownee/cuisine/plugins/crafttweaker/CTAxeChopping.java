@@ -4,7 +4,9 @@ import javax.annotation.Nonnull;
 
 import crafttweaker.IAction;
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -48,6 +50,12 @@ public class CTAxeChopping
     public static void remove(@Nonnull String identifier)
     {
         CTSupport.DELAYED_ACTIONS.add(new CTSupport.RemovalByIdentifier(getManager(), new ResourceLocation(identifier)));
+    }
+
+    @ZenMethod
+    public static void removeByOutput(@Nonnull IIngredient output)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new RemovalByOutput(output));
     }
 
     @ZenMethod
@@ -140,6 +148,28 @@ public class CTAxeChopping
         public String describe()
         {
             return String.format("Remove all Cuisine Axe-Chopping recipes that has input of %s", input);
+        }
+    }
+
+    private static final class RemovalByOutput implements IAction
+    {
+        final IIngredient output;
+
+        RemovalByOutput(IIngredient output)
+        {
+            this.output = output;
+        }
+
+        @Override
+        public void apply()
+        {
+            getManager().removeIf(r -> output.matches(CraftTweakerMC.getIItemStack(r.getOutput())));
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
         }
     }
 
