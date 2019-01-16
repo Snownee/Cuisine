@@ -33,7 +33,7 @@ public interface BasinInteracting extends CuisineProcessingRecipe
 
     static int descendingCompare(BasinInteracting a, BasinInteracting b)
     {
-        return 0; // TODO (Snownee): Fix me
+        return 0; // FIXME (Snownee)
     }
 
     static boolean isKnownInput(CuisineProcessingRecipeManager<BasinInteracting> recipeManager, ItemStack stack)
@@ -47,12 +47,6 @@ public interface BasinInteracting extends CuisineProcessingRecipe
         }
         return false;
     }
-
-    //    List<ItemStack> getInputItems();
-    //
-    //    List<FluidStack> getInputFluids();
-    //
-    //    List<FluidStack> getOutputs();
 
     class Output
     {

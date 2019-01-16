@@ -64,16 +64,6 @@ public final class Hybridization implements CuisineProcessingRecipe
         return resultState;
     }
 
-    /**
-     * @deprecated use {@link #setIdentifier(ResourceLocation)} instead
-     * @param id the identifier, assuming the namespace is <code>cuisine</code>.
-     */
-    @Deprecated
-    public void setID(String id)
-    {
-        this.id = new ResourceLocation("cuisine", id);
-    }
-
     public void setIdentifier(ResourceLocation locator)
     {
         this.id = locator;
