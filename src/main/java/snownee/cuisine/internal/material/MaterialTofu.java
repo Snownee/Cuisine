@@ -44,7 +44,6 @@ public class MaterialTofu extends MaterialWithEffect
         List<IngredientTrait> traits = ingredient.getAllTraits().stream().filter(IngredientTrait::isBad).collect(Collectors.toList());
         for (IngredientTrait trait : traits)
         {
-            System.out.println(trait);
             ingredient.removeTrait(trait);
         }
         return !traits.isEmpty();
