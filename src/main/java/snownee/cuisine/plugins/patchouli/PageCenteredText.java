@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import org.apache.logging.log4j.Level;
+import snownee.cuisine.Cuisine;
 import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.client.book.page.abstr.PageWithText;
 
@@ -17,7 +18,18 @@ public class PageCenteredText extends PageWithText
 
     static
     {
-        FIELD_TEXT = ReflectionHelper.findField(PageWithText.class, "text");
+        Field f;
+        try
+        {
+            f = PageWithText.class.getDeclaredField("text");
+        }
+        catch (NoSuchFieldException e)
+        {
+            Cuisine.logger.catching(Level.DEBUG, e);
+            Cuisine.logger.error("Failed to get access to field PageWithText.text");
+            f = null;
+        }
+        FIELD_TEXT = f;
     }
 
     @Override
@@ -41,9 +53,9 @@ public class PageCenteredText extends PageWithText
             {
                 parent.drawCenteredStringNoShadow((String) FIELD_TEXT.get(this), GuiBook.PAGE_WIDTH / 2, GuiBook.TOP_PADDING, 0);
             }
-            catch (IllegalArgumentException | IllegalAccessException e)
+            catch (Exception e)
             {
-                e.printStackTrace();
+                Cuisine.logger.catching(Level.DEBUG, e);
             }
         }
 
