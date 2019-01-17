@@ -9,8 +9,7 @@
     },
     {
       "type": "crafting",
-      "recipe": "cuisine:iron_spatula",
-      "text": "That wood handle in may be replaced with certain equivalent items (for example, the woo rack from BetterWithMods), if available."
+      "recipe": "cuisine:iron_spatula"
     }
   ]
 }

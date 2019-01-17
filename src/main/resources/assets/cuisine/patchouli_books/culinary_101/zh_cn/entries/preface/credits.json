@@ -1,0 +1,11 @@
+{
+  "name": "鸣谢",
+  "icon": "minecraft:totem_of_undying",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "cuisine:centered_text",
+      "text": "testtesttest"
+    }
+  ]
+}

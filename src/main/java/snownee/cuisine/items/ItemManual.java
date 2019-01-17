@@ -1,16 +1,18 @@
 package snownee.cuisine.items;
 
+import java.util.Objects;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.client.gui.CuisineGUI;
 import snownee.kiwi.item.ItemMod;
-
-import java.util.Objects;
 
 public class ItemManual extends ItemMod
 {
@@ -27,7 +29,11 @@ public class ItemManual extends ItemMod
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-        if (this.manualHandler == null || (hand == EnumHand.OFF_HAND && player.isSneaking()))
+        if (!world.isRemote)
+        {
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+        }
+        else if (this.manualHandler == null || (hand == EnumHand.OFF_HAND && player.isSneaking()))
         {
             return defaultManualHandler(world, player, hand);
         }
@@ -37,6 +43,7 @@ public class ItemManual extends ItemMod
         }
     }
 
+    @SideOnly(Side.CLIENT)
     private static ActionResult<ItemStack> defaultManualHandler(World world, EntityPlayer player, EnumHand hand)
     {
         player.openGui(Cuisine.getInstance(), CuisineGUI.MANUAL, world, hand.ordinal(), 0, 0);
