@@ -79,7 +79,7 @@ public class ItemBasicFood<T, E extends IVariant<T> & IRarityGetter> extends Ite
         if (this.isInCreativeTab(tab))
         {
             getVariants().stream()
-                    .filter(v -> !(this == CuisineRegistry.BASIC_FOOD && v.getMeta() == Variant.EMPOWERED_CITRON.getMeta()))
+                    .filter(v -> v != Variant.EMPOWERED_CITRON)
                     .map(this::getItemStack)
                     .forEach(items::add);
         }
