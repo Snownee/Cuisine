@@ -31,7 +31,7 @@ public class WorldGenCitrusTrees
             {
                 return;
             }
-            pos = WorldGenHelper.findGround(world, pos, false, true);
+            pos = WorldGenHelper.findGround(world, pos, false, true, true);
             if (pos != null && pos.getY() < 100 && CuisineRegistry.SAPLING.canPlaceBlockAt(world, pos))
             {
                 Type type = TYPES[rand.nextInt(TYPES.length)];

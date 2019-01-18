@@ -34,7 +34,7 @@ public class WorldGenBamboo
                 return;
             }
 
-            position = WorldGenHelper.findGround(worldIn, position, true, true);
+            position = WorldGenHelper.findGround(worldIn, position, true, true, true);
             if (position == null)
             {
                 return;

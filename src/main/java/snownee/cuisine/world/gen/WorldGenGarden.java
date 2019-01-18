@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeOcean;
+import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.CuisineConfig;
@@ -38,7 +39,7 @@ public class WorldGenGarden
                 return;
             }
 
-            BlockPos.MutableBlockPos pos = WorldGenHelper.findGround(worldIn, position, true, true);
+            BlockPos.MutableBlockPos pos = WorldGenHelper.findGround(worldIn, position, true, true, true);
             if (pos == null)
             {
                 return;
@@ -63,6 +64,23 @@ public class WorldGenGarden
                 }
             }
         }
+        else if (worldIn.provider.getDimension() == -1)
+        {
+            Random rand = event.getRand();
+            BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 8, rand.nextInt(50) + 33, rand.nextInt(16) + 8);
+            BlockPos.MutableBlockPos pos = WorldGenHelper.findGround(worldIn, position, true, true, false, 20);
+            if (pos == null)
+            {
+                return;
+            }
+            pos.move(EnumFacing.DOWN);
+            if (worldIn.getBlockState(pos).getBlock() == Blocks.SOUL_SAND)
+            {
+                System.out.println(pos);
+                plant(worldIn, pos, CuisineRegistry.CHILI, Blocks.SOUL_SAND, rand);
+                plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), CuisineRegistry.CHILI, Blocks.SOUL_SAND, rand);
+            }
+        }
     }
 
     private static void plant(World world, BlockPos pos, Block block, Block replacedBlock, Random rand)
@@ -70,16 +88,28 @@ public class WorldGenGarden
         IBlockState state = world.getBlockState(pos);
         if (state.getBlock() == replacedBlock)
         {
-            world.setBlockState(pos, Blocks.FARMLAND.getDefaultState(), 0);
             if (block instanceof BlockCuisineCrops)
             {
                 BlockCuisineCrops blockCuisineCrops = (BlockCuisineCrops) block;
-                world.setBlockState(pos.up(), block == CuisineRegistry.CORN ? block.getDefaultState() : blockCuisineCrops.withAge(rand.nextInt(blockCuisineCrops.getMaxAge())), 0);
+                if (blockCuisineCrops.getPlantType(world, pos) == EnumPlantType.Plains)
+                {
+                    world.setBlockState(pos, Blocks.FARMLAND.getDefaultState(), 0);
+                }
+                pos = pos.up();
+                if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
+                {
+                    world.setBlockState(pos, blockCuisineCrops.withAge(block == CuisineRegistry.CORN ? 0 : rand.nextInt(blockCuisineCrops.getMaxAge())), 0);
+                }
             }
             else if (block instanceof BlockCrops)
             {
+                world.setBlockState(pos, Blocks.FARMLAND.getDefaultState(), 0);
                 BlockCrops blockCrops = (BlockCrops) block;
-                world.setBlockState(pos.up(), blockCrops.withAge(rand.nextInt(blockCrops.getMaxAge())), 0);
+                pos = pos.up();
+                if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
+                {
+                    world.setBlockState(pos, blockCrops.withAge(rand.nextInt(blockCrops.getMaxAge())), 0);
+                }
             }
         }
     }

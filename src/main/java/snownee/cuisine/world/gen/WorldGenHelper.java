@@ -12,9 +12,19 @@ import net.minecraftforge.fluids.IFluidBlock;
 public final class WorldGenHelper
 {
     @Nullable
-    public static BlockPos.MutableBlockPos findGround(World world, BlockPos pos, boolean ignoreLeaves, boolean stopOnFluid)
+    public static BlockPos.MutableBlockPos findGround(World world, BlockPos pos, boolean ignoreLeaves, boolean stopOnFluid, boolean useWorldHeight)
     {
-        BlockPos.MutableBlockPos position = new BlockPos.MutableBlockPos(world.getHeight(pos));
+        return findGround(world, pos, ignoreLeaves, stopOnFluid, useWorldHeight, 8);
+    }
+
+    @Nullable
+    public static BlockPos.MutableBlockPos findGround(World world, BlockPos pos, boolean ignoreLeaves, boolean stopOnFluid, boolean useWorldHeight, int offset)
+    {
+        if (useWorldHeight)
+        {
+            pos = world.getHeight(pos);
+        }
+        BlockPos.MutableBlockPos position = new BlockPos.MutableBlockPos(pos);
         if (position.getY() > 0)
         {
             int yOrigin = position.getY();
@@ -30,7 +40,7 @@ public final class WorldGenHelper
                     return position.move(EnumFacing.UP);
                 }
             }
-            while (yOrigin - position.getY() < 9 && position.move(EnumFacing.DOWN).getY() > 0);
+            while (yOrigin - position.getY() < 40 && position.move(EnumFacing.DOWN).getY() > 0);
         }
         return null;
     }
