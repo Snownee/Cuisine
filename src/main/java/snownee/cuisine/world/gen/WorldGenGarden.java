@@ -33,22 +33,35 @@ public class WorldGenGarden
 
             Biome biome = worldIn.getBiome(position);
 
-            if (!biome.canRain() || biome.isSnowyBiome() || biome.getBaseHeight() > 0.4F || biome.decorator.flowersPerChunk < 1 || biome.topBlock.getMaterial() != Material.GRASS || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(200) >= CuisineConfig.WORLD_GEN.cropsGenRate)
+            if (!biome.canRain() || biome.isSnowyBiome() || biome.getBaseHeight() > 0.4F || biome.decorator.flowersPerChunk < 1 || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(200) >= CuisineConfig.WORLD_GEN.cropsGenRate)
             {
                 return;
             }
 
-            BlockPos.MutableBlockPos pos = WorldGenHelper.findGround(worldIn, position, true);
+            BlockPos.MutableBlockPos pos = WorldGenHelper.findGround(worldIn, position, true, true);
             if (pos == null)
             {
                 return;
             }
             pos.move(EnumFacing.DOWN);
 
-            Block plant = PLANT_POOL[rand.nextInt(PLANT_POOL.length)];
-            plant(worldIn, pos, plant, biome.topBlock.getBlock(), rand);
-            plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
-            plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
+            IBlockState state = worldIn.getBlockState(pos);
+            if (biome.topBlock.getMaterial() == Material.GRASS && state.getBlock() == biome.topBlock.getBlock())
+            {
+                Block plant = PLANT_POOL[rand.nextInt(PLANT_POOL.length)];
+                plant(worldIn, pos, plant, biome.topBlock.getBlock(), rand);
+                plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
+                plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
+            }
+            else if (state.getBlock() == Blocks.WATER)
+            {
+                state = worldIn.getBlockState(pos.down());
+                if (state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS)
+                {
+                    pos.move(EnumFacing.UP);
+                    worldIn.setBlockState(pos, CuisineRegistry.RICE.withAge(rand.nextInt(CuisineRegistry.RICE.getMaxAge())), 0);
+                }
+            }
         }
     }
 
