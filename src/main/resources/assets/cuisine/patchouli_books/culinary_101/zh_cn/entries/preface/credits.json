@@ -6,6 +6,10 @@
     {
       "type": "cuisine:centered_text",
       "text": "testtesttest"
+    },
+    {
+      "type": "cuisine:centered_text",
+      "text": "testtesttest"
     }
   ]
 }

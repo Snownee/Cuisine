@@ -1,38 +1,19 @@
 package snownee.cuisine.plugins.patchouli;
 
-import java.lang.reflect.Field;
+import org.apache.logging.log4j.Level;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.Level;
 import snownee.cuisine.Cuisine;
+import vazkii.patchouli.client.book.BookPage;
 import vazkii.patchouli.client.book.gui.GuiBook;
-import vazkii.patchouli.client.book.page.abstr.PageWithText;
 
-public class PageCenteredText extends PageWithText
+public class PageCenteredText extends BookPage
 {
     String title;
+    String text;
 
-    private static final Field FIELD_TEXT;
-
-    static
-    {
-        Field f;
-        try
-        {
-            f = PageWithText.class.getDeclaredField("text");
-        }
-        catch (NoSuchFieldException e)
-        {
-            Cuisine.logger.catching(Level.DEBUG, e);
-            Cuisine.logger.error("Failed to get access to field PageWithText.text");
-            f = null;
-        }
-        FIELD_TEXT = f;
-    }
-
-    @Override
     public int getTextHeight()
     {
         if (pageNum == 0)
@@ -47,16 +28,13 @@ public class PageCenteredText extends PageWithText
     @Override
     public void render(int mouseX, int mouseY, float pticks)
     {
-        if (shouldRenderText())
+        try
         {
-            try
-            {
-                parent.drawCenteredStringNoShadow((String) FIELD_TEXT.get(this), GuiBook.PAGE_WIDTH / 2, GuiBook.TOP_PADDING, 0);
-            }
-            catch (Exception e)
-            {
-                Cuisine.logger.catching(Level.DEBUG, e);
-            }
+            parent.drawCenteredStringNoShadow(text, GuiBook.PAGE_WIDTH / 2, getTextHeight(), 0);
+        }
+        catch (Exception e)
+        {
+            Cuisine.logger.catching(Level.DEBUG, e);
         }
 
         if (pageNum == 0)
