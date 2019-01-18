@@ -76,7 +76,6 @@ public class WorldGenGarden
             pos.move(EnumFacing.DOWN);
             if (worldIn.getBlockState(pos).getBlock() == Blocks.SOUL_SAND)
             {
-                System.out.println(pos);
                 plant(worldIn, pos, CuisineRegistry.CHILI, Blocks.SOUL_SAND, rand);
                 plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), CuisineRegistry.CHILI, Blocks.SOUL_SAND, rand);
             }
