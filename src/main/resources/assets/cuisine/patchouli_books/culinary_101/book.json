@@ -9,5 +9,8 @@
   "book_texture": "cuisine:textures/gui/patchouli.png",
   "advancement_namespaces": [
     "cuisine"
-  ]
+  ],
+  "macros": {
+    "$(em)": "$(#388e3c)"
+  }
 }

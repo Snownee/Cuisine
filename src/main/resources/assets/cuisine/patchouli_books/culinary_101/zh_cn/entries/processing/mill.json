@@ -11,7 +11,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:mill",
-      "text": "合成配方中的木手柄可替换为某些等价物品（例如 BetterWithMods 的木手柄），当然前提是得安装对应的 Mod。"
+      "text": "合成配方中的木手柄可替换为某些等价物品（例如 BetterWithMods 的木手柄），当然前提是得安装对应的模组。"
     }
   ]
 }
