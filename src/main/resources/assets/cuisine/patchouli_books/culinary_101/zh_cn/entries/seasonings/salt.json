@@ -1,0 +1,16 @@
+{
+  "name": "Salt",
+  "icon": "cuisine:material:2",
+  "category": "seasonings",
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    },
+    {
+      "type": "mill_recipe",
+      "milling": "cuisine:crude_salt_refining",
+      "extra_text": ""
+    }
+  ]
+}
