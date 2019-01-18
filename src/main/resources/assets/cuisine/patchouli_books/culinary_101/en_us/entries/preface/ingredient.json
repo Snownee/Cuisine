@@ -1,0 +1,13 @@
+{
+  "name": "食材的获取",
+  "sortnum": 2,
+  "icon": "minecraft:wheat_seeds",
+  "flag": "cuisine:enable_garden_world_gen",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}
