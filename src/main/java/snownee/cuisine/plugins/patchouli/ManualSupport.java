@@ -47,6 +47,8 @@ public class ManualSupport implements IModule
 
         PatchouliAPI.instance.setConfigFlag("cuisine:enable_axe_chopping", CuisineConfig.GENERAL.axeChopping);
         PatchouliAPI.instance.setConfigFlag("cuisine:enable_sunlight_heating", CuisineConfig.GENERAL.basinHeatingInDaylight);
+        PatchouliAPI.instance.setConfigFlag("cuisine:drinkro_uses_energy", CuisineConfig.GENERAL.drinkroUsesFE > 0);
+        PatchouliAPI.instance.setConfigFlag("cuisine:squeezer_uses_energy", CuisineConfig.GENERAL.squeezerUsesFE > 0);
         // TODO (for someone from the future): to safely call this, you need a proper sided proxy, not using @SideOnly hack...
         ClientBookRegistry.INSTANCE.pageTypes.put(Cuisine.MODID + ":centered_text", PageCenteredText.class);
     }

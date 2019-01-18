@@ -1,0 +1,12 @@
+{
+  "name": "气泡提示",
+  "sortnum": 1,
+  "icon": "minecraft:apple",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}

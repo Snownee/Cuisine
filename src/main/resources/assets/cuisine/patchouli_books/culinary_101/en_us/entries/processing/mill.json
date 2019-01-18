@@ -10,7 +10,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:mill",
-      "text": "with empty hand will cause mill to work for one cycle. $(br)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers. $(br)That wood handle in the recipe may be replaced with certain equivalent items (for example,"
+      "text": "with empty hand will cause mill to work for one cycle. $(br2)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers. $(br)That wood handle in the recipe may be replaced with certain equivalent items (for example,"
     },
     {
       "type": "text",

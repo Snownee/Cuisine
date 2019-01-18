@@ -1,0 +1,12 @@
+{
+  "name": "气泡提示",
+  "sortnum": 1,
+  "icon": "minecraft:apple",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": "当你将鼠标悬停在某些物品上时，会在提示中显示着一行食物的小图标。这说明它可以作为烹饪的食材。$(br2)不同图标代表了该食材所属的分类。"
+    }
+  ]
+}

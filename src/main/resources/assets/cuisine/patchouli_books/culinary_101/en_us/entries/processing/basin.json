@@ -30,6 +30,7 @@
     },
     {
       "type": "multiblock",
+      "name": "Heating",
       "multiblock": {
         "pattern": [
           [ "B" ],
@@ -47,11 +48,20 @@
     {
       "anchor": "squeezing",
       "type": "text",
+      "flag": "!cuisine:squeezer_uses_energy",
       "title": "Squeezing",
-      "text": "Squeezing is a bit complicated. It means that you need to put items into basin by right clicking basin, then either put a vanilla piston on the basin to form a squeezer (see diagram on your right), or use your feet to crush them by let yourself jump and fall on the basin.$(br)The squeezer structure only needs redstone pulse to work."
+      "text": "Squeezing is a bit complicated. It means that you need to put items into basin by right clicking basin, then either put a vanilla piston on the basin to form a squeezer (see diagram on your right), or use your feet to crush them by let yourself jump and fall on the basin.$(br2)The squeezer structure only needs $(em)redstone pulse$() to work."
+    },
+    {
+      "anchor": "squeezing",
+      "type": "text",
+      "flag": "cuisine:squeezer_uses_energy",
+      "title": "Squeezing",
+      "text": "Squeezing is a bit complicated. It means that you need to put items into basin by right clicking basin, then either put a vanilla piston on the basin to form a squeezer (see diagram on your right), or use your feet to crush them by let yourself jump and fall on the basin.$(br2)The squeezer structure needs $(em)energy$() to work."
     },
     {
       "type": "multiblock",
+      "name": "Squeezer",
       "multiblock": {
         "pattern": [
           [ "P" ],

@@ -1,5 +1,6 @@
 {
   "name": "联系我们",
+  "sortnum": 99,
   "icon": "minecraft:writable_book",
   "category": "preface",
   "pages": [

@@ -10,7 +10,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:mortar",
-      "text": "times, the products will automatically pop out. $(br)You can break mortar block with bare hands."
+      "text": "times, the products will automatically pop out. $(br2)You can break mortar block with bare hands."
     },
     {
       "type": "spotlight",

@@ -1,0 +1,11 @@
+{
+  "name": "木手臂",
+  "icon": "cuisine:material",
+  "category": "misc",
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}

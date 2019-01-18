@@ -1,6 +1,7 @@
 {
   "name": "鸣谢",
-  "icon": "minecraft:totem_of_undying",
+  "sortnum": 0,
+  "icon": "minecraft:written_book",
   "category": "preface",
   "pages": [
     {

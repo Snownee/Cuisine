@@ -30,6 +30,7 @@
     },
     {
       "type": "multiblock",
+      "name": "加热",
       "multiblock": {
         "pattern": [
           [ "B" ],
@@ -47,11 +48,20 @@
     {
       "anchor": "squeezing",
       "type": "text",
+      "flag": "!cuisine:squeezer_uses_energy",
       "title": "挤压",
-      "text": "“挤压”有些复杂：首先你需要手持物品右击盆以将物品放入其中，然后你可以选择放个原版活塞在盆正上方以组成“挤压机”结构（如右图），或者你可以直接用脚踩盆（在盆上来回跳）以进行挤压。$(br)挤压机只需要红石脉冲即可工作。"
+      "text": "“挤压”有些复杂：首先你需要手持物品右击盆以将物品放入其中，然后你可以选择放个原版活塞在盆正上方以组成“挤压机”结构（如右图），或者直接用脚踩盆（在盆上来回跳）以进行挤压。$(br2)挤压机只需要$(em)红石脉冲$()即可工作。"
+    },
+    {
+      "anchor": "squeezing",
+      "type": "text",
+      "flag": "cuisine:squeezer_uses_energy",
+      "title": "挤压",
+      "text": "“挤压”有些复杂：首先你需要手持物品右击盆以将物品放入其中，然后你可以选择放个原版活塞在盆正上方以组成“挤压机”结构（如右图），或者直接用脚踩盆（在盆上来回跳）以进行挤压。$(br2)挤压机需要$(em)能量$()来工作。"
     },
     {
       "type": "multiblock",
+      "name": "挤压机",
       "multiblock": {
         "pattern": [
           [ "P" ],
@@ -69,7 +79,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:wooden_basin",
-      "text": "和陶盆不一样，木盆只有一种：橡木纹理的盆。"
+      "text": "木盆只能用于$(em)接触$()和$(em)挤压$()，无法用于$(em)加热$()。"
     },
     {
       "type": "crafting",
