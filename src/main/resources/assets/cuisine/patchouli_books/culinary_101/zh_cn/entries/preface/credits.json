@@ -5,11 +5,38 @@
   "pages": [
     {
       "type": "cuisine:centered_text",
-      "text": "testtesttest"
+      "lines": [
+        "§l- 策划 -",
+        "Snownee",
+        "",
+        "§l- 开发 -",
+        "Snownee",
+        "3TUSK",
+        "",
+        "§l- 美术 -",
+        "WZD",
+        "YurisCat",
+        "Snownee",
+        "",
+        "§l- 技术支持 -",
+        "Seraph_JACK"
+      ]
     },
     {
       "type": "cuisine:centered_text",
-      "text": "testtesttest"
+      "lines": [
+        "",
+        "",
+        "",
+        "§l- 赞助者 -",
+        "",
+        "",
+        "粉鱼鱼",
+        "Lioness131",
+        "皮蛋",
+        "idyllic_bean",
+        "鱼加盐有点咸"
+      ]
     }
   ]
 }

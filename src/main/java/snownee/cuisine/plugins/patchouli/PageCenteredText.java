@@ -12,7 +12,7 @@ import vazkii.patchouli.client.book.gui.GuiBook;
 public class PageCenteredText extends BookPage
 {
     String title;
-    String text;
+    String[] lines;
 
     public int getTextHeight()
     {
@@ -30,7 +30,15 @@ public class PageCenteredText extends BookPage
     {
         try
         {
-            parent.drawCenteredStringNoShadow(text, GuiBook.PAGE_WIDTH / 2, getTextHeight(), 0);
+            int y = getTextHeight();
+            for (String line : lines)
+            {
+                if (!line.isEmpty())
+                {
+                    parent.drawCenteredStringNoShadow(line, GuiBook.PAGE_WIDTH / 2, y, book.textColor);
+                }
+                y += GuiBook.TEXT_LINE_HEIGHT;
+            }
         }
         catch (Exception e)
         {
