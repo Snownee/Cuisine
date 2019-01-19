@@ -22,6 +22,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
@@ -187,6 +188,14 @@ public class TileWok extends TileFirePit implements CookingVessel
         Ingredient ingredient;
         if (heldThing.getItem() instanceof ItemSpiceBottle)
         {
+            if (CuisineRegistry.SPICE_BOTTLE.hasFluid(heldThing))
+            {
+                FluidStack fluid = CuisineRegistry.SPICE_BOTTLE.getFluidHandler(heldThing).drain(Integer.MAX_VALUE, false);
+                if (fluid == null || fluid.amount < 100)
+                {
+                    return false;
+                }
+            }
             Spice spice = CuisineRegistry.SPICE_BOTTLE.getSpice(heldThing);
             if (spice != null)
             {
