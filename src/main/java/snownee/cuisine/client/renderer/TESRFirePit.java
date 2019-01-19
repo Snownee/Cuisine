@@ -34,7 +34,7 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
             Minecraft mc = Minecraft.getMinecraft();
             HoloProfile profile = HoloProfiles.get(tile);
             int heat = (int) tile.getHeatHandler().getHeat();
-            boolean focusing = mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && mc.objectMouseOver.getBlockPos().equals(tile.getPos());
+            boolean focusing = mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && mc.objectMouseOver.getBlockPos().equals(tile.getPos());
             float transparency = profile.update(focusing, heat, partialTicks);
             if (transparency > 0)
             {
