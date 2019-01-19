@@ -2,6 +2,7 @@
   "name": "豆腐块",
   "icon": "cuisine:tofu_block",
   "category": "misc",
+  "sortnum": 3,
   "pages": [
     {
       "type": "text",

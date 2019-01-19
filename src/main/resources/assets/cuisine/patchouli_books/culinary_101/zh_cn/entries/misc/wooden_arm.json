@@ -2,6 +2,7 @@
   "name": "木手臂",
   "icon": "cuisine:material",
   "category": "misc",
+  "sortnum": 0,
   "pages": [
     {
       "type": "text",

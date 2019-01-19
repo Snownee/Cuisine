@@ -2,6 +2,7 @@
   "name": "果树",
   "icon": "cuisine:sapling",
   "category": "misc",
+  "sortnum": 1,
   "pages": [
     {
       "type": "text",
