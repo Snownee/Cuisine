@@ -1,0 +1,43 @@
+{
+  "name": "Drinkro™",
+  "icon": "cuisine:drinkro",
+  "category": "utensils",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": "据传第一台Drinkro™生产于硅谷的某家公司。它的主要功能是$(em)将液体从一处转移到另一处$()。$(br2)Drinkro™支持制作$(em)普通饮品$()、$(em)冰沙$()、$(em)凝胶球$()和$(em)苏打水$()。$(br2)可惜的是，生产这种无与伦比机器的公司因遭受种种非议$(em)破产了$()。不过别担心，我已经帮你搞到了它的设计图纸:)"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:drinkro",
+      "text": "机器分为上下两个部分：上部分用于添加$(em)液体$()和$(em)调料$()，最多可以装下$(em)一桶液体$()和$(em)四个调料$()。下部分用于放置$(em)容器$()，最后会在下部分生产出饮品。上部分的物品栏可以放入普通调料或用来决定饮品类型的$(em)特殊物品$()。每次生产$(em)只能放入一个特殊物品$()。"
+    },
+    {
+      "type": "text",
+      "flag": "!cuisine:drinkro_uses_energy",
+      "text": "共有四种饮品类型，每种类型给予玩家的主要效果不同。默认情况下（不放入特殊物品），生产出的饮品为普通类型。$(br2)$(em)特殊物品$()和$(em)容器$()必须匹配，这时给予机器一个$(em)红石脉冲$()才能开始生产。$(br2)下面是不同饮品类型的信息。"
+    },
+    {
+      "type": "text",
+      "flag": "cuisine:drinkro_uses_energy",
+      "text": "共有四种饮品类型，每种类型给予玩家的主要效果不同。默认情况下（不放入特殊物品），生产出的饮品为普通类型。$(br2)$(em)特殊物品$()和$(em)容器$()必须匹配，并通入足够$(em)能量$()才能开始生产。$(br2)下面是不同饮品类型的信息。"
+    },
+    {
+      "type": "cuisine:drink_type",
+      "drink_type": "drink"
+    },
+    {
+      "type": "cuisine:drink_type",
+      "drink_type": "smoothie"
+    },
+    {
+      "type": "cuisine:drink_type",
+      "drink_type": "gelo"
+    },
+    {
+      "type": "cuisine:drink_type",
+      "drink_type": "soda"
+    }
+  ]
+}
