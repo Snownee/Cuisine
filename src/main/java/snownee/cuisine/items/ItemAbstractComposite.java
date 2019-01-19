@@ -246,7 +246,8 @@ public abstract class ItemAbstractComposite extends ItemMod
         }
         else
         {
-            tooltip.add(I18nUtil.translateWithFormat("tip.food_serve_amount", dish.getServes()));
+            String key = "tip." + (dish.getKeywords().contains("drink") ? "drink" : "food") + "_serve_amount";
+            tooltip.add(I18nUtil.translateWithFormat(key, dish.getServes()));
 
             for (Effect effect : dish.getMergedEffects())
             {
