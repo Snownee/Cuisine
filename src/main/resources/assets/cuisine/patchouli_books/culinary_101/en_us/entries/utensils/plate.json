@@ -2,6 +2,7 @@
   "name": "Plate",
   "icon": "cuisine:placed_dish",
   "category": "utensils",
+  "sortnum": 13,
   "pages": [
     {
       "type": "text",

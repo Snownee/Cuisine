@@ -1,0 +1,12 @@
+{
+  "name": "Fire Pit",
+  "icon": "minecraft:brewing_stand",
+  "category": "utensils",
+  "sortnum": 21,
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}

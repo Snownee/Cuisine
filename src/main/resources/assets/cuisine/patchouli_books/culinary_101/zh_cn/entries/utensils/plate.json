@@ -2,6 +2,7 @@
   "name": "盘子",
   "icon": "cuisine:placed_dish",
   "category": "utensils",
+  "sortnum": 18,
   "pages": [
     {
       "type": "text",

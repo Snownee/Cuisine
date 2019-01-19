@@ -1,0 +1,12 @@
+{
+  "name": "Fire Pit",
+  "icon": "cuisine:fire_pit",
+  "category": "utensils",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "烧烤架",
+  "icon": "cuisine:fire_pit:2",
+  "category": "utensils",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "text",
+      "text": "烧烤架可以加热普通的食物（就像熔炉那样）。也可以用来$(em)烧烤加工过的食材$()。$(br2)$(em)右击木杆的部分$()可以放置食物上去。最多可以放置三个食物。"
+    }
+  ]
+}

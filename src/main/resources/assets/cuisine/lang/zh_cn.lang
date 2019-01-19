@@ -420,7 +420,7 @@ cuisine.gui.potionVege=水果汁效果：§4%s
 cuisine.gui.potionFruit=蔬菜汁效果：§2%s
 
 cuisine.manual.name=烹饪指南
-cuisine.manual.subtitle=$(br)   成为大厨的全面指南书！$(8)$(br) $(br) $(br) $(br)         三日入厨下$(br)         洗手作羹汤$(br)         未谙姑食性$(br)         先遣小姑尝
+cuisine.manual.subtitle=$(br)   成为大厨的全面指南书！
 
 cuisine.skillpoint.expertise=技巧度
 cuisine.skillpoint.proficiency=熟练度

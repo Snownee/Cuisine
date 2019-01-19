@@ -2,6 +2,7 @@
   "name": "Wok",
   "icon": "cuisine:wok",
   "category": "utensils",
+  "sortnum": 12,
   "pages": [
     {
       "type": "text",

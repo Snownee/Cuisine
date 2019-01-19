@@ -1,0 +1,26 @@
+{
+  "name": "火塘",
+  "icon": "cuisine:fire_pit",
+  "category": "utensils",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": "火塘是用来加热食物的热源，但在此之前，你需要先制作$(l:utensils/wok)锅$()或$(l:utensils/bbq_rack)烧烤架$()。$(br2)除了使用工作台，你还可以直接使用相应材料$(em)右击$()火塘来搭建！$(br2)$(em)右击搭建后的方块$()可向其中加入燃料。简单来说，$(em)热度$()有三个等级，而燃料有不同的$(em)热度上限$()，达到该温度时便无法再升高温度了。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:fire_pit_and_wok",
+      "recipe2": "cuisine:bbq_rack"
+    },
+    {
+      "type": "text",
+      "text": "火塘一侧的界面会提示你当前的热度。当火塘内有食材时，食材后的扇形会提示你该食材的$(em)熟度$()，当扇形变红时说明食材$(em)过熟$()了。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:fan",
+      "text": "扇子可以临时升高火塘的热度，但同时也会让燃料消耗得更快。$(br2)扇子也可以用来吹走地上的物品，同时适用于发射器。"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "你大概是因为“觉得料理工艺应该有这个特性！”，或者“我发现了漏洞！”，才点进这里的。不论如何，你可以随时前往$(l:https://github.com/Snownee/Cuisine/issues)我们的问题追踪器$()进行反馈。或者你可以直接加这个 QQ 群：$(l:https://jq.qq.com/?_wv=1027&k=5GXZnpl)645696370$()。"
+      "text": "你大概是因为“觉得应该有这个特性！”或者“我发现了漏洞！”，才点进这里的。不论如何，你可以随时前往$(l:https://github.com/Snownee/Cuisine/issues)我们的问题追踪器$()进行反馈。或者你可以直接加这个 QQ 群：$(l:https://jq.qq.com/?_wv=1027&k=5GXZnpl)645696370$()。"
     }
   ]
 }

@@ -2,14 +2,21 @@
   "name": "锅",
   "icon": "cuisine:wok",
   "category": "utensils",
+  "sortnum": 12,
   "pages": [
     {
       "type": "text",
-      "text": "锅是种灵活的通用厨具。搭配$(l:utensils/spatula)炒菜铲$()使用时可在锅中实现多种不同的烹饪方式。"
+      "text": "锅是种灵活的通用厨具。搭配$(l:utensils/wok#spatula)炒菜铲$()使用时可在锅中实现多种不同的烹饪方式。$(br2)锅需要用$(l:utensils/fire_pit)火塘$()供热。$(br2)当你觉得烹饪完成了，用$(l:utensils/plate)盘子$()将菜盛出来。"
     },
     {
       "type": "crafting",
       "recipe": "cuisine:wok"
+    },
+    {
+      "anchor": "spatula",
+      "type": "crafting",
+      "recipe": "cuisine:iron_spatula",
+      "text": "用炒菜铲$(em)右击锅$()可翻炒食材，使其受热均匀。"
     }
   ]
 }
