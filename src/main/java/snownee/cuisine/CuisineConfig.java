@@ -199,6 +199,9 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public int bamboosGenRate = 6;
 
+        @Config.Name("LegacyBamboosGen")
+        public boolean legacyBambooGen = false;
+
         @Config.Comment("Generation rate of wild crops; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
         @Config.Name("CropsGenWeight")

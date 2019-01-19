@@ -331,6 +331,7 @@ cuisine.tip.seasonings=调料：
 cuisine.tip.spice.item=剩余 {0,number,integer} 次
 cuisine.tip.spice.fluid=剩余 %d mB
 cuisine.tip.food_serve_amount=可食用 {0,number,integer} 次
+cuisine.tip.drink_serve_amount=可饮用 {0,number,integer} 次
 cuisine.tip.shift_ingredients=<按住 Shift 查看食材信息>
 cuisine.tip.crops.water=水生作物
 cuisine.tip.crops.nether=地狱作物
