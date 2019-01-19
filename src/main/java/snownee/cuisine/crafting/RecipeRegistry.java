@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -93,6 +94,14 @@ public class RecipeRegistry
         Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_charcoal_and_sugarcane"), ItemDefinition.of(Items.COAL, 1), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200), sugar));
         Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_bamboo_and_beet"), ItemDefinition.of(CuisineRegistry.MATERIAL, Cuisine.Materials.BAMBOO_CHARCOAL.getMeta()), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
         Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, "sugar_from_charcoal_and_beet"), ItemDefinition.of(Items.COAL, 1), FluidJuice.make(CulinaryHub.CommonMaterials.BEETROOT, 200), sugar));
+        if (CuisineConfig.GENERAL.basinConvertingConcrete)
+        {
+            FluidStack inputFluid = new FluidStack(FluidRegistry.WATER, 125);
+            for (int i = 0; i < 16; i++)
+            {
+                Processing.BASIN_THROWING.add(new SimpleThrowing(new ResourceLocation(Cuisine.MODID, EnumDyeColor.byMetadata(i).getName() + "_concrete"), ItemDefinition.of(Blocks.CONCRETE_POWDER, i), inputFluid, new ItemStack(Blocks.CONCRETE, 1, i)));
+            }
+        }
 
         Processing.SQUEEZING.add(new SimpleSqueezing(new ResourceLocation(Cuisine.MODID, "sugarcane_squeezing"), OreDictDefinition.of("sugarcane"), new FluidStack(CuisineFluids.SUGARCANE_JUICE, 200)));
 
