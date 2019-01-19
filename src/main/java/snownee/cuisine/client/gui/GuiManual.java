@@ -12,28 +12,24 @@ import snownee.cuisine.Cuisine;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.client.FontUtil;
-import snownee.kiwi.client.gui.element.DrawableNineSlice;
+import snownee.kiwi.client.gui.element.DrawableResource;
 
 public class GuiManual extends GuiScreen
 {
-    private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(Cuisine.MODID, "textures/gui/book.png");
+    private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation(Cuisine.MODID, "textures/gui/patchouli.png");
 
-    private static int PAGE_HEIGHT = 200;
-    private static int PAGE_WIDTH = /*(int) (PAGE_HEIGHT * 0.75F)*/ 150;
-    private static int PAGE_MARGIN = 25;
-    public static int SKILL_PANEL_WIDTH = PAGE_WIDTH / 2;
+    private static int PAGE_HEIGHT = 180;
+    private static int PAGE_WIDTH = 272;
+    private static int PAGE_MARGIN = 20;
 
-    private final DrawableNineSlice pageGrid;
-    private boolean twoPages = false;
+    private DrawableResource pageGrid;
 
     private final String chatRoomURL = I18nUtil.translate("gui.chat_room_link");
     private final String mcmodWikiURL = I18nUtil.translate("gui.mcmod_link");
 
     public GuiManual()
     {
-        pageGrid = new DrawableNineSlice(BOOK_GUI_TEXTURES, 0, 0, 75, 75, 25, 25, 25, 25);
-        pageGrid.setHeight(PAGE_HEIGHT);
-        pageGrid.setWidth(PAGE_WIDTH);
+        pageGrid = new DrawableResource(BOOK_GUI_TEXTURES, 0, 0, PAGE_WIDTH, PAGE_HEIGHT, 0, 0, 0, 0, 512, 256);
     }
 
     @Override
@@ -41,12 +37,12 @@ public class GuiManual extends GuiScreen
     {
         this.fontRenderer = AdvancedFontRenderer.INSTANCE;
         this.buttonList.clear();
-        this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openlink")));
-        this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 + 40, 80, 20, I18nUtil.translate("gui.close")));
+        this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openlink")));
+        this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 + 40, 80, 20, I18nUtil.translate("gui.close")));
 
         if (mc.getLanguageManager().getCurrentLanguage().getLanguageCode().startsWith("zh"))
         {
-            this.addButton(new GuiButton(2, (this.width + PAGE_WIDTH - 80) / 2, (this.height - 20) / 2 - 40, 80, 20, I18nUtil.translate("gui.openwiki")));
+            this.addButton(new GuiButton(2, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 - 40, 80, 20, I18nUtil.translate("gui.openwiki")));
         }
     }
 
@@ -59,24 +55,19 @@ public class GuiManual extends GuiScreen
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        twoPages = true;
         mc.getTextureManager().bindTexture(BOOK_GUI_TEXTURES);
         int i = (this.width - getXSize()) / 2;
         int j = (this.height - getYSize()) / 2;
         pageGrid.draw(mc, i, j);
-        if (twoPages)
-        {
-            pageGrid.draw(mc, i + PAGE_WIDTH, j);
-        }
 
         int originX = i + PAGE_MARGIN;
-        int originY = j + PAGE_MARGIN;
+        int originY = j + PAGE_MARGIN - 5;
 
         String str = I18nUtil.translateWithEscape("gui.welcome");
         List<String> strs = FontUtil.drawSplitStringOverflow(fontRenderer, str, originX, originY, getClientX(), getClientY(), 0, false);
         if (!strs.isEmpty())
         {
-            originX += PAGE_WIDTH;
+            originX += PAGE_WIDTH / 2;
             FontUtil.drawSplitStringOverflow(fontRenderer, strs, originX, originY, getClientX(), getClientY(), 0, false);
         }
 
@@ -85,7 +76,7 @@ public class GuiManual extends GuiScreen
 
     private int getXSize()
     {
-        return (twoPages ? PAGE_WIDTH + PAGE_WIDTH : PAGE_WIDTH);
+        return PAGE_WIDTH;
     }
 
     private int getYSize()
@@ -95,7 +86,7 @@ public class GuiManual extends GuiScreen
 
     private int getClientX()
     {
-        return PAGE_WIDTH - 2 * PAGE_MARGIN + 5; // TODO
+        return PAGE_WIDTH / 2 - 2 * PAGE_MARGIN + 5; // TODO
     }
 
     private int getClientY()
