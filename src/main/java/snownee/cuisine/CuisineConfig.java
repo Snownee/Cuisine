@@ -85,6 +85,10 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean basinHeatingInDaylight = true;
 
+        @Config.Name("BasinConvertingConcrete")
+        @Config.RequiresMcRestart
+        public boolean basinConvertingConcrete = true;
+
         @Config.Name("SqueezerUsesFE")
         @Config.RequiresMcRestart
         public int squeezerUsesFE = 0;
