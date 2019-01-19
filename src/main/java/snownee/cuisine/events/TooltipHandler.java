@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -39,7 +38,7 @@ public final class TooltipHandler
             return;
         }
         ItemStack stack = event.getItemStack();
-        int i;
+        int i = 0;
         Ingredient ingredient;
         if (stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
         {
@@ -50,25 +49,28 @@ public final class TooltipHandler
                 return;
             }
 
-            Object2DoubleMap<MaterialCategory> map = new Object2DoubleArrayMap<>();
             for (Ingredient ingredientIn : composite.getIngredients())
             {
-                for (MaterialCategory category : ingredientIn.getMaterial().getCategories())
+                i += ingredientIn.getMaterial().getCategories().size();
+                if (ingredientIn.getEffects().contains(CulinaryHub.CommonEffects.RARE))
                 {
-                    map.put(category, map.getOrDefault(category, 0D) + 1);
+                    ++i;
                 }
             }
-            i = map.values().stream().mapToInt(MathHelper::ceil).sum();
         }
         else if ((ingredient = CulinaryHub.API_INSTANCE.findIngredient(stack)) != null)
         {
             // add categories line
             i = ingredient.getMaterial().getCategories().size();
-            if (event.getFlags().isAdvanced())
+            if (ingredient.getEffects().contains(CulinaryHub.CommonEffects.RARE))
             {
-                // TODO (3TUSK): What is this originally for?
-                //event.getToolTip().add(stack.getItem().getContainerItem(stack).toString());
+                ++i;
             }
+            // if (event.getFlags().isAdvanced())
+            // {
+            //     TODO (3TUSK): What is this originally for?
+            //     event.getToolTip().add(stack.getItem().getContainerItem(stack).toString());
+            // }
         }
         else
         {
@@ -155,6 +157,10 @@ public final class TooltipHandler
                 {
                     map.put(category, map.getOrDefault(category, 0D) + 1);
                 }
+                if (ingredientIn.getEffects().contains(CulinaryHub.CommonEffects.RARE))
+                {
+                    map.put(MaterialCategory.UNKNOWN, map.getOrDefault(MaterialCategory.UNKNOWN, 0D) + 1);
+                }
             }
 
             if (!map.isEmpty())
@@ -183,6 +189,10 @@ public final class TooltipHandler
                 for (MaterialCategory category : set)
                 {
                     map.put(category, map.getOrDefault(category, 0D) + 1);
+                }
+                if (ingredient.getEffects().contains(CulinaryHub.CommonEffects.RARE))
+                {
+                    map.put(MaterialCategory.UNKNOWN, map.getOrDefault(MaterialCategory.UNKNOWN, 0D) + 1);
                 }
                 CulinaryRenderHelper.renderMaterialCategoryIcons(map, 0, 0, 0.4F + ingredient.getMaterial().getSaturationModifier(ingredient), event.getWidth() * 2 - 5);
                 GlStateManager.popMatrix();
