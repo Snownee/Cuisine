@@ -1,11 +1,11 @@
 {
-  "name": "Apple",
+  "name": "苹果",
   "icon": "minecraft:apple",
   "category": "ingredients",
   "pages": [
     {
       "type": "text",
-      "text": ""
+      "text": "苹果"
     }
   ]
 }
