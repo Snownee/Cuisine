@@ -10,12 +10,13 @@
     },
     {
       "type": "crafting",
-      "recipe": "cuisine:fire_pit_and_wok",
-      "recipe2": "cuisine:bbq_rack"
+      "recipe": "cuisine:fire_pit",
+      "text": "火塘一侧的界面会提示你当前的热度。当火塘内有食材时，食材后的扇形会提示你该食材的$(em)熟度$()，当扇形变红时说明食材$(em)过熟$()了。"
     },
     {
-      "type": "text",
-      "text": "火塘一侧的界面会提示你当前的热度。当火塘内有食材时，食材后的扇形会提示你该食材的$(em)熟度$()，当扇形变红时说明食材$(em)过熟$()了。"
+      "type": "crafting",
+      "recipe": "cuisine:fire_pit_and_wok",
+      "recipe2": "cuisine:bbq_rack"
     },
     {
       "type": "crafting",
