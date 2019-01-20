@@ -20,7 +20,8 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.internal.CuisineSharedSecrets;
-import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.util.NBTHelper;
+import snownee.kiwi.util.NBTHelper.Tag;
 
 public class DrinkBrewingRecipe implements IBrewingRecipe
 {
@@ -43,7 +44,7 @@ public class DrinkBrewingRecipe implements IBrewingRecipe
         }
         // Why not "Potion":
         // in order not to be caught by VanillaBrewingRecipe, it will drop item NBT
-        if (ItemNBTUtil.verifyExistence(input, "potion"))
+        if (NBTHelper.of(input).hasTag("potion", Tag.STRING))
         {
             return true;
         }
@@ -74,7 +75,7 @@ public class DrinkBrewingRecipe implements IBrewingRecipe
         }
         if (DyeUtils.isDye(ingredient))
         {
-            if (!ItemNBTUtil.verifyExistence(input, "potion"))
+            if (!NBTHelper.of(input).hasTag("potion", Tag.STRING))
             {
                 return ItemStack.EMPTY;
             }
@@ -85,23 +86,23 @@ public class DrinkBrewingRecipe implements IBrewingRecipe
                 return ItemStack.EMPTY;
             }
             int color = result.get().getColorValue();
-            if (ItemNBTUtil.verifyExistence(output, "liquidColor")) // has color already
+            NBTHelper helper = NBTHelper.of(output);
+            if (helper.hasTag("liquidColor", Tag.INT)) // has color already
             {
-                int colorBefore = ItemNBTUtil.getInt(output, "liquidColor", -1);
+                int colorBefore = helper.getInt("liquidColor", -1);
                 color = Material.mixColor(colorBefore, color, 0.5F);
             }
-            ItemNBTUtil.setInt(output, "liquidColor", color);
+            helper.setInt("liquidColor", color);
             return output;
         }
         ItemStack dummy = makeDummyPotionItem(input);
         if (PotionHelper.hasTypeConversions(dummy, ingredient))
         {
             ItemStack dummyOutput = PotionHelper.doReaction(ingredient, dummy);
-            if (!dummyOutput.isEmpty() && dummyOutput.hasTagCompound() && dummyOutput.getTagCompound().hasKey("Potion", Constants.NBT.TAG_STRING))
+            NBTHelper helper = NBTHelper.of(dummyOutput);
+            if (!dummyOutput.isEmpty() && helper.hasTag("Potion", Tag.STRING))
             {
-                ItemStack output = input.copy();
-                ItemNBTUtil.setString(output, "potion", ItemNBTUtil.getString(dummyOutput, "Potion", "empty"));
-                return output;
+                return NBTHelper.of(input.copy()).setString("potion", helper.getString("Potion", "empty")).getItem();
             }
         }
         return ItemStack.EMPTY;
@@ -111,11 +112,11 @@ public class DrinkBrewingRecipe implements IBrewingRecipe
     {
         if (stack.getItem() == CuisineRegistry.BOTTLE)
         {
-            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("potion", Constants.NBT.TAG_STRING))
+            NBTHelper helper = NBTHelper.of(stack);
+            if (helper.hasTag("potion", Tag.STRING))
             {
                 ItemStack dummy = new ItemStack(Items.POTIONITEM);
-                ItemNBTUtil.setString(dummy, "Potion", ItemNBTUtil.getString(stack, "potion", "empty"));
-                return dummy;
+                return NBTHelper.of(dummy).setString("Potion", helper.getString("potion")).getItem();
             }
             else
             {

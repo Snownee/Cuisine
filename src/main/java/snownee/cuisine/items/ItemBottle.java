@@ -23,7 +23,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -43,9 +42,9 @@ import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.capabilities.GlassBottleWrapper;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.util.I18nUtil;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.item.ItemMod;
 import snownee.kiwi.util.NBTHelper;
+import snownee.kiwi.util.NBTHelper.Tag;
 
 public class ItemBottle extends ItemMod implements CookingVessel
 {
@@ -59,7 +58,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        if (ItemNBTUtil.verifyExistence(stack, "potion"))
+        if (NBTHelper.of(stack).hasTag("potion", Tag.STRING))
         {
             PotionUtils.addPotionTooltip(DrinkBrewingRecipe.makeDummyPotionItem(stack), tooltip, CuisineConfig.GENERAL.winePotionDurationModifier);
             String id = getMaterial(stack);
@@ -78,11 +77,12 @@ public class ItemBottle extends ItemMod implements CookingVessel
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack)
     {
-        if (ItemNBTUtil.verifyExistence(stack, "liquidColor"))
+        NBTHelper helper = NBTHelper.of(stack);
+        if (helper.hasTag("liquidColor", Tag.INT))
         {
             return false;
         }
-        return super.hasEffect(stack) || ItemNBTUtil.verifyExistence(stack, "potion");
+        return super.hasEffect(stack) || helper.hasTag("potion", Tag.STRING);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
     @Override
     public String getItemStackDisplayName(ItemStack stack)
     {
-        if (ItemNBTUtil.verifyExistence(stack, "potion"))
+        if (NBTHelper.of(stack).hasTag("potion", Tag.STRING))
         {
             String id = getMaterial(stack);
             if (id != null)
@@ -123,16 +123,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
     @Nullable
     private static String getMaterial(ItemStack stack)
     {
-        NBTTagCompound compound = ItemNBTUtil.getCompound(stack, "Fluid", true);
-        if (compound != null && compound.hasKey("Tag", Constants.NBT.TAG_COMPOUND))
-        {
-            NBTTagCompound tag = compound.getCompoundTag("Tag");
-            if (tag.hasKey(CuisineSharedSecrets.KEY_MATERIAL, Constants.NBT.TAG_STRING))
-            {
-                return tag.getString(CuisineSharedSecrets.KEY_MATERIAL);
-            }
-        }
-        return null;
+        return NBTHelper.of(stack).getString("Fluid.Tag." + CuisineSharedSecrets.KEY_MATERIAL);
     }
 
     @Override

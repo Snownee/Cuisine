@@ -18,7 +18,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.util.NBTHelper;
+import snownee.kiwi.util.NBTHelper.Tag;
 
 @EventBusSubscriber(modid = Cuisine.MODID)
 public class GlassBottleWrapper extends FluidHandlerItemStackSimple
@@ -71,7 +72,7 @@ public class GlassBottleWrapper extends FluidHandlerItemStackSimple
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY && ItemNBTUtil.verifyExistence(container, "potion"))
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY && NBTHelper.of(container).hasTag("potion", Tag.STRING))
         {
             return false;
         }
@@ -81,7 +82,7 @@ public class GlassBottleWrapper extends FluidHandlerItemStackSimple
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY && ItemNBTUtil.verifyExistence(container, "potion"))
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY && NBTHelper.of(container).hasTag("potion", Tag.STRING))
         {
             return null;
         }
