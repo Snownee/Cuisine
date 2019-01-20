@@ -11,7 +11,6 @@ import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
-import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -33,10 +32,15 @@ public class CTMortar
     }
 
     @ZenMethod
-    public static void remove(IOreDictEntry[] inputs)
+    public static void remove(IItemStack[] inputs)
     {
-        // FIXME
-        CTSupport.DELAYED_ACTIONS.add(new IngredientBasedRemoval(Arrays.stream(inputs).map(CTSupport::fromOreEntry).collect(Collectors.toList())));
+        CTSupport.DELAYED_ACTIONS.add(new Removal(Arrays.stream(inputs).map(CTSupport::toNative).collect(Collectors.toList())));
+    }
+
+    @ZenMethod
+    public static void removeByOutput(@Nonnull IIngredient output)
+    {
+        CTSupport.DELAYED_ACTIONS.add(new RemovalByOutput(output));
     }
 
     @ZenMethod
@@ -83,11 +87,11 @@ public class CTMortar
         }
     }
 
-    private static final class IngredientBasedRemoval implements IAction
+    private static final class Removal implements IAction
     {
-        final List<ProcessingInput> inputs;
+        final List<ItemStack> inputs;
 
-        IngredientBasedRemoval(List<ProcessingInput> inputs)
+        Removal(List<ItemStack> inputs)
         {
             this.inputs = inputs;
         }
@@ -95,13 +99,35 @@ public class CTMortar
         @Override
         public void apply()
         {
-            getManager().remove(new Grinding(new ResourceLocation(CTSupport.MODID), inputs, ItemStack.EMPTY, 0));
+            getManager().remove(inputs.toArray());
         }
 
         @Override
         public String describe()
         {
             return String.format("Remove Cuisine Mortar recipe that has input of %s", inputs);
+        }
+    }
+
+    private static final class RemovalByOutput implements IAction
+    {
+        final IIngredient output;
+
+        RemovalByOutput(IIngredient output)
+        {
+            this.output = output;
+        }
+
+        @Override
+        public void apply()
+        {
+            getManager().removeIf(r -> output.matches(CraftTweakerMC.getIItemStack(r.getOutput())));
+        }
+
+        @Override
+        public String describe()
+        {
+            return null;
         }
     }
 

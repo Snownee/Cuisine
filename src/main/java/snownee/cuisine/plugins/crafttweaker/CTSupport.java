@@ -42,6 +42,7 @@ public final class CTSupport implements IModule
         return new ResourceLocation(MODID, Integer.toString(Objects.hash(inputs)));
     }
 
+    // Snownee: Nullable?
     static ProcessingInput fromIngredient(IIngredient ingredient)
     {
         return new CTIngredientInput(ingredient);

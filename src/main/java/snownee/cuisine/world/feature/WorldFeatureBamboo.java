@@ -7,16 +7,19 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockBambooPlant;
 import snownee.cuisine.blocks.BlockBambooPlant.Type;
 
 public class WorldFeatureBamboo extends WorldGenAbstractTree
 {
+    private final boolean notify;
 
     public WorldFeatureBamboo(boolean notify)
     {
         super(notify);
+        this.notify = notify;
     }
 
     @Override
@@ -46,11 +49,14 @@ public class WorldFeatureBamboo extends WorldGenAbstractTree
                 }
             }
         }
-        IBlockState newState = CuisineRegistry.BAMBOO_PLANT.getDefaultState().withProperty(BlockBambooPlant.TYPE, Type.A_2);
-        for (int i = 0; i < 4; i++)
+        IBlockState newState = CuisineRegistry.BAMBOO_PLANT.getDefaultState().withProperty(BlockBambooPlant.TYPE, notify ? Type.A_2 : Type.A_6);
+        if (!CuisineConfig.WORLD_GEN.legacyBambooGen)
         {
-            setBlockAndNotifyAdequately(worldIn, pos.up(height - 1 - i % 2).offset(EnumFacing.byHorizontalIndex(i)), newState.withProperty(BlockBambooPlant.TYPE, Type.values()[7 + i]));
-            setBlockAndNotifyAdequately(worldIn, pos.up(height - 3 - i % 2).offset(EnumFacing.byHorizontalIndex(i)), newState.withProperty(BlockBambooPlant.TYPE, Type.values()[7 + i]));
+            for (int i = 0; i < 4; i++)
+            {
+                setBlockAndNotifyAdequately(worldIn, pos.up(height - 1 - i % 2).offset(EnumFacing.byHorizontalIndex(i)), newState.withProperty(BlockBambooPlant.TYPE, Type.values()[7 + i]));
+                setBlockAndNotifyAdequately(worldIn, pos.up(height - 3 - i % 2).offset(EnumFacing.byHorizontalIndex(i)), newState.withProperty(BlockBambooPlant.TYPE, Type.values()[7 + i]));
+            }
         }
         for (int i = height; i-- > 0;)
         {

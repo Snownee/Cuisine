@@ -84,7 +84,7 @@ public class TileBasinHeatable extends TileBasin implements ITickable
             if (recipe != null)
             {
                 invLock = true;
-                Output output = recipe.getOutputAndConsumeInput(stacks.getStackInSlot(0), tank.getFluid(), heat);
+                Output output = recipe.getOutputAndConsumeInput(stacks.getStackInSlot(0), tank.getFluid(), heat, world.rand);
                 if (output.fluid != null && output.fluid.amount <= 0)
                 {
                     output.fluid = null;

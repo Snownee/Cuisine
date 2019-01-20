@@ -85,6 +85,10 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean basinHeatingInDaylight = true;
 
+        @Config.Name("BasinConvertingConcrete")
+        @Config.RequiresMcRestart
+        public boolean basinConvertingConcrete = true;
+
         @Config.Name("SqueezerUsesFE")
         @Config.RequiresMcRestart
         public int squeezerUsesFE = 0;
@@ -201,6 +205,9 @@ public final class CuisineConfig
         @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
         public int bamboosGenRate = 6;
+
+        @Config.Name("LegacyBamboosGen")
+        public boolean legacyBambooGen = false;
 
         @Config.Comment("Generation rate of wild crops; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.crops_gen_rate")

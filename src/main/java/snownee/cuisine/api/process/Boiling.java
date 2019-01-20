@@ -1,5 +1,7 @@
 package snownee.cuisine.api.process;
 
+import java.util.Random;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -20,5 +22,5 @@ public interface Boiling extends CuisineProcessingRecipe
 
     boolean matches(ItemStack item, @Nonnull FluidStack fluid, int heatValue);
 
-    Output getOutputAndConsumeInput(ItemStack item, @Nonnull FluidStack fluid, int heatValue);
+    Output getOutputAndConsumeInput(ItemStack item, @Nonnull FluidStack fluid, int heatValue, Random rand);
 }

@@ -115,7 +115,6 @@ public class Cuisine
         NetworkChannel.INSTANCE.register(PacketNameFood.class);
         if (CuisineConfig.GENERAL.basicSeedsWeight > 0)
         {
-            MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.RICE), CuisineConfig.GENERAL.basicSeedsWeight);
             MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SESAME), CuisineConfig.GENERAL.basicSeedsWeight);
             MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SOYBEAN), CuisineConfig.GENERAL.basicSeedsWeight);
             MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.PEANUT), CuisineConfig.GENERAL.basicSeedsWeight);

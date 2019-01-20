@@ -328,6 +328,7 @@ cuisine.tip.seasonings=Seasonings:
 cuisine.tip.spice.item=Remain: {0,choice,0#0 times|1#1 time|1<{0} times}
 cuisine.tip.spice.fluid=Remain: %d mB
 cuisine.tip.food_serve_amount={0,choice,0#0 serves|1# serve|1<{0} serves} left
+cuisine.tip.drink_serve_amount={0,choice,0#0 serves|1# serve|1<{0} serves} left
 cuisine.tip.shift_ingredients=<Hold Shift to show details>
 cuisine.tip.crops.water=Watery crops
 cuisine.tip.crops.nether=Hellish crops
