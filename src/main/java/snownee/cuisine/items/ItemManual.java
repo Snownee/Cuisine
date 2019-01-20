@@ -1,8 +1,9 @@
 package snownee.cuisine.items;
 
+import java.util.Objects;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -14,28 +15,42 @@ import snownee.kiwi.item.ItemMod;
 public class ItemManual extends ItemMod
 {
 
+    private OpenManualHandler manualHandler;
+
     public ItemManual(String name)
     {
         super(name);
-        setMaxStackSize(1);
-        setCreativeTab(Cuisine.CREATIVE_TAB);
+        this.setMaxStackSize(1);
+        this.setCreativeTab(Cuisine.CREATIVE_TAB);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-        ItemStack stack = playerIn.getHeldItem(handIn);
-
-        if (!worldIn.isRemote)
+        if (this.manualHandler == null || (hand == EnumHand.OFF_HAND && player.isSneaking()))
         {
-            // this.resolveContents(itemstack, playerIn);
+            return defaultManualHandler(world, player, hand);
         }
-
-        playerIn.openGui(Cuisine.getInstance(), CuisineGUI.MANUAL, worldIn, handIn == EnumHand.MAIN_HAND
-                ? playerIn.inventory.currentItem
-                : playerIn.inventory.mainInventory.size() + playerIn.inventory.armorInventory.size(), 0, 0);
-        playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        else
+        {
+            return this.manualHandler.tryOpenManual(world, player, hand);
+        }
     }
 
+    private static ActionResult<ItemStack> defaultManualHandler(World world, EntityPlayer player, EnumHand hand)
+    {
+        player.openGui(Cuisine.getInstance(), CuisineGUI.MANUAL, world, hand.ordinal(), 0, 0);
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+    }
+
+    public final ItemManual setOpenManualHandler(OpenManualHandler handler)
+    {
+        this.manualHandler = Objects.requireNonNull(handler, "Manual handler cannot be null");
+        return this;
+    }
+
+    public interface OpenManualHandler
+    {
+        ActionResult<ItemStack> tryOpenManual(World world, EntityPlayer player, EnumHand hand);
+    }
 }

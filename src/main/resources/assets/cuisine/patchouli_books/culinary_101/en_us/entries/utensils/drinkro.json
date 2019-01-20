@@ -1,0 +1,12 @@
+{
+  "name": "Apple",
+  "icon": "minecraft:apple",
+  "category": "ingredients",
+  "sortnum": 20,
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}

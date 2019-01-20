@@ -1,14 +1,12 @@
 package snownee.cuisine.events;
 
-import java.util.ArrayList;
-
-import com.google.common.collect.Lists;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -22,6 +20,7 @@ public class SpawnHandler
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
+        // TODO Re-evaluate this part
         NBTTagCompound playerData = event.player.getEntityData();
         NBTTagCompound data;
         if (playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
@@ -43,9 +42,11 @@ public class SpawnHandler
 
         if (event.player instanceof EntityPlayerMP)
         {
-            ArrayList<IRecipe> recipes = Lists.newArrayList(CraftingManager.REGISTRY);
-            recipes.removeIf(recipe -> !recipe.getRegistryName().getNamespace().equals(Cuisine.MODID) || recipe.getRecipeOutput().isEmpty());
-            event.player.unlockRecipes(recipes);
+            // TODO DO YOU SERIOUSLY WANT TO DO THIS EVERY ITEM PLAYER LOGGED IN?!
+            event.player.unlockRecipes(StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
+                    .filter(r -> r.getRegistryName().getNamespace().equals(Cuisine.MODID))
+                    .collect(Collectors.toList())
+            );
         }
     }
 }

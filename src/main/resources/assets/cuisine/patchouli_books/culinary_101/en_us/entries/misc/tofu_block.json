@@ -1,0 +1,11 @@
+{
+  "name": "豆腐块",
+  "icon": "cuisine:tofu_block",
+  "category": "misc",
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}

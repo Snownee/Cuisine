@@ -1,0 +1,22 @@
+{
+  "name": "罐子",
+  "icon": "cuisine:jar",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "text",
+      "text": "罐子可用来发酵或腌制食材。酱油和醋都是用罐子制作的。罐子没有 GUI，一切操作均通过点击交互完成。手持物品右击可放入物品。手持流体容器右击可倒入流体；手持空容器右击则可提取其中流体。"
+    },
+    {
+      "type": "spotlight",
+      "item": "cuisine:jar",
+      "title": "   ",
+      "text": "罐子会在发现有合适的物品时自动开始工作。工作时，罐子周围会出现绕罐子转的白色粒子，用于显示进度。白色粒子转完一圈代表罐子完成$(em)一轮$()加工。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:jar",
+      "text": ":think:"
+    }
+  ]
+}

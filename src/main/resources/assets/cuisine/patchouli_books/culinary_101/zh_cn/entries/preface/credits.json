@@ -1,0 +1,44 @@
+{
+  "name": "鸣谢",
+  "sortnum": 0,
+  "icon": "minecraft:written_book",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "cuisine:centered_text",
+      "lines": [
+        "§l- 策划 -",
+        "Snownee",
+        "",
+        "§l- 开发 -",
+        "Snownee",
+        "3TUSK",
+        "",
+        "§l- 美术 -",
+        "WZD",
+        "YurisCat",
+        "Snownee",
+        "",
+        "§l- 技术支持 -",
+        "Seraph_JACK"
+      ]
+    },
+    {
+      "type": "cuisine:centered_text",
+      "lines": [
+        "",
+        "",
+        "",
+        "§l- 赞助者 -",
+        "",
+        "",
+        "粉鱼",
+        "Lioness131",
+        "皮蛋",
+        "Cherls",
+        "idyllic_bean",
+        "鱼加盐有点咸"
+      ]
+    }
+  ]
+}

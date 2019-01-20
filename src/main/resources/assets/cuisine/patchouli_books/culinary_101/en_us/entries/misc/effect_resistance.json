@@ -1,0 +1,11 @@
+{
+  "name": "Effect Resistance",
+  "icon": "cuisine:material",
+  "category": "misc",
+  "pages": [
+    {
+      "type": "text",
+      "text": "123"
+    }
+  ]
+}

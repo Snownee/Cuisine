@@ -1,0 +1,12 @@
+{
+  "name": "作物的种植",
+  "sortnum": 3,
+  "icon": "cuisine:crops:17",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": "巧妇难为无米之炊，收集丰富的食材同样是重要的步骤。"
+    }
+  ]
+}

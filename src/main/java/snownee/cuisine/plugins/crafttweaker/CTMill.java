@@ -25,13 +25,14 @@ public class CTMill
 {
 
     @ZenMethod
-    public static void add(IIngredient input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
+    public static void add(String identifier, IIngredient input, ILiquidStack inputFluid, IItemStack output, ILiquidStack outputFluid)
     {
+        ResourceLocation id = CTSupport.fromUserInputOrGenerate(identifier, input, inputFluid);
         ProcessingInput actualInput = CTSupport.fromIngredient(input);
         ItemStack actualOutput = CTSupport.toNative(output);
         FluidStack actualInputFluid = CTSupport.toNative(inputFluid);
         FluidStack actualOutputFluid = CTSupport.toNative(outputFluid);
-        CTSupport.DELAYED_ACTIONS.add(new Addition(actualInput, actualInputFluid, actualOutput, actualOutputFluid));
+        CTSupport.DELAYED_ACTIONS.add(new Addition(id, actualInput, actualInputFluid, actualOutput, actualOutputFluid));
     }
 
     @ZenMethod
@@ -74,7 +75,7 @@ public class CTMill
         private final ItemStack actualOutput;
         private final FluidStack actualOutputFluid;
 
-        Addition(ProcessingInput actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
+        Addition(ResourceLocation id, ProcessingInput actualInput, FluidStack actualInputFluid, ItemStack actualOutput, FluidStack actualOutputFluid)
         {
             super(actualInput, actualInputFluid, actualOutput, actualOutputFluid);
             this.actualInput = actualInput;

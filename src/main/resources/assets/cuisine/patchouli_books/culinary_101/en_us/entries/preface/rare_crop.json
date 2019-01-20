@@ -1,0 +1,12 @@
+{
+  "name": "稀有作物",
+  "sortnum": 3,
+  "icon": "cuisine:crops:5",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": "巧妇难为无米之炊，收集丰富的食材同样是重要的步骤。"
+    }
+  ]
+}

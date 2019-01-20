@@ -1,0 +1,137 @@
+{
+  "name": "盆",
+  "icon": "cuisine:earthen_basin",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "text",
+      "text": "盆共有三种用途，分别是$(l:processing/basin#heating)“加热”$()、$(l:processing/basin#squeezing)“挤压”$()和$(l:processing/basin#throwing)“接触”$()。$(br2)盆分为木盆和陶盆两种。只有$(em)陶盆$()可以用于加热。$(br2)右击盆可放入或取出物品或液体。"
+    },
+    {
+      "anchor": "throwing",
+      "type": "text",
+      "title": "接触",
+      "text": "“接触”其实就是把物品直接丢入盆中，让物品与盆中流体混合以得到新物品的过程。"
+    },
+    {
+      "anchor": "heating",
+      "type": "text",
+      "title": "加热",
+      "flag": "cuisine:enable_sunlight_heating",
+      "text": "“加热”即加热盆中流体的过程。$(br2)只有$(em)陶盆$()可以用于加热。加热流体需要热源，例如原版熔岩和火都可以充当热源（如右图所示）。$(br2)日光也可以充当热源——此时只需要让盆接受到阳光就可以了。但某些配方需要足够高温的热源才能进行。"
+    },
+    {
+      "anchor": "heating",
+      "type": "text",
+      "title": "加热",
+      "flag": "!cuisine:enable_sunlight_heating",
+      "text": "“加热”即加热盆中流体的过程。$(br2)只有$(em)陶盆$()可以用于加热。加热流体需要热源，例如原版熔岩和火都可以充当热源（如右图所示）。$(br2)某些配方需要足够高温的热源才能进行。"
+    },
+    {
+      "type": "multiblock",
+      "name": "通常的加热方式",
+      "multiblock": {
+        "pattern": [
+          [ "B" ],
+          [ "S" ],
+          [ "0" ]
+        ],
+        "offset": [ 0, 1, 0 ],
+        "symmetrical": true,
+        "mapping": {
+          "B": "cuisine:earthen_basin",
+          "S": "minecraft:fire"
+        }
+      }
+    },
+    {
+      "anchor": "squeezing",
+      "type": "text",
+      "flag": "!cuisine:squeezer_uses_energy",
+      "title": "挤压",
+      "text": "“挤压”有些复杂：首先你需要将物品放入盆中，然后你可以选择放个原版活塞在盆正上方以组成“挤压机”结构（如右图），或者直接用脚踩盆（在盆上来回跳）以进行挤压。$(br2)挤压机只需要$(em)红石脉冲$()即可工作。"
+    },
+    {
+      "anchor": "squeezing",
+      "type": "text",
+      "flag": "cuisine:squeezer_uses_energy",
+      "title": "挤压",
+      "text": "“挤压”有些复杂：首先你需要手持物品右击盆以将物品放入其中，然后你可以选择放个原版活塞在盆正上方以组成“挤压机”结构（如右图），或者直接用脚踩盆（在盆上来回跳）以进行挤压。$(br2)挤压机需要$(em)能量$()来工作。"
+    },
+    {
+      "type": "multiblock",
+      "name": "挤压机",
+      "multiblock": {
+        "pattern": [
+          [ "P" ],
+          [ "B" ],
+          [ "0" ]
+        ],
+        "offset": [ 0, 1, 0 ],
+        "symmetrical": true,
+        "mapping": {
+          "B": "cuisine:earthen_basin",
+          "P": "minecraft:piston[facing=down,extended=false]"
+        }
+      }
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:wooden_basin",
+      "text": "木盆只能用于$(em)接触$()和$(em)挤压$()，无法用于$(em)加热$()。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:earthen_basin",
+      "text": "彩色陶盆？用彩色陶瓦即可合成。虽然技术角度来说，盆的条目到这里就结束了，但无聊的话可以继续看下去。"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:white_earthen_basin",
+      "recipe2": "cuisine:orange_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:magenta_earthen_basin",
+      "recipe2": "cuisine:light_blue_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:yellow_earthen_basin",
+      "recipe2": "cuisine:lime_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:pink_earthen_basin",
+      "recipe2": "cuisine:gray_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:light_gray_earthen_basin",
+      "recipe2": "cuisine:cyan_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:purple_earthen_basin",
+      "recipe2": "cuisine:blue_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:brown_earthen_basin",
+      "recipe2": "cuisine:green_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:red_earthen_basin",
+      "recipe2": "cuisine:black_earthen_basin"
+    }
+  ]
+}

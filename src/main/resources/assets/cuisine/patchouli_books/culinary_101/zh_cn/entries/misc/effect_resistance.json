@@ -1,0 +1,12 @@
+{
+  "name": "效果抗性",
+  "icon": "cuisine:glass_bottle{liquidColor:6000000}",
+  "category": "misc",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "当你通过食物获得了一些状态效果时，也会获得$(em)效果抗性$()的状态。当你处于这种状态时，无法再通过食物获得状态效果。$(br2)牛奶无法消除效果抗性，你可以通过$(l:utensils/drinkro)饮品$()来缩短状态时长。"
+    }
+  ]
+}

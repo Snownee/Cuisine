@@ -396,9 +396,10 @@ cuisine.gui.oil_amount=Oil amount: %d
 # < 0: suspended; [0, 1]: percentage; > 1: Using TOP progress bar;
 cuisine.gui.progress=Progress:{0,choice,-1# suspended|0.0< {0,number,percent}|1.0<}
 cuisine.gui.fluid_show=Fluid: %s * %d mB
-cuisine.gui.openlink=Discord
+cuisine.gui.close=Close
+cuisine.gui.openLink=Discord
 cuisine.gui.welcome=Thanks for playing Cuisine!\nWe are still working hard on development, please keep tuned!\n\nTo start, garther all kinds of raw food materials, and build yourself some basic processing devices. We recommened to install JEI for recipes lookup.\n\nJoin our Discord to catch up latest news!
-cuisine.gui.chat_room_link=https://discord.gg/KzGQW7a
+cuisine.gui.chatRoomLink=https://discord.gg/KzGQW7a
 cuisine.gui.name_food=Edit food name
 cuisine.gui.wok_size_too_large=This dish is too heavy for you to stiring
 cuisine.gui.cannot_add_more=You can't add more ingredients
@@ -408,6 +409,9 @@ cuisine.gui.jei.title.basin_boiling=Basin - Heating
 cuisine.gui.jei.title.firepit_fuel=Firepit - Fuels
 cuisine.gui.jei.brun_heat=Burn Heat: %d
 cuisine.gui.jei.brun_level=Burn Level: %d
+
+cuisine.manual.name=Culinary 101
+cuisine.manual.subtitle=The Comprehensive Guide to Mastering Culinary Art
 
 cuisine.skillpoint.expertise=Expertise
 cuisine.skillpoint.proficiency=Proficiency

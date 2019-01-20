@@ -1,0 +1,11 @@
+{
+  "name": "Wooden Arm",
+  "icon": "cuisine:material",
+  "category": "misc",
+  "pages": [
+    {
+      "type": "text",
+      "text": "123"
+    }
+  ]
+}

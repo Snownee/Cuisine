@@ -1,0 +1,11 @@
+{
+  "name": "苹果",
+  "icon": "minecraft:apple",
+  "category": "ingredients",
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(cuisine:effect=golden_apple)$(br)$(cuisine:a=1;b=2)blablabla"
+    }
+  ]
+}

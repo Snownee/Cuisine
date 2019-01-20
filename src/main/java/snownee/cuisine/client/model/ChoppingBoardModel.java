@@ -98,6 +98,7 @@ public final class ChoppingBoardModel implements IModel
             this.particleTexture = particleTexture;
         }
 
+        // TODO Cache it. Generating quads at runtime can be very expensive...
         @Override
         public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
         {
@@ -132,7 +133,7 @@ public final class ChoppingBoardModel implements IModel
                     List<BakedQuad> transformedQuads = new ArrayList<>();
                     for (BakedQuad quad : quads)
                     {
-                        QuadTransformer transformer = new QuadTransformer(TRANSFORM, quad.getFormat());
+                        TRSRBasedQuadTransformer transformer = new TRSRBasedQuadTransformer(TRANSFORM, quad.getFormat());
                         quad.pipe(transformer);
                         transformedQuads.add(transformer.build());
                     }
@@ -142,7 +143,8 @@ public final class ChoppingBoardModel implements IModel
             else
             {
                 // Wut? this can never happen unless we changed implementation, or this model
-                // is used on something else. Render nothing please.
+                // is used on something else. Render nothing for now, we need a better solution
+                // for this situation.
                 return Collections.emptyList();
             }
         }

@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 public abstract class AbstractCuisineProcessingRecipe implements CuisineProcessingRecipe
 {
 
+    protected static final String INTERNAL_NAMESPACE = "cuisine";
+
     private final ResourceLocation identifier;
 
     protected AbstractCuisineProcessingRecipe(ResourceLocation identifier)

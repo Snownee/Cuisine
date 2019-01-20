@@ -1,0 +1,19 @@
+{
+  "name": "食材的获取",
+  "sortnum": 2,
+  "icon": "minecraft:wheat_seeds",
+  "flag": "cuisine:enable_garden_world_gen",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "flag": "cuisine:enable_grass_seeds",
+      "text": "巧妇难为无米之炊，收集丰富的食材同样是重要的步骤。$(br2)大多数作物都会生长在$(em)气候适宜$()的野外。像是小麦、花生、芝麻、大豆这样的基础谷物可以直接通过打草获得。$(br2)某些特殊食材只能通过$(em)和村民交易$()获得。"
+    },
+    {
+      "type": "text",
+      "flag": "!cuisine:enable_grass_seeds",
+      "text": "巧妇难为无米之炊，收集丰富的食材同样是重要的步骤。$(br2)大多数作物都会生长在$(em)气候适宜$()的野外。$(br2)某些特殊食材只能通过$(em)和村民交易$()获得。"
+    }
+  ]
+}

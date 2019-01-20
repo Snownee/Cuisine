@@ -1,0 +1,12 @@
+{
+  "name": "Talk to dev team",
+  "sortnum": 99,
+  "icon": "minecraft:writable_book",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Looks like that you click into this page because you have some brilliant ideas about how Cuisine should look like, or you encountered a bug. Either way, you are welcome to file an issue ticket on your $(l:https://github.com/Snownee/Cuisine/issues)issue tracker$(). Alternatively, if you do use Discord, we have a Discord server, too: $(l:https://discord.gg/KzGQW7a)https://discord.gg/KzGQW7a$(); feel free to hop in at any time, and remember to read FAQs and rules before posting things."
+    }
+  ]
+}

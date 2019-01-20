@@ -3,7 +3,6 @@ package snownee.cuisine.network;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,8 +40,7 @@ public class CuisineGuiHandler implements IGuiHandler
         switch (ID)
         {
         case CuisineGUI.MANUAL:
-            ItemStack stack = player.inventory.getStackInSlot(x);
-            return new GuiManual(x, stack);
+            return new GuiManual();
         case CuisineGUI.NAME_FOOD:
             TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
             if (tile instanceof CookingVessel)

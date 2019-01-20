@@ -265,26 +265,30 @@ public class Drink extends CompositeFood
     {
         public static final Map<String, DrinkType> DRINK_TYPES = new HashMap<>(8);
 
-        public static final DrinkType NORMAL = new DrinkType("drink", ItemDefinition.of(Items.GLASS_BOTTLE));
-        public static final DrinkType SMOOTHIE = new DrinkType("smoothie", ItemDefinition.of(CuisineRegistry.PLACED_DISH));
-        public static final DrinkType GELO = new DrinkType("gelo", ItemDefinition.EMPTY);
-        public static final DrinkType SODA = new DrinkType("soda", ItemDefinition.of(Items.GLASS_BOTTLE));
+        public static final DrinkType NORMAL = new DrinkType("drink", ItemDefinition.of(Items.GLASS_BOTTLE), MobEffects.JUMP_BOOST, MobEffects.SPEED);
+        public static final DrinkType SMOOTHIE = new DrinkType("smoothie", ItemDefinition.of(CuisineRegistry.PLACED_DISH), CuisineRegistry.TOUGHNESS, MobEffects.RESISTANCE);
+        public static final DrinkType GELO = new DrinkType("gelo", ItemDefinition.EMPTY, MobEffects.JUMP_BOOST, MobEffects.SPEED);
+        public static final DrinkType SODA = new DrinkType("soda", ItemDefinition.of(Items.GLASS_BOTTLE), CuisineRegistry.COLD_BLOOD, MobEffects.STRENGTH);
 
         private final ProcessingInput containerPre;
         private final ItemDefinition containerPost;
         private final String name;
+        private final Potion potionVege;
+        private final Potion potionFruit;
 
-        public DrinkType(String name, ItemDefinition container)
+        public DrinkType(String name, ItemDefinition container, Potion potionVege, Potion potionFruit)
         {
-            this(name, container, container);
+            this(name, container, container, potionVege, potionFruit);
             DRINK_TYPES.put(name, this);
         }
 
-        public DrinkType(String name, ProcessingInput containerPre, ItemDefinition containerPost)
+        public DrinkType(String name, ProcessingInput containerPre, ItemDefinition containerPost, Potion potionVege, Potion potionFruit)
         {
             this.name = name;
             this.containerPre = containerPre;
             this.containerPost = containerPost;
+            this.potionVege = potionVege;
+            this.potionFruit = potionFruit;
         }
 
         public String getName()
@@ -313,6 +317,16 @@ public class Drink extends CompositeFood
         public ItemStack getContainerPost()
         {
             return containerPost.getItemStack();
+        }
+
+        public Potion getPotionVege()
+        {
+            return potionVege;
+        }
+
+        public Potion getPotionFruit()
+        {
+            return potionFruit;
         }
     }
 
@@ -448,18 +462,11 @@ public class Drink extends CompositeFood
             {
                 duration *= 0.8;
             }
-            Potion potion = MobEffects.SPEED;
-            if (drinkType == DrinkType.NORMAL || drinkType == DrinkType.GELO)
+
+            Potion potion = flag ? drinkType.getPotionVege() : drinkType.getPotionFruit();
+            if (potion == null)
             {
-                potion = flag ? MobEffects.JUMP_BOOST : MobEffects.SPEED;
-            }
-            else if (drinkType == DrinkType.SODA)
-            {
-                potion = flag ? CuisineRegistry.COLD_BLOOD : MobEffects.STRENGTH;
-            }
-            else if (drinkType == DrinkType.SMOOTHIE)
-            {
-                potion = flag ? CuisineRegistry.TOUGHNESS : MobEffects.RESISTANCE;
+                potion = MobEffects.SPEED;
             }
             collector.addEffect(DefaultTypes.POTION, new PotionEffect(potion, duration, 0, true, true));
         }

@@ -401,9 +401,12 @@ cuisine.gui.oil_amount=油含量：%d
 # < 0: suspended; [0, 1]: percentage; > 1: Using TOP progress bar;
 cuisine.gui.progress=进度：{0,choice,-1#暂停|0<{0,number,percent}|1<}
 cuisine.gui.fluid_show=液体：%s * %d mB
-cuisine.gui.openlink=交流群
-cuisine.gui.welcome=感谢游玩料理工艺！\n\n模组仍在努力开发中， 更多内容请关注后续更新！\n\n开始游玩后你需要先收集食材并制作基础的食物加工机器。相关物品配方可通过安装JEI模组查看。\n\n如果你想了解更多关于料理工艺的信息， 欢迎加入我们的交流群：\n645696370
-cuisine.gui.chat_room_link=https://jq.qq.com/?_wv=1027&k=5GXZnpl
+cuisine.gui.close=关闭
+cuisine.gui.openLink=交流群
+cuisine.gui.openWiki=MCMOD百科
+cuisine.gui.welcome=感谢游玩料理工艺！\n\n模组仍在努力开发中，更多内容请关注后续更新！\n\n强烈推荐安装 Patchouli 模组解锁更详细的手册内容。相关物品配方可通过安装 JEI 模组查看。\n\n如果你想了解更多关于料理工艺的信息，欢迎加入我们的交流群：\n645696370
+cuisine.gui.chatRoomLink=https://jq.qq.com/?_wv=1027&k=5GXZnpl
+cuisine.gui.mcmodLink=https://www.mcmod.cn/class/1291.html
 cuisine.gui.name_food=编辑菜品名
 cuisine.gui.wok_size_too_large=这锅菜的分量大到你无法翻炒
 cuisine.gui.cannot_add_more=你不能添加更多食材了
@@ -413,6 +416,14 @@ cuisine.gui.jei.title.basin_boiling=盆 - 加热
 cuisine.gui.jei.title.firepit_fuel=火塘 - 燃料
 cuisine.gui.jei.brun_heat=燃烧热量：%d
 cuisine.gui.jei.brun_level=燃烧等级：%d
+
+cuisine.manual.name=烹饪指南
+cuisine.manual.subtitle=$(br)   成为大厨的全面指南书！
+cuisine.manual.featureInput=特殊物品：
+cuisine.manual.container=容器：
+cuisine.manual.potionVege=水果汁效果：§4%s
+cuisine.manual.potionFruit=蔬菜汁效果：§2%s
+cuisine.manual.parseError=[解析失败]
 
 cuisine.skillpoint.expertise=技巧度
 cuisine.skillpoint.proficiency=熟练度

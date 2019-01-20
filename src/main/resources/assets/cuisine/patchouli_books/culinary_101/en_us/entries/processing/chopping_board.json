@@ -1,0 +1,12 @@
+{
+  "name": "Chopping Board",
+  "icon": "cuisine:chopping_board",
+  "category": "processing",
+  "flag": "cuisine:enable_axe_chopping",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Although it is a $(l:utensils/cutting_board)\"cutting board\"$(), you can also chop wood logs into planks on chopping board using an axe. $(br)Right click with items to put them onto chopping board. To chop things, left click chopping board with axe."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Credits",
+  "sortnum": 0,
+  "icon": "minecraft:written_book",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "cuisine:centered_text",
+      "text": ""
+    }
+  ]
+}
