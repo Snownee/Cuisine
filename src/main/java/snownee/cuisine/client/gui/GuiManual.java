@@ -24,8 +24,9 @@ public class GuiManual extends GuiScreen
 
     private DrawableResource pageGrid;
 
-    private final String chatRoomURL = I18nUtil.translate("gui.chat_room_link");
-    private final String mcmodWikiURL = I18nUtil.translate("gui.mcmod_link");
+    private final String chatRoomURL = I18nUtil.translate("gui.chatRoomLink");
+    private final String mcmodWikiURL = I18nUtil.translate("gui.mcmodLink");
+    private final String text = I18nUtil.translateWithEscape("gui.welcome");
 
     public GuiManual()
     {
@@ -37,12 +38,12 @@ public class GuiManual extends GuiScreen
     {
         this.fontRenderer = AdvancedFontRenderer.INSTANCE;
         this.buttonList.clear();
-        this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openlink")));
+        this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openLink")));
         this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 + 40, 80, 20, I18nUtil.translate("gui.close")));
 
         if (mc.getLanguageManager().getCurrentLanguage().getLanguageCode().startsWith("zh"))
         {
-            this.addButton(new GuiButton(2, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 - 40, 80, 20, I18nUtil.translate("gui.openwiki")));
+            this.addButton(new GuiButton(2, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 - 40, 80, 20, I18nUtil.translate("gui.openWiki")));
         }
     }
 
@@ -63,8 +64,7 @@ public class GuiManual extends GuiScreen
         int originX = i + PAGE_MARGIN;
         int originY = j + PAGE_MARGIN - 5;
 
-        String str = I18nUtil.translateWithEscape("gui.welcome");
-        List<String> strs = FontUtil.drawSplitStringOverflow(fontRenderer, str, originX, originY, getClientX(), getClientY(), 0, false);
+        List<String> strs = FontUtil.drawSplitStringOverflow(fontRenderer, text, originX, originY, getClientX(), getClientY(), 0, false);
         if (!strs.isEmpty())
         {
             originX += PAGE_WIDTH / 2;

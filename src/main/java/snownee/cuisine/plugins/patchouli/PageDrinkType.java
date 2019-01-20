@@ -72,11 +72,11 @@ public class PageDrinkType extends BookPage
 
         if (drinkType != DrinkType.NORMAL)
         {
-            parent.getFont().drawString(I18nUtil.translate("gui.featureInput"), 4, 40, book.textColor);
+            parent.getFont().drawString(I18nUtil.translate("manual.featureInput"), 4, 40, book.textColor);
         }
-        parent.getFont().drawString(I18nUtil.translate("gui.container"), 4, drinkType == DrinkType.NORMAL ? 40 : 80, book.textColor);
-        parent.getFont().drawString(I18nUtil.translate("gui.potionVege", I18n.format(drinkType.getPotionVege().getName())), 4, 120, book.textColor);
-        parent.getFont().drawString(I18nUtil.translate("gui.potionFruit", I18n.format(drinkType.getPotionFruit().getName())), 4, 130, book.textColor);
+        parent.getFont().drawString(I18nUtil.translate("manual.container"), 4, drinkType == DrinkType.NORMAL ? 40 : 80, book.textColor);
+        parent.getFont().drawString(I18nUtil.translate("manual.potionVege", I18n.format(drinkType.getPotionVege().getName())), 4, 120, book.textColor);
+        parent.getFont().drawString(I18nUtil.translate("manual.potionFruit", I18n.format(drinkType.getPotionFruit().getName())), 4, 130, book.textColor);
 
         int x = 0;
         for (List<ItemStack> inputs : featureInputs)

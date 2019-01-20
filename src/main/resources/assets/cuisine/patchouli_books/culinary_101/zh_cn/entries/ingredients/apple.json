@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "苹果"
+      "text": "$(cuisine:effect=golden_apple)$(br)$(cuisine:a=1;b=2)blablabla"
     }
   ]
 }
