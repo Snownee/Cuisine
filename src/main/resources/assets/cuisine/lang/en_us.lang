@@ -69,6 +69,8 @@ item.cuisine.food.empowered_citron.name=Empowered Citron
 item.cuisine.boat.name=Citrus Boat
 item.cuisine.door.name=Citrus Door
 
+item.forge.bucketFilled.soy_milk=Soy Milk
+
 tile.cuisine.mortar.name=Mortar
 tile.cuisine.fire_pit.0.name=Fire Pit
 tile.cuisine.fire_pit.1.name=Wok on a Fire Pit
