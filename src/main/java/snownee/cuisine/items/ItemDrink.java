@@ -39,8 +39,8 @@ import snownee.cuisine.internal.capabilities.DrinkContainer;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
 import snownee.cuisine.plugins.TANCompat;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.Kiwi;
+import snownee.kiwi.util.NBTHelper;
 
 public class ItemDrink extends ItemAbstractComposite
 {
@@ -71,8 +71,8 @@ public class ItemDrink extends ItemAbstractComposite
     @Override
     public String getItemStackDisplayName(ItemStack stack)
     {
-        String s = ItemNBTUtil.getString(stack, "customName", "");
-        if (!s.isEmpty())
+        String s = NBTHelper.of(stack).getString("customName");
+        if (s != null)
         {
             return s;
         }

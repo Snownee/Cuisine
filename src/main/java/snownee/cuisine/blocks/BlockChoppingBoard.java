@@ -17,7 +17,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumActionResult;
@@ -32,7 +31,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -47,10 +45,11 @@ import snownee.cuisine.library.UnlistedPropertyItemStack;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.tiles.TileChoppingBoard;
 import snownee.cuisine.tiles.TileChoppingBoard.ProcessionType;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.network.NetworkChannel;
+import snownee.kiwi.util.NBTHelper;
+import snownee.kiwi.util.NBTHelper.Tag;
 import snownee.kiwi.util.OreUtil;
 
 @SuppressWarnings("deprecation")
@@ -262,9 +261,7 @@ public class BlockChoppingBoard extends BlockMod
         ItemStack stack = new ItemStack(this);
         if (stack.getItem() instanceof ItemBlock)
         {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setTag("cover", cover.serializeNBT());
-            ItemNBTUtil.setCompound(stack, "BlockEntityTag", tag);
+            NBTHelper.of(stack).setTag("BlockEntityTag.cover", cover.serializeNBT());
         }
         return stack;
     }
@@ -320,10 +317,10 @@ public class BlockChoppingBoard extends BlockMod
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn)
     {
-        NBTTagCompound tag = ItemNBTUtil.getCompound(stack, "BlockEntityTag", true);
-        if (tag != null && tag.hasKey("cover", Constants.NBT.TAG_COMPOUND))
+        NBTHelper helper = NBTHelper.of(stack);
+        if (helper.hasTag("BlockEntityTag.cover", Tag.COMPOUND))
         {
-            ItemStack cover = new ItemStack(tag.getCompoundTag("cover"));
+            ItemStack cover = new ItemStack(helper.getTag("BlockEntityTag.cover", false));
             tooltip.add(cover.getDisplayName());
         }
         else

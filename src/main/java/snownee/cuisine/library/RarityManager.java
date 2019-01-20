@@ -4,7 +4,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.util.NBTHelper;
 
 public class RarityManager
 {
@@ -21,11 +21,11 @@ public class RarityManager
         {
             if (rarity == 0)
             {
-                ItemNBTUtil.removeTag(stack, RARITY_TAG);
+                NBTHelper.of(stack).remove(RARITY_TAG);
             }
             else
             {
-                ItemNBTUtil.setInt(stack, RARITY_TAG, rarity);
+                NBTHelper.of(stack).setInt(RARITY_TAG, rarity);
             }
         }
         return stack;
@@ -33,7 +33,7 @@ public class RarityManager
 
     public static EnumRarity getRarity(ItemStack stack)
     {
-        int rarity = stack.getRarity().ordinal() + ItemNBTUtil.getInt(stack, RARITY_TAG, 0);
+        int rarity = stack.getRarity().ordinal() + NBTHelper.of(stack).getInt(RARITY_TAG);
         EnumRarity[] values = EnumRarity.values();
         rarity = MathHelper.clamp(rarity, 0, values.length - 1);
         return values[rarity];

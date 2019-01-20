@@ -11,14 +11,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.internal.CuisineSharedSecrets;
-import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.util.NBTHelper;
+import snownee.kiwi.util.NBTHelper.Tag;
 
 public class TileBarbecueRack extends TileFirePit
 {
@@ -106,8 +106,9 @@ public class TileBarbecueRack extends TileFirePit
                     if (burnTime[i] >= 6)
                     {
                         burnTime[i] = 0;
-                        int doneness = ItemNBTUtil.getInt(stack, CuisineSharedSecrets.KEY_DONENESS, 0);
-                        ItemNBTUtil.setInt(stack, CuisineSharedSecrets.KEY_DONENESS, ++doneness);
+                        NBTHelper helper = NBTHelper.of(stack);
+                        int doneness = helper.getInt(CuisineSharedSecrets.KEY_DONENESS);
+                        helper.setInt(CuisineSharedSecrets.KEY_DONENESS, ++doneness);
                     }
                 }
                 else
@@ -134,19 +135,20 @@ public class TileBarbecueRack extends TileFirePit
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        stacks.deserializeNBT(compound.getCompoundTag("Items"));
+        NBTHelper helper = NBTHelper.of(compound);
+        stacks.deserializeNBT(helper.getTag("Items", true));
         refreshEmpty();
-        if (compound.hasKey("burnTime", Constants.NBT.TAG_INT_ARRAY))
+        if (helper.hasTag("burnTime", Tag.INT_ARRAY))
         {
-            int[] burnTime = compound.getIntArray("burnTime");
+            int[] burnTime = helper.getIntArray("burnTime");
             if (burnTime.length == 3)
             {
                 this.burnTime = burnTime;
             }
         }
-        if (compound.hasKey("completed", Constants.NBT.TAG_INT_ARRAY))
+        if (helper.hasTag("completed", Tag.INT_ARRAY))
         {
-            int[] arr = compound.getIntArray("completed");
+            int[] arr = helper.getIntArray("completed");
             if (arr.length == 3)
             {
                 for (int i = 0; i < arr.length; i++)

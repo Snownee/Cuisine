@@ -8,8 +8,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.inventory.ContainerNameFood;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.network.PacketMod;
+import snownee.kiwi.util.NBTHelper;
 
 public class PacketNameFood implements PacketMod
 {
@@ -48,7 +48,7 @@ public class PacketNameFood implements PacketMod
         if (player.openContainer instanceof ContainerNameFood)
         {
             ItemStack stack = player.openContainer.inventorySlots.get(0).getStack();
-            ItemNBTUtil.setString(stack, "customName", name);
+            NBTHelper.of(stack).setString("customName", name);
             player.closeScreen();
         }
     }

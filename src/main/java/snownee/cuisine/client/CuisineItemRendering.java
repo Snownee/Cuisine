@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.ColorizerFoliage;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -23,7 +22,7 @@ import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Spice;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Drink;
-import snownee.cuisine.util.ItemNBTUtil;
+import snownee.kiwi.util.NBTHelper;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
 public final class CuisineItemRendering
@@ -48,11 +47,7 @@ public final class CuisineItemRendering
                     Material material = CulinaryHub.API_INSTANCE.findMaterial(data.getString(CuisineSharedSecrets.KEY_MATERIAL));
                     if (material != null)
                     {
-                        int doneness = 0;
-                        if (data.hasKey(CuisineSharedSecrets.KEY_DONENESS, Constants.NBT.TAG_INT))
-                        {
-                            doneness = data.getInteger(CuisineSharedSecrets.KEY_DONENESS);
-                        }
+                        int doneness = data.getInteger(CuisineSharedSecrets.KEY_DONENESS);
 
                         //debug code
                         //doneness = (int) (Minecraft.getSystemTime() / 10 % 200);
@@ -101,7 +96,7 @@ public final class CuisineItemRendering
                         return fluid.getFluid().getColor(fluid);
                     }
                 }
-                return ItemNBTUtil.getInt(stack, "liquidColor", -1);
+                return NBTHelper.of(stack).getInt("liquidColor", -1);
             }
             return -1;
         }, CuisineRegistry.BOTTLE);
@@ -115,7 +110,7 @@ public final class CuisineItemRendering
                 {
                     return ((Drink) food).getColor();
                 }
-                return ItemNBTUtil.getInt(stack, "liquidColor", -1);
+                return NBTHelper.of(stack).getInt("liquidColor", -1);
             }
             return -1;
         }, CuisineRegistry.DRINK);

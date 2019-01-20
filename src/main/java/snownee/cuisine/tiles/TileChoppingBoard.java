@@ -37,8 +37,8 @@ import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.client.particle.ParticleQuad;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.items.ItemIngredient;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.tile.TileInventoryBase;
+import snownee.kiwi.util.NBTHelper;
 import snownee.kiwi.util.OreUtil;
 
 public class TileChoppingBoard extends TileInventoryBase
@@ -334,15 +334,11 @@ public class TileChoppingBoard extends TileInventoryBase
         }
         else if (raw.getItem() != CuisineRegistry.INGREDIENT)
         {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setIntArray(ItemIngredient.KEY_ACTIONS, actions);
-            raw.setTagCompound(tag);
-            return raw;
+            return NBTHelper.of(raw).setIntArray(ItemIngredient.KEY_ACTIONS, actions).getItem();
         }
         ItemStack itemIngredient = ItemIngredient.make(ingredient);
         itemIngredient.setCount(raw.getCount());
-        ItemNBTUtil.setIntArray(itemIngredient, ItemIngredient.KEY_ACTIONS, actions);
-        return itemIngredient;
+        return NBTHelper.of(itemIngredient).setIntArray(ItemIngredient.KEY_ACTIONS, actions).getItem();
     }
 
     private static Ingredient tryConvert(ItemStack stack)

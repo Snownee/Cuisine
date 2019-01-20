@@ -1,9 +1,19 @@
 package snownee.cuisine.client.model;
 
+import java.util.Collections;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
+import javax.vecmath.Vector3f;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -14,7 +24,6 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ForgeBlockStateV1;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
@@ -24,15 +33,7 @@ import net.minecraftforge.client.resource.VanillaResourceType;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.util.Constants;
-import snownee.cuisine.util.ItemNBTUtil;
-
-import javax.annotation.Nullable;
-import javax.vecmath.Vector3f;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
+import snownee.kiwi.util.NBTHelper;
 
 public final class ChoppingBoardOverride extends ItemOverrideList implements ISelectiveResourceReloadListener
 {
@@ -105,16 +106,16 @@ public final class ChoppingBoardOverride extends ItemOverrideList implements ISe
 
     private IBakedModel getChoppingBoardModel(ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity)
     {
-        NBTTagCompound tag = ItemNBTUtil.getCompound(stack, "BlockEntityTag", true);
+        NBTHelper helper = NBTHelper.of(stack);
         IBakedModel rawModel;
-        if (tag != null && tag.hasKey("cover", Constants.NBT.TAG_COMPOUND))
+        if (helper.hasTag("BlockEntityTag.cover", Constants.NBT.TAG_COMPOUND))
         {
             // Assumption: we assume the cover item has the correct model. That said, we only use
             // items that has ore dictionary entry of "logWood", and it means that we assume the
             // cover will have a model whose growth ring is facing up (like what vanilla log does).
             // This solves the issue where item metadata is not associated with block state as
             // strictly as that of vanilla, for examples the "iron wood" from Extra Utilities 2.
-            ItemStack coverData = new ItemStack(tag.getCompoundTag("cover"));
+            ItemStack coverData = new ItemStack(helper.getTag("BlockEntityTag.cover"));
             rawModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(coverData, world, entity);
         }
         else

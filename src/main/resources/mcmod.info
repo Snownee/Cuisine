@@ -12,6 +12,6 @@
   "screenshots": [],
   "useDependencyInformation": true,
   "requiredMods": ["kiwi@[0.5, 0.7)", "forge@[14.23.5.2772,)"],
-  "dependencies": ["forge@[14.23.5.2772,)", "jei@[4.12,)", "kiwi@[0.5, 0.7)"]
+  "dependencies": ["forge@[14.23.5.2772,)", "jei@[4.12,)", "kiwi@[0.5.1, 0.7)"]
 }
 ]

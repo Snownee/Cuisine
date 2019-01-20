@@ -51,8 +51,8 @@ import snownee.cuisine.api.Spice;
 import snownee.cuisine.api.events.SpiceBottleContentConsumedEvent;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.util.I18nUtil;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.item.ItemMod;
+import snownee.kiwi.util.NBTHelper;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.PlayerUtil;
 
@@ -101,7 +101,7 @@ public class ItemSpiceBottle extends ItemMod
             container.setTagCompound(empty ? null : serializeNBT());
             if (!empty)
             {
-                ItemNBTUtil.setInt(container, TAG_VOLUME, MAX_VOLUME);
+                NBTHelper.of(container).setInt(TAG_VOLUME, MAX_VOLUME);
             }
             container.setItemDamage(empty ? 0 : 1);
         }
@@ -226,7 +226,7 @@ public class ItemSpiceBottle extends ItemMod
             }
             else if (hasItem(stack))
             {
-                int volume = ItemNBTUtil.getInt(stack, TAG_VOLUME, 0);
+                int volume = getDurability(stack);
                 if (volume >= amount)
                 {
                     setDurability(stack, volume - amount);
@@ -257,14 +257,14 @@ public class ItemSpiceBottle extends ItemMod
 
     public int getDurability(ItemStack stack)
     {
-        return ItemNBTUtil.getInt(stack, TAG_VOLUME, 0);
+        return NBTHelper.of(stack).getInt(TAG_VOLUME);
     }
 
     public void setDurability(ItemStack stack, int durability)
     {
         if (durability > 0)
         {
-            ItemNBTUtil.setInt(stack, TAG_VOLUME, durability);
+            NBTHelper.of(stack).setInt(TAG_VOLUME, durability);
             stack.setItemDamage(1);
         }
         else

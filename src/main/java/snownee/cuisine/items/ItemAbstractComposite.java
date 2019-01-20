@@ -6,8 +6,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -33,7 +31,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.CompositeFood;
@@ -48,9 +48,9 @@ import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.util.I18nUtil;
-import snownee.cuisine.util.ItemNBTUtil;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.item.ItemMod;
+import snownee.kiwi.util.NBTHelper;
 import snownee.kiwi.util.Util;
 
 public abstract class ItemAbstractComposite extends ItemMod
@@ -187,7 +187,7 @@ public abstract class ItemAbstractComposite extends ItemMod
     @Override
     public String getItemStackDisplayName(ItemStack stack)
     {
-        String s = ItemNBTUtil.getString(stack, "customName", "");
+        String s = NBTHelper.of(stack).getString("customName", "");
         return s.isEmpty() ? super.getItemStackDisplayName(stack) : s;
     }
 
