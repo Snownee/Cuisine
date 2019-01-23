@@ -2,10 +2,15 @@
   "name": "Wooden Arm",
   "icon": "cuisine:material",
   "category": "misc",
+  "sortnum": 0,
   "pages": [
-    {
-      "type": "text",
-      "text": ""
-    }
+      {
+        "type": "text",
+        "text": "Wooden arm is a useful automation tool; putting it into a $(em)vanilla dispenser$() and give the dispenser $(em)redstone pulses$() will let dispenser to simulate players' right-clicking.$(br2)Combining this with redstone clock may achieve more than what you can imagine!"
+      },
+      {
+        "type": "crafting",
+        "recipe": "cuisine:wooden_arm"
+      }
   ]
 }

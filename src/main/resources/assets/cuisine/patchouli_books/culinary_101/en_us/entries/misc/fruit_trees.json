@@ -1,11 +1,23 @@
 {
-  "name": "Wooden Arm",
-  "icon": "cuisine:material",
+  "name": "Fruit Trees",
+  "icon": "cuisine:sapling",
   "category": "misc",
+  "sortnum": 1,
   "pages": [
-    {
-      "type": "text",
-      "text": "123"
-    }
+      {
+        "type": "text",
+        "flag": "cuisine:enable_fruit_dropping",
+        "text": "In Cuisine Mod, these fruit trees are the only way to get citrus fruits.$(br2)You can pick matured fruits via right-clicking. Alternatively, fruits may automatially fall onto ground if it hasn't been picked up.$(br2)Generally speaking, a single fruit tree will stop fruiting after it produces around 80 fruits (exclude those being manually picked)."
+      },
+      {
+        "type": "text",
+        "flag": "cuisine:enable_fruit_dropping",
+        "text": "Leaves that are harvested by shears will NOT fruit again after placed back in world, but you can use bonemeal or other sorts to make it flower.$(br2)$(em)Citrus Wood$() is also a good construction block."
+      },
+      {
+        "type": "text",
+        "flag": "!cuisine:enable_fruit_dropping",
+        "text": "In Cuisine Mod, these fruit trees are the only way to get citrus fruits.$(br2)You can pick matured fruits via right-clicking. $(br2)Leaves that are harvested by shears will NOT fruit again after placed back in world, but you can use bonemeal or other sorts to make it flower.$(br2)$(em)Citrus Wood$() is also a good construction block."
+      }
   ]
 }

@@ -10,8 +10,7 @@
     },
     {
       "type": "crafting",
-      "recipe": "cuisine:wooden_arm",
-      "text": ""
+      "recipe": "cuisine:wooden_arm"
     }
   ]
 }
