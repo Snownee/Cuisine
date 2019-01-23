@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
@@ -19,7 +20,7 @@ public class EffectHeatResistance extends EffectPotions
     public EffectHeatResistance()
     {
         super("heat_resistance");
-        if (Loader.isModLoaded("toughasnails") && !Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") && TANCompat.heat_resistance != null)
+        if (Loader.isModLoaded("toughasnails") && Kiwi.isLoaded(new ResourceLocation(Cuisine.MODID, "toughasnails")) && TANCompat.heat_resistance != null)
         {
             addPotionEffect(new PotionEffect(TANCompat.heat_resistance, 600));
         }

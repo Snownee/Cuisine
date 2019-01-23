@@ -24,7 +24,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.Loader;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
@@ -377,6 +376,11 @@ public class Drink extends CompositeFood
         return Collections.singletonList("drink");
     }
 
+    public static final boolean enableThirst()
+    {
+        return Kiwi.isLoaded(new ResourceLocation(Cuisine.MODID, "toughasnails")) && TANCompat.enableThirst();
+    }
+
     @Override
     public void onEaten(ItemStack stack, World worldIn, EntityPlayer player)
     {
@@ -420,7 +424,11 @@ public class Drink extends CompositeFood
             seasoning.getSpice().onConsumed(stack, player, worldIn, seasoning, collector);
         }
 
-        if (!Loader.isModLoaded("toughasnails") || !Kiwi.isOptionalModuleLoaded(Cuisine.MODID, "toughasnails") || !TANCompat.enableThirst())
+        if (getFoodLevel() <= 0)
+        {
+            return;
+        }
+        if (!enableThirst())
         {
             player.getFoodStats().addStats(1, getSaturationModifier());
         }
