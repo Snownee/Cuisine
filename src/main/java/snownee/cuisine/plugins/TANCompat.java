@@ -95,7 +95,7 @@ public class TANCompat implements IModule
             {
                 IThirst handler = event.getConsumer().getCapability(TANCapabilities.THIRST, null);
                 handler.setExhaustion(0);
-                handler.addStats(food.getFoodLevel() * 4, food.getSaturationModifier());
+                handler.addStats(food.getFoodLevel() * 2 + food.getIngredients().size() * 2, food.getSaturationModifier());
             }
             if (enableTemperature() && event.getConsumer().hasCapability(TANCapabilities.TEMPERATURE, null))
             {
