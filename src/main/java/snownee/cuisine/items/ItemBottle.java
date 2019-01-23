@@ -39,7 +39,7 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.crafting.DrinkBrewingRecipe;
 import snownee.cuisine.internal.CuisineSharedSecrets;
-import snownee.cuisine.internal.capabilities.GlassBottleWrapper;
+import snownee.cuisine.internal.capabilities.GlassBottleHandler;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.item.ItemMod;
@@ -88,7 +88,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
     {
-        return new GlassBottleWrapper(stack);
+        return new GlassBottleHandler.GlassBottleWrapper(stack);
     }
 
     @Override

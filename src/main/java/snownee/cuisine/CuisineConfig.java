@@ -65,12 +65,12 @@ public final class CuisineConfig
 
         @Config.Name("AxeChoppingPlanksOutput")
         @Config.RequiresMcRestart
-        @Config.RangeInt(min=1, max=64)
+        @Config.RangeInt(min = 1, max = 64)
         public int axeChoppingPlanksOutput = 6;
 
         @Config.Name("AxeChoppingStickOutput")
         @Config.RequiresMcRestart
-        @Config.RangeInt(min=1, max=64)
+        @Config.RangeInt(min = 1, max = 64)
         public int axeChoppingStickOutput = 4;
 
         @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
@@ -108,6 +108,11 @@ public final class CuisineConfig
         @Config.Name("BetterHarvestBlacklist")
         @Config.RequiresMcRestart
         public String[] betterHarvestBlacklist = {};
+
+        @Config.Name("AttachWaterBottleCapability")
+        @Config.Comment("one = 250mB")
+        @Config.RequiresMcRestart
+        public boolean attachWaterBottleCapability = true;
 
         @Config.Name("WinePotionDurationModifier")
         public float winePotionDurationModifier = 1F;
@@ -192,7 +197,9 @@ public final class CuisineConfig
 
     public static final class WorldGen
     {
-        @Config.Comment("Generation rate of fruit trees; larger value means higher generation rate; set to 0 to disable.")
+        @Config.Comment(
+            "Generation rate of fruit trees; larger value means higher generation rate; set to 0 to disable."
+        )
         @Config.LangKey("cuisine.config.general.fruit_trees_gen_rate")
         @Config.Name("FruitTreesGenWeight")
         @Config.RangeInt(min = 0, max = 100)
@@ -209,7 +216,9 @@ public final class CuisineConfig
         @Config.Name("LegacyBamboosGen")
         public boolean legacyBambooGen = false;
 
-        @Config.Comment("Generation rate of wild crops; larger value means higher generation rate; set to 0 to disable.")
+        @Config.Comment(
+            "Generation rate of wild crops; larger value means higher generation rate; set to 0 to disable."
+        )
         @Config.LangKey("cuisine.config.general.crops_gen_rate")
         @Config.Name("CropsGenWeight")
         @Config.RangeInt(min = 0, max = 100)
