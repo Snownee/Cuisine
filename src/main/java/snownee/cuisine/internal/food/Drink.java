@@ -433,68 +433,71 @@ public class Drink extends CompositeFood
             player.getFoodStats().addStats(1, getSaturationModifier());
         }
 
-        double vege = 0, fruit = 0, others = 0;
-        for (Ingredient ingredient : getIngredients())
+        if (!worldIn.isRemote)
         {
-            if (getEffects().stream().anyMatch(e -> e instanceof EffectPotions))
+            double vege = 0, fruit = 0, others = 0;
+            for (Ingredient ingredient : getIngredients())
             {
-                continue;
+                if (getEffects().stream().anyMatch(e -> e instanceof EffectPotions))
+                {
+                    continue;
+                }
+                Material material = ingredient.getMaterial();
+                if (material.isUnderCategoryOf(MaterialCategory.VEGETABLES))
+                {
+                    ++vege;
+                }
+                if (material.isUnderCategoryOf(MaterialCategory.FRUIT))
+                {
+                    ++fruit;
+                }
+                if (!material.isUnderCategoryOf(MaterialCategory.VEGETABLES) && !material.isUnderCategoryOf(MaterialCategory.FRUIT))
+                {
+                    ++others;
+                }
             }
-            Material material = ingredient.getMaterial();
-            if (material.isUnderCategoryOf(MaterialCategory.VEGETABLES))
+            if (vege != 0 || fruit != 0)
             {
-                ++vege;
-            }
-            if (material.isUnderCategoryOf(MaterialCategory.FRUIT))
-            {
-                ++fruit;
-            }
-            if (!material.isUnderCategoryOf(MaterialCategory.VEGETABLES) && !material.isUnderCategoryOf(MaterialCategory.FRUIT))
-            {
-                ++others;
-            }
-        }
-        if (vege != 0 || fruit != 0)
-        {
-            boolean flag;
-            if (vege == fruit)
-            {
-                flag = new Random().nextBoolean();
-            }
-            else
-            {
-                flag = vege > fruit;
-            }
-            int duration = (int) (Math.log(1.5 + (flag ? vege : fruit) * 1.5 + (flag ? fruit : vege) * 0.6 + others * 0.3) * 1000);
-            if (getIngredients().size() < 2)
-            {
-                duration *= 0.8;
-            }
+                boolean flag;
+                if (vege == fruit)
+                {
+                    flag = new Random().nextBoolean();
+                }
+                else
+                {
+                    flag = vege > fruit;
+                }
+                int duration = (int) (Math.log(1.5 + (flag ? vege : fruit) * 1.5 + (flag ? fruit : vege) * 0.6 + others * 0.3) * 1000);
+                if (getIngredients().size() < 2)
+                {
+                    duration *= 0.8;
+                }
 
-            Potion potion = flag ? drinkType.getPotionVege() : drinkType.getPotionFruit();
-            if (potion == null)
-            {
-                potion = MobEffects.SPEED;
+                Potion potion = flag ? drinkType.getPotionVege() : drinkType.getPotionFruit();
+                if (potion == null)
+                {
+                    potion = MobEffects.SPEED;
+                }
+                collector.addEffect(DefaultTypes.POTION, new PotionEffect(potion, duration, 0, true, true));
             }
-            collector.addEffect(DefaultTypes.POTION, new PotionEffect(potion, duration, 0, true, true));
-        }
-        if (modifier <= 0.1F)
-        {
-            player.addPotionEffect(new PotionEffect(worldIn.rand.nextBoolean() ? MobEffects.SLOWNESS : MobEffects.MINING_FATIGUE, 1200));
-        }
-        else if (modifier > 0.25F)
-        {
-            collector.apply(this, player);
+            if (modifier <= 0.1F)
+            {
+                player.addPotionEffect(new PotionEffect(worldIn.rand.nextBoolean() ? MobEffects.SLOWNESS : MobEffects.MINING_FATIGUE, 1200));
+            }
+            else if (modifier > 0.25F)
+            {
+                collector.apply(this, player);
+            }
+            PotionEffect effect = player.getActivePotionEffect(CuisineRegistry.EFFECT_RESISTANCE);
+            if (effect != null)
+            {
+                player.removePotionEffect(CuisineRegistry.EFFECT_RESISTANCE);
+                player.addPotionEffect(new PotionEffect(CuisineRegistry.EFFECT_RESISTANCE, (int) (effect.getDuration() * 0.25), effect.getAmplifier(), effect.getIsAmbient(), effect.doesShowParticles()));
+            }
         }
         if (drinkType == DrinkType.SMOOTHIE)
         {
             player.extinguish();
-        }
-        PotionEffect effect = player.getActivePotionEffect(CuisineRegistry.EFFECT_RESISTANCE);
-        if (effect != null)
-        {
-            player.removePotionEffect(CuisineRegistry.EFFECT_RESISTANCE);
-            player.addPotionEffect(new PotionEffect(CuisineRegistry.EFFECT_RESISTANCE, (int) (effect.getDuration() * 0.25), effect.getAmplifier(), effect.getIsAmbient(), effect.doesShowParticles()));
         }
     }
 

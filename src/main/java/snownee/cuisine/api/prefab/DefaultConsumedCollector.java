@@ -35,6 +35,10 @@ public class DefaultConsumedCollector implements EffectCollector
     @Override
     public void apply(CompositeFood food, EntityPlayer player)
     {
+        if (player.world.isRemote)
+        {
+            return;
+        }
         boolean cure_potions = food.contains(CulinaryHub.CommonEffects.CURE_POTIONS);
         boolean resistance = player.isPotionActive(CuisineRegistry.EFFECT_RESISTANCE);
 
