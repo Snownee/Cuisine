@@ -76,7 +76,7 @@ public class HarvestCraftCompat implements IModule
 
         Material asparagus = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("asparagus", 0x416f33, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropAsparagus", asparagus);
-        Material beans = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("beans", 0x44361d, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        Material beans = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("beans", 0x44361d, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         CulinaryHub.API_INSTANCE.registerMapping("cropBeans", beans);
         Material broccoli = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("broccoli", 0x71a141, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropBroccoli", broccoli);
@@ -98,17 +98,17 @@ public class HarvestCraftCompat implements IModule
         CulinaryHub.API_INSTANCE.registerMapping("cropBrusselsprout", brussel_sprout);
         Material okra = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("okra", 0x176306, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropOkra", okra);
-        Material peas = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("peas", 0x5e8c2d, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        Material peas = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("peas", 0x5e8c2d, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         CulinaryHub.API_INSTANCE.registerMapping("cropPeas", peas);
         Material rhubarb = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("rhubarb", 0xd99c9c, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropRhubarb", rhubarb);
-        Material seaweed = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("seaweed", 0x305e38, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        Material seaweed = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("seaweed", 0x305e38, 0, 0, 0, 0, 0, MaterialCategory.SEAFOOD).setValidForms(Form.ALL_FORMS));
         CulinaryHub.API_INSTANCE.registerMapping("cropSeaweed", seaweed);
         Material winter_squash = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("winter_squash", 0xaba35b, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropWintersquash", winter_squash);
         Material zucchini = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("zucchini", 0x59892c, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
         CulinaryHub.API_INSTANCE.registerMapping("cropZucchini", zucchini);
-        Material water_chestnut = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("water_chestnut", 0x614430, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE));
+        Material water_chestnut = CulinaryHub.API_INSTANCE.register(new SimpleMaterialImpl("water_chestnut", 0x614430, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS));
         CulinaryHub.API_INSTANCE.registerMapping("cropWaterchestnut", water_chestnut);
         Helper.registerMaterial(new SimpleMaterialImpl("tamarind", 0x997336, 0, 0, 0, 0, 0, MaterialCategory.VEGETABLES).setValidForms(Form.ALL_FORMS_INCLUDING_JUICE), "harvestcraft:tamarinditem");
 
