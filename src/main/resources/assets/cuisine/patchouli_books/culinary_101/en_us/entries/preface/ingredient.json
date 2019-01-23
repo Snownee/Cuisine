@@ -1,13 +1,19 @@
 {
-  "name": "食材的获取",
+  "name": "Ingredients Gathering",
   "sortnum": 2,
   "icon": "minecraft:wheat_seeds",
   "flag": "cuisine:enable_garden_world_gen",
   "category": "preface",
   "pages": [
-    {
-      "type": "text",
-      "text": ""
-    }
+      {
+        "type": "text",
+        "flag": "cuisine:enable_grass_seeds",
+        "text": "巧妇难为无米之炊 - ingredients gathering is just as important as cooking itself.$(br2)Most crops added by Cuisine may be found in the wild with $(em)approporaite climate$(). Crops such as wheat, peanuts, sesame and soybean may drop from breaking vanilla grass.$(br2)A certain ingredients may only be found in $(em)trades with villagers$()."
+      },
+      {
+        "type": "text",
+        "flag": "!cuisine:enable_grass_seeds",
+        "text": "巧妇难为无米之炊 - ingredients gathering is just as important as cooking itself.$(br2)Most crops added by Cuisine may be found in the wild with $(em)approporaite climate$().$(br2)A certain ingredients may only be found in $(em)trades with villagers$()."
+      }
   ]
 }
