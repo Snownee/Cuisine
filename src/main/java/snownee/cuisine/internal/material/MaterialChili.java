@@ -9,6 +9,7 @@ import snownee.cuisine.api.EffectCollector;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
+import snownee.cuisine.api.Seasoning;
 import snownee.cuisine.api.prefab.SimpleMaterialImpl;
 
 public class MaterialChili extends SimpleMaterialImpl
@@ -23,7 +24,25 @@ public class MaterialChili extends SimpleMaterialImpl
     @Override
     public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
     {
-        if (dish.contains(CulinaryHub.CommonMaterials.SICHUAN_PEPPER) || dish.contains(CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER))
+        if (dish.getEffects().contains(CulinaryHub.CommonEffects.HOT))
+        {
+            return;
+        }
+        else if (dish.contains(CulinaryHub.CommonMaterials.SICHUAN_PEPPER) || dish.contains(CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER))
+        {
+            dish.addEffect(CulinaryHub.CommonEffects.HOT);
+            return;
+        }
+        int count = (int) dish.getIngredients().stream().filter(i -> i.getMaterial() == CulinaryHub.CommonMaterials.CHILI).count() * 5;
+        for (Seasoning seasoning : dish.getSeasonings())
+        {
+            if (seasoning.getSpice() == CulinaryHub.CommonSpices.CHILI_POWDER)
+            {
+                count += seasoning.getSize();
+                break;
+            }
+        }
+        if (count >= 8)
         {
             dish.addEffect(CulinaryHub.CommonEffects.HOT);
         }
