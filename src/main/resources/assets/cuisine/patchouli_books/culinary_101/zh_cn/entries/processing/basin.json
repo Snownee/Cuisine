@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "盆共有三种用途，分别是$(l:processing/basin#heating)“加热”$()、$(l:processing/basin#squeezing)“挤压”$()和$(l:processing/basin#throwing)“接触”$()。$(br2)盆分为木盆和陶盆两种。只有$(em)陶盆$()可以用于加热。$(br2)右击盆可放入或取出物品或液体。"
+      "text": "盆是种加工设备，有三种用途，分别是$(l:processing/basin#heating)“加热”$()、$(l:processing/basin#squeezing)“挤压”$()和$(l:processing/basin#throwing)“接触”$()。$(br2)盆分为木盆和陶盆两种。只有$(em)陶盆$()可以用于加热。$(br2)右击盆可放入或取出物品或液体。"
     },
     {
       "anchor": "throwing",
@@ -78,7 +78,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:wooden_basin",
-      "text": "木盆只能用于$(em)接触$()和$(em)挤压$()，无法用于$(em)加热$()。"
+      "text": "木盆只有一种版本：橡木纹理的木盆。木盆只能用于$(em)接触$()和$(em)挤压$()，无法用于$(em)加热$()。"
     },
     {
       "type": "crafting",

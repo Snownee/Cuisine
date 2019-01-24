@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Basin is a processing device. They come with two variants: wooden and earthen. Earthen Basins also have 16 variants in all colors found in vanilla color palette. Basin has three working modes: $(l:processing/basin#distillation)\"distillation\"$(), $(l:processing/basin#squeezing)\"squeezing\"$() and $(l:processing/basin#throwing)\"contact\"$()."
+      "text": "Basin is a processing device. They come with two variants: wooden and earthen. Earthen Basins also have 16 variants in all colors found in vanilla color palette. Basin has three working modes: $(l:processing/basin#distillation)\"distillation\"$(), $(l:processing/basin#squeezing)\"squeezing\"$() and $(l:processing/basin#throwing)\"contact\"$(). Right-clicking basin allows you to put items/fluid in and take them out."
     },
     {
       "anchor": "throwing",
@@ -79,7 +79,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:wooden_basin",
-      "text": "Unlike its earthen counterpart, wooden basin has only one variant: the one with oak wood texture."
+      "text": "Unlike its earthen counterpart, wooden basin has only one variant: the one with oak wood texture. Wooden Basin cannot be used for distillation."
     },
     {
       "type": "crafting",
