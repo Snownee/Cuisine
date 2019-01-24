@@ -1,25 +1,19 @@
 package snownee.cuisine.tiles;
 
-import java.util.List;
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
@@ -87,14 +81,8 @@ public class PacketIncrementalWokUpdate implements PacketMod
         {
             if (CulinaryHub.API_INSTANCE.isKnownIngredient(diff))
             {
-                if (Cuisine.aprilFools)
-                {
-                    ((TileWok) tile).ingredientsForRendering.put(ingredient, getRandomItem(tile.getWorld().rand));
-                }
-                else
-                {
-                    ((TileWok) tile).ingredientsForRendering.put(ingredient, diff);
-                }
+                ((TileWok) tile).ingredientsForRendering.put(ingredient, diff);
+
                 for (int k = 0; k < 4; ++k)
                 {
                     double x = tile.getPos().getX() + 0.5D + tile.getWorld().rand.nextGaussian() * 0.2D;
@@ -109,24 +97,6 @@ public class PacketIncrementalWokUpdate implements PacketMod
                 ((TileWok) tile).seasoningInfo = null;
             }
         }
-    }
-
-    @SuppressWarnings("deprecation")
-    @SideOnly(Side.CLIENT)
-    public ItemStack getRandomItem(Random rand)
-    {
-        List<Item> items = ForgeRegistries.ITEMS.getValues();
-        if (items.isEmpty())
-        {
-            return ItemStack.EMPTY;
-        }
-        Item item;
-        do
-        {
-            item = items.get(rand.nextInt(items.size()));
-        }
-        while (item.getCreativeTab() == null);
-        return new ItemStack(item);
     }
 
     @Override

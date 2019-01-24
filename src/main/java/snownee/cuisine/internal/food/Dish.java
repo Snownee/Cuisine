@@ -3,6 +3,7 @@ package snownee.cuisine.internal.food;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -389,7 +390,16 @@ public class Dish extends CompositeFood
                         {
                             ingredient.addTrait(IngredientTrait.PLAIN);
                         }
-                        if (!ingredient.hasTrait(IngredientTrait.OVERCOOKED) && rand.nextFloat() > 0.35F * (ingredient.getForm().ordinal() + 1))
+                        EnumSet<Form> validForms = ingredient.getMaterial().getValidForms();
+                        int count = 0;
+                        for (Form form : new Form[] { Form.SLICED, Form.DICED, Form.MINCED, Form.SHREDDED, Form.PASTE })
+                        {
+                            if (validForms.contains(form))
+                            {
+                                ++count;
+                            }
+                        }
+                        if (count > 0 && !ingredient.hasTrait(IngredientTrait.OVERCOOKED) && rand.nextFloat() > 0.35F * (ingredient.getForm().ordinal() + 1))
                         {
                             ingredient.addTrait(IngredientTrait.UNDERCOOKED);
                         }
