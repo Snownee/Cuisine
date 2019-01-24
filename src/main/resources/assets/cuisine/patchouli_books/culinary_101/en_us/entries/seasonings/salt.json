@@ -6,11 +6,6 @@
     {
       "type": "text",
       "text": ""
-    },
-    {
-      "type": "mill_recipe",
-      "milling": "cuisine:crude_salt_refining",
-      "extra_text": ""
     }
   ]
 }
