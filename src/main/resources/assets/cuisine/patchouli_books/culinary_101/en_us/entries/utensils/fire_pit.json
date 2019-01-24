@@ -6,7 +6,22 @@
   "pages": [
     {
       "type": "text",
-      "text": ""
+      "text": "Fire pit is a heat source, used alongsie with $(l:utensils/wok)wok$() or $(l:utensils/bbq_rack)barbecue rack$() to cook food. $(br2)The strcture may be created in-world or in vanilla crafting table.$(br2)You need to right-click the $(italic)completed structure$() with fuel in order to heat it up. In layman's term, the \"temperature\" of fire pit is measured in three levels; different fuel can heat up fire pit to different level; if you find that your fire pit is not hot enough, consider using another fuel."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:fire_pit",
+      "text": "There is a HUD indicator to tell the current \"temperature\" of fire pit. If there is some food being cooked, each ingredient will be displayed alongside with a pie-chart for its \"doneness\". A red pie-chart means that it is overcooked."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:fire_pit_and_wok",
+      "recipe2": "cuisine:bbq_rack"
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:fan",
+      "text": "Fan may be used to temprarily rasie pit temperature, at the cost of more fuel.$(br2)Fan can also blow away items on ground (by either right-clicking or using in vanilla dispenser)."
     }
   ]
 }

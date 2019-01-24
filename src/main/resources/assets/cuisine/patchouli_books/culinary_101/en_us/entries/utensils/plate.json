@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Yes, you have to use a plate to hold your food. You cannot eat food with your bare hand in Cuisine mod.$(br)You can place the plate down by right clicking. If it's an empty plate, it's right clicking while sneaking."
+      "text": "Yes, you have to use a plate to hold your food or smoothie. You cannot eat food with your bare hand in Cuisine mod.$(br)You can place the plate down by right clicking while sneaking. You can right-click the placed plate to eat things inside it."
     },
     {
       "type": "crafting",

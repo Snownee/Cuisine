@@ -1,12 +1,16 @@
 {
-  "name": "Fire Pit",
+  "name": "Fruit Wine",
   "icon": "minecraft:brewing_stand",
   "category": "utensils",
   "sortnum": 21,
   "pages": [
     {
       "type": "text",
-      "text": ""
+      "text": "$(em)Bottlted juice$() (not confused with juice drinks) can be turned into fruit wine in $(em)brewing stand$(). All fruit juices and only a small portion of vegetable juices may be fermented into fruit wine. $(br2)Bottled juice may substitute $(em)Awkward Potion$() when making vanilla potions. If you do so, both the potion effect and the wine effect will exist in the final product; however, such a mixture of fruit wine and potion cannot be used to make splash potion and lingering potion anymore."
+    },
+    {
+      "type": "text",
+      "text": "Fruit wine may be dyed by adding dye in brewing stand; doing so will cancel out the sparkling effect. Dye may be $(em)added together$(). $(br2)Be aware and $(em)don't get wet$()! You have been warned."
     }
   ]
 }
