@@ -193,6 +193,7 @@ public class TileJar extends TileInventoryBase implements ITickable
             {
                 NetworkChannel.INSTANCE.sendToDimension(new PacketCustomEvent(5, this.pos, isWorking ? 1 : 0), this.getWorld().provider.getDimension());
             }
+            refresh();
         }
     }
 
