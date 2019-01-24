@@ -436,7 +436,7 @@ cuisine.toast.skill.description=%s提升至%d级！
 cuisine.command.culinaryskill=/culinaryskill <玩家> get <技能点> 或 /culinaryskill <玩家> set <技能点> <新的值>
 
 # Easter egg. Do not have to translate:
-cuisine.bourbon=我的恋人是这个国家。
+cuisine.bourbon=我的恋人就是这个国家。
 cuisine.curasao=准备好你的五色卡片了吗？
 cuisine.forestbat.hit=让你尝尝柑橘家族的厉害！
 cuisine.forestbat.drop_success=为什么要丢下我！

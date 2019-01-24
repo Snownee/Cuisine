@@ -174,15 +174,15 @@ public class ItemBottle extends ItemMod implements CookingVessel
             int duration = 0;
             for (PotionEffect potioneffect : PotionUtils.getEffectsFromStack(dummy))
             {
-                potioneffect.duration *= CuisineConfig.GENERAL.winePotionDurationModifier;
-                duration += potioneffect.duration;
-                if (potioneffect.getPotion().isInstant())
+                PotionEffect effect = new PotionEffect(potioneffect.getPotion(), (int) (potioneffect.getDuration() * CuisineConfig.GENERAL.winePotionDurationModifier), potioneffect.getAmplifier(), potioneffect.getIsAmbient(), potioneffect.doesShowParticles());
+                duration += effect.getDuration();
+                if (effect.getPotion().isInstant())
                 {
-                    potioneffect.getPotion().affectEntity(entityplayer, entityplayer, entityLiving, potioneffect.getAmplifier(), CuisineConfig.GENERAL.winePotionDurationModifier);
+                    effect.getPotion().affectEntity(entityplayer, entityplayer, entityLiving, potioneffect.getAmplifier(), CuisineConfig.GENERAL.winePotionDurationModifier);
                 }
                 else
                 {
-                    entityLiving.addPotionEffect(new PotionEffect(potioneffect));
+                    entityLiving.addPotionEffect(effect);
                 }
             }
             if (duration > 0)
