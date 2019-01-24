@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -104,7 +105,11 @@ public class BlockCuisineCrops extends BlockMod implements IGrowable, IPlantable
         IBlockState soilState = world.getBlockState(pos.down());
         if (getPlantType(world, pos) == EnumPlantType.Water)
         {
-            if (soilState.getBlock() != Blocks.WATER)
+            if (soilState.getBlock() != Blocks.WATER && soilState.getBlock() != Blocks.FLOWING_WATER)
+            {
+                return false;
+            }
+            if (soilState.getPropertyKeys().contains(BlockLiquid.LEVEL) && soilState.getValue(BlockLiquid.LEVEL) != 0)
             {
                 return false;
             }

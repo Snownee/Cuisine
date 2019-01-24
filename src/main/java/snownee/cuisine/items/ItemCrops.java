@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -204,6 +205,10 @@ public class ItemCrops extends ItemBasicFood<SubCrop, Variant> implements IPlant
             }
             IBlockState waterState = world.getBlockState(pos);
             if (waterState.getBlock() != Blocks.WATER)
+            {
+                return null;
+            }
+            if (waterState.getPropertyKeys().contains(BlockLiquid.LEVEL) && waterState.getValue(BlockLiquid.LEVEL) != 0)
             {
                 return null;
             }
