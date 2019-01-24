@@ -6,7 +6,11 @@
   "pages": [
     {
       "type": "text",
-      "text": "Fire pit is a heat source, used alongsie with $(l:utensils/wok)wok$() or $(l:utensils/bbq_rack)barbecue rack$() to cook food. $(br2)The strcture may be created in-world or in vanilla crafting table.$(br2)You need to right-click the $(italic)completed structure$() with fuel in order to heat it up. In layman's term, the \"temperature\" of fire pit is measured in three levels; different fuel can heat up fire pit to different level; if you find that your fire pit is not hot enough, consider using another fuel."
+      "text": "Fire pit is a heat source, used alongsie with $(l:utensils/wok)wok$() or $(l:utensils/bbq_rack)barbecue rack$() to cook food. $(br2)The strcture may be created in-world or in vanilla crafting table.$(br2)You need to right-click the $(italic)completed structure$() with fuel in order to heat it up. In layman's term, the \"temperature\" of fire pit is measured in three levels; different fuel "
+    },
+    {
+      "type": "text",
+      "text": "can heat up fire pit to different level; if you find that your fire pit is not hot enough, consider using another fuel.$(br2)(Turn next page ->)"
     },
     {
       "type": "crafting",

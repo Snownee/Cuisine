@@ -4,41 +4,41 @@
   "icon": "minecraft:written_book",
   "category": "preface",
   "pages": [
-      {
-        "type": "cuisine:centered_text",
-        "lines": [
-          "§l- Design -",
-          "Snownee",
-          "",
-          "§l- Code -",
-          "Snownee",
-          "3TUSK",
-          "",
-          "§l- Art -",
-          "WZD",
-          "YurisCat",
-          "Snownee",
-          "",
-          "§l- Tech Support -",
-          "Seraph_JACK"
-        ]
-      },
-      {
-        "type": "cuisine:centered_text",
-        "lines": [
-          "",
-          "",
-          "",
-          "§l- Sponsers -",
-          "",
-          "",
-          "粉鱼",
-          "Lioness131",
-          "皮蛋",
-          "Cherls",
-          "idyllic_bean",
-          "鱼加盐有点咸"
-        ]
-      }
+    {
+      "type": "cuisine:centered_text",
+      "lines": [
+        "§l- Design -",
+        "Snownee",
+        "",
+        "§l- Code -",
+        "Snownee",
+        "3TUSK",
+        "",
+        "§l- Art -",
+        "WZD",
+        "YurisCat",
+        "Snownee",
+        "",
+        "§l- Tech Support -",
+        "Seraph_JACK"
+      ]
+    },
+    {
+      "type": "cuisine:centered_text",
+      "lines": [
+        "",
+        "",
+        "",
+        "§l- Sponsers -",
+        "",
+        "",
+        "粉鱼",
+        "Lioness131",
+        "皮蛋",
+        "Cherls",
+        "idyllic_bean",
+        "鱼加盐有点咸"
+      ]
+    }
   ]
 }

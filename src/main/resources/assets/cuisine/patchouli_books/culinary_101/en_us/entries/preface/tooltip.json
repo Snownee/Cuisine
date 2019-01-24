@@ -4,13 +4,13 @@
   "icon": "minecraft:apple",
   "category": "preface",
   "pages": [
-      {
-        "type": "text",
-        "text": "There may be a line of food icons in certain items' tooltip. That means $(em)this item is a valid raw ingredient in Cuisine Mod$(). $(br2)Different icon represents different $(em)categories$() that this ingredient belongs to. Each icon means it can restore 1 food value (half shank) when being cooked as a part of dish. When $(l:https://github.com/WesCook/Nutrition)Nutrition Mod$() is present, each icon also means that it will restore corresponding nutrution value by 0.5; if the category is \" supernatural\", each icon means that it will restore every nutrition value by 0.1."
-      },
-      {
-        "type": "text",
-        "text": "Golden outline indicates the amount of food value it will restore. The actual value dpeneds on ingredients and cooking process itself.$(br2)Generally speaking, $(em)the more categories an ingredient has$(), the better that ingredient is (overall)."
-      }
+    {
+      "type": "text",
+      "text": "There may be a line of food icons in certain items' tooltip. That means $(em)this item is a valid raw ingredient in Cuisine Mod$(). $(br2)Different icon represents different $(em)categories$() that this ingredient belongs to. Each icon means it can restore 1 food value (half shank) when being cooked as a part of dish. When $(l:https://github.com/WesCook/Nutrition)Nutrition Mod$() is present, each icon also means that it will restore "
+    },
+    {
+      "type": "text",
+      "text": "corresponding nutrition value by 0.5; if the category is \"supernatural\", each icon means that it will restore every nutrition value by 0.1.$(br2)Golden outline indicates the amount of food value it will restore. The actual value dpeneds on ingredients and cooking process itself.$(br2)Generally speaking, $(em)the more categories an ingredient has$(), the better that ingredient is (overall)."
+    }
   ]
 }

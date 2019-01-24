@@ -4,9 +4,9 @@
   "icon": "cuisine:crops:5",
   "category": "preface",
   "pages": [
-      {
-        "type": "text",
-        "text": "There is a certain chance that harvesting crops will drop so-called \"rare crops\". Their display name will be in a special color.$(br2)Eating them will give one extra food point; if that's also seed of a plant, planting such seed will also apply the effect of bonemeal once to the newly-planted crop."
-      }
+    {
+      "type": "text",
+      "text": "There is a certain chance that harvesting crops will drop so-called \"rare crops\". Their display name will be in a special color.$(br2)Eating them will give one extra food point; if that's also seed of a plant, planting such seed will also apply the effect of bonemeal once to the newly-planted crop."
+    }
   ]
 }

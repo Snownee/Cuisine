@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Wok is a universal, versatile cookware. With help of $(l:utensils/spatula)iron spatula$(), one can conduct many cooking techniques within a wok. Wok must be placed on $(l:utensils/fire_pit)fire pit$(). $(br2) When $(italic)you feel$() it's the time, right click wok with $(l:utensils/plate)empty plate$() to complete cooking and take out the food."
+      "text": "Wok is a universal, versatile cookware. With help of $(l:utensils/spatula)iron spatula$(), one can conduct many cooking techniques within a wok. Wok must be placed on $(l:utensils/fire_pit)fire pit$(). $(br2)When $(italic)you feel$() it's the time, right click wok with $(l:utensils/plate)empty plate$() to complete cooking and take out the food."
     },
     {
       "type": "crafting",

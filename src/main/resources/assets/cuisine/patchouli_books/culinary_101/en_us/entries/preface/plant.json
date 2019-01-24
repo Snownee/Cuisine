@@ -4,24 +4,24 @@
   "icon": "cuisine:crops:17",
   "category": "preface",
   "pages": [
-      {
-        "type": "text",
-        "text": "Crops in Cuisine Mod are planted and harvest in the same fasion as that of $(em)vanilla wheat$(). However, there are a few exceptions - if you see some descriptions regarding $(em)special plants type$() in tooltip, it means you may want to refer to the following pages for correct ways to plant them."
-      },
-      {
-        "type": "text",
-        "title": "Hellish Crops",
-        "text": "Hellish Crops such as chili peppers must be planted on $(em)soul sands$()."
-      },
-      {
-        "type": "text",
-        "title": "Watery Crops",
-        "text": "Watery Crops such as rice must be planted in $(em)one-block-deep water$(), where the bottom has to be $(em)dirt$()."
-      },
-      {
-        "type": "text",
-        "title": "\"Crops from plain\"",
-        "text": "Crops from plain such as bamboo shoots must be planted on $(em)dirt$()上. $(br2)$(em)Bamboo$() will spread shoots at its surroundings $(em)after raining$(); tilled farmland has a higher possiblity to grow new bamboo shots. Bamboo will stop spearing new shoots after several seasons."
-      }
+    {
+      "type": "text",
+      "text": "Crops in Cuisine Mod are planted and harvest in the same fasion as that of $(em)vanilla wheat$(). However, there are a few exceptions - if you see some descriptions regarding $(em)special plants type$() in tooltip, it means you may want to refer to the following pages for correct ways to plant them."
+    },
+    {
+      "type": "text",
+      "title": "Hellish Crops",
+      "text": "Hellish Crops such as chili peppers must be planted on $(em)soul sands$()."
+    },
+    {
+      "type": "text",
+      "title": "Watery Crops",
+      "text": "Watery Crops such as rice must be planted in $(em)one-block-deep water$(), where the bottom has to be $(em)dirt$()."
+    },
+    {
+      "type": "text",
+      "title": "\"Crops from plain\"",
+      "text": "Crops from plain such as bamboo shoots must be planted on $(em)dirt$(). $(br2)$(em)Bamboo$() will spread shoots at its surroundings $(em)after raining$(); tilled farmland has a higher possiblity to grow new bamboo shots. Bamboo will stop spearing new shoots after several seasons."
+    }
   ]
 }

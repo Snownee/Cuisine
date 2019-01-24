@@ -6,22 +6,26 @@
   "pages": [
     {
       "type": "text",
-      "text": "It is said that Drinkro™ was invented by an enterprise located in the Sillicon Vallay. Its main functionality is $(em)to move liquid around$(). $(br2)Drinkro™ can make $(em)regular drink$(), $(em)smoothie$(), $(em)gelo$() and $(em)soda$(). $(br2)Unfortunately, that enterprise went bankrupt after incuring substantial amount of criticism. Putting history aside - we still managed to get its original blueprints!"
+      "text": "It is said that Drinkro™ was invented by an enterprise located in the Sillicon Vallay. Its main functionality is $(em)to move liquid around$(). $(br)Drinkro™ can make $(em)regular drink$(), $(em)smoothie$(), $(em)gelo$() and $(em)soda$().$(br)Unfortunately, that enterprise went bankrupt after incuring substantial amount of criticism. Putting history aside - we still managed to get its original blueprints!"
     },
     {
       "type": "crafting",
       "recipe": "cuisine:drinkro",
-      "text": "Drinkro™ is a multiblock structure consisted with two blocks stacked vertically. The upper half is where fluid ingredients and additional items go into the Drinkro™, and it can hold one bucket of fluid and 4 additional items at maximum. Additional items may be regular seasonings or \"special item\" which decides the type of drink; for each drink, there must be at most one such \"speical item\". The lower half is where the drinks are produced, and you should put a container there to receive your drinks."
+      "text": "Drinkro™ is a multiblock structure consisted with two blocks stacked vertically. The upper half is where fluid ingredients and additional items go into the Drinkro™, and it can hold one bucket of fluid and 4 additional items at maximum. Additional items may "
+    },
+    {
+      "type": "text",
+      "text": "be regular seasonings or \"special item\" which decides the type of drink; for each drink, there must be at most one such \"speical item\". The lower half is where the drinks are produced, and you should put a container there to receive your drinks.$(br2)There are four different type of drinks; each type has differnt \"primary\" effects on players. Different juices can also affect \"primary\" effects. Without any special item, the produced drink is the regular "
     },
     {
       "type": "text",
       "flag": "!cuisine:drinkro_uses_energy",
-      "text": "There are four different type of drinks; each type has differnt \"primary\" effects on players. Different juices can also affect \"primary\" effects. Without any special item, the produced drink is the regular drink. Drinks may be used to alleviate $(l:misc/effect_resistance)Effect Resistence$(). $(br2)If there is a special item, the container must also match that special item. After matched, give the Drinkro™ redstone pulse will make it start to work.$(br2)Detailed informations about types of drink may be found in following pages."
+      "text": "drink. Drinks may be used to alleviate $(l:misc/effect_resistance)Effect Resistence$(). $(br2)If there is a special item, the container must also match that special item. After matched, give the Drinkro™ redstone pulse will make it start to work.$(br2)Detailed informations about types of drink may be found in following pages."
     },
     {
       "type": "text",
       "flag": "cuisine:drinkro_uses_energy",
-      "text": "There are four different type of drinks; each type has differnt \"primary\" effects on players. Different juices can also affect \"primary\" effects. Without any special item, the produced drink is the regular drink. Drinks may be used to alleviate $(l:misc/effect_resistance)Effect Resistence$(). $(br2)If there is a special item, the container must also match that special item. After matched, give the Drinkro™ enough energy will make it start to work.$(br2)Detailed informations about types of drink may be found in following pages."
+      "text": "drink. Drinks may be used to alleviate $(l:misc/effect_resistance)Effect Resistence$(). $(br2)If there is a special item, the container must also match that special item. After matched, give the Drinkro™ enough energy will make it start to work.$(br2)Detailed informations about types of drink may be found in following pages."
     },
     {
       "type": "cuisine:drink_type",

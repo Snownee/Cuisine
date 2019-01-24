@@ -33,11 +33,21 @@
       "name": "Heating",
       "multiblock": {
         "pattern": [
-          [ "B" ],
-          [ "S" ],
-          [ "0" ]
+          [
+            "B"
+          ],
+          [
+            "S"
+          ],
+          [
+            "0"
+          ]
         ],
-        "offset": [ 0, 1, 0 ],
+        "offset": [
+          0,
+          1,
+          0
+        ],
         "symmetrical": true,
         "mapping": {
           "B": "cuisine:earthen_basin",
@@ -64,11 +74,21 @@
       "name": "Squeezer",
       "multiblock": {
         "pattern": [
-          [ "P" ],
-          [ "B" ],
-          [ "0" ]
+          [
+            "P"
+          ],
+          [
+            "B"
+          ],
+          [
+            "0"
+          ]
         ],
-        "offset": [ 0, 1, 0 ],
+        "offset": [
+          0,
+          1,
+          0
+        ],
         "symmetrical": true,
         "mapping": {
           "B": "cuisine:earthen_basin",

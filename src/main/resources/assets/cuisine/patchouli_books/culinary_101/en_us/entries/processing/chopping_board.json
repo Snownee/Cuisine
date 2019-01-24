@@ -5,12 +5,12 @@
   "pages": [
     {
       "type": "text",
-      "text": "It's generally hard to fully cook unprocessed ingredints as whole, and that's why there is a thing called \"cutting board\" (or \"chopping board\", in Cuisine Mod). Left-clicking and right-clicking the board with kitchen knife will cut ingredients into various forms. Note that some ingredients may not exist in a certain form.$(br2)To place ingredients onto board, simply right click the board with those ingredients held in hand."
+      "text": "It's generally hard to fully cook unprocessed ingredints as whole, and that's why there is a thing called \"cutting board\" (or \"chopping board\", in Cuisine Mod). Left-clicking and right-clicking the board with kitchen knife will cut ingredients into various forms. Note that some ingredients may not exist in a certain form.$(br2)To place ingredients onto board, simply right click the "
     },
     {
       "type": "text",
       "flag": "cuisine:enable_axe_chopping",
-      "text": "You can also chop wood logs into planks on chopping board using an axe. $(br)Right click with items to put them onto chopping board. To chop things, left click chopping board with axe. There is a cool-down period after each item being chopped. The harvest level of axe will affect the chopping efficiency! Tip:  put inputs in off-hand helps re-supplying inputs to chopping board."
+      "text": "board with those ingredients held in hand.$(br2)You can also chop wood logs into planks on chopping board using an axe. $(br)Right click with items to put them onto chopping board. To chop things, left click chopping board with axe. There is a cool-down period after each item being chopped. The harvest level of axe will affect the chopping efficiency! Tip:  put inputs in off-hand helps re-supplying inputs to chopping board."
     }
   ]
 }

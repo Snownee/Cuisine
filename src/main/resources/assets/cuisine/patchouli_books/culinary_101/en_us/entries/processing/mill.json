@@ -10,7 +10,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:mill",
-      "text": "with empty hand will cause mill to work for one cycle. $(br2)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers. $(br)Mill maybe automated by using anything that simulates player right-clicking."
+      "text": "with empty hand will cause mill to work for one cycle. $(br)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers. $(br)Mill maybe automated by using anything that simulates player right-clicking."
     }
   ]
 }

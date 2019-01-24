@@ -4,9 +4,9 @@
   "category": "misc",
   "sortnum": 2,
   "pages": [
-      {
-        "type": "text",
-        "text": "While you gain som effects via eating food, you will also acquire so-called $(em)\"Effect Resistence\"$() effect. While this effect is present, you won't be able to gain more other effects from eating food.$(br2)Using vanilla milk bucket cannot remove this effect; this effect may alleviated by $(l:utensils/drinkro)drinking something$()."
-      }
+    {
+      "type": "text",
+      "text": "While you gain som effects via eating food, you will also acquire so-called $(em)\"Effect Resistence\"$() effect. While this effect is present, you won't be able to gain more other effects from eating food.$(br2)Using vanilla milk bucket cannot remove this effect; this effect may alleviated by $(l:utensils/drinkro)drinking something$()."
+    }
   ]
 }
