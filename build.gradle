@@ -53,8 +53,8 @@ minecraft {
     version = "${minecraft_version}-${forge_version}"
     runDir = "run"
 
-    mappings = "${mapping_version}"
-    useDepAts = true
+    mappings = mapping_version
+    useDepAts = true // TODO Actually it could be bad practice
 
     replace "@VERSION_INJECT@", project.version
 }
