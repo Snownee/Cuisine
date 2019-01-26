@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Barbecue rack can cook regular food (think vanilla furnace) or $(em)other processed ingredients$(). $(br2)To put food onto rack, simply right click the rack part with food held in hand. $(br2)A barbecue rack can hold at most 3 items."
+      "text": "Barbecue rack can cook regular food (think vanilla furnace) or $(em)other processed ingredients$(). $(br2)To put food onto rack, simply $(em)right click the rack part$() with food held in hand. $(br2)A barbecue rack can hold at most 3 items."
     }
   ]
 }
