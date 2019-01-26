@@ -19,7 +19,7 @@ public class ManualSupport implements IModule
 {
     @Override
     @SideOnly(Side.CLIENT)
-    public void postInit()
+    public void preInit()
     {
         MinecraftForge.EVENT_BUS.register(new PatchouliClientHandler());
     }
