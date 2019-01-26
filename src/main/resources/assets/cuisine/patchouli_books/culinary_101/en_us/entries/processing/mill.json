@@ -10,11 +10,11 @@
     {
       "type": "crafting",
       "recipe": "cuisine:mill",
-      "text": "$(em)with empty hand$() will cause mill to work for one cycle. $(br2)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers.$(br2)Mill maybe automated by using"
+      "text": "$(em)with empty hand$() will cause mill to work for one cycle. $(br)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers. $(br)(Turn next page ->)"
     },
     {
       "type": "text",
-      "text": "anything that simulates player right-clicking."
+      "text": "Pushing millstone is $(italic)exhausting$(); however, fortunately, mill may be automated by using anything that simulates player right-clicking, for example $(l:misc/wooden_arm)wooden arm$()."
     }
   ]
 }

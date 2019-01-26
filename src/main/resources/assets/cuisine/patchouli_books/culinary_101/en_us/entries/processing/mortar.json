@@ -15,7 +15,7 @@
     {
       "type": "spotlight",
       "item": "cuisine:mortar:1",
-      "text": "Mortar can hold exactly one bucket of water, as if it is vanilla bucket. To fill in water, simply right click water source with empty mortar held in your hand. Mortar filled with water cannot be placed on the ground."
+      "text": "Mortar can hold exactly one bucket of water, as if it is vanilla bucket. To fill in water, simply right click water source with empty mortar held in your hand. You cannot place mortar with water on the ground. You cannot pour the water out, either."
     }
   ]
 }
