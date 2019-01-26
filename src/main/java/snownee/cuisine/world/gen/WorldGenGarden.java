@@ -90,7 +90,7 @@ public class WorldGenGarden
             if (block instanceof BlockCuisineCrops)
             {
                 BlockCuisineCrops blockCuisineCrops = (BlockCuisineCrops) block;
-                if (blockCuisineCrops.getPlantType(world, pos) == EnumPlantType.Plains)
+                if (blockCuisineCrops.getPlantType(world, pos) == EnumPlantType.Crop)
                 {
                     world.setBlockState(pos, Blocks.FARMLAND.getDefaultState(), 0);
                 }
