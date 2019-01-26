@@ -10,7 +10,7 @@
     {
       "type": "text",
       "flag": "cuisine:enable_axe_chopping",
-      "text": "You can also chop wood logs into planks on chopping board using an axe. $(br)Right click with items to put them onto chopping board. To chop things, left click chopping board with axe. There is a cool-down period after each item being chopped. $(em)The higher harvest level of axe will help you chopping faster!$() Tip: put inputs $(em)in off-hand$() helps re-supplying inputs to chopping board."
+      "text": "You can also use an axe to chop things on chopping board, for example chop down wood log to planks. $(br)Right click with items to put them onto chopping board. To chop things, left click chopping board with axe. There is a cool-down period after each item being chopped. $(em)The higher harvest level of axe will help you chopping faster!$() Tip: put inputs $(em)in off-hand$() helps re-supplying inputs to chopping board."
     }
   ]
 }

@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Basin is a processing device. Basin has three working modes: $(l:processing/basin#distillation)\"distillation\"$(), $(l:processing/basin#squeezing)\"squeezing\"$() and $(l:processing/basin#throwing)\"contact\"$().$(br2)They come with two variants: wooden and earthen. Only $(em)earthen basins$() are capable to handle distillation. $(br2)Right-clicking basin allows you to put items/fluid in and take them out."
+      "text": "Basin is a processing device. Basin has three working modes: $(l:processing/basin#heating)\"heating\"$(), $(l:processing/basin#squeezing)\"squeezing\"$() and $(l:processing/basin#throwing)\"contact\"$().$(br2)They come with two variants: wooden and earthen. Only $(em)earthen basins$() are capable to handle distillation. $(br2)Right-clicking basin allows you to put items/fluid in and take them out."
     },
     {
       "anchor": "throwing",
@@ -14,22 +14,22 @@
       "text": "\"Contact\" simply means that you just throw items into basin, and it will mix up with fluid inside the basin and become another item."
     },
     {
-      "anchor": "distillation",
+      "anchor": "heating",
       "type": "text",
       "flag": "cuisine:enable_sunlight_heating",
-      "title": "Distillation",
-      "text": "\"Distillation\" means that you need to heat the fluid inside the basin to get refined products. Only $(em)earthen basins$() are capable to handle distillation. To heat fluid, you need a heat source. Typical heat sources include lava and fire (as shown on the right-hand side). Sunlight also works here - so long as the basin can directly see the sun."
+      "title": "Heating",
+      "text": "\"Heating\" means that you need to heat the fluid inside the basin to get refined products. Only $(em)earthen basins$() are capable to handle heating. To heat fluid, you need a heat source. Typical heat sources include lava and fire (as shown on the right-hand side). Sunlight also works here - so long as the basin can directly see the sun."
     },
     {
-      "anchor": "distillation",
+      "anchor": "heating",
       "type": "text",
       "flag": "!cuisine:enable_sunlight_heating",
-      "title": "Distillation",
-      "text": "\"Distillation\" means that you need to heat the fluid inside the basin to get refined products. Only $(em)earthen basins$() are capable to handle distillation. To heat fluid, you need a heat source. Typical heat sources include lava and fire (as shown on the right-hand side)."
+      "title": "Heating",
+      "text": "\"Heating\" means that you need to heat the fluid inside the basin to get refined products. Only $(em)earthen basins$() are capable to handle heating. To heat fluid, you need a heat source. Typical heat sources include lava and fire (as shown on the right-hand side)."
     },
     {
       "type": "multiblock",
-      "name": "Heating",
+      "name": "A typical heating setup",
       "multiblock": {
         "pattern": [
           [
@@ -98,7 +98,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:wooden_basin",
-      "text": "Unlike its earthen counterpart, wooden basin has only one variant: the one with oak wood texture. Wooden Basin cannot be used for distillation."
+      "text": "Unlike its earthen counterpart, wooden basin has only one variant: the one with oak wood texture. Wooden Basin cannot be heated."
     },
     {
       "type": "crafting",
