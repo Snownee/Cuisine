@@ -15,7 +15,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:fire_pit",
-      "text": "There is a HUD indicator to tell the current \"temperature\" of fire pit. If there is some food being cooked, each ingredient will be displayed alongside with a pie-chart for its \"doneness\". A red pie-chart means that it is overcooked."
+      "text": "There is a HUD indicator to tell the current \"temperature\" of fire pit. If there is some food being cooked, each ingredient will be displayed alongside with a pie-chart for its \"doneness\". A red pie-chart means that it is $(em)overcooked$()."
     },
     {
       "type": "crafting",
@@ -25,7 +25,7 @@
     {
       "type": "crafting",
       "recipe": "cuisine:fan",
-      "text": "Fan may be used to temprarily rasie pit temperature, at the cost of more fuel.$(br2)Fan can also blow away items on ground (by either right-clicking or using in vanilla dispenser)."
+      "text": "Fan may be used to temporarily raise pit temperature, at the cost of more fuel.$(br2)Fan can also blow away items on ground (by either right-clicking or using in vanilla dispenser)."
     }
   ]
 }

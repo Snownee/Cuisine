@@ -413,6 +413,11 @@ cuisine.gui.jei.brun_level=Burn Level: %d
 
 cuisine.manual.name=Culinary 101
 cuisine.manual.subtitle=The Comprehensive Guide on Mastering Culinary Art
+cuisine.manual.featureInput=Special Item:
+cuisine.manual.container=Container:
+cuisine.manual.potionVege=Vege Juice: §2%s
+cuisine.manual.potionFruit=Fruit Juice: §4%s
+cuisine.manual.parseError=[Parse Error]
 
 cuisine.skillpoint.expertise=Expertise
 cuisine.skillpoint.proficiency=Proficiency

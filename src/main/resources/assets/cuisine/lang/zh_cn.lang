@@ -423,8 +423,8 @@ cuisine.manual.name=烹饪指南
 cuisine.manual.subtitle=$(br)   成为大厨的全面指南书！
 cuisine.manual.featureInput=特殊物品：
 cuisine.manual.container=容器：
-cuisine.manual.potionVege=水果汁效果：§4%s
-cuisine.manual.potionFruit=蔬菜汁效果：§2%s
+cuisine.manual.potionVege=蔬菜汁效果：§2%s
+cuisine.manual.potionFruit=水果汁效果：§4%s
 cuisine.manual.parseError=[解析失败]
 
 cuisine.skillpoint.expertise=技巧度

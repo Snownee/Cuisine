@@ -5,12 +5,16 @@
   "pages": [
     {
       "type": "text",
-      "text": "Mill is a processing device. It mills things into some form of enriched materials, for example: it mills wheat into flour, refines crude salt into table salt, extract oil from various crops, and make soy milk with water and soybean. $(br)Mill does not have GUI; everything must be done through direct interacting in world or other automation tools. Right click with items to put stuff into it. Right click "
+      "text": "Mill can mill things into some form of enriched materials, for example: it mills wheat into flour, refines crude salt into table salt, extract oil from various crops, and make soy milk with water and soybean. $(br2)Mill does not have GUI; everything must be done through direct interacting in world or other automation tools. $(em)Right click with items$() to put stuff into it. $(em)Right click "
     },
     {
       "type": "crafting",
       "recipe": "cuisine:mill",
-      "text": "with empty hand will cause mill to work for one cycle. $(br)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers. $(br)Mill maybe automated by using anything that simulates player right-clicking."
+      "text": "$(em)with empty hand$() will cause mill to work for one cycle. $(br2)Mill is able to auto-eject products to adjacent inventories that are not vanilla dispensers.$(br2)Mill maybe automated by using"
+    },
+    {
+      "type": "text",
+      "text": "anything that simulates player right-clicking."
     }
   ]
 }
