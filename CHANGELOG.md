@@ -1,4 +1,37 @@
-# 更新日志
+# Changelog
+
+## 0.5.0
+
+ - WARNING: this version will break some configs and scripts!
+ - Add in-game manual (It requires Patchouli)
+   - Finally the manual got a recipe
+   - Some chapters are still working in progress
+ - Add fruit wine
+   - Use your brewing stand
+   - It may substitute awkward potion
+   - It is colorable
+ - Add Russian translation (Thank you DubDisk!)
+ - Change the way drink regen thirst
+ - Add rice and chili worldgen.
+ - Slightly optimize worldgen performance
+ - Add new way to gain hot effect (too many chilis)
+ - Add concrete converting recipes (can be disabled in config file)
+ - Add an option to let bamboo generate in old way
+ - Add tooltip support for rare crops
+ - Add an option to toggle food punishment
+ - Add an option to hide holo GUI
+ - Unify world gen options
+ - Lower crop gen rate
+ - CraftTweaker support: Add and change some methods
+ - Make dummy food able to display model
+ - Attach capability to water glass bottle
+ - Fix spice bottle duping spice
+ - Fix rice too easy to be undercooked
+ - Fix rice randomly getting dropped while block updating
+ - Fix drinking giving player ghost potion effect
+ - Fix desync of jar
+ - Fix cactus juice effect
+ - Fix drink water curing hunger
 
 ## 0.3.1
 

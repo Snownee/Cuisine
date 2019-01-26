@@ -70,6 +70,12 @@ public class CTAxeChopping
     }
 
     @ZenMethod
+    public static boolean isEnabled()
+    {
+        return CuisineConfig.GENERAL.axeChopping;
+    }
+
+    @ZenMethod
     public static int getDefaultPlanksOutput()
     {
         return CuisineConfig.GENERAL.axeChoppingPlanksOutput;
