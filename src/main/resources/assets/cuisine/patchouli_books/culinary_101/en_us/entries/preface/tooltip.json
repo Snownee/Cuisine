@@ -10,7 +10,7 @@
     },
     {
       "type": "text",
-      "text": "corresponding nutrition value by 0.5; if the category is \"supernatural\", each icon means that it will restore every nutrition value by 0.1.$(br2)Golden outline indicates the amount of food value it will restore. The actual value dpeneds on ingredients and cooking process itself.$(br2)Generally speaking, $(em)the more categories an ingredient has$(), the better that ingredient is (overall)."
+      "text": "corresponding nutrition value by 0.5; if the category is \"supernatural\", each icon means that it will restore every nutrition value by 0.1.$(br2)Golden outline indicates the amount of food value it will restore. The actual value depends on ingredients and cooking process itself.$(br2)Generally speaking, $(em)the more categories an ingredient has$(), the better that ingredient is (overall)."
     }
   ]
 }
