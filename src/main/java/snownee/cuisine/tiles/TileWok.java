@@ -81,7 +81,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         super.update();
         if (!world.isRemote && status == Status.WORKING)
         {
-            if (builder != null && this.world.getTotalWorldTime() % 20 == 0)
+            if (builder != null && heatHandler.getLevel() > 0 && this.world.getTotalWorldTime() % 20 == 0)
             {
                 builder.apply(new Heating(heatHandler.getLevel()), this);
                 if (!builder.getIngredients().isEmpty())
