@@ -65,17 +65,17 @@ public final class CulinarySkillCapability
                 CulinarySkillPointContainer original = event.getOriginal().getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
                 if (original != null)
                 {
-                    if (event.isWasDeath() && CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.loseSkillPointsOnDeath)
+                    for (CulinarySkillPoint p : original.getAvailableSkillPoints())
                     {
-                        for (CulinarySkillPoint p : original.getAvailableSkillPoints())
+                        int syncedPoints = original.getSkillPoint(p);
+                        // Lose a portion of skill points when player died and corresponding
+                        // config is enabled.
+                        // This feature is disabled by default due to its hardcore nature.
+                        if (event.isWasDeath() && CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.loseSkillPointsOnDeath)
                         {
-                            int syncedPoints = original.getSkillPoint(p);
-                            // Lose a portion of skill points when player died and corresponding
-                            // config is enabled.
-                            // This feature is disabled by default due to its hardcore nature.
                             syncedPoints *= CuisineConfig.HARDCORE.skillPointsRetainRatio;
-                            skill.setSkillPoint(p, syncedPoints);
                         }
+                        skill.setSkillPoint(p, syncedPoints);
                     }
                 }
             }
