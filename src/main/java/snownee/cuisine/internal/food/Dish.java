@@ -353,7 +353,7 @@ public class Dish extends CompositeFood
                 {
                     serves -= (2 - countMat) * 3 + rand.nextInt(3);
                 }
-                EffectCollector collector = new DefaultCookedCollector(DEFAULT_SERVE_AMOUNT);
+                EffectCollector collector = new DefaultCookedCollector(serves);
 
                 int seasoningSize = 0;
                 int waterSize = 0;
