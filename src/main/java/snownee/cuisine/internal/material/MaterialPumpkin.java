@@ -22,7 +22,7 @@ public class MaterialPumpkin extends SimpleMaterialImpl
     }
 
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
     {
         if (!ingredient.hasTrait(IngredientTrait.UNDERCOOKED) && !ingredient.hasTrait(IngredientTrait.OVERCOOKED) && !ingredient.hasTrait(IngredientTrait.PLAIN))
         {

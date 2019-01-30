@@ -16,7 +16,7 @@ public class MaterialRice extends SimpleMaterialImpl
     }
 
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
     {
         collector.addEffect(DefaultTypes.USE_DURATION_MODIFIER, -0.75F);
     }

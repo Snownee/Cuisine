@@ -407,7 +407,7 @@ public class Dish extends CompositeFood
                 }
                 for (Ingredient ingredient : this.getIngredients())
                 {
-                    ingredient.getMaterial().onCooked(this, ingredient, vessel, collector);
+                    ingredient.getMaterial().onMade(this, ingredient, vessel, collector);
                 }
 
                 this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects(), foodLevel, saturationModifier);

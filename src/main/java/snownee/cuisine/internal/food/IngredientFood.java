@@ -73,7 +73,7 @@ public class IngredientFood extends CompositeFood
     @Override
     public Collection<String> getKeywords()
     {
-        return Collections.emptyList();
+        return Collections.singletonList("ingredient");
     }
 
     @Override

@@ -59,8 +59,7 @@ public interface Material
         return true;
     }
 
-    // Nullable dish for barbecue? Reply: that's a dish with just one (1) ingredient.
-    default void onCooked(final CompositeFood.Builder<?> dish, final Ingredient ingredient, final CookingVessel vessel, final EffectCollector collector)
+    default void onMade(final CompositeFood.Builder<?> dish, final Ingredient ingredient, final CookingVessel vessel, final EffectCollector collector)
     {
         // NO-OP
     }
