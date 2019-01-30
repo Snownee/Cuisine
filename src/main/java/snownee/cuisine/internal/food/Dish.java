@@ -351,7 +351,7 @@ public class Dish extends CompositeFood
                 for (Seasoning seasoning : this.getSeasonings())
                 {
                     Spice spice = seasoning.getSpice();
-                    spice.onCooked(this, seasoning, vessel, collector);
+                    spice.onMade(this, seasoning, vessel, collector);
                     if (seasoning.hasKeyword("water"))
                     {
                         waterSize += seasoning.getSize();

@@ -18,7 +18,7 @@ public class SpiceChiliPowder extends SimpleSpiceImpl
     }
 
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Seasoning seasoning, CookingVessel vessel, EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Seasoning seasoning, CookingVessel vessel, EffectCollector collector)
     {
         if (dish.getEffects().contains(CulinaryHub.CommonEffects.HOT))
         {
