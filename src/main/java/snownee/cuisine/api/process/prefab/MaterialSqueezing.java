@@ -13,7 +13,6 @@ import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.process.AbstractCuisineProcessingRecipe;
 import snownee.cuisine.api.process.BasinInteracting;
-import snownee.cuisine.fluids.FluidJuice;
 
 public class MaterialSqueezing extends AbstractCuisineProcessingRecipe implements BasinInteracting
 {
@@ -52,7 +51,7 @@ public class MaterialSqueezing extends AbstractCuisineProcessingRecipe implement
         }
         int amount = fluid == null ? 0 : fluid.amount;
         amount += 500;
-        FluidStack outputFluid = FluidJuice.make(material, amount);
+        FluidStack outputFluid = CulinaryHub.API_INSTANCE.makeJuiceFluid(material, amount);
         return new Output(outputFluid, ItemStack.EMPTY);
     }
 

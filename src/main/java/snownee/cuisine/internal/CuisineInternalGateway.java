@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
@@ -39,6 +40,7 @@ import snownee.cuisine.api.prefab.SimpleMaterialImpl;
 import snownee.cuisine.api.prefab.SimpleSpiceImpl;
 import snownee.cuisine.crafting.DrinkBrewingRecipe;
 import snownee.cuisine.fluids.CuisineFluids;
+import snownee.cuisine.fluids.FluidJuice;
 import snownee.cuisine.internal.effect.EffectCurePotions;
 import snownee.cuisine.internal.effect.EffectExperienced;
 import snownee.cuisine.internal.effect.EffectHarmony;
@@ -670,6 +672,18 @@ public final class CuisineInternalGateway implements CuisineAPI
     public void registerMapping(String ore, Spice spice)
     {
         oreDictToSpiceMapping.put(ore, spice);
+    }
+
+    @Override
+    public Potion getEffectResistancePotion()
+    {
+        return CuisineRegistry.EFFECT_RESISTANCE;
+    }
+
+    @Override
+    public FluidStack makeJuiceFluid(Material material, int amount)
+    {
+        return FluidJuice.make(material, amount);
     }
 
 }
