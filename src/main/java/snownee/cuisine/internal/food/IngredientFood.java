@@ -94,4 +94,9 @@ public class IngredientFood extends CompositeFood
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public int getMaxServes()
+    {
+        return 1;
+    }
 }

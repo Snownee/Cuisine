@@ -19,6 +19,7 @@ public interface CuisineSharedSecrets
     String KEY_QUANTITY = "size";
     String KEY_TRAITS = "characteristics"; // It's not "traits" due to backward compatibility
     String KEY_SERVES = "durability";
+    String KEY_MAX_SERVES = "maxServes";
     String KEY_USE_DURATION = "useDuration";
     String KEY_FOOD_LEVEL = "foodLevel";
     String KEY_SATURATION_MODIFIER = "saturation";

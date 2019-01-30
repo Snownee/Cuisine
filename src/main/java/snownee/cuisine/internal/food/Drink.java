@@ -43,6 +43,7 @@ import snownee.cuisine.internal.effect.EffectPotions;
 import snownee.cuisine.plugins.TANCompat;
 import snownee.kiwi.Kiwi;
 import snownee.kiwi.crafting.input.ProcessingInput;
+import snownee.kiwi.util.NBTHelper;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
@@ -537,6 +538,7 @@ public class Drink extends CompositeFood
 
     public static Drink deserialize(NBTTagCompound data)
     {
+        NBTHelper helper = NBTHelper.of(data);
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ArrayList<Seasoning> seasonings = new ArrayList<>();
         ArrayList<Effect> effects = new ArrayList<>();
@@ -567,45 +569,18 @@ public class Drink extends CompositeFood
             }
         }
 
-        int serves = 0;
-        if (data.hasKey(CuisineSharedSecrets.KEY_SERVES, Constants.NBT.TAG_INT))
-        {
-            serves = data.getInteger(CuisineSharedSecrets.KEY_SERVES);
-        }
+        int serves = helper.getInt(CuisineSharedSecrets.KEY_SERVES);
+        float duration = helper.getFloat(CuisineSharedSecrets.KEY_USE_DURATION, 1);
+        int foodLevel = helper.getInt(CuisineSharedSecrets.KEY_FOOD_LEVEL);
+        float saturation = helper.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
 
-        float duration = 1;
-        if (data.hasKey(CuisineSharedSecrets.KEY_USE_DURATION, Constants.NBT.TAG_FLOAT))
-        {
-            duration = data.getFloat(CuisineSharedSecrets.KEY_USE_DURATION);
-        }
-
-        int foodLevel = 0;
-        if (data.hasKey(CuisineSharedSecrets.KEY_FOOD_LEVEL, Constants.NBT.TAG_INT))
-        {
-            foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
-        }
-
-        float saturation = 0;
-        if (data.hasKey(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, Constants.NBT.TAG_FLOAT))
-        {
-            saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
-        }
-
-        DrinkType drinkType = null;
-        if (data.hasKey("type", Constants.NBT.TAG_STRING))
-        {
-            drinkType = DrinkType.DRINK_TYPES.get(data.getString("type"));
-        }
+        DrinkType drinkType = DrinkType.DRINK_TYPES.get(helper.getString("type", "normal"));
         if (drinkType == null)
         {
             drinkType = DrinkType.NORMAL;
         }
 
-        int color = -1;
-        if (data.hasKey("color", Constants.NBT.TAG_INT))
-        {
-            color = data.getInteger("color");
-        }
+        int color = helper.getInt("color", -1);
 
         Drink drink = new Drink(ingredients, seasonings, effects, foodLevel, saturation, drinkType, color);
         drink.setServes(serves);
