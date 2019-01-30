@@ -18,6 +18,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import snownee.cuisine.api.CulinaryHub.CommonEffects;
 import snownee.cuisine.api.prefab.DefaultConsumedCollector;
@@ -277,7 +278,7 @@ public abstract class CompositeFood
      */
     public void setServes(int durability)
     {
-        this.durability = durability;
+        this.durability = MathHelper.clamp(durability, 1, getMaxServes());
     }
 
     /**

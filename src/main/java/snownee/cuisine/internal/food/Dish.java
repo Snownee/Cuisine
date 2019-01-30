@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -344,6 +346,13 @@ public class Dish extends CompositeFood
 
                 // Compute side effects
 
+                Set<Material> materials = new HashSet<>();
+                int countMat = getIngredients().stream().map(Ingredient::getMaterial).collect(Collectors.toSet()).size();
+                int serves = DEFAULT_SERVE_AMOUNT;
+                if (countMat < 3)
+                {
+                    serves -= (2 - countMat) * 3 + rand.nextInt(3);
+                }
                 EffectCollector collector = new DefaultCookedCollector(DEFAULT_SERVE_AMOUNT);
 
                 int seasoningSize = 0;
