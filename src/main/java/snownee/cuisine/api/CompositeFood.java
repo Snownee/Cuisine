@@ -278,7 +278,7 @@ public abstract class CompositeFood
      */
     public void setServes(int durability)
     {
-        this.durability = MathHelper.clamp(durability, 1, getMaxServes());
+        this.durability = MathHelper.clamp(durability, 0, getMaxServes());
     }
 
     /**
