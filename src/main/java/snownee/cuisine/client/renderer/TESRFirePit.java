@@ -1,9 +1,5 @@
 package snownee.cuisine.client.renderer;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,17 +8,19 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import org.lwjgl.opengl.GL11;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.client.CulinaryRenderHelper;
 import snownee.cuisine.client.gui.CuisineGUI;
 import snownee.cuisine.client.renderer.HoloProfiles.HoloProfile;
-import snownee.cuisine.tiles.IHeatable;
+import snownee.cuisine.tiles.TileFirePit;
 
-public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends TileEntitySpecialRenderer<T>
+import java.util.List;
+
+public abstract class TESRFirePit<T extends TileFirePit> extends TileEntitySpecialRenderer<T>
 {
     @Override
     public void render(T tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
@@ -33,7 +31,7 @@ public abstract class TESRFirePit<T extends TileEntity & IHeatable> extends Tile
         if (CuisineConfig.CLIENT.showHoloGui && !mc.gameSettings.hideGUI)
         {
             HoloProfile profile = HoloProfiles.get(tile);
-            int heat = (int) tile.getHeatHandler().getHeat();
+            int heat = (int) tile.getHeatHandler().getBurnTime();
             boolean focusing = mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && mc.objectMouseOver.getBlockPos().equals(tile.getPos());
             float transparency = profile.update(focusing, heat, partialTicks);
             if (transparency > 0)

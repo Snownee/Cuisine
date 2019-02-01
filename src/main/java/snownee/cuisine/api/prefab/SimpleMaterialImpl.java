@@ -1,21 +1,22 @@
 package snownee.cuisine.api.prefab;
 
+import snownee.cuisine.api.Form;
+import snownee.cuisine.api.Material;
+import snownee.cuisine.api.MaterialCategory;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import snownee.cuisine.api.Form;
-import snownee.cuisine.api.Material;
-import snownee.cuisine.api.MaterialCategory;
-
 public class SimpleMaterialImpl implements Material
 {
-
     private final String id;
     private final int rawColor, cookedColor, waterValue, oilValue;
     private final float saturationModifier;
     private final EnumSet<MaterialCategory> categories;
+    private float boilHeat = 90;
+    private int boilTime = 150;
     private EnumSet<Form> validForms = EnumSet.noneOf(Form.class);
 
     public SimpleMaterialImpl(String id, int rawColor, int cookedColor, int waterValue, int oilValue, int heatValue)
@@ -55,6 +56,25 @@ public class SimpleMaterialImpl implements Material
     {
         this(id, rawColor, cookedColor, waterValue, oilValue, heatValue, foodSaturationModifier);
         this.categories.addAll(Arrays.asList(categories));
+    }
+
+    public SimpleMaterialImpl(String id, int rawColor, int cookedColor, int waterValue, int oilValue, int heatValue, float foodSaturationModifier, float boilHeat, int boilTime, MaterialCategory... categories)
+    {
+        this(id, rawColor, cookedColor, waterValue, oilValue, heatValue, foodSaturationModifier, categories);
+        this.boilHeat = boilHeat;
+        this.boilTime = boilTime;
+    }
+
+    @Override
+    public float getBoilHeat()
+    {
+        return boilHeat;
+    }
+
+    @Override
+    public int getBoilTime()
+    {
+        return boilTime;
     }
 
     @Override

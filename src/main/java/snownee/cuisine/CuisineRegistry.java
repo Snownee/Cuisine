@@ -154,6 +154,8 @@ public class CuisineRegistry implements IModule
 
     public static final ItemMod WOK = new ItemMod("wok");
 
+    public static final ItemMod FRYING_PAN = new ItemMod("frying_pan");
+
     public static final ItemManual MANUAL = new ItemManual("manual");
 
     public static final ItemModBoat BOAT = new ItemModBoat("boat");

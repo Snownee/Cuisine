@@ -1,15 +1,5 @@
 package snownee.cuisine.tiles;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,16 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.api.CookingStrategy;
-import snownee.cuisine.api.CookingStrategyProvider;
-import snownee.cuisine.api.CookingVessel;
-import snownee.cuisine.api.CulinaryCapabilities;
-import snownee.cuisine.api.CulinaryHub;
-import snownee.cuisine.api.CulinarySkillPoint;
-import snownee.cuisine.api.FoodContainer;
-import snownee.cuisine.api.Ingredient;
-import snownee.cuisine.api.Seasoning;
-import snownee.cuisine.api.Spice;
+import snownee.cuisine.api.*;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.client.gui.CuisineGUI;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
@@ -45,6 +26,11 @@ import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.network.PacketCustomEvent;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.network.NetworkChannel;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class TileWok extends TileFirePit implements CookingVessel
 {
@@ -81,9 +67,9 @@ public class TileWok extends TileFirePit implements CookingVessel
         super.update();
         if (!world.isRemote && status == Status.WORKING)
         {
-            if (builder != null && heatHandler.getLevel() > 0 && this.world.getTotalWorldTime() % 20 == 0)
+            if (builder != null && heatHandler.getHeatPower() > 0 && this.world.getTotalWorldTime() % 20 == 0)
             {
-                builder.apply(new Heating(heatHandler.getLevel()), this);
+                builder.apply(new Heating(heatHandler), this);
                 if (!builder.getIngredients().isEmpty())
                 {
                     requiresRefresh();
@@ -436,13 +422,13 @@ public class TileWok extends TileFirePit implements CookingVessel
 
     static final class Heating implements CookingStrategy<Dish.Builder>
     {
-        private int heatLevel;
+        private HeatHandler heatHandler;
         private int count = 0;
         private Dish.Builder builder;
 
-        Heating(int heatLevel)
+        Heating(HeatHandler heatHandler)
         {
-            this.heatLevel = heatLevel;
+            this.heatHandler = heatHandler;
         }
 
         @Override
@@ -459,20 +445,18 @@ public class TileWok extends TileFirePit implements CookingVessel
         @Override
         public void cook(Ingredient ingredient, CookingVessel vessel)
         {
-            if (heatLevel == 0)
-            {
+            if (heatHandler.getHeatPower() <= 0)
                 return;
-            }
+            double progress;
+            if (ingredient.getMaterial().getBoilHeat() <= heatHandler.getHeat())
+                progress = Math.pow(ingredient.getMaterial().getBoilHeat() - heatHandler.getHeat(), 2) / Math.pow(ingredient.getMaterial().getBoilHeat(), 2) + 1;
+            else
+                progress = 1 - Math.pow(ingredient.getMaterial().getBoilHeat() - heatHandler.getHeat(), 2) / Math.pow(ingredient.getMaterial().getBoilHeat(), 2);
             boolean enoughWater = builder.getWaterAmount() >= 200 || builder.getWaterAmount() / builder.getIngredients().size() >= 100;
-            int newDoneness = ingredient.getDoneness() + heatLevel;
+            int newDoneness = ingredient.getDoneness() + MathHelper.floor(MathHelper.clamp(progress, 0, ingredient.getMaterial().getBoilTime()));
             if (!(enoughWater && newDoneness > 110))
             {
                 ingredient.setDoneness(newDoneness);
-            }
-            if (++count > 1)
-            {
-                count = 0;
-                --heatLevel;
             }
         }
 

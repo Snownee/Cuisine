@@ -399,7 +399,9 @@ cuisine.gui.leaves.0=无法生长
 cuisine.gui.leaves.1=初长
 cuisine.gui.leaves.2=开花
 cuisine.gui.leaves.3=结果
-cuisine.gui.heat=热度：%d
+
+cuisine.gui.burn_time=剩余燃烧时间: %d
+cuisine.gui.heat=热度：%d°C
 cuisine.gui.water_amount=水含量：%d
 cuisine.gui.oil_amount=油含量：%d
 # < 0: suspended; [0, 1]: percentage; > 1: Using TOP progress bar;

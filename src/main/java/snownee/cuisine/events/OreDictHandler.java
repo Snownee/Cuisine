@@ -1,7 +1,5 @@
 package snownee.cuisine.events;
 
-import java.util.function.Consumer;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -16,6 +14,8 @@ import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemCrops;
 import snownee.cuisine.items.ItemMortar;
 import snownee.kiwi.item.IVariant;
+
+import java.util.function.Consumer;
 
 public class OreDictHandler
 {
@@ -127,6 +127,7 @@ public class OreDictHandler
         OreDictionary.registerOre("foodDrink", CuisineRegistry.BOTTLE);
         OreDictionary.registerOre("toolMortarandpestle", CuisineRegistry.ITEM_MORTAR);
         OreDictionary.registerOre("toolSkillet", CuisineRegistry.WOK);
+        OreDictionary.registerOre("toolSkillet", CuisineRegistry.FRYING_PAN);
         OreDictionary.registerOre("toolBakeware", CuisineRegistry.PLACED_DISH);
 
         // foodPickles

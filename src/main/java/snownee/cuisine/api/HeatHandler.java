@@ -11,4 +11,8 @@ public interface HeatHandler
     float getMaxHeat();
 
     void addHeat(float delta);
+
+    float getHeatPower();
+
+    float getMaxHeatPower();
 }

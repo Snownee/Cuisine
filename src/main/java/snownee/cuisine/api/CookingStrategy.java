@@ -9,7 +9,7 @@ public interface CookingStrategy<F extends CompositeFood.Builder<?>>
 
     /**
      * Begin the cooking procedure
-     * @param dish The incoming {@code CompositeFood} object at its initial
+     * @param food The incoming {@code CompositeFood} object at its initial
      *             state
      */
     void beginCook(final F food);

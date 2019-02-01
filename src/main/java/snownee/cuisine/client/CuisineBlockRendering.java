@@ -17,24 +17,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.client.model.ChoppingBoardModel;
-import snownee.cuisine.client.renderer.TESRBarbecueRack;
-import snownee.cuisine.client.renderer.TESRBasin;
-import snownee.cuisine.client.renderer.TESRChoppingBoard;
-import snownee.cuisine.client.renderer.TESRDrinkroBase;
-import snownee.cuisine.client.renderer.TESRDrinkroTank;
-import snownee.cuisine.client.renderer.TESRMortar;
-import snownee.cuisine.client.renderer.TESRWok;
+import snownee.cuisine.client.renderer.*;
 import snownee.cuisine.fluids.CuisineFluidBlocks;
 import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.tiles.TileBarbecueRack;
-import snownee.cuisine.tiles.TileBasin;
-import snownee.cuisine.tiles.TileChoppingBoard;
-import snownee.cuisine.tiles.TileDrinkroBase;
-import snownee.cuisine.tiles.TileDrinkroTank;
-import snownee.cuisine.tiles.TileMill;
-import snownee.cuisine.tiles.TileMortar;
-import snownee.cuisine.tiles.TileSqueezer;
-import snownee.cuisine.tiles.TileWok;
+import snownee.cuisine.tiles.*;
 import snownee.kiwi.client.ModelUtil;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
@@ -105,6 +91,7 @@ public final class CuisineBlockRendering
         ClientRegistry.bindTileEntitySpecialRenderer(TileMill.class, new AnimationTESR<>());
         ClientRegistry.bindTileEntitySpecialRenderer(TileChoppingBoard.class, new TESRChoppingBoard());
         ClientRegistry.bindTileEntitySpecialRenderer(TileWok.class, new TESRWok());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileFryingPan.class, new TESRFryingPan());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBarbecueRack.class, new TESRBarbecueRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSqueezer.class, new AnimationTESR<>());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBasin.class, new TESRBasin());

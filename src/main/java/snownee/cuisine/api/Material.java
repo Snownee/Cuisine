@@ -1,15 +1,20 @@
 package snownee.cuisine.api;
 
+import net.minecraft.util.math.MathHelper;
+
 import java.util.EnumSet;
 import java.util.Set;
 
-import net.minecraft.util.math.MathHelper;
-
 public interface Material
 {
-
+    /**
+     * @return Unique ID of this material
+     */
     String getID();
 
+    /**
+     * @return Whether form is any of this material's valid forms
+     */
     boolean isValidForm(Form form);
 
     /**
@@ -22,6 +27,16 @@ public interface Material
     int getRawColorCode();
 
     int getCookedColorCode();
+
+    /**
+     * @return Min temperature to start normal boiling, in Celsius(°C)
+     */
+    float getBoilHeat();
+
+    /**
+     * @return Time to be fully boiled into {@link IngredientTrait#OVERCOOKED}, in ticks
+     */
+    int getBoilTime();
 
     default int getColorCode(int doneness)
     {
