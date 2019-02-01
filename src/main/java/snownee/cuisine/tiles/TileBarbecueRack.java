@@ -1,8 +1,5 @@
 package snownee.cuisine.tiles;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -10,15 +7,21 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.api.CulinaryHub;
+import snownee.cuisine.api.Material;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.kiwi.util.NBTHelper;
 import snownee.kiwi.util.NBTHelper.Tag;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class TileBarbecueRack extends TileFirePit
 {
@@ -90,8 +93,7 @@ public class TileBarbecueRack extends TileFirePit
         {
             return;
         }
-        int heatLevel = heatHandler.getLevel();
-        if (heatLevel > 0)
+        if (heatHandler.getHeatPower() > 0)
         {
             for (int i = 0; i < 3; ++i)
             {
@@ -100,19 +102,33 @@ public class TileBarbecueRack extends TileFirePit
                 {
                     continue;
                 }
-                burnTime[i] += heatLevel;
+
                 if (stack.getItem() == CuisineRegistry.INGREDIENT)
                 {
+                    NBTHelper helper = NBTHelper.of(stack);
+                    double progress;
+                    Material material = CulinaryHub.API_INSTANCE.findMaterial(helper.getString(CuisineSharedSecrets.KEY_MATERIAL));
+                    if (material == null)
+                        progress = 1;
+                    else
+                    {
+                        if (material.getBoilHeat() <= heatHandler.getHeat())
+                            progress = Math.pow(material.getBoilHeat() - heatHandler.getHeat(), 2) / Math.pow(material.getBoilHeat(), 2) + 1;
+                        else
+                            progress = 1 - Math.pow(material.getBoilHeat() - heatHandler.getHeat(), 2) / Math.pow(material.getBoilHeat(), 2);
+                    }
+                    progress += MathHelper.floor(MathHelper.clamp(progress, 0, material == null ? 400 : material.getBoilTime()));
+                    burnTime[i] += (int) progress;
                     if (burnTime[i] >= 6)
                     {
                         burnTime[i] = 0;
-                        NBTHelper helper = NBTHelper.of(stack);
                         int doneness = helper.getInt(CuisineSharedSecrets.KEY_DONENESS);
-                        helper.setInt(CuisineSharedSecrets.KEY_DONENESS, ++doneness);
+                        helper.setInt(CuisineSharedSecrets.KEY_DONENESS, doneness + (int) progress);
                     }
                 }
                 else
                 {
+                    burnTime[i] += heatHandler.getLevel();
                     if (burnTime[i] >= 800)
                     {
                         burnTime[i] = 0;
