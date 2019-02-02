@@ -1,0 +1,12 @@
+{
+  "name": "Связь с разработчиками",
+  "sortnum": 99,
+  "icon": "minecraft:writable_book",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "text",
+      "text": "◦ Вы же не просто так заглянули в этот раздел? Полагаю, у вас есть потрясающие идеи о том, как можно улучшить $(em)Cuisine$()? А может вы просто решили сообщить о найденной ошибке? В таких случаях мы рассмотрим все ваши предложения, написанные здесь: $(l:https://github.com/Snownee/Cuisine/issues)Issue Tracker$() или, если вам удобней, здесь: $(l:https://discord.gg/KzGQW7a)https://discord.gg/KzGQW7a$()."
+    }
+  ]
+}

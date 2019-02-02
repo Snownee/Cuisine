@@ -27,7 +27,7 @@ item.cuisine.mortar.empty.name=Ступка
 item.cuisine.mortar.water.name=Ступка с водой
 item.cuisine.food.peanut.name=Арахис
 item.cuisine.food.sesame.name=Кунжут
-item.cuisine.food.rice.name=Рис	
+item.cuisine.food.rice.name=Рис
 item.cuisine.food.soybean.name=Соевые бобы
 item.cuisine.food.tomato.name=Помидор
 item.cuisine.food.chili.name=Перец чили
@@ -330,13 +330,13 @@ cuisine.spice.edible_oil=Пищевое масло
 cuisine.spice.rice_vinegar=Рисовый уксус
 cuisine.spice.fruit_vinegar=Плодово-ягодный уксус
 
-cuisine.drink.name=Напитки
+cuisine.drink.name=Напиток
 cuisine.smoothie.name=Смузи
 cuisine.smoothie.specific=Смузи из: %s
 cuisine.gelo.name=Лед
 cuisine.gelo.specific=%s со льдом
-cuisine.soda.name=Сода
-cuisine.soda.specific=%s сода
+cuisine.soda.name=Содовая
+cuisine.soda.specific=%s содовая
 
 # Easter egg, don't translate.
 cuisine.snownee.name=Snownee
@@ -440,7 +440,7 @@ cuisine.gui.jei.title.basin_throwing=Вымачивание
 cuisine.gui.jei.title.basin_boiling=Варка
 cuisine.gui.jei.title.firepit_fuel=Топливо для костра
 cuisine.gui.jei.brun_heat=Теплоотдача: %d
-cuisine.gui.jei.brun_level=Эффективность: %d
+cuisine.gui.jei.brun_level=Уровень: %d
 
 cuisine.manual.name=Книга шеф-повара
 cuisine.manual.subtitle=Пособие для чайников.

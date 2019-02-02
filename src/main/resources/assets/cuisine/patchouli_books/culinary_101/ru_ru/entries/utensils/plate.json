@@ -1,0 +1,23 @@
+{
+  "name": "Тарелка",
+  "icon": "cuisine:placed_dish",
+  "category": "utensils",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "text",
+      "text": "◦ Руками есть еду как-то неприлично. Но вы всегда можете воспользоваться тарелкой. $(br2)◦ Зажав шифт и правую кнопки мыши, вы поставите тарелку. Также, вы сможете съесть блюдо из поставленной тарелки, банально нажав правую кнопку мыши."
+    },
+    {
+      "type": "crafting",
+      "flag": "!mod:ceramics",
+      "recipe": "cuisine:plate"
+    },
+    {
+      "type": "crafting",
+      "flag": "mod:ceramics",
+      "recipe": "cuisine:plate",
+      "recipe2": "cuisine:compatibilities/ceramic_plate"
+    }
+  ]
+}
