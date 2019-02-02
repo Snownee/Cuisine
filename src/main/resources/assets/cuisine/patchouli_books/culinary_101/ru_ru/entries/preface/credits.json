@@ -1,0 +1,44 @@
+{
+  "name": "Авторы",
+  "sortnum": 0,
+  "icon": "minecraft:written_book",
+  "category": "preface",
+  "pages": [
+    {
+      "type": "cuisine:centered_text",
+      "lines": [
+        "§l- Дизайн -",
+        "Snownee",
+        "",
+        "§l- Программирование -",
+        "Snownee",
+        "3TUSK",
+        "",
+        "§l- Графика -",
+        "WZD",
+        "YurisCat",
+        "Snownee",
+        "",
+        "§l- Техническая помощь -",
+        "Seraph_JACK"
+      ]
+    },
+    {
+      "type": "cuisine:centered_text",
+      "lines": [
+        "",
+        "",
+        "",
+        "§l- Благодарность -",
+        "",
+        "",
+        "粉鱼",
+        "Lioness131",
+        "皮蛋",
+        "Cherls",
+        "idyllic_bean",
+        "鱼加盐有点咸"
+      ]
+    }
+  ]
+}

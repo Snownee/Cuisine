@@ -1,0 +1,11 @@
+{
+  "name": "Соль",
+  "icon": "cuisine:material:2",
+  "category": "seasonings",
+  "pages": [
+    {
+      "type": "text",
+      "text": ""
+    }
+  ]
+}
