@@ -423,7 +423,8 @@ cuisine.gui.leaves.0=Не сможет вырасти
 cuisine.gui.leaves.1=Созревание
 cuisine.gui.leaves.2=Цветение
 cuisine.gui.leaves.3=Плодоносность
-cuisine.gui.heat=Тепло: %d
+cuisine.gui.burn_time=Время горения: %d
+cuisine.gui.heat=Температура: %d°C
 cuisine.gui.water_amount=Количество воды: %d
 cuisine.gui.oil_amount=Количество масла: %d
 # < 0: условный; [0, 1]: процент; > 1: использует TOP. индикатор прогресса;
