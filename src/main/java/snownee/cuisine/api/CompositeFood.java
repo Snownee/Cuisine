@@ -18,6 +18,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import snownee.cuisine.api.CulinaryHub.CommonEffects;
 import snownee.cuisine.api.prefab.DefaultConsumedCollector;
@@ -34,7 +35,7 @@ public abstract class CompositeFood
      * number of eight (8). This means that this CompositeFood can be eaten
      * eight (8) times.
      */
-    private static final int DEFAULT_SERVE_AMOUNT = 8;
+    protected static final int DEFAULT_SERVE_AMOUNT = 8;
 
     /**
      * The default maximum amount of each serves, which determines food amount
@@ -83,7 +84,7 @@ public abstract class CompositeFood
      */
     private int durability;
 
-    private final int maxServeSize;
+    private int maxServeSize;
 
     /**
      * Construct a CompositeFood instance from given lists of ingredients, of seasonings
@@ -277,7 +278,7 @@ public abstract class CompositeFood
      */
     public void setServes(int durability)
     {
-        this.durability = durability;
+        this.durability = MathHelper.clamp(durability, 0, getMaxServes());
     }
 
     /**
@@ -287,6 +288,11 @@ public abstract class CompositeFood
     public int getMaxServes()
     {
         return maxServeSize;
+    }
+
+    public void setMaxServes(int maxServes)
+    {
+        this.maxServeSize = maxServes;
     }
 
     public float getUseDurationModifier()

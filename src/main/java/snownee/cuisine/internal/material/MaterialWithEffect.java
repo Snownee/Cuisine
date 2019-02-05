@@ -30,8 +30,14 @@ public class MaterialWithEffect extends SimpleMaterialImpl
         this.effect = effect;
     }
 
+    public MaterialWithEffect(String id, Effect effect, int rawColor, int cookedColor, int waterValue, int oilValue, int heatValue, float foodSaturationModifier, float boilHeat, int boilTime, MaterialCategory... categories)
+    {
+        super(id, rawColor, cookedColor, waterValue, oilValue, heatValue, foodSaturationModifier, boilHeat, boilTime, categories);
+        this.effect = effect;
+    }
+
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
     {
         if (ingredient.hasTrait(IngredientTrait.UNDERCOOKED) || ingredient.hasTrait(IngredientTrait.OVERCOOKED))
         {

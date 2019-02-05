@@ -1,4 +1,4 @@
-package snownee.cuisine.api.prefab;
+package snownee.cuisine.debug;
 
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;

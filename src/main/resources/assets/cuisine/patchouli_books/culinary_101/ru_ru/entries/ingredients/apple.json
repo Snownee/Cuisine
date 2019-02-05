@@ -1,0 +1,11 @@
+{
+  "name": "Яблоко",
+  "icon": "minecraft:apple",
+  "category": "ingredients",
+  "pages": [
+    {
+      "type": "text",
+      "text": "◦ В разработке."
+    }
+  ]
+}

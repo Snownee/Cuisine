@@ -12,11 +12,11 @@ public class MaterialRice extends SimpleMaterialImpl
 {
     public MaterialRice(String id)
     {
-        super(id, -4671304, 0, 1, 1, 2, 2F, MaterialCategory.GRAIN);
+        super(id, -4671304, 0, 1, 20, 2, 2F, MaterialCategory.GRAIN);
     }
 
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
     {
         collector.addEffect(DefaultTypes.USE_DURATION_MODIFIER, -0.75F);
     }

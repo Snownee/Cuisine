@@ -1,11 +1,5 @@
 package snownee.cuisine.plugins.patchouli;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -28,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
@@ -43,6 +38,10 @@ import vazkii.patchouli.client.book.text.BookTextParser.FunctionProcessor;
 import vazkii.patchouli.common.book.Book;
 import vazkii.patchouli.common.book.BookRegistry;
 import vazkii.patchouli.common.util.ItemStackUtil.StackWrapper;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
@@ -177,6 +176,7 @@ public class PatchouliClientHandler implements IResourceManagerReloadListener
             registerMapping(book, new ItemStack(CuisineRegistry.FIRE_PIT, 1, 0), "utensils/fire_pit");
             registerMapping(book, new ItemStack(CuisineRegistry.FIRE_PIT, 1, 1), "utensils/wok");
             registerMapping(book, new ItemStack(CuisineRegistry.FIRE_PIT, 1, 2), "utensils/bbq_rack");
+            registerMapping(book, new ItemStack(CuisineRegistry.FIRE_PIT, 1, 3), "utensils/frying_pan");
 
             registerSubtypesMapping(book, CuisineRegistry.SHEARED_LEAVES, "misc/fruit_trees");
             registerSubtypesMapping(book, CuisineRegistry.SAPLING, "misc/fruit_trees");

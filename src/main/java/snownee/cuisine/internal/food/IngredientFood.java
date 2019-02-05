@@ -73,7 +73,7 @@ public class IngredientFood extends CompositeFood
     @Override
     public Collection<String> getKeywords()
     {
-        return Collections.emptyList();
+        return Collections.singletonList("ingredient");
     }
 
     @Override
@@ -94,4 +94,9 @@ public class IngredientFood extends CompositeFood
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public int getMaxServes()
+    {
+        return 1;
+    }
 }

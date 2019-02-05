@@ -8,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import snownee.cuisine.Cuisine;
-import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.EffectCollector;
@@ -40,7 +38,7 @@ public class DefaultConsumedCollector implements EffectCollector
             return;
         }
         boolean cure_potions = food.contains(CulinaryHub.CommonEffects.CURE_POTIONS);
-        boolean resistance = player.isPotionActive(CuisineRegistry.EFFECT_RESISTANCE);
+        boolean resistance = player.isPotionActive(CulinaryHub.API_INSTANCE.getEffectResistancePotion());
 
         int maxDuration = 0;
         for (Entry<Potion, PotionEffectInfo> entry : mapPotions.entrySet())
@@ -61,7 +59,7 @@ public class DefaultConsumedCollector implements EffectCollector
         }
         if (maxDuration > 0)
         {
-            player.addPotionEffect(new PotionEffect(CuisineRegistry.EFFECT_RESISTANCE, (int) (maxDuration * durationModifier * 2), 0, true, false));
+            player.addPotionEffect(new PotionEffect(CulinaryHub.API_INSTANCE.getEffectResistancePotion(), (int) (maxDuration * durationModifier * 2), 0, true, false));
         }
     }
 
@@ -102,7 +100,7 @@ public class DefaultConsumedCollector implements EffectCollector
         }
         else
         {
-            Cuisine.logger.error("Try to add an uncaught effect: ", effect);
+            System.err.println(String.format("Try to add an uncaught effect: %s", effect));
         }
     }
 
@@ -125,7 +123,7 @@ public class DefaultConsumedCollector implements EffectCollector
         }
         else
         {
-            Cuisine.logger.error("Try to clear an uncaught type: ", type);
+            System.err.println(String.format("Try to clear an uncaught type: %s", type));
         }
     }
 

@@ -7,9 +7,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.api.HeatHandler;
 import snownee.cuisine.blocks.BlockFirePit;
 import snownee.kiwi.tile.TileBase;
+
+import javax.annotation.Nonnull;
 
 public class TileFirePit extends TileBase implements ITickable, IHeatable
 {
@@ -17,7 +18,7 @@ public class TileFirePit extends TileBase implements ITickable, IHeatable
 
     public TileFirePit()
     {
-        heatHandler = new FuelHeatHandler();
+        heatHandler = new FuelHeatHandler(0, 230, 3, 0.6f);
     }
 
     @Override
@@ -27,6 +28,10 @@ public class TileFirePit extends TileBase implements ITickable, IHeatable
         {
             heatHandler.setHeat(data.getFloat("heat"));
         }
+        if (data.hasKey("burnTime", Constants.NBT.TAG_FLOAT))
+        {
+            heatHandler.setBurnTime(data.getFloat("burnTime"));
+        }
         super.readFromNBT(data);
     }
 
@@ -34,6 +39,7 @@ public class TileFirePit extends TileBase implements ITickable, IHeatable
     public NBTTagCompound writeToNBT(NBTTagCompound data)
     {
         data.setFloat("heat", heatHandler.getHeat());
+        data.setFloat("burnTime", heatHandler.getBurnTime());
         return super.writeToNBT(data);
     }
 
@@ -44,18 +50,26 @@ public class TileFirePit extends TileBase implements ITickable, IHeatable
         {
             heatHandler.setHeat(data.getFloat("heat"));
         }
+        if (data.hasKey("burnTime", Constants.NBT.TAG_FLOAT))
+        {
+            heatHandler.setBurnTime(data.getFloat("burnTime"));
+        }
     }
 
+    @Nonnull
     @Override
     protected NBTTagCompound writePacketData(NBTTagCompound data)
     {
         data.setFloat("heat", heatHandler.getHeat());
+        data.setFloat("burnTime", heatHandler.getBurnTime());
         return data;
     }
 
     @Override
     public void update()
     {
+        // https://minecraft.gamepedia.com/Biome#Temperature
+        heatHandler.setMinHeat(getWorld().getBiome(getPos()).getTemperature(getPos()) * 28);
         heatHandler.update(0);
     }
 
@@ -73,7 +87,7 @@ public class TileFirePit extends TileBase implements ITickable, IHeatable
     }
 
     @Override
-    public HeatHandler getHeatHandler()
+    public FuelHeatHandler getHeatHandler()
     {
         return heatHandler;
     }

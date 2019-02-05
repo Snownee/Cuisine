@@ -8,11 +8,19 @@ import snownee.cuisine.api.EffectType;
 public class DefaultCookedCollector implements EffectCollector
 {
     protected float durationModifier = 0F;
+    protected int serveAmount = 0;
+
+    public DefaultCookedCollector(int defaultServeAmount)
+    {
+        this.serveAmount = defaultServeAmount;
+    }
 
     @Override
     public void apply(CompositeFood food, EntityPlayer player)
     {
         food.setUseDurationModifier(1 + durationModifier);
+        food.setMaxServes(serveAmount);
+        food.setServes(serveAmount);
     }
 
     @Override
@@ -21,6 +29,10 @@ public class DefaultCookedCollector implements EffectCollector
         if (type == DefaultTypes.USE_DURATION_MODIFIER)
         {
             durationModifier += (Float) effect;
+        }
+        if (type == DefaultTypes.SERVE_AMOUNT)
+        {
+            serveAmount += (Integer) effect;
         }
     }
 
@@ -31,13 +43,20 @@ public class DefaultCookedCollector implements EffectCollector
         {
             return DefaultTypes.USE_DURATION_MODIFIER.cast(durationModifier);
         }
+        if (type == DefaultTypes.SERVE_AMOUNT)
+        {
+            return DefaultTypes.SERVE_AMOUNT.cast(serveAmount);
+        }
         return null;
     }
 
     @Override
     public <T> void clear(EffectType<T> type)
     {
-        durationModifier = 0F;
+        if (type == DefaultTypes.USE_DURATION_MODIFIER)
+        {
+            durationModifier = 0F;
+        }
     }
 
 }

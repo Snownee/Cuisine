@@ -1,9 +1,5 @@
 package snownee.cuisine.plugins.hwyla;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -17,6 +13,9 @@ import net.minecraft.world.World;
 import snownee.cuisine.tiles.TileFirePit;
 import snownee.cuisine.util.I18nUtil;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 final class CuisineWokProvider implements IWailaDataProvider
 {
 
@@ -27,6 +26,7 @@ final class CuisineWokProvider implements IWailaDataProvider
         if (accessor.getPlayer().isCreative() && accessor.getTileEntity() instanceof TileFirePit)
         {
             NBTTagCompound data = accessor.getNBTData();
+            tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.burn_time", data.getInteger("burnTime")));
             tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.heat", data.getInteger("heat")));
             // tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.water_amount", data.getInteger("water")));
             // tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.oil_amount", data.getInteger("oil")));
@@ -42,6 +42,7 @@ final class CuisineWokProvider implements IWailaDataProvider
         {
             TileFirePit tileFirePit = (TileFirePit) te;
             tag.setFloat("heat", tileFirePit.heatHandler.getHeat());
+            tag.setFloat("burnTime", tileFirePit.heatHandler.getBurnTime());
             // tag.setInteger("water", wok.getWaterAmount());
             // tag.setInteger("oil", wok.getOilAmount());
         }

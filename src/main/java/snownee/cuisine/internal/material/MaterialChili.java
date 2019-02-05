@@ -22,7 +22,7 @@ public class MaterialChili extends SimpleMaterialImpl
     }
 
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
     {
         if (dish.getEffects().contains(CulinaryHub.CommonEffects.HOT))
         {

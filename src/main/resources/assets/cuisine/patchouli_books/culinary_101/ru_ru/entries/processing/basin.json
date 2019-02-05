@@ -1,0 +1,157 @@
+{
+  "name": "Таз",
+  "icon": "cuisine:earthen_basin",
+  "category": "processing",
+  "pages": [
+    {
+      "type": "text",
+      "text": "◦ Таз - это устройство обработки. Он имеет 3 рабочих режима: $(l:processing/basin#heating)$(#5B537D)варка$()$(), $(l:processing/basin#squeezing)$(#5B537D)выжимание$()$() и $(l:processing/basin#throwing)$(#5B537D)вымачивание$()$().$(br2)◦ Однако, для кипячения следует использовать лишь $(#5B537D)глиняные$(). $(br2)◦ Щёлкнув правой кнопкой мыши по тазу, вы сможете положить в него предметы и жидкости или наоборот, забрать их."
+    },
+    {
+      "anchor": "throwing",
+      "type": "text",
+      "title": "Вымачивание",
+      "text": "◦ $(#5B537D)Вымачивание$() - достигается путем бросания определённых предметов в таз, которые смешаются с жидкостью, находящуюся в нём."
+    },
+    {
+      "anchor": "heating",
+      "type": "text",
+      "flag": "cuisine:enable_sunlight_heating",
+      "title": "Варка",
+      "text": "◦ $(#5B537D)Варка$() -  позволяет кипятить жидкость в тазу. Помните, что только $(#5B537D)глиняные тазы$() могут быть нагреты. Чтобы разогреть жидкость, вам потребуется источник тепла. Обычно такими являются лава и огонь, либо солнечный свет."
+    },
+    {
+      "anchor": "heating",
+      "type": "text",
+      "flag": "!cuisine:enable_sunlight_heating",
+      "title": "Варка",
+      "text": "◦ $(#5B537D)Варка$() -  позволяет кипятить жидкость в тазу. Помните, что только $(#5B537D)глиняные тазы$() могут быть нагреты. Чтобы разогреть жидкость, вам потребуется источник тепла. Обычно такими являются лава и огонь, либо солнечный свет."
+    },
+    {
+      "type": "multiblock",
+      "name": "Образец нагревания таза",
+      "multiblock": {
+        "pattern": [
+          [
+            "B"
+          ],
+          [
+            "S"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "offset": [
+          0,
+          1,
+          0
+        ],
+        "symmetrical": true,
+        "mapping": {
+          "B": "cuisine:earthen_basin",
+          "S": "minecraft:fire"
+        }
+      }
+    },
+    {
+      "anchor": "squeezing",
+      "type": "text",
+      "flag": "!cuisine:squeezer_uses_energy",
+      "title": "Выжимание",
+      "text": "◦ $(#5B537D)Выжимание$() - процесс, при котором вы сможете выжимать ингредиенты, установив поверх таза поршень или просто попрыгав на его содержимом.$(br2)◦ Для работы с выжиманием требуется $(#5B537D)редстоун сигнал$()."
+    },
+    {
+      "anchor": "squeezing",
+      "type": "text",
+      "flag": "cuisine:squeezer_uses_energy",
+      "title": "Выжимание",
+      "text": "◦ $(#5B537D)Выжимание$() - процесс, при котором вы сможете выжимать ингредиенты, установив поверх таза поршень или просто попрыгав на его содержимом.$(br2)◦ Для работы с выжиманием требуется $(#5B537D)редстоун сигнал$()."
+    },
+    {
+      "type": "multiblock",
+      "name": "Выжиматель",
+      "multiblock": {
+        "pattern": [
+          [
+            "P"
+          ],
+          [
+            "B"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "offset": [
+          0,
+          1,
+          0
+        ],
+        "symmetrical": true,
+        "mapping": {
+          "B": "cuisine:earthen_basin",
+          "P": "minecraft:piston[facing=down,extended=false]"
+        }
+      }
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:wooden_basin",
+      "text": "◦ В отличие от глиняного коллеги, у деревянного таза есть лишь один вид своей текстуры."
+    },
+    {
+      "type": "crafting",
+      "recipe": "cuisine:earthen_basin",
+      "text": "◦ А вот глиняные тазы можно с легкостью покрасить. $(br2)◦ Для этого, при его создании замените обычную терракоту на цветную керамику."
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:white_earthen_basin",
+      "recipe2": "cuisine:orange_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:magenta_earthen_basin",
+      "recipe2": "cuisine:light_blue_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:yellow_earthen_basin",
+      "recipe2": "cuisine:lime_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:pink_earthen_basin",
+      "recipe2": "cuisine:gray_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:light_gray_earthen_basin",
+      "recipe2": "cuisine:cyan_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:purple_earthen_basin",
+      "recipe2": "cuisine:blue_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:brown_earthen_basin",
+      "recipe2": "cuisine:green_earthen_basin"
+    },
+    {
+      "type": "crafting",
+      "title": "   ",
+      "recipe": "cuisine:red_earthen_basin",
+      "recipe2": "cuisine:black_earthen_basin"
+    }
+  ]
+}

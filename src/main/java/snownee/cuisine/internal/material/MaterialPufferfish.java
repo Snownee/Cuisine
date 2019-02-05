@@ -24,9 +24,9 @@ public class MaterialPufferfish extends MaterialWithEffect
     }
 
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
     {
-        super.onCooked(dish, ingredient, vessel, collector);
+        super.onMade(dish, ingredient, vessel, collector);
         ingredient.addEffect(CulinaryHub.CommonEffects.WATER_BREATHING);
     }
 

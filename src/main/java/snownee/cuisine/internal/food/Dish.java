@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -40,6 +42,7 @@ import snownee.cuisine.api.prefab.DefaultCookedCollector;
 import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.kiwi.util.NBTHelper;
 
 /**
  * Dish represents a specific food preparation which are made from combination of
@@ -171,12 +174,14 @@ public class Dish extends CompositeFood
         data.setInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL, dish.getFoodLevel());
         data.setFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, dish.getSaturationModifier());
         data.setInteger(CuisineSharedSecrets.KEY_SERVES, dish.getServes());
+        data.setInteger(CuisineSharedSecrets.KEY_MAX_SERVES, dish.getMaxServes());
         data.setFloat(CuisineSharedSecrets.KEY_USE_DURATION, dish.getUseDurationModifier());
         return data;
     }
 
     public static Dish deserialize(NBTTagCompound data)
     {
+        NBTHelper helper = NBTHelper.of(data);
         ArrayList<Ingredient> ingredients = new ArrayList<>();
         ArrayList<Seasoning> seasonings = new ArrayList<>();
         ArrayList<Effect> effects = new ArrayList<>();
@@ -207,38 +212,18 @@ public class Dish extends CompositeFood
             }
         }
 
-        int serves = 0;
-        if (data.hasKey(CuisineSharedSecrets.KEY_SERVES, Constants.NBT.TAG_INT))
-        {
-            serves = data.getInteger(CuisineSharedSecrets.KEY_SERVES);
-        }
-
-        float duration = 1;
-        if (data.hasKey(CuisineSharedSecrets.KEY_USE_DURATION, Constants.NBT.TAG_FLOAT))
-        {
-            duration = data.getFloat(CuisineSharedSecrets.KEY_USE_DURATION);
-        }
-
-        int foodLevel = 0;
-        if (data.hasKey(CuisineSharedSecrets.KEY_FOOD_LEVEL, Constants.NBT.TAG_INT))
-        {
-            foodLevel = data.getInteger(CuisineSharedSecrets.KEY_FOOD_LEVEL);
-        }
-
-        float saturation = 0;
-        if (data.hasKey(CuisineSharedSecrets.KEY_SATURATION_MODIFIER, Constants.NBT.TAG_FLOAT))
-        {
-            saturation = data.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
-        }
+        int serves = helper.getInt(CuisineSharedSecrets.KEY_SERVES);
+        int maxServes = helper.getInt(CuisineSharedSecrets.KEY_MAX_SERVES);
+        float duration = helper.getFloat(CuisineSharedSecrets.KEY_USE_DURATION, 1);
+        int foodLevel = helper.getInt(CuisineSharedSecrets.KEY_FOOD_LEVEL);
+        float saturation = helper.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
 
         Dish dish = new Dish(ingredients, seasonings, effects, foodLevel, saturation);
+        dish.setMaxServes(maxServes);
         dish.setServes(serves);
         dish.setUseDurationModifier(duration);
 
-        if (data.hasKey("type", Constants.NBT.TAG_STRING))
-        {
-            dish.setModelType(data.getString("type"));
-        }
+        dish.setModelType(helper.getString("type"));
 
         return dish;
     }
@@ -361,14 +346,21 @@ public class Dish extends CompositeFood
 
                 // Compute side effects
 
-                EffectCollector collector = new DefaultCookedCollector();
+                Set<Material> materials = new HashSet<>();
+                int countMat = getIngredients().stream().map(Ingredient::getMaterial).collect(Collectors.toSet()).size();
+                int serves = DEFAULT_SERVE_AMOUNT;
+                if (countMat < 3)
+                {
+                    serves -= (2 - countMat) * 3 + rand.nextInt(3);
+                }
+                EffectCollector collector = new DefaultCookedCollector(serves);
 
                 int seasoningSize = 0;
                 int waterSize = 0;
                 for (Seasoning seasoning : this.getSeasonings())
                 {
                     Spice spice = seasoning.getSpice();
-                    spice.onCooked(this, seasoning, vessel, collector);
+                    spice.onMade(this, seasoning, vessel, collector);
                     if (seasoning.hasKeyword("water"))
                     {
                         waterSize += seasoning.getSize();
@@ -407,7 +399,7 @@ public class Dish extends CompositeFood
                 }
                 for (Ingredient ingredient : this.getIngredients())
                 {
-                    ingredient.getMaterial().onCooked(this, ingredient, vessel, collector);
+                    ingredient.getMaterial().onMade(this, ingredient, vessel, collector);
                 }
 
                 this.completed = new Dish(this.getIngredients(), this.getSeasonings(), this.getEffects(), foodLevel, saturationModifier);

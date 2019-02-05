@@ -1,12 +1,6 @@
 package snownee.cuisine.plugins.top;
 
-import java.text.MessageFormat;
-
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ProbeMode;
-import mcjty.theoneprobe.api.TextStyleClass;
+import mcjty.theoneprobe.api.*;
 import mcjty.theoneprobe.apiimpl.styles.ProgressStyle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +13,8 @@ import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.tiles.TileBasinHeatable;
 import snownee.cuisine.tiles.TileFirePit;
 import snownee.cuisine.util.I18nUtil;
+
+import java.text.MessageFormat;
 
 public class CuisineMachineProvider implements IProbeInfoProvider
 {
@@ -38,6 +34,7 @@ public class CuisineMachineProvider implements IProbeInfoProvider
             if (tile instanceof TileFirePit)
             {
                 TileFirePit tileFirePit = (TileFirePit) tile;
+                probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.burnTime", tileFirePit.heatHandler.getBurnTime()));
                 probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.heat", tileFirePit.heatHandler.getHeat()));
                 // probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.water_amount", tileWok.getWaterAmount()));
                 // probeInfo.text(TextStyleClass.LABEL + I18nUtil.translate("gui.oil_amount", tileWok.getOilAmount()));

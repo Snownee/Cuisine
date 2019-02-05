@@ -19,7 +19,7 @@ public class MaterialChorusFruit extends SimpleMaterialImpl
     }
 
     @Override
-    public void onCooked(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
+    public void onMade(CompositeFood.Builder<?> dish, Ingredient ingredient, CookingVessel vessel, final EffectCollector collector)
     {
         ingredient.addEffect(CulinaryHub.CommonEffects.TELEPORT);
     }

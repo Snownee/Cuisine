@@ -55,6 +55,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
         setContainerItem(Items.GLASS_BOTTLE);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
@@ -74,6 +75,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack stack)
     {

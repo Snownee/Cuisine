@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import snownee.kiwi.util.definition.ItemDefinition;
@@ -312,4 +313,7 @@ public interface CuisineAPI
     @Nullable
     Ingredient findIngredient(@Nullable FluidStack fluid);
 
+    Potion getEffectResistancePotion();
+
+    FluidStack makeJuiceFluid(Material material, int amount);
 }

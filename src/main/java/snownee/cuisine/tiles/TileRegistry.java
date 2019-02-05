@@ -28,6 +28,7 @@ public final class TileRegistry
         GameRegistry.registerTileEntity(TileChoppingBoard.class, new ResourceLocation(Cuisine.MODID, "chopping_board"));
         GameRegistry.registerTileEntity(TileJar.class, new ResourceLocation(Cuisine.MODID, "jar"));
         GameRegistry.registerTileEntity(TileWok.class, new ResourceLocation(Cuisine.MODID, "wok"));
+        GameRegistry.registerTileEntity(TileFryingPan.class, new ResourceLocation(Cuisine.MODID, "frying_pan"));
         GameRegistry.registerTileEntity(TileBarbecueRack.class, new ResourceLocation(Cuisine.MODID, "barbecue_rack"));
         GameRegistry.registerTileEntity(TileDish.class, new ResourceLocation(Cuisine.MODID, "placed_dish"));
         GameRegistry.registerTileEntity(TileBasin.class, new ResourceLocation(Cuisine.MODID, "basin"));

@@ -23,7 +23,7 @@ public class MaterialTofu extends MaterialWithEffect
     }
 
     @Override
-    public void onCooked(Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
+    public void onMade(Builder<?> dish, Ingredient ingredient, CookingVessel vessel, EffectCollector collector)
     {
         removeBadTraits(ingredient);
         for (Ingredient i : dish.getIngredients())

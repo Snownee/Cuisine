@@ -393,7 +393,8 @@ cuisine.gui.leaves.0=Cannot grow
 cuisine.gui.leaves.1=Mature
 cuisine.gui.leaves.2=Flowering
 cuisine.gui.leaves.3=Fruited
-cuisine.gui.heat=Heat: %d
+cuisine.gui.burn_time=Burn Time: %d
+cuisine.gui.heat=Heat: %d°C
 cuisine.gui.water_amount=Water amount: %d
 cuisine.gui.oil_amount=Oil amount: %d
 # < 0: suspended; [0, 1]: percentage; > 1: Using TOP progress bar;

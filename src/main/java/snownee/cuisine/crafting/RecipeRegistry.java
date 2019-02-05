@@ -64,6 +64,7 @@ public class RecipeRegistry
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "rice_powder"), OreDictDefinition.of("foodRice"), CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.RICE_POWDER)));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "salt"), OreDictDefinition.of("dustCrudesalt"), CuisineRegistry.MATERIAL.getItemStack(Cuisine.Materials.SALT)));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "sesame_oil"), OreDictDefinition.of("cropSesame"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.SESAME_OIL, 20)));
+
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "oil_from_peanut"), OreDictDefinition.of("cropPeanut"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 100)));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "oil_from_rice"), OreDictDefinition.of("cropRice"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 20)));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "oil_from_rice_seed"), OreDictDefinition.of("seedRice"), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 20)));
@@ -72,6 +73,7 @@ public class RecipeRegistry
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "oil_from_melon_seed"), new ItemStack(Items.MELON_SEEDS), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 40)));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "oil_from_pumpkin_seed"), new ItemStack(Items.PUMPKIN_SEEDS), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 40)));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "oil_from_wheat_seed"), new ItemStack(Items.WHEAT_SEEDS), ItemStack.EMPTY, null, new FluidStack(CuisineFluids.EDIBLE_OIL, 20)));
+
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "soybean_milk"), OreDictDefinition.of("cropSoybean"), ItemStack.EMPTY, new FluidStack(FluidRegistry.WATER, 100), new FluidStack(CuisineFluids.SOY_MILK, 100)));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "bonemeal"), OreDictDefinition.of("bone"), new ItemStack(Items.DYE, 4, 15), null, null));
         Processing.MILLING.add(new Milling(new ResourceLocation(Cuisine.MODID, "prismarine_crystals"), new ItemStack(Items.PRISMARINE_SHARD), new ItemStack(Items.PRISMARINE_CRYSTALS), null, null));
