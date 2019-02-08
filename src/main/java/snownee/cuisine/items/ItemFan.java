@@ -18,7 +18,7 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.tiles.TileFirePit;
+import snownee.cuisine.tiles.heat.TileFirePit;
 import snownee.kiwi.item.ItemMod;
 
 public class ItemFan extends ItemMod

@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.blocks.BlockFirePit;
+import snownee.cuisine.blocks.heat.BlockFirePit;
 import snownee.cuisine.tiles.TileBasinHeatable;
-import snownee.cuisine.tiles.TileFirePit;
+import snownee.cuisine.tiles.heat.TileFirePit;
 import snownee.cuisine.util.I18nUtil;
 
 import java.text.MessageFormat;

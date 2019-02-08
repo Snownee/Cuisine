@@ -21,6 +21,10 @@ import snownee.cuisine.client.renderer.*;
 import snownee.cuisine.fluids.CuisineFluidBlocks;
 import snownee.cuisine.fluids.CuisineFluids;
 import snownee.cuisine.tiles.*;
+import snownee.cuisine.tiles.heat.TileFirePit;
+import snownee.cuisine.tiles.utensils.TileBarbecueRack;
+import snownee.cuisine.tiles.utensils.TileFryingPan;
+import snownee.cuisine.tiles.utensils.TileWok;
 import snownee.kiwi.client.ModelUtil;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
@@ -91,6 +95,7 @@ public final class CuisineBlockRendering
         ClientRegistry.bindTileEntitySpecialRenderer(TileMill.class, new AnimationTESR<>());
         ClientRegistry.bindTileEntitySpecialRenderer(TileChoppingBoard.class, new TESRChoppingBoard());
         ClientRegistry.bindTileEntitySpecialRenderer(TileWok.class, new TESRWok());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileFirePit.class, new TESRFirePit<>());
         ClientRegistry.bindTileEntitySpecialRenderer(TileFryingPan.class, new TESRFryingPan());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBarbecueRack.class, new TESRBarbecueRack());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSqueezer.class, new AnimationTESR<>());

@@ -1,6 +1,6 @@
-package snownee.cuisine.tiles;
+package snownee.cuisine.tiles.utensils;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -24,6 +24,8 @@ import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Dish;
 import snownee.cuisine.items.ItemSpiceBottle;
 import snownee.cuisine.network.PacketCustomEvent;
+import snownee.cuisine.tiles.heat.FuelHeatHandler;
+import snownee.cuisine.tiles.heat.HeatHandler;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.network.NetworkChannel;
 
@@ -32,8 +34,12 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class TileWok extends TileFirePit implements CookingVessel
+public class TileWok extends TileHeatingUtensil implements CookingVessel
 {
+    public TileWok()
+    {
+        super(new HeatHandler(0, 550, 0, 0.4f));
+    }
 
     public enum Status
     {
@@ -67,7 +73,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         super.update();
         if (!world.isRemote && status == Status.WORKING)
         {
-            if (builder != null && heatHandler.getHeatPower() > 0 && this.world.getTotalWorldTime() % 20 == 0)
+            if (builder != null && heatHandler.getHeat() > heatHandler.getMinHeat() && this.world.getTotalWorldTime() % 20 == 0)
             {
                 builder.apply(new Heating(heatHandler), this);
                 if (!builder.getIngredients().isEmpty())
@@ -88,7 +94,8 @@ public class TileWok extends TileFirePit implements CookingVessel
         return status;
     }
 
-    public void onActivated(EntityPlayerMP playerIn, EnumHand hand, EnumFacing facing)
+    @Override
+    public void onActivated(EntityPlayer playerIn, EnumHand hand, EnumFacing facing)
     {
         ItemStack heldThing = playerIn.getHeldItem(hand);
         switch (status)
@@ -169,7 +176,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         }
     }
 
-    private boolean cook(EntityPlayerMP player, EnumHand hand, ItemStack heldThing, EnumFacing facing)
+    private boolean cook(EntityPlayer player, EnumHand hand, ItemStack heldThing, EnumFacing facing)
     {
         Ingredient ingredient;
         if (heldThing.getItem() instanceof ItemSpiceBottle)
@@ -224,16 +231,6 @@ public class TileWok extends TileFirePit implements CookingVessel
                 player.sendStatusMessage(new TextComponentTranslation(I18nUtil.getFullKey("gui.cannot_add_more")), true);
                 return false;
             }
-        }
-        else if (FuelHeatHandler.isFuel(heldThing, true))
-        {
-            ItemStack remain = heatHandler.addFuel(heldThing);
-            if (!player.isCreative())
-            {
-                player.setHeldItem(hand, remain);
-            }
-            refresh();
-            return true;
         }
 
         return false;
@@ -422,11 +419,11 @@ public class TileWok extends TileFirePit implements CookingVessel
 
     static final class Heating implements CookingStrategy<Dish.Builder>
     {
-        private HeatHandler heatHandler;
+        private IHeatHandler heatHandler;
         private int count = 0;
         private Dish.Builder builder;
 
-        Heating(HeatHandler heatHandler)
+        Heating(IHeatHandler heatHandler)
         {
             this.heatHandler = heatHandler;
         }
@@ -445,13 +442,14 @@ public class TileWok extends TileFirePit implements CookingVessel
         @Override
         public void cook(Ingredient ingredient, CookingVessel vessel)
         {
-            if (heatHandler.getHeatPower() <= 0)
+            float boilHeat = ingredient.getMaterial().getBoilHeat();
+            if (heatHandler.getHeatPower() <= 0 && heatHandler.getHeat() < boilHeat / 2)
                 return;
             double progress;
-            if (ingredient.getMaterial().getBoilHeat() <= heatHandler.getHeat())
-                progress = Math.pow(ingredient.getMaterial().getBoilHeat() - heatHandler.getHeat(), 2) / Math.pow(ingredient.getMaterial().getBoilHeat(), 2) + 1;
+            if (boilHeat <= heatHandler.getHeat())
+                progress = Math.pow(boilHeat - heatHandler.getHeat(), 2) / Math.pow(boilHeat, 2) + 1;
             else
-                progress = 1 - Math.pow(ingredient.getMaterial().getBoilHeat() - heatHandler.getHeat(), 2) / Math.pow(ingredient.getMaterial().getBoilHeat(), 2);
+                progress = 1 - Math.pow(boilHeat - heatHandler.getHeat(), 2) / Math.pow(boilHeat, 2);
             boolean enoughWater = builder.getWaterAmount() >= 200 || builder.getWaterAmount() / builder.getIngredients().size() >= 100;
             int newDoneness = ingredient.getDoneness() + MathHelper.floor(MathHelper.clamp(progress, 0, ingredient.getMaterial().getBoilTime()));
             if (!(enoughWater && newDoneness > 110))

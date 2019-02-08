@@ -1,4 +1,4 @@
-package snownee.cuisine.tiles;
+package snownee.cuisine.tiles.utensils;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import snownee.cuisine.tiles.TileWok.SeasoningInfo;
+import snownee.cuisine.tiles.utensils.TileWok.SeasoningInfo;
 import snownee.kiwi.network.PacketMod;
 
 public class PacketWokSeasoningsUpdate implements PacketMod

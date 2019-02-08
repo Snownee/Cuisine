@@ -1,9 +1,5 @@
 package snownee.cuisine.client.renderer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,9 +11,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.internal.CuisineSharedSecrets;
-import snownee.cuisine.tiles.TileBarbecueRack;
+import snownee.cuisine.tiles.utensils.TileBarbecueRack;
 import snownee.kiwi.util.AABBUtil;
 import snownee.kiwi.util.NBTHelper;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
 {
@@ -77,7 +77,7 @@ public class TESRBarbecueRack extends TESRFirePit<TileBarbecueRack>
     {
         if (tile.isEmpty())
         {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         else
         {

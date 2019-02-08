@@ -1,7 +1,5 @@
 package snownee.cuisine.network;
 
-import java.util.Random;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -17,11 +15,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
-import snownee.cuisine.api.HeatHandler;
-import snownee.cuisine.tiles.FuelHeatHandler;
+import snownee.cuisine.api.IHeatHandler;
 import snownee.cuisine.tiles.TileJar;
-import snownee.cuisine.tiles.TileWok;
+import snownee.cuisine.tiles.heat.FuelHeatHandler;
+import snownee.cuisine.tiles.utensils.TileWok;
 import snownee.kiwi.network.PacketMod;
+
+import java.util.Random;
 
 public class PacketCustomEvent implements PacketMod
 {
@@ -105,7 +105,7 @@ public class PacketCustomEvent implements PacketMod
             if (te instanceof TileWok)
             {
                 ++((TileWok) te).actionCycle;
-                HeatHandler handler = ((TileWok) te).getHeatHandler();
+                IHeatHandler handler = ((TileWok) te).getHeatHandler();
                 if (handler instanceof FuelHeatHandler)
                 {
                     int level = ((FuelHeatHandler) handler).getLevel();

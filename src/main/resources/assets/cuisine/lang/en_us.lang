@@ -5,8 +5,6 @@ item.cuisine.kitchen_knife.tip=Left ot right click on chopping board to chop thi
 item.cuisine.iron_spatula.name=Iron Spatula
 item.cuisine.iron_spatula.tip=A cooking tool. Right click wok with this to stir-fry ingredients in that wok.
 item.cuisine.fan.name=Fan
-item.cuisine.wok.name=Wok
-item.cuisine.wok.tip=Wok is just a cooking vessel. Place it on a fire pit, dump ingredients in, and use Iron Spatula on it...
 item.cuisine.spice_bottle.name=Spice Bottle
 item.cuisine.spice_bottle.tip=Right click to pick fluid up, or dump seasonings into cooking vessel.
 item.cuisine.spice_bottle.filled.name=%s
@@ -70,10 +68,12 @@ item.cuisine.door.name=Citrus Door
 
 item.forge.bucketFilled.soy_milk=Soy Milk
 
+tile.cuisine.wok.name=Wok
+tile.cuisine.wok.tip=Wok is just a cooking vessel. Place it on a fire pit, dump ingredients in, and use Iron Spatula on it...
+tile.cuisine.frying_pan.name=Frying Pan
 tile.cuisine.mortar.name=Mortar
-tile.cuisine.fire_pit.0.name=Fire Pit
-tile.cuisine.fire_pit.1.name=Wok on a Fire Pit
-tile.cuisine.fire_pit.2.name=Barbecue Rack
+tile.cuisine.fire_pit.name=Fire Pit
+tile.cuisine.barbecue_rack.name=Barbecue Rack
 tile.cuisine.mill.name=Mill
 tile.cuisine.jar.name=Jar
 tile.cuisine.wooden_basin.name=Wooden Basin

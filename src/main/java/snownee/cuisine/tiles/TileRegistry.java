@@ -7,6 +7,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.tiles.heat.TileFirePit;
+import snownee.cuisine.tiles.utensils.TileBarbecueRack;
+import snownee.cuisine.tiles.utensils.TileFryingPan;
+import snownee.cuisine.tiles.utensils.TileWok;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
 public final class TileRegistry
@@ -23,6 +27,7 @@ public final class TileRegistry
     @SubscribeEvent
     public static void onBlockRegister(RegistryEvent.Register<Block> event)
     {
+        GameRegistry.registerTileEntity(TileFirePit.class, new ResourceLocation(Cuisine.MODID, "fire_pit"));
         GameRegistry.registerTileEntity(TileMortar.class, new ResourceLocation(Cuisine.MODID, "mortar"));
         GameRegistry.registerTileEntity(TileMill.class, new ResourceLocation(Cuisine.MODID, "mill"));
         GameRegistry.registerTileEntity(TileChoppingBoard.class, new ResourceLocation(Cuisine.MODID, "chopping_board"));

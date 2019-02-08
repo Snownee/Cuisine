@@ -1,6 +1,6 @@
 package snownee.cuisine.api;
 
-public interface FuelHandler
+public interface IFuelHandler
 {
     void update(float bonusRate);
 

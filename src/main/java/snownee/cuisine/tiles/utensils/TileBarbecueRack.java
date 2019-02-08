@@ -1,7 +1,6 @@
-package snownee.cuisine.tiles;
+package snownee.cuisine.tiles.utensils;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,11 +11,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.internal.CuisineSharedSecrets;
+import snownee.cuisine.tiles.heat.TileFirePit;
 import snownee.kiwi.util.NBTHelper;
 import snownee.kiwi.util.NBTHelper.Tag;
 
@@ -25,64 +24,42 @@ import javax.annotation.Nullable;
 
 public class TileBarbecueRack extends TileFirePit
 {
-    public final ItemStackHandler stacks;
     public int[] burnTime = new int[3];
     public boolean[] completed = new boolean[3];
     private boolean isEmpty;
 
     public TileBarbecueRack()
     {
-        stacks = new ItemStackHandler(4)
+        stacks = new BBQItemHandler();
+    }
+
+    public class BBQItemHandler extends FirePitItemHandler
+    {
+        public BBQItemHandler()
         {
-            @Override
-            public int getSlotLimit(int slot)
-            {
-                return 1;
-            }
+            super(4, 3);
+        }
 
-            @Override
-            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
-            {
-                if (!isItemValid(slot, stack))
-                {
-                    return stack;
-                }
-                if (slot == 3)
-                {
-                    return heatHandler.addFuel(stack);
-                }
-                return super.insertItem(slot, stack, simulate);
-            }
+        @Override public int getSlotLimit(int slot)
+        {
+            return 1;
+        }
 
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack)
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            for (int i = 0; i < 3; ++i)
             {
-                if (slot < 3)
+                ItemStack stack = getStackInSlot(i);
+                if (stack.isEmpty())
                 {
-                    return stack.getItem() == CuisineRegistry.INGREDIENT || FurnaceRecipes.instance().getSmeltingResult(stack).getItem() instanceof ItemFood;
-                }
-                else
-                {
-                    return FuelHeatHandler.isFuel(stack, true);
+                    burnTime[i] = 0;
+                    completed[i] = false;
                 }
             }
-
-            @Override
-            protected void onContentsChanged(int slot)
-            {
-                for (int i = 0; i < 3; ++i)
-                {
-                    ItemStack stack = getStackInSlot(i);
-                    if (stack.isEmpty())
-                    {
-                        burnTime[i] = 0;
-                        completed[i] = false;
-                    }
-                }
-                refreshEmpty();
-                refresh();
-            }
-        };
+            refreshEmpty();
+            refresh();
+        }
     }
 
     @Override
@@ -93,7 +70,7 @@ public class TileBarbecueRack extends TileFirePit
         {
             return;
         }
-        if (heatHandler.getHeatPower() > 0)
+        if (heatHandler.getHeat() / 2 > heatHandler.getMinHeat())
         {
             for (int i = 0; i < 3; ++i)
             {
@@ -152,7 +129,6 @@ public class TileBarbecueRack extends TileFirePit
     {
         super.readFromNBT(compound);
         NBTHelper helper = NBTHelper.of(compound);
-        stacks.deserializeNBT(helper.getTag("Items", true));
         refreshEmpty();
         if (helper.hasTag("burnTime", Tag.INT_ARRAY))
         {
@@ -187,7 +163,6 @@ public class TileBarbecueRack extends TileFirePit
             arr[i] = completed[i] ? 1 : 0;
         }
         tag.setIntArray("completed", arr);
-        tag.setTag("Items", this.stacks.serializeNBT());
         return tag;
     }
 

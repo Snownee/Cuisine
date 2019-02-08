@@ -2,54 +2,23 @@ package snownee.cuisine;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.EnumPlantType;
-import snownee.cuisine.blocks.BlockBamboo;
-import snownee.cuisine.blocks.BlockBambooPlant;
-import snownee.cuisine.blocks.BlockBasin;
-import snownee.cuisine.blocks.BlockBasinColored;
-import snownee.cuisine.blocks.BlockChoppingBoard;
-import snownee.cuisine.blocks.BlockCorn;
-import snownee.cuisine.blocks.BlockCuisineCrops;
-import snownee.cuisine.blocks.BlockDoubleCrops;
-import snownee.cuisine.blocks.BlockDrinkro;
-import snownee.cuisine.blocks.BlockFirePit;
-import snownee.cuisine.blocks.BlockJar;
-import snownee.cuisine.blocks.BlockMill;
-import snownee.cuisine.blocks.BlockModDoor;
-import snownee.cuisine.blocks.BlockModLeaves;
-import snownee.cuisine.blocks.BlockModLog;
-import snownee.cuisine.blocks.BlockModSapling;
-import snownee.cuisine.blocks.BlockModTrapdoor;
-import snownee.cuisine.blocks.BlockMortar;
-import snownee.cuisine.blocks.BlockPlacedDish;
-import snownee.cuisine.blocks.BlockShearedLeaves;
-import snownee.cuisine.blocks.BlockSqueezer;
-import snownee.cuisine.blocks.BlockTofu;
-import snownee.cuisine.items.ItemBasicFood;
-import snownee.cuisine.items.ItemBottle;
-import snownee.cuisine.items.ItemCrops;
-import snownee.cuisine.items.ItemDish;
-import snownee.cuisine.items.ItemDrink;
-import snownee.cuisine.items.ItemDrinkro;
-import snownee.cuisine.items.ItemEmptyPlate;
-import snownee.cuisine.items.ItemFan;
-import snownee.cuisine.items.ItemIngredient;
-import snownee.cuisine.items.ItemIronSpatula;
-import snownee.cuisine.items.ItemKitchenKnife;
-import snownee.cuisine.items.ItemManual;
-import snownee.cuisine.items.ItemModBoat;
-import snownee.cuisine.items.ItemModDoor;
-import snownee.cuisine.items.ItemMortar;
-import snownee.cuisine.items.ItemSpiceBottle;
+import snownee.cuisine.blocks.*;
+import snownee.cuisine.blocks.heat.BlockBarbecueRack;
+import snownee.cuisine.blocks.heat.BlockFirePit;
+import snownee.cuisine.blocks.utensils.BlockUtensil;
+import snownee.cuisine.items.*;
 import snownee.cuisine.potions.PotionDispersal;
 import snownee.cuisine.potions.PotionDrunk;
 import snownee.cuisine.potions.PotionSustainedRelease;
+import snownee.cuisine.tiles.utensils.TileFryingPan;
+import snownee.cuisine.tiles.utensils.TileWok;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.block.BlockMod;
 import snownee.kiwi.block.BlockModFence;
 import snownee.kiwi.block.BlockModFenceGate;
-import snownee.kiwi.item.ItemMod;
 import snownee.kiwi.item.ItemModVariantsNew;
 import snownee.kiwi.potion.PotionMod;
 import snownee.kiwi.util.definition.ItemDefinition;
@@ -97,6 +66,11 @@ public class CuisineRegistry implements IModule
     public static final ItemEmptyPlate EMPTY_PLATE = new ItemEmptyPlate(PLACED_DISH);
 
     public static final BlockFirePit FIRE_PIT = new BlockFirePit("fire_pit");
+    public static final BlockBarbecueRack BARBECUE_RACK = new BlockBarbecueRack("barbecue_rack");
+
+    // Utensils
+    public static final BlockUtensil WOK = new BlockUtensil("wok", TileWok::new, new AxisAlignedBB(0D, 0D, 0D, 1D, 0.225D, 1D));
+    public static final BlockUtensil FRYING_PAN = new BlockUtensil("frying_pan", TileFryingPan::new, new AxisAlignedBB(0d, 0d, 0d, 1d, 0.225d, 1d));
 
     public static final BlockChoppingBoard CHOPPING_BOARD = new BlockChoppingBoard("chopping_board");
 
@@ -152,10 +126,6 @@ public class CuisineRegistry implements IModule
 
     public static final ItemSpiceBottle SPICE_BOTTLE = new ItemSpiceBottle("spice_bottle");
 
-    public static final ItemMod WOK = new ItemMod("wok");
-
-    public static final ItemMod FRYING_PAN = new ItemMod("frying_pan");
-
     public static final ItemManual MANUAL = new ItemManual("manual");
 
     public static final ItemModBoat BOAT = new ItemModBoat("boat");
@@ -180,7 +150,6 @@ public class CuisineRegistry implements IModule
     public void init()
     {
         Item.getItemFromBlock(PLACED_DISH).setContainerItem(Item.getItemFromBlock(PLACED_DISH));
-        WOK.setCreativeTab(Cuisine.CREATIVE_TAB).setContainerItem(WOK);
         PLANKS.setCreativeTab(Cuisine.CREATIVE_TAB);
         TRAPDOOR.setCreativeTab(Cuisine.CREATIVE_TAB).setHardness(3.0F);
         FENCE.setCreativeTab(Cuisine.CREATIVE_TAB);
