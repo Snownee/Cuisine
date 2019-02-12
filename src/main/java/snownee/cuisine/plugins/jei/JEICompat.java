@@ -26,6 +26,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
@@ -87,7 +88,13 @@ public class JEICompat implements IModPlugin
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(CuisineRegistry.BOTTLE));
         registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.EMPOWERED_CITRON));
 
-        registry.addRecipes(BlockChoppingBoard.getSuitableCovers().stream().map(RecipeChoppingBoardWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
+        // Don't shove things into JEI when the recipe is not here.
+        if (ForgeRegistries.RECIPES.containsKey(new ResourceLocation(Cuisine.MODID, "chopping_board")))
+        {
+            registry.addRecipes(BlockChoppingBoard.getSuitableCovers().stream()
+                    .map(RecipeChoppingBoardWrapper::new)
+                    .collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
+        }
         registry.addRecipes(CuisineInternalGateway.INSTANCE.itemToSpiceMapping.keySet().stream().map(RecipeSpiceBottleFillingWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
         registry.addRecipes(CuisineInternalGateway.INSTANCE.oreDictToSpiceMapping.keySet().stream().map(OreDictDefinition::of).map(RecipeSpiceBottleFillingWrapper::new).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
 

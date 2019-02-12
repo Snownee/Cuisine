@@ -77,6 +77,14 @@ public class I18nUtil
      */
     public static String translateWithFormat(String key, Object... args)
     {
-        return new MessageFormat(translate(key), MinecraftForgeClient.getLocale()).format(args);
+        try
+        {
+            return new MessageFormat(translate(key), MinecraftForgeClient.getLocale()).format(args);
+        }
+        catch (IllegalArgumentException e)
+        {
+            Cuisine.logger.debug("Failed to format {} with arguments {}. Exception: {}", key, args, e);
+            return key;
+        }
     }
 }
