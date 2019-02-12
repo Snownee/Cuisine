@@ -12,7 +12,6 @@ import snownee.cuisine.items.*;
 import snownee.cuisine.potions.PotionDispersal;
 import snownee.cuisine.potions.PotionDrunk;
 import snownee.cuisine.potions.PotionSustainedRelease;
-import snownee.cuisine.tiles.utensils.TileFryingPan;
 import snownee.cuisine.tiles.utensils.TileWok;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
@@ -70,7 +69,7 @@ public class CuisineRegistry implements IModule
 
     // Utensils
     public static final BlockUtensil WOK = new BlockUtensil("wok", TileWok::new, new AxisAlignedBB(0D, 0D, 0D, 1D, 0.225D, 1D));
-    public static final BlockUtensil FRYING_PAN = new BlockUtensil("frying_pan", TileFryingPan::new, new AxisAlignedBB(0d, 0d, 0d, 1d, 0.225d, 1d));
+//    public static final BlockUtensil FRYING_PAN = new BlockUtensil("frying_pan", TileFryingPan::new, new AxisAlignedBB(0d, 0d, 0d, 1d, 0.225d, 1d));
 
     public static final BlockChoppingBoard CHOPPING_BOARD = new BlockChoppingBoard("chopping_board");
 

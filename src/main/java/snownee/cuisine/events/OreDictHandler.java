@@ -127,7 +127,7 @@ public class OreDictHandler
         OreDictionary.registerOre("foodDrink", CuisineRegistry.BOTTLE);
         OreDictionary.registerOre("toolMortarandpestle", CuisineRegistry.ITEM_MORTAR);
         OreDictionary.registerOre("toolSkillet", CuisineRegistry.WOK);
-        OreDictionary.registerOre("toolSkillet", CuisineRegistry.FRYING_PAN);
+//        OreDictionary.registerOre("toolSkillet", CuisineRegistry.FRYING_PAN);
         OreDictionary.registerOre("toolBakeware", CuisineRegistry.PLACED_DISH);
 
         // foodPickles
