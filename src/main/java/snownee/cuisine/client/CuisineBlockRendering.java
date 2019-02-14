@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
+import snownee.cuisine.client.model.ChoppingBoardColorProxy;
 import snownee.cuisine.client.model.ChoppingBoardModel;
 import snownee.cuisine.client.renderer.*;
 import snownee.cuisine.fluids.CuisineFluidBlocks;
@@ -30,6 +31,7 @@ public final class CuisineBlockRendering
     public static void onBlockColorsInit(ColorHandlerEvent.Block event)
     {
         BlockColors blockColors = event.getBlockColors();
+        blockColors.registerBlockColorHandler(ChoppingBoardColorProxy.INSTANCE, CuisineRegistry.CHOPPING_BOARD);
         blockColors.registerBlockColorHandler((state, blockAccess, pos, tintIndex) -> {
             if (tintIndex == 0)
             {
