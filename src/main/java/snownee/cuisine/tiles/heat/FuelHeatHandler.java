@@ -1,4 +1,4 @@
-package snownee.cuisine.tiles;
+package snownee.cuisine.tiles.heat;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -7,8 +7,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.CuisineRegistry;
-import snownee.cuisine.api.FuelHandler;
-import snownee.cuisine.api.HeatHandler;
+import snownee.cuisine.api.IFuelHandler;
 import snownee.kiwi.util.OreUtil;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
@@ -16,7 +15,7 @@ import snownee.kiwi.util.definition.OreDictDefinition;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FuelHeatHandler implements HeatHandler, FuelHandler
+public class FuelHeatHandler extends HeatHandler implements IFuelHandler
 {
     public static class FuelInfo
     {
@@ -77,19 +76,15 @@ public class FuelHeatHandler implements HeatHandler, FuelHandler
 
     private float encouragement = 0;
     private float burnTime = 0;
-    private float heat, minHeat, maxHeat, heatPower, radiation;
 
     public FuelHeatHandler()
     {
-        heat = 0;
-        minHeat = 0;
-        maxHeat = 0;
-        heatPower = 0;
-        radiation = 0;
+        super();
     }
 
     public FuelHeatHandler(float minHeat, float maxHeat, float heatPower, float radiation)
     {
+        super(minHeat, maxHeat, heatPower, radiation);
         this.minHeat = minHeat;
         this.maxHeat = maxHeat;
         this.heatPower = heatPower;
@@ -116,66 +111,6 @@ public class FuelHeatHandler implements HeatHandler, FuelHandler
         return getBurnTime() > 0 ? getMaxHeatPower() : 0;
     }
 
-    @Override
-    public float getMaxHeatPower()
-    {
-        return heatPower;
-    }
-
-    public void setHeatPower(float heatPower)
-    {
-        this.heatPower = heatPower;
-    }
-
-    public float getMinHeat()
-    {
-        return minHeat;
-    }
-
-    public void setMinHeat(float minHeat)
-    {
-        this.minHeat = minHeat;
-    }
-
-    public void setMaxHeat(float maxHeat)
-    {
-        this.maxHeat = maxHeat;
-    }
-
-    public float getRadiation()
-    {
-        return radiation;
-    }
-
-    public void setRadiation(float radiation)
-    {
-        this.radiation = radiation;
-    }
-
-    @Override
-    public float getHeat()
-    {
-        return heat;
-    }
-
-    @Override
-    public void setHeat(float heat)
-    {
-        this.heat = heat;
-    }
-
-    @Override
-    public float getMaxHeat()
-    {
-        return maxHeat;
-    }
-
-    @Override
-    public void addHeat(float delta)
-    {
-        heat = MathHelper.clamp(heat + delta, 0, getMaxHeat());
-    }
-
     public void encourage()
     {
         encouragement = MathHelper.clamp(encouragement + 0.5F, 0, 1);
@@ -195,10 +130,6 @@ public class FuelHeatHandler implements HeatHandler, FuelHandler
 
     public int getLevel()
     {
-        if (burnTime == 0)
-        {
-            return 0;
-        }
         return ((((int) (burnTime - 1) / 1000) + encouragement) > 0) ? 2 : 1;
     }
 

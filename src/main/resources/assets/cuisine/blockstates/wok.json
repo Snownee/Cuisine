@@ -2,10 +2,16 @@
 	"forge_marker": 1,
 	"defaults": {
 		"model": "cuisine:wok.obj",
-    "custom": { "flip-v": true },
-    "transform": "forge:default-block"
+		"custom": { "flip-v": true },
+		"transform": "forge:default-block"
 	},
 	"variants": {
-    "inventory": [{}]
+    	"inventory": [{}],
+		"facing": {
+			"north": { "y": 90  },
+			"south": { "y": 270 },
+			"west" : {          },
+			"east" : { "y": 180 }
+		}
 	}
 }

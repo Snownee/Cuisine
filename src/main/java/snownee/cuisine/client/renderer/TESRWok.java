@@ -1,12 +1,5 @@
 package snownee.cuisine.client.renderer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,13 +10,19 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.opengl.GL11;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.client.CulinaryRenderHelper;
 import snownee.cuisine.fluids.CuisineFluids;
-import snownee.cuisine.tiles.TileWok;
-import snownee.cuisine.tiles.TileWok.SeasoningInfo;
+import snownee.cuisine.tiles.utensils.TileWok;
+import snownee.cuisine.tiles.utensils.TileWok.SeasoningInfo;
 
-public class TESRWok extends TESRFirePit<TileWok>
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+public class TESRWok extends TESRHeatable<TileWok>
 {
     @Override
     public void render(TileWok tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
@@ -56,7 +55,7 @@ public class TESRWok extends TESRFirePit<TileWok>
                 int seed = stack.hashCode() + tile.actionCycle * 439;
 
                 GlStateManager.scale(0.5, 0.5, 0.5);
-                GlStateManager.translate(((seed % 100) - 50) / 150D, 0.5 + count / 1000D, ((seed % 56) - 28) / 84D);
+                GlStateManager.translate(((seed % 100) - 50) / 150D, 0.1 + count / 1000D, ((seed % 56) - 28) / 84D);
                 GlStateManager.rotate(360 * (seed % 943) / 943F, 0, 1, 0);
                 GlStateManager.rotate(90, 1, 0, 0);
 

@@ -1,6 +1,4 @@
-package snownee.cuisine.tiles;
-
-import javax.annotation.Nullable;
+package snownee.cuisine.tiles.utensils;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -18,6 +16,8 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.internal.CuisinePersistenceCenter;
 import snownee.kiwi.network.PacketMod;
+
+import javax.annotation.Nullable;
 
 public class PacketIncrementalWokUpdate implements PacketMod
 {

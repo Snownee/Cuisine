@@ -28,7 +28,7 @@ public class PlayerHandler
     {
         int oldLevel = SkillUtil.getLevel(event.getEntityPlayer(), event.getSkillPoint());
         int newLevel = SkillUtil.getLevel(event.getNewValue());
-        if (newLevel > oldLevel)
+        if (newLevel > oldLevel && !event.getEntityPlayer().getEntityWorld().isRemote)
         {
             NetworkChannel.INSTANCE.sendToPlayer(new PacketSkillLevelIncreased(event.getSkillPoint(), (short) oldLevel, (short) newLevel), (EntityPlayerMP) event.getEntityPlayer());
         }

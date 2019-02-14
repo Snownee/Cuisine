@@ -11,7 +11,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import snownee.cuisine.tiles.FuelHeatHandler.FuelInfo;
+import snownee.cuisine.tiles.heat.FuelHeatHandler.FuelInfo;
 import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.crafting.input.ProcessingInput;
 

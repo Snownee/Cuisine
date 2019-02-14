@@ -15,7 +15,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import snownee.cuisine.tiles.TileWok;
+import snownee.cuisine.tiles.utensils.TileWok;
 import snownee.cuisine.util.CuisineFakePlayer;
 
 public class BehaviorWokInteraction extends BehaviorDefaultDispenseItem

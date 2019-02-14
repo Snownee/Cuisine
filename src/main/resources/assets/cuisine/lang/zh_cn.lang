@@ -6,8 +6,6 @@ item.cuisine.iron_spatula.name=炒菜铲
 item.cuisine.iron_spatula.tip=右击锅翻炒菜品，使食物受热均匀
 item.cuisine.fan.name=扇子
 item.cuisine.fan.tip=能让火塘的火烧得更旺，但同时更耗费燃料。也可以吹走地面上的物品。
-item.cuisine.wok.name=锅
-item.cuisine.wok.tip=将食物倒入锅中进行烹饪。需要放置在火塘上
 item.cuisine.spice_bottle.name=调料瓶
 item.cuisine.spice_bottle.tip=右击液体或地上的物品可以装瓶，也可以将盛装的东西倒入锅或罐子
 item.cuisine.spice_bottle.filled.name=%s
@@ -71,10 +69,11 @@ item.cuisine.door.name=柑橘木门
 
 item.forge.bucketFilled.soy_milk=豆浆
 
+tile.cuisine.wok.name=锅
+tile.cuisine.wok.tip=将食物倒入锅中进行烹饪。需要放置在火塘上
 tile.cuisine.mortar.name=臼
-tile.cuisine.fire_pit.0.name=火塘
-tile.cuisine.fire_pit.1.name=火塘和铁锅
-tile.cuisine.fire_pit.2.name=烧烤架
+tile.cuisine.fire_pit.name=火塘
+tile.cuisine.barbecue_rack.name=烧烤架
 tile.cuisine.mill.name=磨
 tile.cuisine.jar.name=罐子
 tile.cuisine.wooden_basin.name=木盆

@@ -61,7 +61,7 @@ public class HoloProfiles
             icon2 = 0.8f;
         }
 
-        public float update(boolean focusing, int heat, float partialTicks)
+        public float update(boolean focusing, float minHeat, float heat, float maxHeat, float partialTicks)
         {
             if (focusing)
             {
@@ -72,26 +72,10 @@ public class HoloProfiles
                 focusingPos = BlockPos.ORIGIN;
             }
 
-            int level = 0;
-            if (heat > 0)
-            {
-                level = heat / 1000 + 1;
-            }
-            float target0 = 0.05f;
-            if (level > 0)
-            {
-                target0 = level == 1 ? 0 : -0.1f;
-            }
-            float target1 = 0.8f;
-            if (level > 1)
-            {
-                target1 = level == 2 ? 0 : -0.1f;
-            }
+            int level = 1;
+            float target0 = 0;
+            float target1 = heat / (maxHeat - minHeat) - 0.1f;
             float target2 = 1;
-            if (level > 1)
-            {
-                target2 = level == 3 ? 0 : 0.8f;
-            }
 
             float delta = partialTicks / 20;
             icon0 = chase(icon0, target0, delta * Math.abs(target0 - icon0));
@@ -99,21 +83,8 @@ public class HoloProfiles
             icon2 = chase(icon2, target2, delta * Math.abs(target2 - icon2));
 
             float targetMin, targetMax;
-            if (level < 2)
-            {
-                targetMin = 0;
-                targetMax = 1200;
-            }
-            else if (level == 2)
-            {
-                targetMin = 1000;
-                targetMax = 2200;
-            }
-            else
-            {
-                targetMin = 2000;
-                targetMax = 3000;
-            }
+            targetMin = minHeat;
+            targetMax = maxHeat;
             minProgress = chase(minProgress, targetMin, delta * Math.abs(targetMin - minProgress));
             maxProgress = chase(maxProgress, targetMax, delta * Math.abs(targetMax - maxProgress));
 

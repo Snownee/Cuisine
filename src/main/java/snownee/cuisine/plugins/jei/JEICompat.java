@@ -48,8 +48,8 @@ import snownee.cuisine.blocks.BlockChoppingBoard;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.items.ItemBasicFood;
 import snownee.cuisine.items.ItemMortar;
-import snownee.cuisine.tiles.FuelHeatHandler;
-import snownee.cuisine.tiles.FuelHeatHandler.FuelInfo;
+import snownee.cuisine.tiles.heat.FuelHeatHandler;
+import snownee.cuisine.tiles.heat.FuelHeatHandler.FuelInfo;
 import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
