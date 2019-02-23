@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 
 public class SpawnHandler
@@ -40,9 +41,8 @@ public class SpawnHandler
             playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, data);
         }
 
-        if (event.player instanceof EntityPlayerMP)
+        if (CuisineConfig.GENERAL.autoRecipeUnlocking && event.player instanceof EntityPlayerMP)
         {
-            // TODO DO YOU SERIOUSLY WANT TO DO THIS EVERY ITEM PLAYER LOGGED IN?!
             event.player.unlockRecipes(StreamSupport.stream(CraftingManager.REGISTRY.spliterator(), false)
                     .filter(r -> r.getRegistryName().getNamespace().equals(Cuisine.MODID))
                     .collect(Collectors.toList())
