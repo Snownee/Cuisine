@@ -1,6 +1,8 @@
 package snownee.cuisine.events;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
@@ -12,7 +14,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -28,6 +32,20 @@ import snownee.kiwi.util.definition.ItemDefinition;
 
 public class BetterHarvest
 {
+    /**
+     * A set of item registry name whose corresponding items will signal the BetterHarvest logic
+     * to not cancel the event for sake of preserving special right-clicking logic.
+     * <p>
+     * Currently, the only element inside this set is the name of Scythe from Tinkers' Construct,
+     * which has AOE harvesting logic.
+     * </p>
+     */
+    private static final Set<ResourceLocation> PASSING_ITEMS;
+
+    static
+    {
+        PASSING_ITEMS = Collections.singleton(new ResourceLocation("tconstruct", "scythe"));
+    }
 
     @SuppressWarnings("deprecation")
     @SubscribeEvent
@@ -42,12 +60,13 @@ public class BetterHarvest
         }
         IBlockState state = world.getBlockState(pos);
         Block block = state.getBlock();
-        boolean flag = block instanceof BlockCrops && ((BlockCrops) block).isMaxAge(state);
-        if (!flag)
-        {
-            flag = block instanceof BlockCuisineCrops && ((BlockCuisineCrops) block).isMaxAge(state, world, pos);
-        }
-        if (flag)
+        boolean isCrop = block instanceof BlockCrops && ((BlockCrops) block).isMaxAge(state);
+        // Equivalent to if (!isCrop) isCrop = ...;
+        // However - isCrop |= ... is NOT equivalent to the following. Specifically, |= does not have the short-circuiting
+        // logic as of the &&, ||, etc.
+        // Do not rewrite to |=.
+        isCrop = isCrop || block instanceof BlockCuisineCrops && ((BlockCuisineCrops) block).isMaxAge(state, world, pos);
+        if (isCrop)
         {
             if (Arrays.asList(CuisineConfig.GENERAL.betterHarvestBlacklist).contains(block.getRegistryName().toString()))
             {
@@ -72,9 +91,8 @@ public class BetterHarvest
                 {
                     fallbackSeed = block.getItem(world, pos, state);
                 }
-                for (int i = 0; i < drops.size(); i++)
-                {
-                    drop = drops.get(i);
+                for (ItemStack dropCandidate : drops) {
+                    drop = dropCandidate;
                     if (!player.canPlayerEdit(pos, event.getFace(), drop))
                     {
                         continue;
@@ -117,8 +135,11 @@ public class BetterHarvest
                     }
                 }
             }
-            event.setCancellationResult(EnumActionResult.SUCCESS);
-            event.setCanceled(true);
+            if (!PASSING_ITEMS.contains(player.getHeldItem(EnumHand.MAIN_HAND).getItem().getRegistryName()))
+            {
+                event.setCancellationResult(EnumActionResult.SUCCESS);
+                event.setCanceled(true);
+            }
         }
     }
 
