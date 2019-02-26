@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
@@ -171,8 +172,7 @@ public class BlockBasin extends BlockMod
             }
             else
             {
-                ItemStack heldCopy = ItemHandlerHelper.copyStackWithSize(held, 1); // do not modify the input
-                if (FluidUtil.getFluidHandler(heldCopy) != null)
+                if (held.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
                 {
                     FluidUtil.interactWithFluidHandler(playerIn, hand, worldIn, pos, facing);
                 }
