@@ -5,6 +5,7 @@ item.cuisine.kitchen_knife.tip=Left ot right click on chopping board to chop thi
 item.cuisine.iron_spatula.name=Iron Spatula
 item.cuisine.iron_spatula.tip=A cooking tool. Right click wok with this to stir-fry ingredients in that wok.
 item.cuisine.fan.name=Fan
+item.cuisine.fan.tip=Make firepit hotter and thus burning fuel even quicklier. Can also blow away things.
 item.cuisine.spice_bottle.name=Spice Bottle
 item.cuisine.spice_bottle.tip=Right click to pick fluid up, or dump seasonings into cooking vessel.
 item.cuisine.spice_bottle.filled.name=%s
@@ -163,6 +164,11 @@ cuisine.effect.water_breathing.name=Water Breathing
 cuisine.effect.water_breathing.tip=Water Breathing
 cuisine.effect.fermented_saltwort.name=Fermented Saltwort
 cuisine.effect.fermented_saltwort.tip=Fermented Saltwort
+cuisine.effect.sustained_release.name=Sustained Release
+cuisine.effect.cure_potions.name=Poison Curing
+cuisine.effect.heat_resistance.name=Heat Resistence
+cuisine.effect.cold_resistance.name=Cold Resistence
+cuisine.effect.spooky.name=Spooky
 
 cuisine.shape.full=%s
 cuisine.shape.cubed=%s Cube
@@ -207,7 +213,6 @@ cuisine.material.lemon=Lemon
 cuisine.material.grapefruit=Grapefruit
 cuisine.material.lime=Lime
 cuisine.material.empowered_citron=Empowered Citron
-cuisine.material.golden_carrot=Golden Carrot
 
 cuisine.material.chorus_fruit=Chorus Fruit
 cuisine.material.apple=Apple
