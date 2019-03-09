@@ -28,6 +28,7 @@ import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Effect;
 import snownee.cuisine.util.I18nUtil;
+import snownee.kiwi.Kiwi;
 import snownee.kiwi.client.AdvancedFontRenderer;
 import snownee.kiwi.util.Util;
 import vazkii.patchouli.client.book.BookEntry;
@@ -93,7 +94,8 @@ public class PatchouliClientHandler implements IResourceManagerReloadListener
         }
         catch (Exception e)
         {
-            Cuisine.logger.catching(e);
+            // Cuisine.logger is not initialized at this point. We have to use another one.
+            Kiwi.logger.debug("Cuisine failed to inject 3rd party marcos into Patchouli, exception:\n {}", e);
         }
     }
 
