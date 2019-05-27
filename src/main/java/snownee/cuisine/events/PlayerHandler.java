@@ -3,6 +3,7 @@ package snownee.cuisine.events;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.FoodStats;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
@@ -41,7 +42,13 @@ public class PlayerHandler
         {
             if (event.getEntity() instanceof EntityPlayer)
             {
-                ((EntityPlayer) event.getEntity()).foodStats = new CuisineFoodStats();
+                FoodStats oldFoodStats = ((EntityPlayer) event.getEntity()).foodStats;
+                FoodStats newFoodStats = new CuisineFoodStats();
+                newFoodStats.foodExhaustionLevel = oldFoodStats.foodExhaustionLevel;
+                newFoodStats.foodSaturationLevel = oldFoodStats.foodSaturationLevel;
+                newFoodStats.foodLevel = oldFoodStats.foodLevel;
+                newFoodStats.foodTimer = oldFoodStats.foodTimer;
+                ((EntityPlayer) event.getEntity()).foodStats = newFoodStats;
             }
         }
     }
