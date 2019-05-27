@@ -46,16 +46,16 @@ public class ItemFan extends ItemMod
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        double radius = 1.732 * 3;
+        double radius = 1.732 * 3; // 3 * Math.sqrt(3)
         double squareRadius = radius * radius;
         Vec3d look = player.getLookVec();
-        Vec3d posEye = player.getPositionEyes(1);
-        Vec3d posSource = posEye.subtract(look.scale(radius / 2));
-        for (EntityItem entity : worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(posEye.subtract(radius, radius, radius), posEye.add(radius, radius, radius))))
+        Vec3d eye = player.getPositionEyes(1);
+        Vec3d posSource = eye.subtract(look.scale(radius / 2));
+        for (EntityItem entity : worldIn.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(eye.x - radius, eye.y - radius, eye.z - radius, eye.x + radius, eye.y + radius, eye.z + radius)))
         {
             Vec3d posItem = entity.getPositionVector().add(0, entity.height / 2, 0);
             // 排除范围外的实体
-            double squareDistance = posEye.squareDistanceTo(posItem);
+            double squareDistance = eye.squareDistanceTo(posItem);
             if (squareDistance > squareRadius)
             {
                 continue;
@@ -75,13 +75,13 @@ public class ItemFan extends ItemMod
                 continue;
             }
             // 排除被方块阻挡的实体
-            RayTraceResult result = worldIn.rayTraceBlocks(posEye, lookItem, true, true, false);
+            RayTraceResult result = worldIn.rayTraceBlocks(eye, lookItem, true, true, false);
             if (result != null && result.typeOfHit == Type.BLOCK)
             {
                 continue;
             }
             // 对实体施加力
-            Vec3d force = posItem.subtract(posEye).normalize();
+            Vec3d force = posItem.subtract(eye).normalize();
             entity.addVelocity(force.x, force.y, force.z);
         }
         player.getCooldownTracker().setCooldown(this, 10);
