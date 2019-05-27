@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.5.1
+
+ - Juicing output is now configurable
+ - Auto-recipe unlocking is now configurable
+ - Squeezer can be disabled now
+ - Add config to prevent player from eating generic foods
+ - Fix fan causing crash
+ - Fix iris wood and biforest wood (from Natural Pledge) chopping board losing their colors
+ - Fix scythe from Tinkers' Construct is not compatible with Cuisine's better harvesting
+ - Fix food stats being reset on joining world
+ - Fix chopping board recipe still being shown in JEI even if removed
+ - Fix malformed translation causing crash
+ - Fix missing translation for some entries
+ - Fix juicer giving double output
+ - Fix RecipeFoodEmpty is not checking empty slots
+ - Fix crash if version of Patchouli is too low
+ - Update JEI version requirement
+
 ## 0.5.0
 
  - WARNING: this version will break some configs and scripts!
