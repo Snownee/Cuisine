@@ -1,18 +1,18 @@
 package snownee.cuisine.api.process.prefab;
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.Form;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.process.AbstractCuisineProcessingRecipe;
 import snownee.cuisine.api.process.BasinInteracting;
+
+import javax.annotation.Nullable;
+import java.util.Random;
 
 public class MaterialSqueezing extends AbstractCuisineProcessingRecipe implements BasinInteracting
 {
@@ -50,7 +50,7 @@ public class MaterialSqueezing extends AbstractCuisineProcessingRecipe implement
             return new Output(fluid, ItemStack.EMPTY);
         }
         int amount = fluid == null ? 0 : fluid.amount;
-        amount += 500;
+        amount += CuisineConfig.GENERAL.juiceSqueezingAmount;
         FluidStack outputFluid = CulinaryHub.API_INSTANCE.makeJuiceFluid(material, amount);
         return new Output(outputFluid, ItemStack.EMPTY);
     }

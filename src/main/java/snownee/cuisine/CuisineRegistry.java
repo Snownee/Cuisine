@@ -97,6 +97,8 @@ public class CuisineRegistry implements IModule
     public static final ItemEmptyPlate EMPTY_PLATE = new ItemEmptyPlate(PLACED_DISH);
 
     public static final BlockFirePit FIRE_PIT = new BlockFirePit("fire_pit");
+    
+//    public static final BlockUtensil FRYING_PAN = new BlockUtensil("frying_pan", TileFryingPan::new, new AxisAlignedBB(0d, 0d, 0d, 1d, 0.225d, 1d));
 
     public static final BlockChoppingBoard CHOPPING_BOARD = new BlockChoppingBoard("chopping_board");
 
@@ -154,7 +156,7 @@ public class CuisineRegistry implements IModule
 
     public static final ItemMod WOK = new ItemMod("wok");
 
-    public static final ItemMod FRYING_PAN = new ItemMod("frying_pan");
+//    public static final ItemMod FRYING_PAN = new ItemMod("frying_pan");
 
     public static final ItemManual MANUAL = new ItemManual("manual");
 

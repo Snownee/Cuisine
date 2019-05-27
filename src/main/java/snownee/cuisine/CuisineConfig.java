@@ -116,6 +116,10 @@ public final class CuisineConfig
 
         @Config.Name("WinePotionDurationModifier")
         public float winePotionDurationModifier = 1F;
+
+        @Config.Name("JuiceSqueezingAmount")
+        @Config.Comment("Juice squeezing amount in mB")
+        public int juiceSqueezingAmount = 250;
     }
 
     @Config.Comment("Config options of Cuisine Hardcore Mode.")
