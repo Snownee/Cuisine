@@ -21,6 +21,7 @@ import snownee.cuisine.command.CommandRegistry;
 import snownee.cuisine.crafting.DrinkBrewingRecipe;
 import snownee.cuisine.crafting.RecipeRegistry;
 import snownee.cuisine.events.BetterHarvest;
+import snownee.cuisine.events.DisableGenericFood;
 import snownee.cuisine.events.OreDictHandler;
 import snownee.cuisine.events.SpawnHandler;
 import snownee.cuisine.internal.CuisineInternalGateway;
@@ -101,6 +102,10 @@ public class Cuisine
         if (CuisineConfig.GENERAL.betterHarvest)
         {
             MinecraftForge.EVENT_BUS.register(new BetterHarvest());
+        }
+        if (CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.disableGenericFood)
+        {
+            MinecraftForge.EVENT_BUS.register(new DisableGenericFood());
         }
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(CuisineRegistry.MATERIAL, new BehaviorArmDispense());
         BehaviorWokInteraction behaviorWokInteraction = new BehaviorWokInteraction();

@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CookingVessel;
@@ -405,7 +406,7 @@ public class Drink extends CompositeFood
             {
                 modifier -= seasoning.getSize() * 0.2;
             }
-            else if (seasoning.getSpice() == CulinaryHub.CommonSpices.SOY_SAUCE || seasoning.getSpice() == CulinaryHub.CommonSpices.CHILI_POWDER || seasoning.getSpice() == CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER)
+            else if (CuisineConfig.HARDCORE.enable && CuisineConfig.HARDCORE.badSkillPunishment && (seasoning.getSpice() == CulinaryHub.CommonSpices.SOY_SAUCE || seasoning.getSpice() == CulinaryHub.CommonSpices.CHILI_POWDER || seasoning.getSpice() == CulinaryHub.CommonSpices.SICHUAN_PEPPER_POWDER))
             {
                 modifier = 0;
                 break;

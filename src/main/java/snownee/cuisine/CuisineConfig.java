@@ -179,6 +179,10 @@ public final class CuisineConfig
         @Config.Name("FoodLevelRetainRatio")
         public double foodLevelRetainRatio = 0.5;
 
+        @Config.Name("DisableGenericFood")
+        @Config.RequiresMcRestart
+        public boolean disableGenericFood = false;
+
         @Config.Comment("If HardcoreFoodLevel is enabled, food item that is listed here will NOT be affected.")
         @Config.LangKey("cuisine.config.hardcore.food_level_lose_blacklist")
         @Config.Name("FoodLevelDowngradeBlacklist")
