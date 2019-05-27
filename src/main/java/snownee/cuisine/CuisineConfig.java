@@ -94,6 +94,9 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean basinConvertingConcrete = true;
 
+        @Config.Name("EnableSqueezer")
+        public boolean enableSqueezer = true;
+
         @Config.Name("SqueezerUsesFE")
         @Config.RequiresMcRestart
         public int squeezerUsesFE = 0;

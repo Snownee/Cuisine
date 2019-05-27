@@ -26,6 +26,7 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.tiles.TileSqueezer;
 import snownee.kiwi.block.BlockMod;
 
@@ -60,7 +61,11 @@ public class BlockSqueezer extends BlockMod
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (pos.down().equals(fromPos))
+        if (!CuisineConfig.GENERAL.enableSqueezer)
+        {
+            world.setBlockState(pos, Blocks.PISTON.getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
+        }
+        else if (pos.down().equals(fromPos))
         {
             IBlockState fromState = world.getBlockState(fromPos);
             if (!(fromState.getBlock() instanceof BlockBasin))

@@ -35,6 +35,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.items.ItemBasicFood;
@@ -223,7 +224,7 @@ public class BlockBasin extends BlockMod
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        if (pos.up().equals(fromPos))
+        if (CuisineConfig.GENERAL.enableSqueezer && pos.up().equals(fromPos))
         {
             IBlockState fromState = worldIn.getBlockState(fromPos);
             if (fromState.getBlock() == Blocks.PISTON)
