@@ -20,6 +20,7 @@ import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Material;
 import snownee.cuisine.api.Spice;
+import snownee.cuisine.client.model.ChoppingBoardColorProxy;
 import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Drink;
 import snownee.kiwi.util.NBTHelper;
@@ -38,6 +39,7 @@ public final class CuisineItemRendering
     public static void onItemColorsInit(ColorHandlerEvent.Item event)
     {
         ItemColors itemColors = event.getItemColors();
+        itemColors.registerItemColorHandler(ChoppingBoardColorProxy.INSTANCE, CuisineRegistry.CHOPPING_BOARD);
         itemColors.registerItemColorHandler((stack, tintIndex) -> {
             if (tintIndex == 0)
             {
