@@ -8,12 +8,12 @@
     {
       "type": "text",
       "flag": "cuisine:enable_grass_seeds",
-      "text": "Ingredients gathering is just as important as cooking itself.$(br2)Most crops added by Cuisine may be found in the wild with $(em)approporaite climate$(). Crops such as wheat, peanuts, sesame and soybean may drop from breaking vanilla grass.$(br2)A certain ingredients may only be found in $(em)trades with villagers$()."
+      "text": "Ingredients gathering is just as important as cooking itself.$(br2)Most crops added by Cuisine may be found in the wild with $(em)appropriate climate$(). Crops such as wheat, peanuts, sesame and soybean may drop from breaking vanilla grass.$(br2)A certain ingredients may only be found in $(em)trades with villagers$()."
     },
     {
       "type": "text",
       "flag": "!cuisine:enable_grass_seeds",
-      "text": "Ingredients gathering is just as important as cooking itself.$(br2)Most crops added by Cuisine may be found in the wild with $(em)approporaite climate$().$(br2)A certain ingredients may only be found in $(em)trades with villagers$()."
+      "text": "Ingredients gathering is just as important as cooking itself.$(br2)Most crops added by Cuisine may be found in the wild with $(em)appropriate climate$().$(br2)A certain ingredients may only be found in $(em)trades with villagers$()."
     }
   ]
 }
