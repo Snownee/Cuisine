@@ -64,7 +64,7 @@ public class RecipeFoodEmpty extends AbstractDynamicShapedRecipe
     {
         ItemStack stack = inv.getStackInRowAndColumn(startX, startY);
         FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
+        if (container != null && checkEmpty(inv, startX, startY))
         {
             CompositeFood food = container.get();
             if (food != null)
