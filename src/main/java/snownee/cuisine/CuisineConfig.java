@@ -37,6 +37,11 @@ public final class CuisineConfig
             // No-op. Package-level access.
         }
 
+        @Config.Comment("Automatically unlock all recipes for all newly spawned players.")
+        @Config.LangKey("cuisine.config.general.auto_recipe_unlocking")
+        @Config.Name("AutoRecipeUnlocking")
+        public boolean autoRecipeUnlocking = true;
+
         @Config.Comment("Give player the manual of Cuisine Mod when they firstly spawn in world.")
         @Config.LangKey("cuisine.config.general.spawn_book")
         @Config.Name("SpawnBook")
