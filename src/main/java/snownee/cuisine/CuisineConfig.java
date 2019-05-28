@@ -57,6 +57,9 @@ public final class CuisineConfig
         @Config.Name("FruitDrops")
         public boolean fruitDrops = true;
 
+        @Config.Name("PassableLeaves")
+        public boolean passableLeaves = false;
+
         @Config.Comment("If true, bamboo can be used as a blowpipe which can shoot seeds.")
         @Config.LangKey("cuisine.config.general.bamboo_blowpipe")
         @Config.Name("BambooBlowpipe")

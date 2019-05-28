@@ -39,6 +39,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -63,6 +64,15 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
 
     private final ItemBasicFood.Variant fruit;
     private static int[] surroundings;
+    public static boolean passable = false;
+
+    static
+    {
+        if (Loader.isModLoaded("passableleaves") || CuisineConfig.GENERAL.passableLeaves)
+        {
+            passable = true;
+        }
+    }
 
     public BlockModLeaves(String name, ItemBasicFood.Variant fruit)
     {
@@ -502,7 +512,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState)
     {
-        if (entityIn != null && !(entityIn instanceof EntityItem))
+        if (!passable && entityIn != null && !(entityIn instanceof EntityItem))
         {
             super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
         }
