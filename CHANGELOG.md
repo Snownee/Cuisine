@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.2
+
+ - Collision box of leaves is now configurable
+ - Changed the parameters of mill's CraftTweaker support
+
 ## 0.5.1
 
  - Juicing output is now configurable
