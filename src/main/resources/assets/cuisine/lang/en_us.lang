@@ -407,7 +407,7 @@ cuisine.gui.progress=Progress:{0,choice,-1# suspended|0.0< {0,number,percent}|1.
 cuisine.gui.fluid_show=Fluid: %s * %d mB
 cuisine.gui.close=Close
 cuisine.gui.openLink=Discord
-cuisine.gui.welcome=Thanks for playing Cuisine!\nWe are still working hard on development, please keep tuned!\n\nTo start, garther all kinds of raw food materials, and build yourself some basic processing devices. We recommened to install JEI for recipes lookup.\n\nJoin our Discord to catch up latest news!
+cuisine.gui.welcome=Thanks for playing Cuisine!\n\nTo start, garther all kinds of raw food materials, and build yourself some basic processing devices.\n\nInstall Patchouli mod to unlock detailed information in this manual. We recommened to install JEI for recipes lookup.\n\nJoin our Discord to catch up latest news!
 cuisine.gui.chatRoomLink=https://discord.gg/KzGQW7a
 cuisine.gui.name_food=Edit food name
 cuisine.gui.wok_size_too_large=This dish is too heavy for you to stiring
@@ -420,7 +420,7 @@ cuisine.gui.jei.brun_heat=Burn Heat: %d
 cuisine.gui.jei.brun_level=Burn Level: %d
 
 cuisine.manual.name=Culinary 101
-cuisine.manual.subtitle=The Comprehensive Guide on Mastering Culinary Art
+cuisine.manual.subtitle=$(br)$(br)The Comprehensive Guide on Mastering Culinary Art
 cuisine.manual.featureInput=Special Item:
 cuisine.manual.container=Container:
 cuisine.manual.potionVege=Vege Juice: §2%s
