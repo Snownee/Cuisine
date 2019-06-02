@@ -410,8 +410,6 @@ cuisine.gui.close=关闭
 cuisine.gui.openLink=交流群
 cuisine.gui.openWiki=MCMOD百科
 cuisine.gui.welcome=感谢游玩料理工艺！\n\n模组仍在努力开发中，更多内容请关注后续更新！\n\n强烈推荐安装 Patchouli 模组解锁更详细的手册内容。相关物品配方可通过安装 JEI 模组查看。\n\n如果你想了解更多关于料理工艺的信息，欢迎加入我们的交流群：\n645696370
-cuisine.gui.chatRoomLink=https://jq.qq.com/?_wv=1027&k=5GXZnpl
-cuisine.gui.mcmodLink=https://www.mcmod.cn/class/1291.html
 cuisine.gui.name_food=编辑菜品名
 cuisine.gui.wok_size_too_large=这锅菜的分量大到你无法翻炒
 cuisine.gui.cannot_add_more=你不能添加更多食材了

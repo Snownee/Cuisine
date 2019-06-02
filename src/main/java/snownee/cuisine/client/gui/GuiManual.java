@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiScreen;
@@ -24,13 +25,23 @@ public class GuiManual extends GuiScreen
 
     private DrawableResource pageGrid;
 
-    private final String chatRoomURL = I18nUtil.translate("gui.chatRoomLink");
-    private final String mcmodWikiURL = I18nUtil.translate("gui.mcmodLink");
+    private final String chatRoomURL;
+    private final String mcmodWikiURL;
     private final String text = I18nUtil.translateWithEscape("gui.welcome");
 
     public GuiManual()
     {
         pageGrid = new DrawableResource(BOOK_GUI_TEXTURES, 0, 0, PAGE_WIDTH, PAGE_HEIGHT, 0, 0, 0, 0, 512, 256);
+        if (Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode().startsWith("zh"))
+        {
+            chatRoomURL = "https://jq.qq.com/?_wv=1027&k=5GXZnpl";
+            mcmodWikiURL = "https://www.mcmod.cn/class/1291.html";
+        }
+        else
+        {
+            chatRoomURL = "https://discord.gg/KzGQW7a";
+            mcmodWikiURL = "";
+        }
     }
 
     @Override

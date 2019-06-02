@@ -432,7 +432,6 @@ cuisine.gui.progress=Прогресс:{0,choice,-1# условный|0.0< {0,num
 cuisine.gui.fluid_show=Жидкость: %s * %d мБ
 cuisine.gui.openLink=Discord
 cuisine.gui.welcome=Спасибо за игру с нашим модом!\nМы все еще упорно работаем над его улучшением. Так что, пожалуйста, сохраняйте настрой!\n\nПрисоединяйтесь к нашему дискорд-серверу, чтобы быть в курсе всех новостей!
-cuisine.gui.chatRoomLink=https://discord.gg/KzGQW7a
 cuisine.gui.name_food=Именная еда
 cuisine.gui.wok_size_too_large=Данное блюдо слишком густое, чтобы его размешать
 cuisine.gui.cannot_add_more=Вы не можете add больше ингредиентов
