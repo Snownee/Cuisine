@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.3
+
+ - Add Patchouli compat info to the manual
+ - Hardcode hyperlinks
+
 ## 0.5.2
 
  - Collision box of leaves is now configurable
