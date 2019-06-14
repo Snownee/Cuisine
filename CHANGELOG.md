@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.4
+
+ - World gen dimensions is configurable
+ - Fix fence does not have hardness
+ - Fix citrus do not have rare quality
+ - Fix Drinkro fluid interaction crashing game
+
 ## 0.5.3
 
  - Add Patchouli compat info to the manual
