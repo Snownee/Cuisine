@@ -1,5 +1,6 @@
 package snownee.cuisine;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.EnumPlantType;
@@ -133,8 +134,8 @@ public class CuisineRegistry implements IModule
     public static final BlockModDoor DOOR = new BlockModDoor("door", Material.WOOD);
     public static final ItemModDoor ITEM_DOOR = new ItemModDoor(DOOR);
 
-    public static final BlockModFence FENCE = new BlockModFence("fence", PLANKS.getDefaultState());
-    public static final BlockModFenceGate FENCE_GATE = new BlockModFenceGate("fence_gate", PLANKS.getDefaultState());
+    public static final Block FENCE = new BlockModFence("fence", PLANKS.getDefaultState()).setHardness(2).setResistance(5);
+    public static final Block FENCE_GATE = new BlockModFenceGate("fence_gate", PLANKS.getDefaultState()).setHardness(2).setResistance(5);
 
     public static final ItemIronSpatula IRON_SPATULA = new ItemIronSpatula("iron_spatula");
 
