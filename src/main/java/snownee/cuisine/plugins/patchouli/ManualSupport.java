@@ -38,7 +38,7 @@ public class ManualSupport implements IModule
         PatchouliAPI.instance.setConfigFlag("cuisine:enable_axe_chopping", CuisineConfig.GENERAL.axeChopping);
         PatchouliAPI.instance.setConfigFlag("cuisine:enable_sunlight_heating", CuisineConfig.GENERAL.basinHeatingInDaylight);
         PatchouliAPI.instance.setConfigFlag("cuisine:enable_fruit_dropping", CuisineConfig.GENERAL.fruitDrops);
-        PatchouliAPI.instance.setConfigFlag("cuisine:enable_garden_world_gen", CuisineConfig.WORLD_GEN.cropsGenRate > 0);
+        PatchouliAPI.instance.setConfigFlag("cuisine:enable_garden_world_gen", CuisineConfig.WORLD_GEN.cropsGenRate > 0 && CuisineConfig.WORLD_GEN.cropsGenDimensions.length > 0);
         PatchouliAPI.instance.setConfigFlag("cuisine:enable_grass_seeds", CuisineConfig.GENERAL.basicSeedsWeight > 0);
         PatchouliAPI.instance.setConfigFlag("cuisine:drinkro_uses_energy", CuisineConfig.GENERAL.drinkroUsesFE > 0);
         PatchouliAPI.instance.setConfigFlag("cuisine:squeezer_uses_energy", CuisineConfig.GENERAL.squeezerUsesFE > 0);

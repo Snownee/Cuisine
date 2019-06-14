@@ -1,5 +1,6 @@
 package snownee.cuisine.world.gen;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
@@ -21,10 +22,10 @@ public class WorldGenCitrusTrees
     @SubscribeEvent
     public void decorateEvent(Decorate event)
     {
-        if (event.getType() == Decorate.EventType.TREE && event.getRand().nextInt(200) < CuisineConfig.WORLD_GEN.fruitTreesGenRate)
+        World world = event.getWorld();
+        if (event.getType() == Decorate.EventType.TREE && Arrays.binarySearch(CuisineConfig.WORLD_GEN.fruitTreesGenDimensions, world.provider.getDimension()) >= 0 && event.getRand().nextInt(200) < CuisineConfig.WORLD_GEN.fruitTreesGenRate)
         {
             Random rand = event.getRand();
-            World world = event.getWorld();
             BlockPos pos = event.getChunkPos().getBlock(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8);
             Biome biome = world.getBiome(pos);
             if (!biome.canRain() || biome.isSnowyBiome() || biome.decorator.treesPerChunk < 2 || biome.decorator.treesPerChunk > 10 || biome instanceof BiomeSwamp || rand.nextDouble() > biome.getDefaultTemperature())

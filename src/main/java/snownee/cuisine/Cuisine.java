@@ -1,5 +1,6 @@
 package snownee.cuisine;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 import org.apache.logging.log4j.Logger;
@@ -27,8 +28,8 @@ import snownee.cuisine.events.SpawnHandler;
 import snownee.cuisine.internal.CuisineInternalGateway;
 import snownee.cuisine.internal.capabilities.CulinarySkillCapability;
 import snownee.cuisine.internal.capabilities.FoodContainerCapability;
-import snownee.cuisine.items.BehaviorWokInteraction;
 import snownee.cuisine.items.BehaviorArmDispense;
+import snownee.cuisine.items.BehaviorWokInteraction;
 import snownee.cuisine.items.ItemCrops;
 import snownee.cuisine.network.CuisineGuiHandler;
 import snownee.cuisine.network.PacketCustomEvent;
@@ -41,11 +42,7 @@ import snownee.kiwi.item.IVariant;
 import snownee.kiwi.network.NetworkChannel;
 
 @Mod(
-        modid = Cuisine.MODID,
-        name = Cuisine.NAME,
-        version = "@VERSION_INJECT@",
-        useMetadata = true,
-        acceptedMinecraftVersions = "[1.12, 1.13)"
+        modid = Cuisine.MODID, name = Cuisine.NAME, version = "@VERSION_INJECT@", useMetadata = true, acceptedMinecraftVersions = "[1.12, 1.13)"
 )
 public class Cuisine
 {
@@ -62,7 +59,9 @@ public class Cuisine
         FluidRegistry.enableUniversalBucket();
     }
 
-    @SidedProxy(serverSide = "snownee.cuisine.server.CuisineServerProxy", clientSide = "snownee.cuisine.client.CuisineClientProxy")
+    @SidedProxy(
+            serverSide = "snownee.cuisine.server.CuisineServerProxy", clientSide = "snownee.cuisine.client.CuisineClientProxy"
+    )
     public static CuisineSidedProxy sidedDelegate;
 
     @Mod.InstanceFactory
@@ -124,15 +123,18 @@ public class Cuisine
             MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.SOYBEAN), CuisineConfig.GENERAL.basicSeedsWeight);
             MinecraftForge.addGrassSeed(CuisineRegistry.CROPS.getItemStack(ItemCrops.Variant.PEANUT), CuisineConfig.GENERAL.basicSeedsWeight);
         }
-        if (CuisineConfig.WORLD_GEN.cropsGenRate > 0)
+        Arrays.sort(CuisineConfig.WORLD_GEN.bamboosGenDimensions);
+        Arrays.sort(CuisineConfig.WORLD_GEN.fruitTreesGenDimensions);
+        Arrays.sort(CuisineConfig.WORLD_GEN.cropsGenDimensions);
+        if (CuisineConfig.WORLD_GEN.cropsGenRate > 0 && CuisineConfig.WORLD_GEN.cropsGenDimensions.length > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenGarden());
         }
-        if (CuisineConfig.WORLD_GEN.bamboosGenRate > 0)
+        if (CuisineConfig.WORLD_GEN.bamboosGenRate > 0 && CuisineConfig.WORLD_GEN.bamboosGenDimensions.length > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenBamboo());
         }
-        if (CuisineConfig.WORLD_GEN.fruitTreesGenRate > 0)
+        if (CuisineConfig.WORLD_GEN.fruitTreesGenRate > 0 && CuisineConfig.WORLD_GEN.fruitTreesGenDimensions.length > 0)
         {
             MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenCitrusTrees());
         }

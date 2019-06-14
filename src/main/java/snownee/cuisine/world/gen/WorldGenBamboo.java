@@ -1,5 +1,6 @@
 package snownee.cuisine.world.gen;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
@@ -22,7 +23,7 @@ public class WorldGenBamboo
     public void decorateEvent(Decorate event)
     {
         World worldIn = event.getWorld();
-        if (worldIn.provider.getDimension() == 0 && event.getType() == Decorate.EventType.TREE)
+        if (event.getType() == Decorate.EventType.TREE && Arrays.binarySearch(CuisineConfig.WORLD_GEN.bamboosGenDimensions, worldIn.provider.getDimension()) >= 0)
         {
             Random rand = event.getRand();
             BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 8, 128, rand.nextInt(16) + 8);

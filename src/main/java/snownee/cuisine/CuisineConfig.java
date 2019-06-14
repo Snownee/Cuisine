@@ -225,12 +225,20 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public int fruitTreesGenRate = 50;
 
+        @Config.Name("FruitTreesGenDimensions")
+        @Config.RequiresMcRestart
+        public int[] fruitTreesGenDimensions = new int[] { 0 };
+
         @Config.Comment("Generation rate of bamboo; larger value means higher generation rate; set to 0 to disable.")
         @Config.LangKey("cuisine.config.general.bamboos_gen_rate")
         @Config.Name("BamboosGenWeight")
         @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
         public int bamboosGenRate = 6;
+
+        @Config.Name("BamboosGenDimensions")
+        @Config.RequiresMcRestart
+        public int[] bamboosGenDimensions = new int[] { 0 };
 
         @Config.Name("LegacyBamboosGen")
         public boolean legacyBambooGen = false;
@@ -243,6 +251,10 @@ public final class CuisineConfig
         @Config.RangeInt(min = 0, max = 100)
         @Config.RequiresMcRestart
         public int cropsGenRate = 40;
+
+        @Config.Name("CropsGenDimensions")
+        @Config.RequiresMcRestart
+        public int[] cropsGenDimensions = new int[] { 0 };
     }
 
     @Config.Name("Client")
