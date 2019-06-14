@@ -51,6 +51,7 @@ import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.blocks.BlockModSapling.Type;
 import snownee.cuisine.items.ItemBasicFood;
+import snownee.cuisine.library.RarityManager;
 import snownee.cuisine.tiles.TileFruitTree;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.block.BlockMod;
@@ -91,8 +92,18 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     {
         if (event.getState().getBlock() == this && event.getState().getValue(AGE) == 3)
         {
-            event.getDrops().add(CuisineRegistry.BASIC_FOOD.getItemStack(fruit));
+            event.getDrops().add(getDrop(fruit));
         }
+    }
+
+    private static ItemStack getDrop(ItemBasicFood.Variant fruit)
+    {
+        ItemStack drop = CuisineRegistry.BASIC_FOOD.getItemStack(fruit);
+        if (RANDOM.nextInt(10) == 0)
+        {
+            RarityManager.setRarity(drop, drop.getRarity().ordinal() + 1);
+        }
+        return drop;
     }
 
     @Override
@@ -186,7 +197,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         if (state.getValue(AGE) == 3)
         {
             worldIn.setBlockState(pos, onPassiveGathered(worldIn, pos, state));
-            spawnAsEntity(worldIn, pos, CuisineRegistry.BASIC_FOOD.getItemStack(fruit));
+            spawnAsEntity(worldIn, pos, getDrop(fruit));
         }
         else
         {
@@ -340,11 +351,11 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
         {
             if (playerIn instanceof FakePlayer)
             {
-                StacksUtil.spawnItemStack(worldIn, pos, CuisineRegistry.BASIC_FOOD.getItemStack(fruit), true);
+                StacksUtil.spawnItemStack(worldIn, pos, getDrop(fruit), true);
             }
             else
             {
-                ItemHandlerHelper.giveItemToPlayer(playerIn, CuisineRegistry.BASIC_FOOD.getItemStack(fruit));
+                ItemHandlerHelper.giveItemToPlayer(playerIn, getDrop(fruit));
             }
             return true;
         }
@@ -561,7 +572,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
                     worldIn.setBlockState(pos2, onPassiveGathered(worldIn, pos2, state2));
                     if (worldIn.getGameRules().getBoolean("doTileDrops") && !worldIn.restoringBlockSnapshots) // do not drop items while restoring blockstates, prevents item dupe
                     {
-                        ItemStack stack = CuisineRegistry.BASIC_FOOD.getItemStack(ItemBasicFood.Variant.EMPOWERED_CITRON);
+                        ItemStack stack = getDrop(ItemBasicFood.Variant.EMPOWERED_CITRON);
                         if (captureDrops.get())
                         {
                             capturedDrops.get().add(stack);
