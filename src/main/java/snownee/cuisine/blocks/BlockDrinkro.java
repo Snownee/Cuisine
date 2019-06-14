@@ -33,6 +33,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -156,9 +157,10 @@ public class BlockDrinkro extends BlockModHorizontal
         if (held.getItem() != Items.GLASS_BOTTLE)
         {
             IFluidHandlerItem handler = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(held, 1));
-            if (handler != null)
+            IFluidHandler container = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+            if (handler != null && container != null)
             {
-                FluidUtil.interactWithFluidHandler(playerIn, hand, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing));
+                FluidUtil.interactWithFluidHandler(playerIn, hand, container);
                 return true;
             }
         }
