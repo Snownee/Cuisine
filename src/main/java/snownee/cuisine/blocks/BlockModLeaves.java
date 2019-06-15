@@ -552,6 +552,7 @@ public class BlockModLeaves extends BlockMod implements IGrowable, IShearable
     {
         if (!worldIn.isRemote && state.getBlock() == CuisineRegistry.LEAVES_CITRON && blockIn == Blocks.AIR && fromPos.equals(pos.up()) && worldIn.getBlockState(fromPos).getBlock() == Blocks.FIRE)
         {
+            worldIn.setBlockToAir(fromPos);
             boolean flag = false;
             for (Entity entity : worldIn.weatherEffects)
             {
