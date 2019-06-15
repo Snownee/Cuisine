@@ -48,7 +48,7 @@ public class CommandSkill extends CommandBase
         {
             throw new SyntaxErrorException(getUsage(sender));
         }
-        EntityPlayerMP player = server.getPlayerList().getPlayerByUsername(args[0]);
+        EntityPlayerMP player = getPlayer(server, sender, args[0]);
         if (player == null)
         {
             throw new EntityNotFoundException(args[0]);
@@ -118,14 +118,21 @@ public class CommandSkill extends CommandBase
         }
         else if (args.length == 3)
         {
-            EntityPlayerMP player = server.getPlayerList().getPlayerByUsername(args[0]);
-            if (player != null)
+            EntityPlayerMP player;
+            try
             {
-                CulinarySkillPointContainer cap = player.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
-                if (cap != null)
+                player = getPlayer(server, sender, args[0]);
+                if (player != null)
                 {
-                    return getListOfStringsMatchingLastWord(args, cap.getAvailableSkillPoints().stream().map(CulinarySkillPoint::toString).collect(Collectors.toList()));
+                    CulinarySkillPointContainer cap = player.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
+                    if (cap != null)
+                    {
+                        return getListOfStringsMatchingLastWord(args, cap.getAvailableSkillPoints().stream().map(CulinarySkillPoint::toString).collect(Collectors.toList()));
+                    }
                 }
+            }
+            catch (CommandException e)
+            {
             }
         }
         return Collections.emptyList();
