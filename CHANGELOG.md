@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.5
+
+ - Fix skill command does not support @s
+
 ## 0.5.4
 
  - World gen dimensions is configurable
