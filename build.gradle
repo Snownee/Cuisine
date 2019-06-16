@@ -11,6 +11,17 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        jcenter() {
+            url = 'http://jcenter.bintray.com/'
+        }
+        maven {
+            url 'http://repository.jboss.org/nexus/content/groups/public'
+        }
+    }
+}
+
 apply plugin: 'idea'
 apply plugin: 'net.minecraftforge.gradle.forge'
 
@@ -29,19 +40,19 @@ sourceCompatibility = targetCompatibility = '1.8'
 repositories {
     maven {
         name = "jei"
-        url = "http://dvs1.progwml6.com/files/maven"
+        url = "https://dvs1.progwml6.com/files/maven"
     }
     maven {
         name = 'tterrag maven'
-        url = "http://maven.tterrag.com/"
+        url = "https://maven.tterrag.com/"
     }
     maven {
         name = "jared"
-        url = "http://maven.blamejared.com"
+        url = "https://maven.blamejared.com"
     }
     maven {
         name = "tehnut"
-        url = "http://tehnut.info/maven"
+        url = "https://tehnut.info/maven"
     }
 
     flatDir {
