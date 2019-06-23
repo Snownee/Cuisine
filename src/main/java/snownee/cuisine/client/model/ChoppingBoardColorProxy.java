@@ -29,7 +29,11 @@ public final class ChoppingBoardColorProxy implements IItemColor, IBlockColor
     @Override
     public int colorMultiplier(ItemStack stack, int tintIndex)
     {
-        ItemStack cover = new ItemStack(NBTHelper.of(stack).getTag("BlockEntityTag.cover"));
+        final NBTTagCompound coverData = NBTHelper.of(stack).getTag("BlockEntityTag.cover");
+        if (coverData == null) {
+            return -1;
+        }
+        ItemStack cover = new ItemStack(coverData);
         if (cover.isEmpty())
         {
             return -1;
