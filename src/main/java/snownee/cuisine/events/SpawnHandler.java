@@ -21,24 +21,27 @@ public class SpawnHandler
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        // TODO Re-evaluate this part
-        NBTTagCompound playerData = event.player.getEntityData();
-        NBTTagCompound data;
-        if (playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
+        if (CuisineConfig.GENERAL.spawnBook)
         {
-            data = playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-        }
-        else
-        {
-            data = new NBTTagCompound();
-        }
+            // TODO Re-evaluate this part
+            NBTTagCompound playerData = event.player.getEntityData();
+            NBTTagCompound data;
+            if (playerData.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
+            {
+                data = playerData.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+            }
+            else
+            {
+                data = new NBTTagCompound();
+            }
 
-        String key = Cuisine.MODID + ":spawned_book";
-        if (!data.hasKey(key) || !data.getBoolean(key))
-        {
-            ItemHandlerHelper.giveItemToPlayer(event.player, new ItemStack(CuisineRegistry.MANUAL));
-            data.setBoolean(key, true);
-            playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, data);
+            String key = Cuisine.MODID + ":spawned_book";
+            if (!data.hasKey(key) || !data.getBoolean(key))
+            {
+                ItemHandlerHelper.giveItemToPlayer(event.player, new ItemStack(CuisineRegistry.MANUAL));
+                data.setBoolean(key, true);
+                playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, data);
+            }
         }
 
         if (CuisineConfig.GENERAL.autoRecipeUnlocking && event.player instanceof EntityPlayerMP)

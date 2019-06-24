@@ -94,10 +94,7 @@ public class Cuisine
         CuisineInternalGateway.deferredInit();
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new CuisineGuiHandler());
 
-        if (CuisineConfig.GENERAL.spawnBook)
-        {
-            MinecraftForge.EVENT_BUS.register(new SpawnHandler());
-        }
+        MinecraftForge.EVENT_BUS.register(new SpawnHandler());
         if (CuisineConfig.GENERAL.betterHarvest)
         {
             MinecraftForge.EVENT_BUS.register(new BetterHarvest());
