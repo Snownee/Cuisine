@@ -133,7 +133,7 @@ public final class CuisineConfig
         public int juiceSqueezingAmount = 250;
     }
 
-    @Config.Comment("Config options of Cuisine Hardcore Mode.")
+    @Config.Comment("Config options of Cuisine Hardcore Module.")
     @Config.LangKey("cuisine.config.hardcore")
     @Config.Name("Hardcore")
     public static final Hardcore HARDCORE = new Hardcore();
@@ -145,7 +145,7 @@ public final class CuisineConfig
             // No-op, package-level access.
         }
 
-        @Config.Comment("If true, hardcore mode will be turned on.")
+        @Config.Comment("If true, hardcore module will be turned on.")
         @Config.LangKey("cuisine.config.hardcore.enable")
         @Config.Name("Enable")
         @Config.RequiresMcRestart
