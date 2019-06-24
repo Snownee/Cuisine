@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -29,7 +30,11 @@ public final class ChoppingBoardColorProxy implements IItemColor, IBlockColor
     @Override
     public int colorMultiplier(ItemStack stack, int tintIndex)
     {
-        ItemStack cover = new ItemStack(NBTHelper.of(stack).getTag("BlockEntityTag.cover"));
+        final NBTTagCompound coverData = NBTHelper.of(stack).getTag("BlockEntityTag.cover");
+        if (coverData == null) {
+            return -1;
+        }
+        ItemStack cover = new ItemStack(coverData);
         if (cover.isEmpty())
         {
             return -1;
