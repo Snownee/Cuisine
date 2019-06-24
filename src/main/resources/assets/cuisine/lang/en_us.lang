@@ -346,6 +346,8 @@ cuisine.tip.crops.cave=Crops from cave
 cuisine.tip.crops.beach=Crops from wetland
 cuisine.tip.solvent=Does not consume solvent
 cuisine.tip.empty_dish=Apparently this dish is empty, and it looks shining.
+cuisine.tip.spawn0=Tips from Cuisine：
+cuisine.tip.spawn1=You do not have Patchouli installed, so you cannot see the entire content in manual.
 
 cuisine.potion.dispersal=Dispersal
 cuisine.potion.hot=Hot

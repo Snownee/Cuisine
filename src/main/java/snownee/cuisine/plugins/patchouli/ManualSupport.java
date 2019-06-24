@@ -14,7 +14,7 @@ import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import vazkii.patchouli.api.PatchouliAPI;
 
-@KiwiModule(modid = Cuisine.MODID, name = "patchouli", dependency = "patchouli", optional = true)
+@KiwiModule(modid = Cuisine.MODID, name = "patchouli", dependency = "patchouli")
 public class ManualSupport implements IModule
 {
     @Override

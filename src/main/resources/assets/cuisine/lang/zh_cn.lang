@@ -346,6 +346,8 @@ cuisine.tip.crops.cave=洞穴作物
 cuisine.tip.crops.beach=滩涂作物
 cuisine.tip.solvent=不消耗溶剂
 cuisine.tip.empty_dish=这个盘子空空如也，甚至干净得发亮。
+cuisine.tip.spawn0=来自料理工艺的提示：
+cuisine.tip.spawn1=你没有安装Patchouli，因此无法显示完整的手册内容。
 
 cuisine.potion.dispersal=驱散
 cuisine.potion.hot=麻辣
