@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.items.ItemHandlerHelper;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
@@ -121,7 +122,7 @@ public class TANCompat implements IModule
         }
         if (event.getItem().getItem() == CuisineRegistry.BOTTLE && enableThirst() && event.getEntityLiving().hasCapability(TANCapabilities.THIRST, null))
         {
-            IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(event.getItem());
+            IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(event.getItem(), 1));
             if (fluidHandlerItem != null)
             {
                 FluidStack fluid = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
