@@ -116,8 +116,6 @@ public class MaterialBuilder
 
     public SimpleMaterialImpl build()
     {
-        if (categories.isEmpty())
-            categories.add(MaterialCategory.UNKNOWN);
         if (effect != null)
             return new MaterialWithEffect(id, effect, rawColor, cookedColor, waterValue, oilValue, heatValue, saturationModifier, boilHeat, boilTime, categories.toArray(new MaterialCategory[0])).setValidForms(validForms);
         return new SimpleMaterialImpl(id, rawColor, cookedColor, waterValue, oilValue, heatValue, saturationModifier, boilHeat, boilTime, categories.toArray(new MaterialCategory[0])).setValidForms(validForms);
