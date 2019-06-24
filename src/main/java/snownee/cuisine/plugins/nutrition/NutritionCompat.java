@@ -18,6 +18,7 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
@@ -132,11 +133,11 @@ public class NutritionCompat implements IModule
                 {
                     if (category == MaterialCategory.SUPERNATURAL)
                     {
-                        manager.add(NutrientList.get(), 0.1F);
+                        manager.add(NutrientList.get(), CuisineConfig.COMPAT.supernaturalNutrientModifier);
                     }
                     else
                     {
-                        manager.add(materialCategoryToNutrient.get(category), 0.5F);
+                        manager.add(materialCategoryToNutrient.get(category), CuisineConfig.COMPAT.normalNutrientModifier);
                     }
                 }
             }

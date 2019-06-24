@@ -276,4 +276,16 @@ public final class CuisineConfig
         @Config.Name("ShowHoloGui")
         public boolean showHoloGui = true;
     }
+
+    @Config.Name("Compat")
+    public static final Compat COMPAT = new Compat();
+
+    public static final class Compat
+    {
+        @Config.Name("NormalNutrientModifier")
+        public float normalNutrientModifier = 0.5f;
+
+        @Config.Name("SupernaturalNutrientModifier")
+        public float supernaturalNutrientModifier = 0.2f;
+    }
 }
