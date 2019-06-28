@@ -4,6 +4,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.kiwi.util.NBTHelper;
 
 public class RarityManager
@@ -17,7 +18,7 @@ public class RarityManager
 
     public static ItemStack setRarity(ItemStack stack, int rarity)
     {
-        if (!stack.isEmpty())
+        if (CuisineConfig.GENERAL.rareCrops && !stack.isEmpty())
         {
             if (rarity == 0)
             {

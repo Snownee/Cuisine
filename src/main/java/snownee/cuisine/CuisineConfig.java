@@ -131,6 +131,9 @@ public final class CuisineConfig
         @Config.Name("JuiceSqueezingAmount")
         @Config.Comment("Juice squeezing amount in mB")
         public int juiceSqueezingAmount = 250;
+
+        @Config.Name("RareCrops")
+        public boolean rareCrops = true;
     }
 
     @Config.Comment("Config options of Cuisine Hardcore Module.")
