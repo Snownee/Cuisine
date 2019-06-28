@@ -8,6 +8,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.crafting.IRecipeFactory;
@@ -81,6 +82,30 @@ public class RecipeChoppingBoard extends AbstractDynamicShapedRecipe
             return false;
         }
         return checkEmpty(inv, startX, startY);
+    }
+
+    protected boolean checkEmpty(InventoryCrafting inv, int startX, int startY)
+    {
+        for (int x = 0; x < inv.getWidth(); ++x)
+        {
+            for (int y = 0; y < inv.getHeight(); ++y)
+            {
+                int subX = x - startX;
+                int subY = y - startY;
+                if (subX >= 0 && subY >= 0 && subX < this.getRecipeWidth() && subY < this.getRecipeHeight())
+                {
+                    continue;
+                }
+
+                ItemStack stack = inv.getStackInRowAndColumn(x, y);
+                if (!Ingredient.EMPTY.apply(stack) && stack.getItem() != CuisineRegistry.KITCHEN_KNIFE)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     public static final class Factory implements IRecipeFactory
