@@ -10,11 +10,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.Boiling;
 import snownee.cuisine.api.process.Processing;
 import snownee.cuisine.util.StacksUtil;
+import snownee.kiwi.util.NBTHelper;
+import snownee.kiwi.util.NBTHelper.Tag;
 
 public class TileBasinHeatable extends TileBasin implements ITickable
 {
@@ -22,9 +25,11 @@ public class TileBasinHeatable extends TileBasin implements ITickable
     public static final Map<IBlockState, Integer> STATE_HEAT_SOURCES = new HashMap<>();
     public static final Map<Block, ItemStack> BLOCK_TO_ITEM = new HashMap<>();
     public static final Map<IBlockState, ItemStack> STATE_TO_ITEM = new HashMap<>();
-    private int tickCheckHeating = 0;
+    public static int HEATING_TICK = 1800;
+    protected int tick = 0;
+    protected int heat = 0;
     protected boolean invLock = false;
-    protected boolean failed = false;
+    protected Boiling boilingRecipe;
 
     static
     {
@@ -62,27 +67,25 @@ public class TileBasinHeatable extends TileBasin implements ITickable
     @Override
     public void update()
     {
-        if (!world.isRemote && !failed && tank.getFluid() != null && --tickCheckHeating <= 0)
+        if (world.isRemote || boilingRecipe == null)
         {
-            int heat = getHeatValueFromState(world.getBlockState(pos.down()));
-            if (heat == 0 && !CuisineConfig.GENERAL.basinHeatingInDaylight)
+            return;
+        }
+        if (heat == 0 && !world.provider.isNether())
+        {
+            if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
             {
-                failed = true;
                 return;
             }
-            tickCheckHeating = heat > 0 ? 200 / heat : 600;
-            if (heat == 0 && !world.provider.isNether())
-            {
-                if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
-                {
-                    return;
-                }
-            }
-            Boiling recipe = Processing.BOILING.findRecipe(stacks.getStackInSlot(0), tank.getFluid(), heat);
-            if (recipe != null)
+        }
+        tick += getHeatingBoost(heat);
+        if (tick >= HEATING_TICK)
+        {
+            tick = 0;
+            if (tank.getFluid() != null && boilingRecipe.matches(stacks.getStackInSlot(0), tank.getFluid(), heat))
             {
                 invLock = true;
-                Output output = recipe.getOutputAndConsumeInput(stacks.getStackInSlot(0), tank.getFluid(), heat, world.rand);
+                Output output = boilingRecipe.getOutputAndConsumeInput(stacks.getStackInSlot(0), tank.getFluid(), heat, world.rand);
                 if (output.fluid != null && output.fluid.amount <= 0)
                 {
                     output.fluid = null;
@@ -90,41 +93,39 @@ public class TileBasinHeatable extends TileBasin implements ITickable
                 tank.setFluid(output.fluid);
                 StacksUtil.spawnItemStack(world, pos, output.item, true);
                 invLock = false;
+                onContentsChanged(0);
                 refresh();
             }
-            else
-            {
-                failed = true;
-            }
         }
     }
 
-    public boolean isWorking()
+    public int getCurrentHeat()
     {
-        boolean flag = !failed && tank.getFluid() != null;
-        if (flag)
-        {
-            int heat = getHeatValueFromState(world.getBlockState(pos.down()));
-            if (heat == 0 && !world.provider.isNether())
-            {
-                if (!world.provider.hasSkyLight() || !world.isDaytime() || world.isRaining() || !world.canSeeSky(pos))
-                {
-                    return false;
-                }
-            }
-        }
-        return flag;
-    }
-
-    public int getMaxHeatingTick()
-    {
-        int heat = getHeatValueFromState(world.getBlockState(pos.down()));
-        return heat > 0 ? 200 / heat : 600;
+        return getHeatValueFromState(world.getBlockState(pos.down()));
     }
 
     public int getCurrentHeatingTick()
     {
-        return tickCheckHeating;
+        return tick;
+    }
+
+    public Boiling getCurrentHeatingRecipe()
+    {
+        return boilingRecipe;
+    }
+
+    public int getHeatingBoost(int heat)
+    {
+        return 3 + heat * 2;
+    }
+
+    public boolean canWork()
+    {
+        if (tank.getFluid() == null)
+        {
+            return false;
+        }
+        return heat > 0 || CuisineConfig.GENERAL.basinHeatingInDaylight;
     }
 
     @Override
@@ -133,11 +134,21 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         if (!invLock)
         {
             super.onContentsChanged(slot);
-            if (!world.isRemote && tank.getFluid() != null)
+            if (!world.isRemote)
             {
-                failed = false;
-                tickCheckHeating = getMaxHeatingTick(); // on this stage, blockstates are not actual states
+                if (!canWork())
+                {
+                    boilingRecipe = null;
+                    return;
+                }
+                else if (boilingRecipe != null && boilingRecipe.matches(stacks.getStackInSlot(0), tank.getFluid(), heat))
+                {
+                    return;
+                }
+                boilingRecipe = Processing.BOILING.findRecipe(stacks.getStackInSlot(0), tank.getFluid(), heat);
+                // on this stage, blockstates are not actual states
             }
+            tick = 0;
         }
     }
 
@@ -157,7 +168,26 @@ public class TileBasinHeatable extends TileBasin implements ITickable
     {
         invLock = true;
         super.readFromNBT(compound);
+        NBTHelper tag = NBTHelper.of(compound);
+        heat = tag.getInt("heat");
+        tick = tag.getInt("tick");
+        if (tag.hasTag("recipe", Tag.STRING))
+        {
+            boilingRecipe = Processing.BOILING.findRecipe(new ResourceLocation(tag.getString("recipe", "")));
+        }
         invLock = false;
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
+        compound.setInteger("heat", heat);
+        compound.setInteger("tick", tick);
+        if (boilingRecipe != null)
+        {
+            compound.setString("recipe", boilingRecipe.getIdentifier().toString());
+        }
+        return super.writeToNBT(compound);
     }
 
     @Override
@@ -170,5 +200,14 @@ public class TileBasinHeatable extends TileBasin implements ITickable
         // After all, this method is here for catching up the very first
         // "tick" (actually a pseudo-tick) of TileEntity lifecycle.
         this.onContentsChanged(0);
+    }
+
+    public void updateHeat()
+    {
+        heat = getCurrentHeat();
+        if (canWork())
+        {
+            onContentsChanged(0);
+        }
     }
 }

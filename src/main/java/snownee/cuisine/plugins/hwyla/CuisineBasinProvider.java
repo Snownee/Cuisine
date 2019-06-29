@@ -28,24 +28,18 @@ final class CuisineBasinProvider implements IWailaDataProvider
     {
         if (accessor.getTileEntity() instanceof TileBasinHeatable)
         {
-            TileBasinHeatable tile = (TileBasinHeatable) accessor.getTileEntity();
             NBTTagCompound data = accessor.getNBTData();
             boolean working = data.getBoolean("working");
-            MessageFormat formatter = new MessageFormat(I18nUtil.translate("gui.progress"), MinecraftForgeClient.getLocale());
             if (working)
             {
-                FluidStack fluidContent = FluidStack.loadFluidStackFromNBT(data.getCompoundTag("fluidContent"));
-                if (fluidContent != null)
-                {
-                    tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.fluid_show", fluidContent.getLocalizedName(), fluidContent.amount));
-                }
-                int currentProgress = data.getInteger("heatValue");
-                int max = tile.getMaxHeatingTick();
-                tooltip.add(TextFormatting.GRAY + formatter.format(new Object[] { 1 - (double)currentProgress / max }));
+                MessageFormat formatter = new MessageFormat(I18nUtil.translate("gui.progress"), MinecraftForgeClient.getLocale());
+                int tick = data.getInteger("tick");
+                tooltip.add(TextFormatting.GRAY + formatter.format(new Object[] { (float) tick / TileBasinHeatable.HEATING_TICK }));
             }
-            else
+            FluidStack fluidContent = FluidStack.loadFluidStackFromNBT(data.getCompoundTag("fluidContent"));
+            if (fluidContent != null)
             {
-                tooltip.add(TextFormatting.GRAY + formatter.format(new Object[] { -1 }));
+                tooltip.add(TextFormatting.GRAY + I18nUtil.translate("gui.fluid_show", fluidContent.getLocalizedName(), fluidContent.amount));
             }
         }
         return tooltip;
@@ -62,8 +56,8 @@ final class CuisineBasinProvider implements IWailaDataProvider
             {
                 tag.setTag("fluidContent", fluid.writeToNBT(new NBTTagCompound()));
             }
-            tag.setInteger("heatValue", ((TileBasinHeatable) te).getCurrentHeatingTick());
-            tag.setBoolean("working", ((TileBasinHeatable) te).isWorking());
+            tag.setInteger("tick", ((TileBasinHeatable) te).getCurrentHeatingTick());
+            tag.setBoolean("working", ((TileBasinHeatable) te).getCurrentHeatingRecipe() != null);
         }
         return tag;
     }

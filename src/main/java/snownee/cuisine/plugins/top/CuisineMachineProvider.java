@@ -1,6 +1,12 @@
 package snownee.cuisine.plugins.top;
 
-import mcjty.theoneprobe.api.*;
+import java.text.MessageFormat;
+
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoProvider;
+import mcjty.theoneprobe.api.ProbeMode;
+import mcjty.theoneprobe.api.TextStyleClass;
 import mcjty.theoneprobe.apiimpl.styles.ProgressStyle;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +19,6 @@ import snownee.cuisine.blocks.BlockFirePit;
 import snownee.cuisine.tiles.TileBasinHeatable;
 import snownee.cuisine.tiles.TileFirePit;
 import snownee.cuisine.util.I18nUtil;
-
-import java.text.MessageFormat;
 
 public class CuisineMachineProvider implements IProbeInfoProvider
 {
@@ -48,16 +52,11 @@ public class CuisineMachineProvider implements IProbeInfoProvider
                 if (tile instanceof TileBasinHeatable)
                 {
                     TileBasinHeatable tileBasinHeatable = (TileBasinHeatable) tile;
-                    MessageFormat formatter = new MessageFormat(I18nUtil.translate("gui.progress"), MinecraftForgeClient.getLocale());
-                    if (tileBasinHeatable.isWorking())
+                    if (tileBasinHeatable.getCurrentHeatingRecipe() != null)
                     {
-                        int max = tileBasinHeatable.getMaxHeatingTick();
+                        MessageFormat formatter = new MessageFormat(I18nUtil.translate("gui.progress"), MinecraftForgeClient.getLocale());
                         probeInfo.text(TextStyleClass.INFO + formatter.format(new Object[] { 2 })); // "Using TheOneProbe"
-                        probeInfo.progress(max - tileBasinHeatable.getCurrentHeatingTick(), max, new ProgressStyle().showText(false));
-                    }
-                    else
-                    {
-                        probeInfo.text(TextStyleClass.INFO + formatter.format(new Object[] { -1 })); // "suspended"
+                        probeInfo.progress(tileBasinHeatable.getCurrentHeatingTick(), TileBasinHeatable.HEATING_TICK, new ProgressStyle().showText(false));
                     }
                 }
             }

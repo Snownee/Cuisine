@@ -237,7 +237,7 @@ public class BlockBasin extends BlockMod
             TileEntity tile = worldIn.getTileEntity(pos);
             if (tile instanceof TileBasinHeatable)
             {
-                ((TileBasinHeatable) tile).onContentsChanged(0);
+                ((TileBasinHeatable) tile).updateHeat();
             }
         }
     }
