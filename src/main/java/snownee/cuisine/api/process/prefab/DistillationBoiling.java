@@ -52,7 +52,7 @@ public class DistillationBoiling extends AbstractCuisineProcessingRecipe impleme
         super(locator);
         this.input = input;
         this.output = output;
-        this.heatValue = 1;
+        this.heatValue = heatValue;
     }
 
     @Override
