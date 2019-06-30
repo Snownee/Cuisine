@@ -73,6 +73,10 @@ public class WorldGenGarden
         else if (worldIn.provider.getDimension() == -1)
         {
             Random rand = event.getRand();
+            if (rand.nextInt(4) > 0 || rand.nextInt(100) < CuisineConfig.WORLD_GEN.cropsGenRate)
+            {
+                return;
+            }
             BlockPos position = event.getChunkPos().getBlock(rand.nextInt(16) + 8, rand.nextInt(50) + 33, rand.nextInt(16) + 8);
             BlockPos.MutableBlockPos pos = WorldGenHelper.findGround(worldIn, position, true, true, false, 20);
             if (pos == null)
@@ -83,7 +87,7 @@ public class WorldGenGarden
             if (worldIn.getBlockState(pos).getBlock() == Blocks.SOUL_SAND)
             {
                 plant(worldIn, pos, CuisineRegistry.CHILI, Blocks.SOUL_SAND, rand);
-                plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), CuisineRegistry.CHILI, Blocks.SOUL_SAND, rand);
+                //plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), CuisineRegistry.CHILI, Blocks.SOUL_SAND, rand);
             }
         }
     }
