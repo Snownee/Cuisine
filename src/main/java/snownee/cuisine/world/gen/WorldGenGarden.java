@@ -35,7 +35,12 @@ public class WorldGenGarden
 
             Biome biome = worldIn.getBiome(position);
 
-            if (!biome.canRain() || biome.isSnowyBiome() || biome.getBaseHeight() > 0.4F || biome.decorator.flowersPerChunk < 1 || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(200) >= CuisineConfig.WORLD_GEN.cropsGenRate)
+            int flowers = biome.decorator.flowersPerChunk;
+            if (flowers == -999 && biome.getClass().getName().startsWith("biomesoplenty"))
+            {
+                flowers = 1;
+            }
+            if (!biome.canRain() || biome.isSnowyBiome() || biome.decorator.flowersPerChunk < 1 || biome instanceof BiomeOcean || rand.nextDouble() > biome.getDefaultTemperature() || rand.nextInt(200) >= CuisineConfig.WORLD_GEN.cropsGenRate)
             {
                 return;
             }
