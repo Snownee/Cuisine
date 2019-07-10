@@ -1,6 +1,6 @@
 {
   "parameters": {
-    "cycle": [ "compose", "#progress", [ "/", 12 ] ],
+    "cycle": [ "compose", "#progress", [ "/", 11 ] ],
     "halt": 0
   },
   "clips": {
