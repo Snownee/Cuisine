@@ -84,7 +84,7 @@ public final class CuisineConfig
         @Config.Comment("Length of one mill working cycle, measured in ticks. Ideally, there are 20 ticks in 1 second.")
         @Config.LangKey("cuisine.config.general.mill_work_cycle")
         @Config.Name("MillWorkCycle")
-        @Config.RangeInt(min = 1)
+        @Config.RangeInt(min = 5)
         public int millWorkPeriod = 160;
 
         @Config.Comment("If true, natural sunlight will be considered as a valid heat source for earthen basin.")

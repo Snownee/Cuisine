@@ -43,6 +43,7 @@ import snownee.cuisine.library.FilterItemHandler;
 import snownee.cuisine.library.SingleSlotItemHandler;
 import snownee.cuisine.util.StacksUtil;
 import snownee.kiwi.tile.TileBase;
+import snownee.kiwi.util.NBTHelper.Tag;
 
 public class TileMill extends TileBase implements ITickable
 {
@@ -62,11 +63,13 @@ public class TileMill extends TileBase implements ITickable
     /**
      * The signal used for indicating its working status.
      */
-    private boolean working = false;
+    //private boolean working = false;
     /**
      * Current working progress, if {@link #working} is true.
      */
     private int tick = 0;
+    private int power = 0;
+    private int cycle = 0;
 
     private final SingleSlotItemHandler inputBuffer = new SingleSlotItemHandler();
     private final FluidTank fluidInput = new FluidTank(Fluid.BUCKET_VOLUME);
@@ -92,49 +95,51 @@ public class TileMill extends TileBase implements ITickable
             return;
         }
 
-        if (!this.working)
+        if (power + CuisineConfig.GENERAL.millWorkPeriod / 5 <= CuisineConfig.GENERAL.millWorkPeriod)
         {
-            playerIn.addExhaustion(5);
-            SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
-            this.working = true;
+            power += CuisineConfig.GENERAL.millWorkPeriod / 5;
+            playerIn.addExhaustion(1);
+            //SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
+            //this.working = true;
             IBlockState state = this.world.getBlockState(this.pos);
             this.world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
         }
     }
 
+    public boolean isWorking()
+    {
+        return power > 0;
+    }
+
     @Override
     public void update()
     {
+        if (!isWorking())
+        {
+            return;
+        }
+        --this.power;
         if (!world.isRemote)
         {
-            if (working)
+            if (++tick >= CuisineConfig.GENERAL.millWorkPeriod)
             {
-                if (++tick >= CuisineConfig.GENERAL.millWorkPeriod)
-                {
-                    process();
-                    IBlockState state = this.world.getBlockState(this.pos);
-                    this.world.updateComparatorOutputLevel(this.pos, this.blockType);
-                    this.working = false;
-                    this.tick = 0;
-                    this.markDirty(); // Think the "flush()" call when dealing with output stream
-                    this.world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
-                }
+                process();
+                IBlockState state = this.world.getBlockState(this.pos);
+                this.world.updateComparatorOutputLevel(this.pos, this.blockType);
+                //this.working = false;
+                this.tick = 0;
+                this.markDirty(); // Think the "flush()" call when dealing with output stream
+                this.world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
             }
         }
         else
         {
-            if (working)
+            if (++this.cycle >= CuisineConfig.GENERAL.millWorkPeriod)
             {
-                this.tick = Math.min(CuisineConfig.GENERAL.millWorkPeriod, this.tick + 1);
-                if (tick < CuisineConfig.GENERAL.millWorkPeriod)
-                {
-                    progressValue.setValue((this.tick + Animation.getPartialTickTime()) / CuisineConfig.GENERAL.millWorkPeriod);
-                }
+                this.cycle = 0;
             }
-            else
-            {
-                this.tick = 0;
-            }
+            System.out.println((this.cycle + Animation.getPartialTickTime()) / CuisineConfig.GENERAL.millWorkPeriod);
+            progressValue.setValue((this.cycle + Animation.getPartialTickTime()) / CuisineConfig.GENERAL.millWorkPeriod);
         }
     }
 
@@ -217,15 +222,15 @@ public class TileMill extends TileBase implements ITickable
     @Override
     public NBTTagCompound writePacketData(NBTTagCompound data)
     {
-        data.setBoolean("working", this.working);
+        data.setInteger("power", this.power);
         return data;
     }
 
     @Override
     public void readPacketData(NBTTagCompound data)
     {
-        this.working = data.getBoolean("working");
-        if (working)
+        this.power = data.getInteger("power");
+        if (isWorking())
         {
             if ("halt".equals(stateMachine.currentState()))
             {
@@ -249,6 +254,7 @@ public class TileMill extends TileBase implements ITickable
         compound.setTag("fluidInput", fluidInput.writeToNBT(new NBTTagCompound()));
         compound.setTag("fluidOutput", fluidOutput.writeToNBT(new NBTTagCompound()));
         compound.setInteger("progress", tick);
+        compound.setInteger("power", power);
         return super.writeToNBT(compound);
     }
 
@@ -260,7 +266,10 @@ public class TileMill extends TileBase implements ITickable
         fluidInput.readFromNBT(compound.getCompoundTag("fluidInput"));
         fluidOutput.readFromNBT(compound.getCompoundTag("fluidOutput"));
         tick = compound.getInteger("progress");
-        working = tick > 0;
+        if (compound.hasKey("power", Tag.INT))
+        {
+            power = compound.getInteger("power");
+        }
     }
 
     @Override
@@ -311,8 +320,8 @@ public class TileMill extends TileBase implements ITickable
     }
 
     /**
-     * A decorator designed for Mill. It is used for exposing correct behaviors
-     * via capability.
+     * A decorator designed for Mill. It is used for exposing correct behaviors via
+     * capability.
      *
      * 为磨设计的 IFluidHandler 的 wrapper，用于将正确的行为通过 Capability 暴露出来。
      */
