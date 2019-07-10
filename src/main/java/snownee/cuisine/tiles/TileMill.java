@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.animation.Animation;
 import net.minecraftforge.common.animation.TimeValues;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
@@ -34,10 +33,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
-import snownee.cuisine.api.CulinarySkillPoint;
 import snownee.cuisine.api.process.Milling;
 import snownee.cuisine.api.process.Processing;
-import snownee.cuisine.api.util.SkillUtil;
 import snownee.cuisine.library.FilterFluidHandler;
 import snownee.cuisine.library.FilterItemHandler;
 import snownee.cuisine.library.SingleSlotItemHandler;
@@ -100,7 +97,6 @@ public class TileMill extends TileBase implements ITickable
             power += CuisineConfig.GENERAL.millWorkPeriod / 5;
             playerIn.addExhaustion(1);
             //SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
-            //this.working = true;
             IBlockState state = this.world.getBlockState(this.pos);
             this.world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
         }
@@ -126,7 +122,6 @@ public class TileMill extends TileBase implements ITickable
                 process();
                 IBlockState state = this.world.getBlockState(this.pos);
                 this.world.updateComparatorOutputLevel(this.pos, this.blockType);
-                //this.working = false;
                 this.tick = 0;
                 this.markDirty(); // Think the "flush()" call when dealing with output stream
                 this.world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
@@ -138,8 +133,7 @@ public class TileMill extends TileBase implements ITickable
             {
                 this.cycle = 0;
             }
-            System.out.println((this.cycle + Animation.getPartialTickTime()) / CuisineConfig.GENERAL.millWorkPeriod);
-            progressValue.setValue((this.cycle + Animation.getPartialTickTime()) / CuisineConfig.GENERAL.millWorkPeriod);
+            progressValue.setValue((float) this.cycle / CuisineConfig.GENERAL.millWorkPeriod);
         }
     }
 
@@ -230,20 +224,6 @@ public class TileMill extends TileBase implements ITickable
     public void readPacketData(NBTTagCompound data)
     {
         this.power = data.getInteger("power");
-        if (isWorking())
-        {
-            if ("halt".equals(stateMachine.currentState()))
-            {
-                stateMachine.transition("working");
-            }
-        }
-        else
-        {
-            if ("working".equals(stateMachine.currentState()))
-            {
-                stateMachine.transition("halt");
-            }
-        }
     }
 
     @Nonnull

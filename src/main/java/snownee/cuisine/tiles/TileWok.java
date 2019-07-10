@@ -423,7 +423,7 @@ public class TileWok extends TileFirePit implements CookingVessel
     static final class Heating implements CookingStrategy<Dish.Builder>
     {
         private HeatHandler heatHandler;
-        private int count = 0;
+        //private int count = 0;
         private Dish.Builder builder;
 
         Heating(HeatHandler heatHandler)

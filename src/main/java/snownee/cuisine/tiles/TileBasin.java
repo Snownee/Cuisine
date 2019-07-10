@@ -42,7 +42,7 @@ public class TileBasin extends TileInventoryBase
         }
     };
     public int tickCheckThrowing = 0;
-    private FluidStack liquidForRendering = null;
+    private float renderingAmount = 0;
     boolean squeezingFailed = false;
 
     public TileBasin()
@@ -79,36 +79,19 @@ public class TileBasin extends TileInventoryBase
         final FluidStack actual = tank.getFluid();
         if (actual == null)
         {
+            renderingAmount = 0;
             return null;
         }
-        if (!actual.equals(liquidForRendering))
+        float delta = actual.amount - renderingAmount;
+        if (Math.abs(delta) < 40)
         {
-            liquidForRendering = new FluidStack(actual, 0);
-        }
-        if (liquidForRendering == null)
-        {
-            return null;
-        }
-        int actualAmount = actual == null ? 0 : actual.amount;
-        int delta = actualAmount - liquidForRendering.amount;
-        if (Math.abs(delta) <= 40)
-        {
-            liquidForRendering.amount = actualAmount;
+            renderingAmount = actual.amount;
         }
         else
         {
-            int i = (int) (delta * partialTicks * 0.1);
-            if (i == 0) // Wow your PC is so powerful!
-            {
-                i = delta > 0 ? 1 : -1;
-            }
-            liquidForRendering.amount += i;
+            renderingAmount += delta * partialTicks * 0.1;
         }
-        if (liquidForRendering.amount == 0)
-        {
-            liquidForRendering = null;
-        }
-        return liquidForRendering;
+        return new FluidStack(actual, (int) renderingAmount);
     }
 
     @Override
@@ -118,7 +101,7 @@ public class TileBasin extends TileInventoryBase
         tank.readFromNBT(compound.getCompoundTag("tank"));
         if (tank.getFluid() != null)
         {
-            liquidForRendering = tank.getFluid().copy();
+            renderingAmount = tank.getFluid().amount;
         }
     }
 
