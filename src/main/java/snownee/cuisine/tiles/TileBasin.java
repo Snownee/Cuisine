@@ -12,6 +12,8 @@ import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.api.process.BasinInteracting;
 import snownee.cuisine.api.process.BasinInteracting.Output;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -71,10 +73,14 @@ public class TileBasin extends TileInventoryBase
         FluidEvent.fireEvent(new FluidEvent.FluidSpilledEvent(tank.getFluid(), world, pos));
     }
 
-    // @SideOnly(Side.CLIENT) // Left commented so we know that this is for client only
+    @SideOnly(Side.CLIENT)
     public FluidStack getFluidForRendering(float partialTicks)
     {
         final FluidStack actual = tank.getFluid();
+        if (actual == null)
+        {
+            return null;
+        }
         int actualAmount;
         if (actual != null && !actual.equals(liquidForRendering))
         {
