@@ -81,8 +81,7 @@ public class TileBasin extends TileInventoryBase
         {
             return null;
         }
-        int actualAmount;
-        if (actual != null && !actual.equals(liquidForRendering))
+        if (!actual.equals(liquidForRendering))
         {
             liquidForRendering = new FluidStack(actual, 0);
         }
@@ -90,7 +89,7 @@ public class TileBasin extends TileInventoryBase
         {
             return null;
         }
-        actualAmount = actual == null ? 0 : actual.amount;
+        int actualAmount = actual == null ? 0 : actual.amount;
         int delta = actualAmount - liquidForRendering.amount;
         if (Math.abs(delta) <= 40)
         {
