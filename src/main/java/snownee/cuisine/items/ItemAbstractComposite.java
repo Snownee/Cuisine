@@ -307,7 +307,7 @@ public abstract class ItemAbstractComposite extends ItemMod
             CompositeFood dish = container.get();
             if (dish != null)
             {
-                return (int) (getDefaultItemUseDuration() * dish.getUseDurationModifier());
+                return Math.max((int) (getDefaultItemUseDuration() * dish.getUseDurationModifier()), 1);
             }
         }
         return 0;
