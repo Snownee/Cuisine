@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -346,7 +345,6 @@ public class Dish extends CompositeFood
 
                 // Compute side effects
 
-                Set<Material> materials = new HashSet<>();
                 int countMat = getIngredients().stream().map(Ingredient::getMaterial).collect(Collectors.toSet()).size();
                 int serves = DEFAULT_SERVE_AMOUNT;
                 if (countMat < 3)
