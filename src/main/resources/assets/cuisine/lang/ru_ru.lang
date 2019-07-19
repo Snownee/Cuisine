@@ -321,6 +321,7 @@ cuisine.material.fermented_saltwort=Бража солероса
 cuisine.spice.salt=Столовая соль
 cuisine.spice.crude_salt=Неочищенная соль
 cuisine.spice.sugar=Сахар
+#cuisine.spice.unrefined_sugar=Crude Sugar
 cuisine.spice.chili_powder=Молотый перец чили
 cuisine.spice.sichuan_pepper_powder=Молотый сычуаньский перец
 cuisine.spice.water=Вода
