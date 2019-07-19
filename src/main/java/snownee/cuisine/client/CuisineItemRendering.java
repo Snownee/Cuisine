@@ -104,10 +104,14 @@ public final class CuisineItemRendering
         }, CuisineRegistry.BOTTLE);
 
         itemColors.registerItemColorHandler((stack, tintIndex) -> {
-            if (tintIndex == 1 && stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+            if (tintIndex == 1 && stack.getTagCompound() != null)
             {
-                FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-                CompositeFood food = container.get();
+                final String type = stack.getTagCompound().getString(CuisineSharedSecrets.KEY_TYPE);
+                if (type.isEmpty())
+                {
+                    return -1;
+                }
+                CompositeFood food = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(type), stack.getTagCompound());
                 if (food != null && food.getClass() == Drink.class)
                 {
                     return ((Drink) food).getColor();

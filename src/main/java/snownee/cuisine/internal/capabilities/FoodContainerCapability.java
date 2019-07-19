@@ -26,7 +26,8 @@ public final class FoodContainerCapability
 
     public static void init()
     {
-        CapabilityManager.INSTANCE.register(FoodContainer.class, new Storage(), SimpleFoodContainerImpl::new);
+        // Deprecated, no-op to keep change set minimal
+        // CapabilityManager.INSTANCE.register(FoodContainer.class, new Storage(), SimpleFoodContainerImpl::new);
     }
 
     static class Storage implements Capability.IStorage<FoodContainer>

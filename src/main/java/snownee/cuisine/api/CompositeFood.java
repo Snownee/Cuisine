@@ -17,6 +17,7 @@ import com.google.common.collect.Multimap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -377,15 +378,7 @@ public abstract class CompositeFood
     public ItemStack makeItemStack()
     {
         ItemStack dishItem = getBaseItem();
-        FoodContainer container = dishItem.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container == null)
-        {
-            throw new NullPointerException("Target ItemStack does not supports FoodContainer capability");
-        }
-        else
-        {
-            container.set(this);
-        }
+        dishItem.setTagCompound(CulinaryHub.API_INSTANCE.serialize(this));
         return dishItem;
     }
 

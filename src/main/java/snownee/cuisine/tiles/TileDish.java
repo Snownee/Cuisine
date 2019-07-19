@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
@@ -15,8 +16,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import snownee.cuisine.CuisineRegistry;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.food.Dish;
 import snownee.kiwi.tile.TileBase;
 
@@ -25,17 +28,22 @@ public class TileDish extends TileBase
     // Whoever assigns null on this one shall just burn into ashes in the furious flame of a wonky wok
     private ItemStack dishContainer = ItemStack.EMPTY;
 
+    private CompositeFood food = null;
+
     public void readDish(ItemStack dish)
     {
-        FoodContainer container = dish.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
+        if (dish.getTagCompound() == null)
+        {
+            return;
+        }
+        final ResourceLocation type = new ResourceLocation(dish.getTagCompound().getString(CuisineSharedSecrets.KEY_TYPE));
+        CompositeFood food = CulinaryHub.API_INSTANCE.deserialize(type, dish.getTagCompound());
+        if (food != null)
         {
             this.dishContainer = dish;
-            if (!dish.isEmpty())
-            {
-                IBlockState state = this.world.getBlockState(this.pos);
-                world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
-            }
+            this.food = food;
+            IBlockState state = this.world.getBlockState(this.pos);
+            world.notifyBlockUpdate(this.pos, state, state, 1 | 2);
         }
     }
 
@@ -80,11 +88,9 @@ public class TileDish extends TileBase
     @Nonnull
     public String getDishModelType()
     {
-        FoodContainer container = this.dishContainer.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        CompositeFood dish;
-        if (container != null && (dish = container.get()) != null)
+        if (this.food != null)
         {
-            return dish.getOrComputeModelType();
+            return this.food.getOrComputeModelType();
         }
         else
         {
@@ -98,23 +104,21 @@ public class TileDish extends TileBase
         {
             return false;
         }
-        FoodContainer container = this.dishContainer.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        CompositeFood dish;
-        if (container != null && (dish = container.get()) != null)
+        if (this.food != null)
         {
-            ConsumeCompositeFoodEvent.Pre pre = new ConsumeCompositeFoodEvent.Pre(dish, player, this.pos);
+            ConsumeCompositeFoodEvent.Pre pre = new ConsumeCompositeFoodEvent.Pre(this.food, player, this.pos);
             if (!MinecraftForge.EVENT_BUS.post(pre) && pre.getResult() != Event.Result.DENY)
             {
-                if (!(player instanceof FakePlayer) && hasWorld() && player.canEat(dish.alwaysEdible()))
+                if (!(player instanceof FakePlayer) && hasWorld() && player.canEat(this.food.alwaysEdible()))
                 {
-                    dish.setServes(dish.getServes() - 1);
+                    this.food.setServes(this.food.getServes() - 1);
                     getWorld().playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, getWorld().rand.nextFloat() * 0.1F + 0.9F);
-                    dish.onEaten(this.dishContainer, getWorld(), player);
+                    this.food.onEaten(this.dishContainer, getWorld(), player);
 
-                    ConsumeCompositeFoodEvent.Post post = new ConsumeCompositeFoodEvent.Post(dish, player, this.pos);
+                    ConsumeCompositeFoodEvent.Post post = new ConsumeCompositeFoodEvent.Post(this.food, player, this.pos);
                     MinecraftForge.EVENT_BUS.post(post);
 
-                    if (dish.getServes() <= 0)
+                    if (this.food.getServes() <= 0)
                     {
                         world.removeTileEntity(pos);
                     }
@@ -130,6 +134,7 @@ public class TileDish extends TileBase
     {
         this.dishContainer = new ItemStack(data.getCompoundTag("DishContainer"));
         this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
+        // TODO (3TUSK): Sync food data
     }
 
     @Nonnull
@@ -138,5 +143,6 @@ public class TileDish extends TileBase
     {
         data.setTag("DishContainer", this.dishContainer.serializeNBT());
         return data;
+        // TODO (3TUSK): Sync food data
     }
 }

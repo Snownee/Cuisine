@@ -29,11 +29,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.events.ConsumeCompositeFoodEvent;
 import snownee.cuisine.client.CuisineItemRendering;
 import snownee.cuisine.client.model.DishMeshDefinition;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.internal.capabilities.DrinkContainer;
 import snownee.cuisine.internal.food.Drink;
 import snownee.cuisine.internal.food.Drink.DrinkType;
@@ -74,10 +76,10 @@ public class ItemDrink extends ItemAbstractComposite
         {
             return s;
         }
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
+        final NBTTagCompound data;
+        if ((data = stack.getTagCompound()) != null)
         {
-            CompositeFood drink = container.get();
+            CompositeFood drink = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);
             if (drink != null && drink.getClass() == Drink.class)
             {
                 List<Ingredient> ingredients = drink.getIngredients();
@@ -100,10 +102,10 @@ public class ItemDrink extends ItemAbstractComposite
     @Override
     public String getTranslationKey(ItemStack stack)
     {
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
+        final NBTTagCompound data;
+        if ((data = stack.getTagCompound()) != null)
         {
-            CompositeFood drink = container.get();
+            CompositeFood drink = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);
             if (drink != null && drink.getClass() == Drink.class)
             {
                 return ((Drink) drink).getDrinkType().getTranslationKey();
@@ -115,10 +117,10 @@ public class ItemDrink extends ItemAbstractComposite
     @Override
     public EnumAction getItemUseAction(ItemStack stack)
     {
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
+        final NBTTagCompound data;
+        if ((data = stack.getTagCompound()) != null)
         {
-            CompositeFood drink = container.get();
+            CompositeFood drink = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);
             if (drink != null && drink.getClass() == Drink.class && ((Drink) drink).getDrinkType() == DrinkType.SMOOTHIE)
             {
                 return EnumAction.EAT;
@@ -136,9 +138,13 @@ public class ItemDrink extends ItemAbstractComposite
             return super.onItemRightClick(worldIn, playerIn, handIn);
         }
         ItemStack stack = playerIn.getHeldItem(handIn);
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        CompositeFood drink;
-        if (container == null || (drink = container.get()) == null)
+        final NBTTagCompound data;
+        if ((data = stack.getTagCompound()) == null)
+        {
+            return new ActionResult<>(EnumActionResult.FAIL, ItemStack.EMPTY);
+        }
+        CompositeFood drink = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);
+        if (drink == null)
         {
             return new ActionResult<>(EnumActionResult.FAIL, ItemStack.EMPTY);
         }
@@ -159,12 +165,12 @@ public class ItemDrink extends ItemAbstractComposite
         if (entityLiving instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) entityLiving;
-            FoodContainer foodContainer = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-            if (foodContainer == null)
+            final NBTTagCompound data;
+            if ((data = stack.getTagCompound()) == null)
             {
                 return stack;
             }
-            CompositeFood drink = foodContainer.get();
+            CompositeFood drink = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);
             if (drink == null)
             {
                 stack.setCount(0);
@@ -190,7 +196,8 @@ public class ItemDrink extends ItemAbstractComposite
 
                 if (drink.getServes() < 1)
                 {
-                    return foodContainer.getEmptyContainer(stack); // Return the container back
+                    //return foodContainer.getEmptyContainer(stack); // Return the container back
+                    return ItemStack.EMPTY; // TODO (3TUSK): Return proper container
                 }
             }
         }

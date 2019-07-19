@@ -36,6 +36,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
@@ -78,12 +79,12 @@ public abstract class ItemAbstractComposite extends ItemMod
         if (entityLiving instanceof EntityPlayer)
         {
             EntityPlayer player = (EntityPlayer) entityLiving;
-            FoodContainer foodContainer = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-            if (foodContainer == null)
+            final String type;
+            if (stack.getTagCompound() == null || (type = stack.getTagCompound().getString(CuisineSharedSecrets.KEY_TYPE)).isEmpty())
             {
                 return stack;
             }
-            CompositeFood dish = foodContainer.get();
+            CompositeFood dish = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(type), stack.getTagCompound());
             if (dish == null)
             {
                 stack.setCount(0);
@@ -110,7 +111,9 @@ public abstract class ItemAbstractComposite extends ItemMod
 
                 if (dish.getServes() < 1)
                 {
-                    return foodContainer.getEmptyContainer(stack); // Return the container back
+                    stack.setTagCompound(null);
+                    return stack; // TODO (3TUSK): is it how it works?
+                    //return foodContainer.getEmptyContainer(stack); // Return the container back
                 }
             }
             else
@@ -120,67 +123,6 @@ public abstract class ItemAbstractComposite extends ItemMod
         }
 
         return stack;
-    }
-
-    @Nullable
-    @Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack)
-    {
-        NBTTagCompound data = new NBTTagCompound();
-        if (stack.getTagCompound() != null)
-        {
-            data.setTag("default", stack.getTagCompound());
-        }
-        FoodContainer foodContainer = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        CompositeFood food;
-        if (foodContainer != null && (food = foodContainer.get()) != null)
-        {
-            // If anyone is looking at this: yes, syncing the entire cap. data may
-            // lead to large bandwidth resource cost, but in order to correctly
-            // implement the behavior of dish tooltip and the behavior of dish-
-            // sensitive item model (also the recipe-sensitive item model in the
-            // future), there is no way around, due to the fact that cap. data are
-            // not magically synced over to client.
-            // To preserve original behavior, we also sync the NBT data of ItemStack
-            // itself, if exists.
-            // If you have ideas regarding improvements please let us know.
-            //
-            // Thought left by 3TUSK: if we don't display tooltips, the only thing
-            // client needs to know is the "dish type" (or recipe name in the future),
-            // which means that we could just sync a recipe name to client. Perhaps
-            // we can add a config option for this?
-            data.setTag("dish", CulinaryHub.API_INSTANCE.serialize(food));
-        }
-        return data;
-    }
-
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt)
-    {
-        if (nbt == null)
-        {
-            return;
-        }
-        if (nbt.hasKey("dish", Constants.NBT.TAG_COMPOUND))
-        {
-            FoodContainer foodContainer = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-            if (foodContainer != null)
-            {
-                NBTTagCompound data = nbt.getCompoundTag("dish");
-                ResourceLocation id = new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE));
-                foodContainer.set(CulinaryHub.API_INSTANCE.deserialize(id, data));
-                if (foodContainer.get() == null)
-                {
-                    // Backward compatibility: assume failed-to-load data are from previous version.
-                    // See TileDish.readFromNBT for more info
-                    foodContainer.set(Dish.deserialize(data));
-                }
-            }
-        }
-        if (nbt.hasKey("default"))
-        {
-            super.readNBTShareTag(stack, nbt.getCompoundTag("default"));
-        }
     }
 
     @Nonnull
@@ -195,14 +137,11 @@ public abstract class ItemAbstractComposite extends ItemMod
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+        NBTTagCompound data;
         CompositeFood dish;
-        if (container == null || (dish = container.get()) == null)
+        if ((data = stack.getTagCompound()) == null || (dish = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data)) == null)
         {
-            if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("model", Constants.NBT.TAG_STRING))
-            {
-                tooltip.add(I18nUtil.translate("tip.empty_dish"));
-            }
+            tooltip.add(I18nUtil.translate("tip.empty_dish"));
             return;
         }
 
@@ -277,20 +216,19 @@ public abstract class ItemAbstractComposite extends ItemMod
     @SideOnly(Side.CLIENT)
     public boolean showDurabilityBar(ItemStack stack)
     {
-        // Your capability.
-        return stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null) && stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null).get() != null && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+        return (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) && stack.hasTagCompound();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public double getDurabilityForDisplay(ItemStack stack)
     {
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container == null)
+        final NBTTagCompound data;
+        if ((data = stack.getTagCompound()) == null)
         {
             return 0;
         }
-        CompositeFood dish = container.get();
+        CompositeFood dish = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);
         if (dish != null)
         {
             return MathHelper.clamp(1 - dish.getServes() / (double) dish.getMaxServes(), 0, 1);
@@ -301,10 +239,10 @@ public abstract class ItemAbstractComposite extends ItemMod
     @Override
     public int getMaxItemUseDuration(ItemStack stack)
     {
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
+        final NBTTagCompound data;
+        if ((data = stack.getTagCompound()) != null)
         {
-            CompositeFood dish = container.get();
+            CompositeFood dish = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);
             if (dish != null)
             {
                 return Math.max((int) (getDefaultItemUseDuration() * dish.getUseDurationModifier()), 1);
@@ -330,11 +268,15 @@ public abstract class ItemAbstractComposite extends ItemMod
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        CompositeFood dish;
-        if (container == null || (dish = container.get()) == null)
+        NBTTagCompound data = stack.getTagCompound();
+        if (data == null)
         {
-            return new ActionResult<>(EnumActionResult.FAIL, ItemStack.EMPTY);
+            return new ActionResult<>(EnumActionResult.FAIL, stack);
+        }
+        CompositeFood dish = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(data.getString(CuisineSharedSecrets.KEY_TYPE)), data);;
+        if (dish == null)
+        {
+            return new ActionResult<>(EnumActionResult.FAIL, stack);
         }
         if (playerIn.isCreative() || playerIn.canEat(dish.alwaysEdible()))
         {
@@ -360,7 +302,7 @@ public abstract class ItemAbstractComposite extends ItemMod
         return true;
     }
 
-    @Override
+    /*@Override // TODO (3TUSK): We need to re-evaluate this
     public ItemStack getContainerItem(ItemStack stack)
     {
         FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
@@ -369,5 +311,5 @@ public abstract class ItemAbstractComposite extends ItemMod
             return container.getEmptyContainer(stack);
         }
         return ItemStack.EMPTY;
-    }
+    }*/
 }

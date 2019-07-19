@@ -481,15 +481,7 @@ public class TileWok extends TileFirePit implements CookingVessel
         }
 
         ItemStack stack = new ItemStack(CuisineRegistry.DISH);
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
-        {
-            container.set(this.completedDish); // TODO AGAIN, THIS IS HACK
-        }
-        else
-        {
-            throw new NullPointerException("Null FoodContainer");
-        }
+        stack.setTagCompound(CulinaryHub.API_INSTANCE.serialize(this.completedDish));
         this.builder = null;
         this.completedDish = null;
         this.status = Status.IDLE;

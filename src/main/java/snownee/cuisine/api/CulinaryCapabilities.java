@@ -15,8 +15,11 @@ public final class CulinaryCapabilities
      * The singleton {@link Capability} instance of {@link FoodContainer}.
      *
      * {@link FoodContainer} 对应的 {@link Capability} 单例引用。
+     *
+     * @deprecated Due to synchronization issue, this capability is now obsolete. DO NOT USE.
      */
     @CapabilityInject(FoodContainer.class)
+    @Deprecated
     public static Capability<FoodContainer> FOOD_CONTAINER;
 
     /**

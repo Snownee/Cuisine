@@ -204,7 +204,7 @@ public class BlockDrinkro extends BlockModHorizontal
                 for (int i = inv.getSlots() - 1; i >= 0; i--)
                 {
                     ItemStack stack = inv.getStackInSlot(i);
-                    if (!(playerIn instanceof FakePlayer) && stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+                    if (!(playerIn instanceof FakePlayer) && stack.hasTagCompound())
                     {
                         playerIn.openGui(Cuisine.getInstance(), CuisineGUI.NAME_FOOD, worldIn, pos.getX(), pos.getY() + 1, pos.getZ());
                         break;

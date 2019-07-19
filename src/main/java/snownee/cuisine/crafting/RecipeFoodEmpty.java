@@ -8,6 +8,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.IRecipeFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import snownee.cuisine.api.CompositeFood;
@@ -24,17 +25,10 @@ public class RecipeFoodEmpty extends AbstractDynamicShapedRecipe
         for (int k = 0; k < inv.getSizeInventory(); ++k)
         {
             ItemStack stack = inv.getStackInSlot(k);
-            if (!stack.isEmpty())
+            if (!stack.isEmpty() && stack.hasTagCompound())
             {
-                FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-                if (container != null)
-                {
-                    CompositeFood food = container.get();
-                    if (food != null)
-                    {
-                        return container.getEmptyContainer(stack);
-                    }
-                }
+                // TODO (3TUSK): Rigorously determine empty container type
+                return new ItemStack(stack.getItem(), stack.getCount(), stack.getMetadata());
             }
         }
         return ItemStack.EMPTY;
@@ -63,14 +57,10 @@ public class RecipeFoodEmpty extends AbstractDynamicShapedRecipe
     protected boolean checkMatch(InventoryCrafting inv, int startX, int startY)
     {
         ItemStack stack = inv.getStackInRowAndColumn(startX, startY);
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null && checkEmpty(inv, startX, startY))
+        if (stack.hasTagCompound() && checkEmpty(inv, startX, startY))
         {
-            CompositeFood food = container.get();
-            if (food != null)
-            {
-                return !container.getEmptyContainer(stack).isEmpty();
-            }
+            // TODO (3TUSK): Rigorously determine empty container type
+            return true;
         }
         return false;
     }

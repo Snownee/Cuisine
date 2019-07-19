@@ -8,8 +8,10 @@ import net.minecraftforge.common.util.Constants;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
+import snownee.cuisine.api.CulinaryHub;
 import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.client.CuisineItemRendering;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 
 public final class DishMeshDefinition implements ItemMeshDefinition
 {
@@ -23,9 +25,13 @@ public final class DishMeshDefinition implements ItemMeshDefinition
     @Override
     public ModelResourceLocation getModelLocation(ItemStack stack)
     {
-        FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+        if (stack.getTagCompound() == null)
+        {
+            return new ModelResourceLocation(CuisineItemRendering.EMPTY_MODEL, "inventory");
+        }
+        final String type = stack.getTagCompound().getString(CuisineSharedSecrets.KEY_TYPE);
         CompositeFood food;
-        if (container != null && (food = container.get()) != null)
+        if (!type.isEmpty() && (food = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(type), stack.getTagCompound())) != null)
         {
             return new ModelResourceLocation(new ResourceLocation(Cuisine.MODID, "dish/" + food.getOrComputeModelType()), "inventory");
         }

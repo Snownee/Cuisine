@@ -34,21 +34,23 @@ public class DishContainer extends SimpleFoodContainerImpl implements ICapabilit
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
     {
-        return capability == CulinaryCapabilities.FOOD_CONTAINER;
+        //return capability == CulinaryCapabilities.FOOD_CONTAINER;
+        return false;
     }
 
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
     {
-        if (capability == CulinaryCapabilities.FOOD_CONTAINER)
+        /*if (capability == CulinaryCapabilities.FOOD_CONTAINER)
         {
             return CulinaryCapabilities.FOOD_CONTAINER.cast(this);
         }
         else
         {
             return null;
-        }
+        }*/
+        return null;
     }
 
     @Override

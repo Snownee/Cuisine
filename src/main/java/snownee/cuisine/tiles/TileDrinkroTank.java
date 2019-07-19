@@ -294,15 +294,7 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
         // SkillUtil.increasePoint(null, CulinarySkillPoint.PROFICIENCY, 1);
 
         ItemStack itemDrink = new ItemStack(CuisineRegistry.DRINK);
-        FoodContainer container = itemDrink.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
-        if (container != null)
-        {
-            container.set(drink); // TODO AGAIN, THIS IS HACK
-        }
-        else
-        {
-            throw new NullPointerException("Null FoodContainer");
-        }
+        itemDrink.setTagCompound(CulinaryHub.API_INSTANCE.serialize(drink));
         tileBase.inventory.setStackInSlot(0, itemDrink);
         world.addBlockEvent(pos, getBlockType(), 0, builder.getColor());
 
@@ -437,11 +429,9 @@ public class TileDrinkroTank extends TileBase implements CookingVessel
             if (base != null)
             {
                 ItemStack stack = base.inventory.getStackInSlot(0);
-                if (stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
-                {
-                    base.inventory.setStackInSlot(0, ItemStack.EMPTY);
-                    return Optional.of(stack);
-                }
+                // TODO (3TUSK): Sanity check?
+                base.inventory.setStackInSlot(0, ItemStack.EMPTY);
+                return Optional.of(stack);
             }
         }
         return Optional.empty();

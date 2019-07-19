@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -25,6 +26,7 @@ import snownee.cuisine.api.FoodContainer;
 import snownee.cuisine.api.Ingredient;
 import snownee.cuisine.api.MaterialCategory;
 import snownee.cuisine.client.CulinaryRenderHelper;
+import snownee.cuisine.internal.CuisineSharedSecrets;
 import snownee.cuisine.library.RarityManager;
 
 @Mod.EventBusSubscriber(modid = Cuisine.MODID, value = Side.CLIENT)
@@ -40,11 +42,11 @@ public final class TooltipHandler
         ItemStack stack = event.getItemStack();
         int i = 0;
         Ingredient ingredient;
-        if (stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+        if (stack.getTagCompound() != null)
         {
-            FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+            final String type = stack.getTagCompound().getString(CuisineSharedSecrets.KEY_TYPE);
             CompositeFood composite;
-            if (container == null || (composite = container.get()) == null)
+            if (type.isEmpty() || (composite = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(type), stack.getTagCompound())) == null)
             {
                 return;
             }
@@ -141,11 +143,11 @@ public final class TooltipHandler
         int x = event.getX();
 
         final Ingredient ingredient;
-        if (stack.hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null))
+        if (stack.getTagCompound() != null)
         {
-            FoodContainer container = stack.getCapability(CulinaryCapabilities.FOOD_CONTAINER, null);
+            final String type = stack.getTagCompound().getString(CuisineSharedSecrets.KEY_TYPE);
             CompositeFood composite;
-            if (container == null || (composite = container.get()) == null)
+            if (type.isEmpty() || (composite = CulinaryHub.API_INSTANCE.deserialize(new ResourceLocation(type), stack.getTagCompound())) == null)
             {
                 return;
             }

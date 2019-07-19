@@ -33,7 +33,7 @@ public class DarkUtilsCompat implements IModule
     @SubscribeEvent
     public void onItemUse(LivingEntityUseItemEvent.Tick event)
     {
-        if (event.getEntityLiving() instanceof EntityPlayer && event.getItem().hasCapability(CulinaryCapabilities.FOOD_CONTAINER, null) && hasItem(itemGluttonyCharm, (EntityPlayer) event.getEntityLiving()) && !event.getItem().isEmpty())
+        if (event.getEntityLiving() instanceof EntityPlayer && event.getItem().hasTagCompound() && hasItem(itemGluttonyCharm, (EntityPlayer) event.getEntityLiving()) && !event.getItem().isEmpty())
         {
             event.setDuration(0);
         }
