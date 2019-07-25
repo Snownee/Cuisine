@@ -20,7 +20,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
@@ -35,24 +34,12 @@ import snownee.cuisine.util.I18nUtil;
 import snownee.kiwi.item.IVariant;
 import snownee.kiwi.util.PlayerUtil;
 
-public class ItemCrops extends ItemBasicFood<SubCrop, Variant> implements IPlantable
+public class ItemCrops extends ItemBasicFood<SubCrop, Variant>
 {
 
     public ItemCrops(String name)
     {
         super(name, Variant.values());
-    }
-
-    @Override
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos)
-    {
-        return EnumPlantType.Crop;
-    }
-
-    @Override
-    public IBlockState getPlant(IBlockAccess world, BlockPos pos)
-    {
-        return Blocks.AIR.getDefaultState();
     }
 
     public static enum Variant implements IVariant<SubCrop>, IRarityGetter

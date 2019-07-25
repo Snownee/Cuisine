@@ -97,16 +97,16 @@ public class BetterHarvest
                     {
                         continue;
                     }
+                    if (block instanceof BlockCuisineCrops && ItemDefinition.of(drop).equals(((BlockCuisineCrops) block).getSeed()))
+                    {
+                        seed = drop;
+                        break;
+                    }
                     if (drop.getItem() instanceof IPlantable)
                     {
                         if (block instanceof BlockCrops && drop.isItemEqual(block.getItem(world, pos, state)))
                         {
                             seed = block.getItem(world, pos, state);
-                            break;
-                        }
-                        else if (block instanceof BlockCuisineCrops && ItemDefinition.of(drop).equals(((BlockCuisineCrops) block).getSeed()))
-                        {
-                            seed = drop;
                             break;
                         }
                         else
