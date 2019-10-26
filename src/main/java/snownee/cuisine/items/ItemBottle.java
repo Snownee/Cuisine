@@ -193,7 +193,7 @@ public class ItemBottle extends ItemMod implements CookingVessel
                 PotionEffect potionEffect = entityLiving.getActivePotionEffect(CuisineRegistry.DRUNK);
                 if (potionEffect != null)
                 {
-                    duration += potionEffect.duration;
+                    duration += potionEffect.getDuration();
                     amplifier = potionEffect.getAmplifier() + 1;
                     if (amplifier > 2)
                     {
