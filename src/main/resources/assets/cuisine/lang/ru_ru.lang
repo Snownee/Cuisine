@@ -1,21 +1,23 @@
 itemGroup.cuisine=Cuisine
 
 item.cuisine.kitchen_knife.name=Кухонный нож
-item.cuisine.kitchen_knife.tip=Щёлкните по разделочной доске, чтобы нарезать еду на различные формы
+item.cuisine.kitchen_knife.tip=Щёлкните по разделочной доске, чтобы нарезать еду
 item.cuisine.iron_spatula.name=Лопатка
-item.cuisine.iron_spatula.tip=Используется вкупе со котелком, чтобы готовить блюда в раскалённом масле
+item.cuisine.iron_spatula.tip=Используется вкупе с котелком, чтобы готовить блюда в раскалённом масле
 item.cuisine.fan.name=Опахала
+item.cuisine.fan.tip=Раздувает огонь костра, заставляя его полыхать сильнее
 item.cuisine.wok.name=Котелок с выпуклым днищем
 item.cuisine.wok.tip=Установите котелок над костром, положите в него ингредиенты и вооружитесь лопаткой
-item.cuisine.spice_bottle.name=Бутыль для специй
+item.cuisine.spice_bottle.name=Пузырёк для специй
 item.cuisine.spice_bottle.tip=Щёлкните правой кнопкой мыши, чтобы зачерпнуть жидкость или используйте как ёмкость для приправ
 item.cuisine.spice_bottle.filled.name=%s
-item.cuisine.glass_bottle.name=Бутыль с: %s
+item.cuisine.glass_bottle.name=Пузырёк с: %s
 item.cuisine.dish.name=Блюдо
+item.cuisine.drink.name=Напиток
 item.cuisine.manual.name=Заметки кулинара
 
 item.cuisine.material.wooden_arm.name=Деревянная рука
-item.cuisine.material.wooden_arm.tip=Способна симулировать нажатия правой кнопки мыши, если положить ее в раздатчик
+item.cuisine.material.wooden_arm.tip=Симулирует одиночное нажатие правой кнопки мыши, если положить её в раздатчик
 item.cuisine.material.wooden_handle.name=Деревянная рукоять
 item.cuisine.material.crude_salt.name=Неочищенная соль
 item.cuisine.material.salt.name=Соль
@@ -23,7 +25,7 @@ item.cuisine.material.chili_powder.name=Молотый перец чили
 item.cuisine.material.sichuan_pepper_powder.name=Молотый сычуаньский перец
 item.cuisine.material.bamboo_charcoal.name=Сожжённый бамбук
 item.cuisine.material.unrefined_sugar.name=Сахар-сырец
-item.cuisine.mortar.empty.name=Ступка
+item.cuisine.mortar.empty.name=Ступка и пестик
 item.cuisine.mortar.water.name=Ступка с водой
 item.cuisine.food.peanut.name=Арахис
 item.cuisine.food.sesame.name=Кунжут
@@ -32,7 +34,7 @@ item.cuisine.food.soybean.name=Соевые бобы
 item.cuisine.food.tomato.name=Помидор
 item.cuisine.food.chili.name=Перец чили
 item.cuisine.food.garlic.name=Чеснок
-item.cuisine.food.ginger.name=Имбирь
+item.cuisine.food.ginger.name=Корень имбиря
 item.cuisine.food.sichuan_pepper.name=Сычуаньский перец
 item.cuisine.food.scallion.name=Зелёный лук
 item.cuisine.food.turnip.name=Репа
@@ -64,8 +66,8 @@ item.cuisine.food.lemon.name=Лимон
 item.cuisine.food.grapefruit.name=Грейпфрут
 item.cuisine.food.lime.name=Лайм
 item.cuisine.food.empowered_citron.name=Могущественный цитрон
-item.cuisine.boat.name=Лодка из гуатамбу
-item.cuisine.door.name=Дверь из гуатамбу
+item.cuisine.boat.name=Лодка из цитрусового дерева
+item.cuisine.door.name=Дверь из цитрусового дерева
 
 item.forge.bucketFilled.soy_milk=Ведро соевого молока
 item.forge.bucketFilled.soy_sauce=Ведро соевого соуса
@@ -76,7 +78,7 @@ item.forge.bucketFilled.edible_oil=Ведро пищевого масла
 item.forge.bucketFilled.sugarcane_juice=Ведро тростникового сока
 item.forge.bucketFilled.cuisine_juice=Ведро сока
 
-tile.cuisine.mortar.name=Ступка
+tile.cuisine.mortar.name=Ступка и пестик
 tile.cuisine.fire_pit.0.name=Костёр
 tile.cuisine.fire_pit.1.name=Котелок над костром
 tile.cuisine.fire_pit.2.name=Стойка барбекю
@@ -102,17 +104,17 @@ tile.cuisine.earthen_basin.14.name=Красный керамический та�
 tile.cuisine.earthen_basin.15.name=Черный керамический таз
 tile.cuisine.drinkro.name=Попейка™
 tile.cuisine.tofu_block.name=Блок тофу
-tile.cuisine.tofu_block.tip=Соевое молоко затвердевает в блок тофу, когда соприкасается с уксусом или неочищенной солью
+tile.cuisine.tofu_block.tip=При смешивании с уксусом или неочищенной солью, соевое молоко сразу же затвердевает в блок тофу
 tile.cuisine.chopping_board.name=Разделочная доска
 tile.cuisine.placed_dish.name=Тарелка
 tile.cuisine.placed_dish.tip=Щёлкните правой кнопкой мыши по котелку, чтобы забрать блюдо
 tile.cuisine.bamboo_plant.name=Бамбук
 tile.cuisine.bamboo.name=Бамбук
-tile.cuisine.log.name=Гуатамбу
-tile.cuisine.planks.name=Доски из гуатамбу
-tile.cuisine.fence.name=Забор из гуатамбу
-tile.cuisine.fence_gate.name=Калитка из гуатамбу
-tile.cuisine.trapdoor.name=Люк из гуатамбу
+tile.cuisine.log.name=Цитрусовое дерево
+tile.cuisine.planks.name=Доски из цитрусового дерева
+tile.cuisine.fence.name=Забор из цитрусового дерева
+tile.cuisine.fence_gate.name=Калитка из цитрусового дерева
+tile.cuisine.trapdoor.name=Люк из цитрусового дерева
 tile.cuisine.sapling.0.name=Саженец помело
 tile.cuisine.sapling.1.name=Саженец цитрона
 tile.cuisine.sapling.2.name=Саженец мандарина
@@ -135,10 +137,10 @@ tile.cuisine.sheared_leaves.11.name=Листва апельсина
 tile.cuisine.sheared_leaves.12.name=Листва лимона
 tile.cuisine.sheared_leaves.13.name=Листва лайма
 
-entity.cuisine.boat.name=Лодка из гуатамбу
+entity.cuisine.boat.name=Лодка из цитрусового дерева
 
 cuisine.effect.teleport.name=Телекинез
-cuisine.effect.teleport.tip=Телепортация?
+cuisine.effect.teleport.tip=Телепортация
 cuisine.effect.golden_apple.name=Золотое яблоко
 cuisine.effect.golden_apple.tip=Даёт дополнительные эффекты
 cuisine.effect.golden_apple_enchanted.name=Золотое яблоко
@@ -169,6 +171,11 @@ cuisine.effect.water_breathing.name=Водное дыхание
 cuisine.effect.water_breathing.tip=Водное дыхание
 cuisine.effect.fermented_saltwort.name=Бража солероса
 cuisine.effect.fermented_saltwort.tip=Бража солероса
+cuisine.effect.sustained_release.name=Устойчивость
+cuisine.effect.cure_potions.name=Отравление
+cuisine.effect.heat_resistance.name=Сопротивление жаре
+cuisine.effect.cold_resistance.name=Сопротивление холоду
+cuisine.effect.spooky.name=Страх
 
 cuisine.shape.full=%s
 cuisine.shape.cubed=%s (кусочками)
@@ -212,7 +219,7 @@ cuisine.material.soybean=Соевые бобы
 cuisine.material.tomato=Помидор
 cuisine.material.chili=Перец чили
 cuisine.material.garlic=Чеснок
-cuisine.material.ginger=Имбирь
+cuisine.material.ginger=Корень имбиря
 cuisine.material.sichuan_pepper=Сычуаньский перец
 cuisine.material.scallion=Зелёный лук
 cuisine.material.turnip=Репа
@@ -238,7 +245,6 @@ cuisine.material.lemon=Лимон
 cuisine.material.grapefruit=Грейпфрут
 cuisine.material.lime=Лайм
 cuisine.material.empowered_citron=Могущественный цитрон
-cuisine.material.golden_carrot=Золотая морковь
 
 cuisine.material.chorus_fruit=Плод хоруса
 cuisine.material.apple=Яблоко
@@ -321,7 +327,7 @@ cuisine.material.fermented_saltwort=Бража солероса
 cuisine.spice.salt=Столовая соль
 cuisine.spice.crude_salt=Неочищенная соль
 cuisine.spice.sugar=Сахар
-#cuisine.spice.unrefined_sugar=Crude Sugar
+cuisine.spice.unrefined_sugar=Сахар-сырец
 cuisine.spice.chili_powder=Молотый перец чили
 cuisine.spice.sichuan_pepper_powder=Молотый сычуаньский перец
 cuisine.spice.water=Вода
@@ -338,7 +344,8 @@ cuisine.gelo.name=Лед
 cuisine.gelo.specific=%s со льдом
 cuisine.soda.name=Содовая
 cuisine.soda.specific=%s содовая
-
+cuisine.wine.name=Вино
+cuisine.wine.specific=%s вино
 # Easter egg, don't translate.
 cuisine.snownee.name=Snownee
 cuisine.snownee.specific=%s Snownee
@@ -372,6 +379,8 @@ cuisine.tip.crops.cave=Подземные культуры
 cuisine.tip.crops.beach=Болотные культуры
 cuisine.tip.solvent=Не требует подкормки
 cuisine.tip.empty_dish=По-видимому, это блюдо пусто, и это выглядит великолепно.
+cuisine.tip.spawn0=Советы Cuisine：
+cuisine.tip.spawn1=У вас не установлен Patchouli. Вы не сможете воспользоваться заметками кулинара.
 
 cuisine.potion.dispersal=Рассредоточение
 cuisine.potion.hot=Жжение
@@ -404,9 +413,9 @@ cuisine.ingredient.trait.sticky=Липкий
 cuisine.ingredient.trait.juicy=Сочный
 cuisine.ingredient.trait.refreshing=Освежающий
 cuisine.ingredient.trait.oily=Масляный
-cuisine.ingredient.trait.plain=Простой
-cuisine.ingredient.trait.undercooked=Недоваренный
-cuisine.ingredient.trait.overcooked=Переваренный
+cuisine.ingredient.trait.plain=Обычный
+cuisine.ingredient.trait.undercooked=Недожаренный
+cuisine.ingredient.trait.overcooked=Пережаренный
 
 cuisine.skill.double_chopping=Двойная нарезка
 cuisine.skill.skilled_chopping=Искусная нарезка
@@ -418,12 +427,12 @@ cuisine.config.progression.tooltip=Связанные с прогрессом з
 cuisine.config.progression.axe_chopping=Рубка
 cuisine.config.progression.axe_chopping.tooltip=Позволяет раскалывать бревна на разделочной доске.
 
-cuisine.gui.fully_grown=Созрело
+cuisine.gui.fully_grown=Полностью созрело
 cuisine.gui.grown=Выросло на: %d%%
-cuisine.gui.leaves.0=Не сможет вырасти
-cuisine.gui.leaves.1=Созревание
-cuisine.gui.leaves.2=Цветение
-cuisine.gui.leaves.3=Плодоносность
+cuisine.gui.leaves.0=Больше не плодоносит
+cuisine.gui.leaves.1=Созревает
+cuisine.gui.leaves.2=Расцветает
+cuisine.gui.leaves.3=Плодоносит
 cuisine.gui.burn_time=Время горения: %d
 cuisine.gui.heat=Температура: %d°C
 cuisine.gui.water_amount=Количество воды: %d
@@ -431,9 +440,10 @@ cuisine.gui.oil_amount=Количество масла: %d
 # < 0: условный; [0, 1]: процент; > 1: использует TOP. индикатор прогресса;
 cuisine.gui.progress=Прогресс:{0,choice,-1# условный|0.0< {0,number,процент(ов)}|1.0<}
 cuisine.gui.fluid_show=Жидкость: %s * %d мБ
+cuisine.gui.close=Закрыть
 cuisine.gui.openLink=Discord
-cuisine.gui.welcome=Спасибо за игру с нашим модом!\nМы все еще упорно работаем над его улучшением. Так что, пожалуйста, сохраняйте настрой!\n\nПрисоединяйтесь к нашему дискорд-серверу, чтобы быть в курсе всех новостей!
-cuisine.gui.name_food=Именная еда
+cuisine.gui.welcome=Спасибо за игру с нашим модом! Мы все еще упорно работаем над его улучшением. \n\nПрисоединяйтесь к нашему дискорд-серверу, чтобы быть в курсе всех новостей!
+cuisine.gui.name_food=Назовите блюдо
 cuisine.gui.wok_size_too_large=Данное блюдо слишком густое, чтобы его размешать
 cuisine.gui.cannot_add_more=Вы не можете add больше ингредиентов
 cuisine.gui.jei.title.basin_squeezing=Выжимание
@@ -449,7 +459,7 @@ cuisine.manual.featureInput=Специальный предмет:
 cuisine.manual.container=Емкость:
 cuisine.manual.potionVege=Овощной сок: §2%s
 cuisine.manual.potionFruit=Плодовый сок: §4%s
-cuisine.manual.parseError=[Ошибка анализа]	
+cuisine.manual.parseError=[Ошибка анализа]  
 
 cuisine.skillpoint.expertise=Знания
 cuisine.skillpoint.proficiency=Умение
@@ -457,11 +467,14 @@ cuisine.toast.skill.upgrade=Ваши умения кулинарного иск�
 cuisine.toast.skill.get=Новое умение get
 cuisine.toast.skill.description=с %s на %d!
 
+# Easter egg. Do not have to translate:
+cuisine.bourbon=My lover is this country.
+cuisine.curasao=Prepare for your five-color cards yet?
 cuisine.command.culinaryskill=/culinaryskill <игрок> получит <очков опыта> или /culinaryskill <игрок> set <очки опыта> <значение>
 
 ## Special override - can be used when combined name is either grammatrically incorrect or not following convention
 cuisine.ingredient.water.juice=Вода
 cuisine.ingredient.milk.juice=Молоко
 
-# Перевод сделал DubDisk.
-# По ошибкам в переводе и идеях его улучшения писать: https://vk.com/dubdisk
+// Перевод сделал DubDisk, версия 01.11.19.
+// По ошибкам в переводе и идеях его улучшения писать: https://vk.com/dubdisk
