@@ -8,11 +8,14 @@ import javax.annotation.Nullable;
 
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.IAction;
+import crafttweaker.api.block.IBlockDefinition;
 import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.api.oredict.IOreDictEntry;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,6 +25,7 @@ import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
 import snownee.kiwi.IModule;
 import snownee.kiwi.KiwiModule;
 import snownee.kiwi.crafting.input.ProcessingInput;
+import snownee.kiwi.util.definition.ItemDefinition;
 import snownee.kiwi.util.definition.OreDictDefinition;
 
 @KiwiModule(modid = Cuisine.MODID, name = "crafttweaker", dependency = "crafttweaker")
@@ -42,10 +46,9 @@ public final class CTSupport implements IModule
         return new ResourceLocation(MODID, Integer.toString(Objects.hash(inputs)));
     }
 
-    // Snownee: Nullable?
     static ProcessingInput fromIngredient(IIngredient ingredient)
     {
-        return new CTIngredientInput(ingredient);
+        return ingredient == null ? ItemDefinition.EMPTY : new CTIngredientInput(ingredient);
     }
 
     static OreDictDefinition fromOreEntry(IOreDictEntry entry)
@@ -61,6 +64,16 @@ public final class CTSupport implements IModule
     static FluidStack toNative(ILiquidStack ctDefinition)
     {
         return CraftTweakerMC.getLiquidStack(ctDefinition);
+    }
+
+    static Block toNative(IBlockDefinition ctDefinition)
+    {
+        return CraftTweakerMC.getBlock(ctDefinition);
+    }
+
+    static IBlockState toNative(crafttweaker.api.block.IBlockState ctDefinition)
+    {
+        return CraftTweakerMC.getBlockState(ctDefinition);
     }
 
     static abstract class Addition implements IAction

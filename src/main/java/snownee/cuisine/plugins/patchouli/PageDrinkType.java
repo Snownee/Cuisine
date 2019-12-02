@@ -32,7 +32,7 @@ public class PageDrinkType extends BookPage
     public void build(BookEntry entry, int pageNum)
     {
         super.build(entry, pageNum);
-        drinkType = DrinkType.DRINK_TYPES.get(drink_type);
+        drinkType = DrinkType.get(drink_type);
         if (drinkType != null)
         {
             drink = new ItemStack(CuisineRegistry.DRINK);

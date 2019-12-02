@@ -251,7 +251,7 @@ public class Drink extends CompositeFood
             }
 
             Drink.Builder builder = new Drink.Builder(ingredients, seasonings, effects);
-            builder.drinkType = DrinkType.DRINK_TYPES.get(data.getString("type"));
+            builder.drinkType = DrinkType.get(data.getString("type"));
             if (builder.drinkType == null)
             {
                 builder.drinkType = DrinkType.NORMAL;
@@ -276,6 +276,10 @@ public class Drink extends CompositeFood
         private final String name;
         private final Potion potionVege;
         private final Potion potionFruit;
+
+        public static DrinkType get(String name) {
+            return DRINK_TYPES.get(name);
+        }
 
         public DrinkType(String name, ItemDefinition container, Potion potionVege, Potion potionFruit)
         {
@@ -575,7 +579,7 @@ public class Drink extends CompositeFood
         int foodLevel = helper.getInt(CuisineSharedSecrets.KEY_FOOD_LEVEL);
         float saturation = helper.getFloat(CuisineSharedSecrets.KEY_SATURATION_MODIFIER);
 
-        DrinkType drinkType = DrinkType.DRINK_TYPES.get(helper.getString("type", "normal"));
+        DrinkType drinkType = DrinkType.get(helper.getString("type", "normal"));
         if (drinkType == null)
         {
             drinkType = DrinkType.NORMAL;
