@@ -27,6 +27,8 @@
       "type": "cuisine:centered_text",
       "lines": [
         "§l- Благодарность -",
+        "",
+        "",
         "粉鱼",
         "Lioness131",
         "皮蛋",
@@ -36,13 +38,22 @@
         "洋葱菜菜子",
         "面条公爵",
         "车轮饼",
-        "mc00zhu",
+        "mc00zhu"
+      ]
+    },
+    {
+      "type": "cuisine:centered_text",
+      "lines": [
+        "§l- Благодарность -",
+        "",
+        "",
         "东篱下i",
         "ycccz",
         "纪华裕",
         "可爱至吉",
         "洛华",
-        "Ruriri_"
+        "Ruriri_",
+        "Meowsquito"
       ]
     }
   ]
