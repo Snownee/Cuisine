@@ -278,6 +278,9 @@ public final class CuisineConfig
 
         @Config.Name("ShowHoloGui")
         public boolean showHoloGui = true;
+
+        @Config.Name("ShowTooltipIcons")
+        public boolean showTooltipIcons = true;
     }
 
     @Config.Name("Compat")

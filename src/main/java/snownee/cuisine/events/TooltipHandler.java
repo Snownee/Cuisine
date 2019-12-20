@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.api.CompositeFood;
 import snownee.cuisine.api.CulinaryCapabilities;
 import snownee.cuisine.api.CulinaryHub;
@@ -33,7 +34,7 @@ public final class TooltipHandler
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void makeTooltip(ItemTooltipEvent event)
     {
-        if (event.getToolTip().isEmpty())
+        if (!CuisineConfig.CLIENT.showTooltipIcons || event.getToolTip().isEmpty())
         {
             return;
         }
@@ -112,6 +113,10 @@ public final class TooltipHandler
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void renderTooltip(RenderTooltipEvent.PostText event)
     {
+        if (!CuisineConfig.CLIENT.showTooltipIcons)
+        {
+            return;
+        }
         List<String> lines = event.getLines();
         if (lines.isEmpty())
         {
