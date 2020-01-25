@@ -1,8 +1,10 @@
 package snownee.cuisine.plugins.crafttweaker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -17,8 +19,10 @@ import crafttweaker.api.oredict.IOreDictEntry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.api.process.CuisineProcessingRecipe;
 import snownee.cuisine.api.process.CuisineProcessingRecipeManager;
@@ -59,6 +63,21 @@ public final class CTSupport implements IModule
     static ItemStack toNative(@Nullable IItemStack ctDefinition)
     {
         return CraftTweakerMC.getItemStack(ctDefinition);
+    }
+
+    static Stream<ItemStack> toNatives(@Nullable IItemStack ctDefinition)
+    {
+        ItemStack raw = toNative(ctDefinition);
+        if (raw.getMetadata() == OreDictionary.WILDCARD_VALUE)
+        {
+            NonNullList<ItemStack> items = NonNullList.create();
+            raw.getItem().getSubItems(raw.getItem().getCreativeTab(), items);
+            return items.stream();
+        }
+        else
+        {
+            return Collections.singletonList(raw).stream();
+        }
     }
 
     static FluidStack toNative(ILiquidStack ctDefinition)

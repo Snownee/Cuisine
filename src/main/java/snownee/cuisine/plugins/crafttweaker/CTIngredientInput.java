@@ -24,10 +24,11 @@ final class CTIngredientInput implements ProcessingInput
     @Override
     public List<ItemStack> examples()
     {
+        // Snownee: 未去重
         return Optional.ofNullable(this.ingredient.getItems())
                 .orElse(Collections.emptyList())
                 .stream()
-                .map(CTSupport::toNative)
+                .flatMap(CTSupport::toNatives)
                 .collect(Collectors.toList());
     }
 
