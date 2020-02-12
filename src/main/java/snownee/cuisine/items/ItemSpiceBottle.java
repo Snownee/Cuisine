@@ -117,13 +117,12 @@ public class ItemSpiceBottle extends ItemMod
         @Override
         public boolean canFillFluidType(FluidStack fluid)
         {
-            return !fluid.getFluid().isGaseous(fluid) && fluid.getFluid().getTemperature(fluid) < 400 && super.canFillFluidType(fluid);
+            return container.getMetadata() == 0 && !fluid.getFluid().isGaseous(fluid) && fluid.getFluid().getTemperature(fluid) < 400 && super.canFillFluidType(fluid);
         }
 
         @Override
         protected void setContainerToEmpty()
         {
-            super.setContainerToEmpty();
             container.setTagCompound(null);
         }
     }
@@ -392,10 +391,14 @@ public class ItemSpiceBottle extends ItemMod
             EntityPlayerMP entityplayermp = (EntityPlayerMP) entityLiving;
             entityplayermp.addStat(StatList.getObjectUseStats(this));
         }
-        Object content;
+        Object content = null;
         if (hasItem(stack))
         {
-            content = getItemHandler(stack).getStackInSlot(0);
+            IItemHandler handler = getItemHandler(stack);
+            if (handler != null)
+            {
+                content = handler.getStackInSlot(0);
+            }
         }
         else
         {
@@ -406,7 +409,7 @@ public class ItemSpiceBottle extends ItemMod
         {
             creative = ((EntityPlayer) entityLiving).isCreative();
         }
-        if (creative || consume(stack, MAX_VOLUME))
+        if (content != null && creative || consume(stack, MAX_VOLUME))
             MinecraftForge.EVENT_BUS.post(new SpiceBottleContentConsumedEvent(worldIn, entityLiving, stack, content));
         return stack;
     }

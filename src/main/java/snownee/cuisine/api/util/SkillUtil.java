@@ -21,6 +21,8 @@ import snownee.cuisine.api.events.SkillPointUpdateEvent;
 @ParametersAreNonnullByDefault
 public class SkillUtil
 {
+    public static int MAX_LEVEL = 3;
+
     public static int getPoint(EntityPlayer player, CulinarySkillPoint skillPoint)
     {
         CulinarySkillPointContainer cap = player.getCapability(CulinaryCapabilities.CULINARY_SKILL, null);
@@ -56,7 +58,7 @@ public class SkillUtil
 
     public static int getLevel(int point)
     {
-        return MathHelper.clamp(point / 50, 0, Short.MAX_VALUE);
+        return MathHelper.clamp(point / 50, 0, MAX_LEVEL);
     }
 
     public static void setLevel(EntityPlayer player, CulinarySkillPoint skillPoint, int level)

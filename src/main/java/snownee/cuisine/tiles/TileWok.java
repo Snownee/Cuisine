@@ -159,7 +159,7 @@ public class TileWok extends TileFirePit implements CookingVessel
                 }
 
                 builder.apply(strategy, this);
-                if (getWorld().rand.nextInt(5) == 0)
+                if (getHeatHandler().getLevel() > 0 && getWorld().rand.nextInt(5) == 0)
                 {
                     SkillUtil.increasePoint(playerIn, CulinarySkillPoint.PROFICIENCY, 1);
                 }

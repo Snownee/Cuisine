@@ -1,7 +1,7 @@
 package snownee.cuisine.api;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,7 +10,7 @@ import mcp.MethodsReturnNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public final class CulinarySkillManager
 {
-    private Map<CulinarySkill, Integer> mapSkillToLevelRequirement = new HashMap<>();
+    private Map<CulinarySkill, Integer> mapSkillToLevelRequirement = new IdentityHashMap<>();
     private static CulinarySkillManager INSTANCE;
 
     public static CulinarySkillManager instance()
