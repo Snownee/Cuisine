@@ -51,7 +51,7 @@ public final class CuisineConfig
         @Config.LangKey("cuisine.config.general.fruit_growing_speed")
         @Config.Name("FruitGrowingSpeed")
         @Config.RangeInt(min = 0, max = 100)
-        public int fruitGrowingSpeed = 15;
+        public int fruitGrowingSpeed = 10;
 
         @Config.LangKey("cuisine.config.general.fruit_drops")
         @Config.Name("FruitDrops")
@@ -189,6 +189,10 @@ public final class CuisineConfig
         @Config.RequiresMcRestart
         public boolean disableGenericFood = false;
 
+        @Config.Name("DisableGenericFoodBlacklist")
+        @Config.RequiresMcRestart
+        public String[] disableGenericFoodBlacklist = new String[0];
+
         @Config.Comment("If HardcoreFoodLevel is enabled, food item that is listed here will NOT be affected.")
         @Config.LangKey("cuisine.config.hardcore.food_level_lose_blacklist")
         @Config.Name("FoodLevelDowngradeBlacklist")
@@ -258,6 +262,10 @@ public final class CuisineConfig
         @Config.Name("CropsGenDimensions")
         @Config.RequiresMcRestart
         public int[] cropsGenDimensions = new int[] { 0 };
+
+        @Config.Name("DisableCropGenIdList")
+        @Config.RequiresMcRestart
+        public String[] disableCropGenIdList = new String[0];
     }
 
     @Config.Name("Client")

@@ -1,7 +1,12 @@
 package snownee.cuisine.world.gen;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -22,7 +27,17 @@ import snownee.cuisine.blocks.BlockCuisineCrops;
 
 public class WorldGenGarden
 {
-    public static final Block[] PLANT_POOL = new Block[] { CuisineRegistry.CHINESE_CABBAGE, CuisineRegistry.CORN, CuisineRegistry.CUCUMBER, CuisineRegistry.EGGPLANT, CuisineRegistry.GINGER, CuisineRegistry.GREEN_PEPPER, CuisineRegistry.LEEK, CuisineRegistry.LETTUCE, CuisineRegistry.ONION, CuisineRegistry.PEANUT, CuisineRegistry.RED_PEPPER, CuisineRegistry.SCALLION, CuisineRegistry.SESAME, CuisineRegistry.SICHUAN_PEPPER, CuisineRegistry.SOYBEAN, CuisineRegistry.SPINACH, CuisineRegistry.TOMATO, CuisineRegistry.TURNIP, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT };
+    public static final List<Block> PLANT_POOL = Lists.newArrayList(CuisineRegistry.CHINESE_CABBAGE, CuisineRegistry.CORN, CuisineRegistry.CUCUMBER, CuisineRegistry.EGGPLANT, CuisineRegistry.GINGER, CuisineRegistry.GREEN_PEPPER, CuisineRegistry.LEEK, CuisineRegistry.LETTUCE, CuisineRegistry.ONION, CuisineRegistry.PEANUT, CuisineRegistry.RED_PEPPER, CuisineRegistry.SCALLION, CuisineRegistry.SESAME, CuisineRegistry.SICHUAN_PEPPER, CuisineRegistry.SOYBEAN, CuisineRegistry.SPINACH, CuisineRegistry.TOMATO, CuisineRegistry.TURNIP, Blocks.CARROTS, Blocks.POTATOES, Blocks.WHEAT);
+    public static final boolean disablePepper;
+    public static final boolean disableRice;
+
+    static
+    {
+        Set<String> ids = Sets.newHashSet(CuisineConfig.WORLD_GEN.disableCropGenIdList);
+        disablePepper = ids.contains("cuisine:chili_pepper");
+        disableRice = ids.contains("cuisine:rice");
+        PLANT_POOL.removeIf($ -> ids.contains($.getRegistryName().toString()));
+    }
 
     @SubscribeEvent
     public void decorateEvent(Decorate event)
@@ -55,12 +70,12 @@ public class WorldGenGarden
             IBlockState state = worldIn.getBlockState(pos);
             if (biome.topBlock.getMaterial() == Material.GRASS && state.getBlock() == biome.topBlock.getBlock())
             {
-                Block plant = PLANT_POOL[rand.nextInt(PLANT_POOL.length)];
+                Block plant = PLANT_POOL.get(rand.nextInt(PLANT_POOL.size()));
                 plant(worldIn, pos, plant, biome.topBlock.getBlock(), rand);
                 plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
                 plant(worldIn, pos.offset(EnumFacing.byHorizontalIndex(rand.nextInt(4))), plant, biome.topBlock.getBlock(), rand);
             }
-            else if (state.getBlock() == Blocks.WATER)
+            else if (!disableRice && state.getBlock() == Blocks.WATER)
             {
                 state = worldIn.getBlockState(pos.down());
                 if (state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS)
@@ -70,7 +85,7 @@ public class WorldGenGarden
                 }
             }
         }
-        else if (worldIn.provider.getDimension() == -1)
+        else if (!disablePepper && worldIn.provider.getDimension() == -1)
         {
             Random rand = event.getRand();
             if (rand.nextInt(4) > 0 || rand.nextInt(100) < CuisineConfig.WORLD_GEN.cropsGenRate)
