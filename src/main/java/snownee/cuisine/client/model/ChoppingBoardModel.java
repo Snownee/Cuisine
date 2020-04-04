@@ -113,8 +113,13 @@ public final class ChoppingBoardModel implements IModel
          * vanilla log does).
          * This solves the issue where item metadata is not associated with block state as
          * strictly as that of vanilla, for examples the "iron wood" from Extra Utilities 2.
+         *
+         * No, this cannot be in method reference. If it's a method reference, you will have to
+         * resolve Minecraft.getMinecraft().getRenderItem() first, which is null when this
+         * static initializer is triggered.
+         * We have to use plain lambda. There is a semantic difference.
          */
-        ModelResolver.resolvers.add(Minecraft.getMinecraft().getRenderItem()::getItemModelWithOverrides);
+        ModelResolver.resolvers.add((stack, world, entity) -> Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, entity));
     }
 
     private boolean ambientOcclusion, gui3D;
