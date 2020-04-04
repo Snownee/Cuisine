@@ -67,12 +67,17 @@ public class JEICompat implements IModPlugin
     static IDrawable arrowInOverlay;
     static IDrawableStatic arrowInOverlayStatic;
 
+    public static void updateAxesList(String[] axeIds)
+    {
+        AXES = Arrays.stream(axeIds).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+    }
+
     @Override
     public void register(IModRegistry registry)
     {
         if (CuisineConfig.GENERAL.axeChopping)
         {
-            AXES = Arrays.stream(CuisineConfig.CLIENT.axeList).map(id -> ItemDefinition.parse(id, false)).map(ItemDefinition::getItemStack).collect(Collectors.toList());
+            updateAxesList(CuisineConfig.CLIENT.axeList);
         }
 
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();

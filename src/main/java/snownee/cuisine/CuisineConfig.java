@@ -3,8 +3,11 @@ package snownee.cuisine;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import snownee.cuisine.client.model.ChoppingBoardModel;
+import snownee.cuisine.plugins.jei.JEICompat;
 
 @Config(modid = Cuisine.MODID, name = Cuisine.MODID, category = "")
 @Mod.EventBusSubscriber(modid = Cuisine.MODID)
@@ -22,6 +25,18 @@ public final class CuisineConfig
         if (event.getModID().equals(Cuisine.MODID))
         {
             ConfigManager.sync(Cuisine.MODID, Config.Type.INSTANCE);
+            ChoppingBoardModel.updateSpecialItemList(CLIENT.useBlockModelForChoppingBoardFirst);
+            try
+            {
+                if (Loader.isModLoaded("jei"))
+                {
+                    JEICompat.updateAxesList(CLIENT.axeList);
+                }
+            }
+            catch (Exception ignored)
+            {
+                // Idk if that breaks when JEI is absent but we add try-catch anyway, just in case.
+            }
         }
     }
 
@@ -276,7 +291,6 @@ public final class CuisineConfig
         @Config.Comment("List of axes that will show in JEI recipes. Does not affect chopping board behavior.")
         @Config.LangKey("cuisine.config.progression.axe_list")
         @Config.Name("AxeList")
-        @Config.RequiresMcRestart
         public String[] axeList = new String[] { "minecraft:wooden_axe", "minecraft:stone_axe", "minecraft:iron_axe", "minecraft:golden_axe", "minecraft:diamond_axe" };
 
         @Config.LangKey("cuisine.config.general.always_render_drinkro")

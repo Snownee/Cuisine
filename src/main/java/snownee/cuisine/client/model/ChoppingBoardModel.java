@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +20,7 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import snownee.cuisine.Cuisine;
 import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.blocks.BlockChoppingBoard;
@@ -26,10 +28,13 @@ import snownee.cuisine.blocks.BlockChoppingBoard;
 import javax.annotation.Nullable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public final class ChoppingBoardModel implements IModel
 {
@@ -79,6 +84,17 @@ public final class ChoppingBoardModel implements IModel
         }
     }
 
+    static List<Item> useBlockModelFirst = Collections.emptyList();
+
+    public static void updateSpecialItemList(final String[] itemList)
+    {
+        useBlockModelFirst = Arrays.stream(itemList)
+                .map(ResourceLocation::new)
+                .map(ForgeRegistries.ITEMS::getValue)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
     static
     {
         /*
@@ -91,21 +107,25 @@ public final class ChoppingBoardModel implements IModel
          * TODO (3TUSK): Precisely map ItemStack to IBlockState.
          *  MUST require users to specify the mapping.
          */
-        ModelResolver.resolvers.add((stack, world, entity) -> {
-            final String id = stack.getItem().getRegistryName().toString();
+        ModelResolver.resolvers.add((stack, world, entity) ->
+        {
             boolean found = false;
-            for (String s : CuisineConfig.CLIENT.useBlockModelForChoppingBoardFirst) {
-                if (s.equals(id)) {
+            for (Item i : useBlockModelFirst)
+            {
+                if (i == stack.getItem())
+                {
                     found = true;
                     break;
                 }
             }
-            if (found) {
+            if (found)
+            {
                 Block block = Block.getBlockFromItem(stack.getItem());
                 return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
             }
             return null;
         });
+        updateSpecialItemList(CuisineConfig.CLIENT.useBlockModelForChoppingBoardFirst);
         /*
          * The default resolver, assuming that the cover item has the correct model.
          * That said, we only use items that has ore dictionary entry of "logWood", and it means
