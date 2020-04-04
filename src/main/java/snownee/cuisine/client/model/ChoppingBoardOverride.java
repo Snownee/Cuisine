@@ -169,13 +169,7 @@ public final class ChoppingBoardOverride extends ItemOverrideList implements ISe
         IBakedModel rawModel;
         if (helper.hasTag("BlockEntityTag.cover", Constants.NBT.TAG_COMPOUND))
         {
-            // Assumption: we assume the cover item has the correct model. That said, we only use
-            // items that has ore dictionary entry of "logWood", and it means that we assume the
-            // cover will have a model whose growth ring is facing up (like what vanilla log does).
-            // This solves the issue where item metadata is not associated with block state as
-            // strictly as that of vanilla, for examples the "iron wood" from Extra Utilities 2.
-            ItemStack coverData = new ItemStack(helper.getTag("BlockEntityTag.cover"));
-            rawModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(coverData, world, entity);
+            rawModel = ChoppingBoardModel.ModelResolver.tryGetFor(new ItemStack(helper.getTag("BlockEntityTag.cover")), world, entity);
         }
         else
         {

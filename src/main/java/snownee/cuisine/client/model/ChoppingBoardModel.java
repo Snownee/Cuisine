@@ -1,5 +1,6 @@
 package snownee.cuisine.client.model;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -8,21 +9,26 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import snownee.cuisine.Cuisine;
+import snownee.cuisine.CuisineConfig;
 import snownee.cuisine.blocks.BlockChoppingBoard;
 
 import javax.annotation.Nullable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 import java.util.function.Function;
 
 public final class ChoppingBoardModel implements IModel
@@ -53,6 +59,62 @@ public final class ChoppingBoardModel implements IModel
         {
             return new ChoppingBoardModel();
         }
+    }
+
+    @FunctionalInterface
+    public interface ModelResolver
+    {
+        Queue<ModelResolver> resolvers = new ArrayDeque<>();
+
+        @Nullable IBakedModel resolve(ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity);
+
+        static IBakedModel tryGetFor(ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
+            for (ModelResolver resolver : resolvers) {
+                IBakedModel model = resolver.resolve(stack, world, entity);
+                if (model != null) {
+                    return model;
+                }
+            }
+            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+        }
+    }
+
+    static
+    {
+        /*
+         * A special resolver that maps item to block first if viable.
+         * Used to solve issue where the item does NOT use block model, for example
+         * TerraFirmaCraft.
+         *
+         * See https://github.com/Snownee/Cuisine/issues/80 for more details.
+         *
+         * TODO (3TUSK): Precisely map ItemStack to IBlockState.
+         *  MUST require users to specify the mapping.
+         */
+        ModelResolver.resolvers.add((stack, world, entity) -> {
+            final String id = stack.getItem().getRegistryName().toString();
+            boolean found = false;
+            for (String s : CuisineConfig.CLIENT.useBlockModelForChoppingBoardFirst) {
+                if (s.equals(id)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                Block block = Block.getBlockFromItem(stack.getItem());
+                return Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
+            }
+            return null;
+        });
+        /*
+         * The default resolver, assuming that the cover item has the correct model.
+         * That said, we only use items that has ore dictionary entry of "logWood", and it means
+         * that we assume the cover will have a model whose growth ring is facing up (like what
+         * vanilla log does).
+         * This solves the issue where item metadata is not associated with block state as
+         * strictly as that of vanilla, for examples the "iron wood" from Extra Utilities 2.
+         */
+        ModelResolver.resolvers.add(Minecraft.getMinecraft().getRenderItem()::getItemModelWithOverrides);
     }
 
     private boolean ambientOcclusion, gui3D;
@@ -111,7 +173,7 @@ public final class ChoppingBoardModel implements IModel
                     // We return an empty list for rendering nothing if the cover data are not ready yet.
                     return Collections.emptyList();
                 }
-                IBakedModel coverModel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(cover, null, null);
+                IBakedModel coverModel = ModelResolver.tryGetFor(cover, null, null);
                 List<BakedQuad> quads;
                 try
                 {

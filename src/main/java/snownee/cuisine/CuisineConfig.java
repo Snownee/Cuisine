@@ -289,6 +289,32 @@ public final class CuisineConfig
 
         @Config.Name("ShowTooltipIcons")
         public boolean showTooltipIcons = true;
+
+        @Config.Comment("List of items that, when functions as chopping board base, will attempt to find the correct block model when the board is rendered. " +
+                "See https://github.com/Snownee/Cuisine/issues/80 for more details.")
+        @Config.LangKey("cuisine.config.progression.block_model_for_chopping_board")
+        @Config.Name("PrioritizedBlockModelForChoppingBoard")
+        public String[] useBlockModelForChoppingBoardFirst = new String[] {
+                "tfc:wood/log/acacia",
+                "tfc:wood/log/ash",
+                "tfc:wood/log/aspen",
+                "tfc:wood/log/birch",
+                "tfc:wood/log/blackwood",
+                "tfc:wood/log/chestnut",
+                "tfc:wood/log/douglas_fir",
+                "tfc:wood/log/hickory",
+                "tfc:wood/log/kapok",
+                "tfc:wood/log/maple",
+                "tfc:wood/log/oak",
+                "tfc:wood/log/palm",
+                "tfc:wood/log/pine",
+                "tfc:wood/log/rosewood",
+                "tfc:wood/log/sequoia",
+                "tfc:wood/log/spruce",
+                "tfc:wood/log/sycamore",
+                "tfc:wood/log/white_cedar",
+                "tfc:wood/log/willow",
+        };
     }
 
     @Config.Name("Compat")
