@@ -86,7 +86,6 @@ dependencies {
     }
     deobfCompile "blusunrize:ImmersiveEngineering:0.12-92-559"
     compile files(
-        'Kiwi-1.12.2-0.5.1-deobf.jar',
         'Nutrition-1.12.2-3.5.0.jar',
         'Baubles-1.12-1.5.2.jar',
         'Carry+On+MC1.12.2+v1.10.jar',

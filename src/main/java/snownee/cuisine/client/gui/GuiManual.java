@@ -49,13 +49,13 @@ public class GuiManual extends GuiScreen
     {
         this.fontRenderer = AdvancedFontRenderer.INSTANCE;
         this.buttonList.clear();
-        this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openLink")));
+        //        this.addButton(new GuiButton(0, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2, 80, 20, I18nUtil.translate("gui.openLink")));
         this.addButton(new GuiButton(1, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 + 40, 80, 20, I18nUtil.translate("gui.close")));
 
-        if (mc.getLanguageManager().getCurrentLanguage().getLanguageCode().startsWith("zh"))
-        {
-            this.addButton(new GuiButton(2, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 - 40, 80, 20, I18nUtil.translate("gui.openWiki")));
-        }
+        //        if (mc.getLanguageManager().getCurrentLanguage().getLanguageCode().startsWith("zh"))
+        //        {
+        //            this.addButton(new GuiButton(2, (this.width + PAGE_WIDTH / 2 - 90) / 2, (this.height - 20) / 2 - 40, 80, 20, I18nUtil.translate("gui.openWiki")));
+        //        }
     }
 
     @Override
