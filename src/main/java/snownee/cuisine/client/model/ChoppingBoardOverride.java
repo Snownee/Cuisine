@@ -1,5 +1,6 @@
 package snownee.cuisine.client.model;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -25,7 +26,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ForgeBlockStateV1;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.resource.IResourceType;
 import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
@@ -59,7 +59,9 @@ public final class ChoppingBoardOverride extends ItemOverrideList implements ISe
         try
         {
             // ForgeBlockStateV1.Transforms is available since Forge 14.23.5.2772.
-            Optional<IModelState> defaultBlockTransform = ForgeBlockStateV1.Transforms.get("forge:default-block");
+            Class<?> v1Transform = Class.forName("net.minecraftforge.client.model.ForgeBlockStateV1$Transforms");
+            Method getter = v1Transform.getDeclaredMethod("get", String.class);
+            Optional<IModelState> defaultBlockTransform = (Optional<IModelState>)getter.invoke(null, "forge:default-block");
             if (defaultBlockTransform.isPresent())
             {
                 IModelState modelState = defaultBlockTransform.get();
@@ -75,7 +77,7 @@ public final class ChoppingBoardOverride extends ItemOverrideList implements ISe
                 }
             }
         }
-        catch (Exception e)
+        catch (Throwable e) // Hack, you know
         {
             /*
              * The correct TRSRTransformation data for correctly rendering a chopping board
