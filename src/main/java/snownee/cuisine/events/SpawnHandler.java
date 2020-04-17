@@ -41,11 +41,11 @@ public class SpawnHandler
             String key = Cuisine.MODID + ":spawned_book";
             if (!data.hasKey(key) || !data.getBoolean(key))
             {
-                if (!Loader.isModLoaded("patchouli"))
-                {
-                    event.player.sendMessage(new TextComponentTranslation(I18nUtil.getFullKey("tip.spawn0")));
-                    event.player.sendMessage(new TextComponentTranslation(I18nUtil.getFullKey("tip.spawn1")));
-                }
+//                if (!Loader.isModLoaded("patchouli"))
+//                {
+//                    event.player.sendMessage(new TextComponentTranslation(I18nUtil.getFullKey("tip.spawn0")));
+//                    event.player.sendMessage(new TextComponentTranslation(I18nUtil.getFullKey("tip.spawn1")));
+//                }
                 ItemHandlerHelper.giveItemToPlayer(event.player, new ItemStack(CuisineRegistry.MANUAL));
                 data.setBoolean(key, true);
                 playerData.setTag(EntityPlayer.PERSISTED_NBT_TAG, data);
